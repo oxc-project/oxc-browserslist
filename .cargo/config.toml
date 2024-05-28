@@ -1,0 +1,2 @@
+[alias]
+codegen = "run -p xtask"

@@ -5,10 +5,8 @@ use nom::{
     number::complete::float,
     sequence::{pair, terminated},
 };
-use once_cell::sync::Lazy;
 
-pub static ELECTRON_VERSIONS: Lazy<Vec<(f32, &'static str)>> =
-    Lazy::new(|| include!(concat!(env!("OUT_DIR"), "/electron-to-chromium.rs")));
+pub use crate::generated::electron_to_chromium::ELECTRON_VERSIONS;
 
 pub(crate) fn parse_version(version: &str) -> Result<f32, Error> {
     all_consuming(terminated(float, opt(pair(char('.'), u16))))(version)
