@@ -68,6 +68,7 @@ pub use {error::Error, opts::Opts, queries::Distrib};
 mod config;
 mod data;
 mod error;
+mod generated;
 mod opts;
 mod parser;
 mod queries;

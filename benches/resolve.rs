@@ -26,7 +26,12 @@ pub fn resolve_cover(c: &mut Criterion) {
 
 pub fn resolve_electron(c: &mut Criterion) {
     c.bench_function("resolve 'electron >= 10'", |b| {
-        b.iter(|| resolve(black_box(vec!["electron >= 10"]), &black_box(Opts::default())))
+        b.iter(|| {
+            resolve(
+                black_box(vec!["electron >= 10"]),
+                &black_box(Opts::default()),
+            )
+        })
     });
 }
 
