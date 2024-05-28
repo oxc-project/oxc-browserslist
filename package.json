@@ -4,6 +4,13 @@
   "license": "MIT",
   "repository": "https://github.com/browserslist/browserslist-rs",
   "devDependencies": {
-    "browserslist": "^4.23.0"
+    "browserslist": "4.23.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "caniuse-lite": "1.0.30001597",
+      "electron-to-chromium": "1.4.702",
+      "node-releases": "2.0.14"
+    }
   }
 }
