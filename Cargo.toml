@@ -1,10 +1,10 @@
 [package]
-name = "browserslist-rs"
+name = "oxc-browserslist"
 version = "0.15.0"
-authors = ["Pig Fang <g-plane@hotmail.com>"]
+authors = ["Boshen <boshenc@gmail.com>", "Pig Fang <g-plane@hotmail.com>"]
 edition = "2021"
-description = "Rust-ported Browserslist."
-repository = "https://github.com/browserslist/browserslist-rs"
+description = "Rust-ported Browserslist for Oxc."
+repository = "https://github.com/oxc-project/oxc-browserslist"
 license = "MIT"
 keywords = ["web", "javascript"]
 categories = ["web-programming", "config"]
