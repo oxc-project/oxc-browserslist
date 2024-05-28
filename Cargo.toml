@@ -23,16 +23,6 @@ members = [
 name = "browserslist"
 crate-type = ["cdylib", "rlib"]
 
-[features]
-wasm_bindgen = [
-    "chrono/wasmbind",
-    "getrandom",
-    "getrandom/js",
-    "js-sys",
-    "serde-wasm-bindgen",
-    "wasm-bindgen",
-]
-
 [dependencies]
 ahash = { version = "0.8", features = ["serde"] }
 chrono = { version = "0.4.31", features = [
@@ -52,7 +42,7 @@ thiserror = "1.0"
 
 [dev-dependencies]
 clap = { version = "4.4", features = ["derive"] }
-criterion = "0.5"
+criterion2 = { version = "0.9.0", default-features = false }
 test-case = "3.3"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
@@ -64,3 +54,15 @@ wasm-bindgen = { version = "0.2", optional = true }
 [[bench]]
 name = "resolve"
 harness = false
+
+[features]
+default = []
+wasm_bindgen = [
+    "chrono/wasmbind",
+    "getrandom",
+    "getrandom/js",
+    "js-sys",
+    "serde-wasm-bindgen",
+    "wasm-bindgen",
+]
+codspeed = ["criterion2/codspeed"]
