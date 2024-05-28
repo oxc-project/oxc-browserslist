@@ -1,65 +1,74 @@
 name: CI
 
 on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize]
+    paths-ignore:
+      - '**/*.md'
+      - '!.github/workflows/ci.yml'
   push:
     branches:
       - main
-    tags-ignore:
-      - '**'
-  pull_request:
-    branches:
-      - main
+      - "renovate/**"
+    paths-ignore:
+      - '**/*.md'
+      - '!.github/workflows/ci.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.ref_name != 'main' }}
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   test:
-    name: test
-    runs-on: ubuntu-latest
+    name: Test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # - os: windows-latest
+          - os: ubuntu-latest
+          - os: macos-14
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
-      - uses: actions/cache@v3
+      - uses: Boshen/setup-rust@main
         with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
+          save-cache: ${{ github.ref_name == 'main' }}
       - uses: pnpm/action-setup@v2.2.4
         with:
           version: latest
           run_install: true
-      - run: pnpm why caniuse-lite electron-to-chromium node-releases
       - run: cargo test
 
   lint:
-    name: lint
+    name: Clippy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
-      - uses: actions/cache@v3
+      - uses: Boshen/setup-rust@main
         with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
-      - run: cargo clippy --all-features
-      - run: cargo clippy --example inspect
-      - run: cargo clippy --tests
+          components: clippy
+      - run: cargo clippy --all-targets --all-features -- -D warnings
 
   wasm:
-    name: wasm
+    name: Wasm
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: taiki-e/checkout-action@v1
+      - uses: Boshen/setup-rust@main
         with:
-          submodules: true
-      - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-      - run: wasm-pack build --dev --target=web -- --features wasm_bindgen
+          cache-key: wasm
+          save-cache: ${{ github.ref_name == 'main' }}
+      - name: Check
+        run: |
+          rustup target add wasm32-unknown-unknown
+          cargo check --target wasm32-unknown-unknown --features wasm_bindgen
