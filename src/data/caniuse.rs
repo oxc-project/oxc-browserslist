@@ -1,4 +1,4 @@
-use super::browser_name::BrowserNameAtom;
+use crate::data::browser_name::BrowserNameAtom;
 use ahash::AHashMap;
 use once_cell::sync::Lazy;
 use std::borrow::Cow;
@@ -11,7 +11,7 @@ pub const OP_MOB_BLINK_FIRST: u32 = 14;
 
 #[derive(Clone, Debug)]
 pub struct BrowserStat {
-    name: BrowserNameAtom,
+    pub name: BrowserNameAtom,
     pub version_list: Vec<VersionDetail>,
 }
 
@@ -24,11 +24,8 @@ pub struct VersionDetail {
 
 pub type CaniuseData = AHashMap<BrowserNameAtom, BrowserStat>;
 
-pub static CANIUSE_BROWSERS: Lazy<CaniuseData> =
-    Lazy::new(|| include!(concat!(env!("OUT_DIR"), "/caniuse-browsers.rs")));
-
-pub static CANIUSE_GLOBAL_USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> =
-    Lazy::new(|| include!(concat!(env!("OUT_DIR"), "/caniuse-global-usage.rs")));
+pub use crate::generated::caniuse_browsers::CANIUSE_BROWSERS;
+pub use crate::generated::caniuse_global_usage::CANIUSE_GLOBAL_USAGE;
 
 pub static BROWSER_VERSION_ALIASES: Lazy<
     AHashMap<BrowserNameAtom, AHashMap<&'static str, &'static str>>,

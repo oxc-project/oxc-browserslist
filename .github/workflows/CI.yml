@@ -32,7 +32,9 @@ jobs:
           version: latest
           run_install: true
       - run: pnpm why caniuse-lite electron-to-chromium node-releases
-      - run: cargo test
+      - run: |
+          cargo codegen
+          cargo test
 
   lint:
     name: lint
