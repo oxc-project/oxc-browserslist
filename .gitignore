@@ -2,4 +2,3 @@
 Cargo.lock
 node_modules/
 pnpm-lock.yaml
-src/generated/
