@@ -1,6 +1,6 @@
 [package]
 name = "oxc-browserslist"
-version = "0.15.0"
+version = "0.16.0"
 authors = ["Boshen <boshenc@gmail.com>", "Pig Fang <g-plane@hotmail.com>"]
 edition = "2021"
 description = "Rust-ported Browserslist for Oxc."
@@ -9,13 +9,8 @@ license = "MIT"
 keywords = ["web", "javascript"]
 categories = ["web-programming", "config"]
 include = [
-    "**/*.rs",
+    "src/**/*.rs",
     "Cargo.toml",
-    "vendor/caniuse/fulldata-json/data-2.0.json",
-    "vendor/canisue/features-json/*.json",
-    "vendor/caniuse/region-usage-json/*.json",
-    "vendor/electron-to-chromium/versions.json",
-    "vendor/node-releases/data/**/*.json",
 ]
 
 [workspace]
