@@ -2,11 +2,11 @@ use crate::{resolve, Error, Opts};
 use std::{path::Path, process::Command};
 
 pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
-    let mut command = Command::new(
-        Path::new("./node_modules/.bin/browserslist")
-            .canonicalize()
-            .unwrap(),
-    );
+    #[cfg(target_os = "windows")]
+    let path = "./node_modules/.bin/browserslist.exe";
+    #[cfg(not(target_os = "windows"))]
+    let path = "./node_modules/.bin/browserslist";
+    let mut command = Command::new(Path::new(path).canonicalize().unwrap());
     if opts.mobile_to_desktop {
         command.arg("--mobile-to-desktop");
     }
