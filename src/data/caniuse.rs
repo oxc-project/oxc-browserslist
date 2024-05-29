@@ -1,6 +1,6 @@
 use crate::data::BrowserName;
-use ahash::AHashMap;
 use once_cell::sync::Lazy;
+use rustc_hash::FxHashMap;
 use std::borrow::Cow;
 
 pub mod features;
@@ -22,13 +22,13 @@ pub struct VersionDetail {
     pub release_date: Option<i64>,
 }
 
-pub type CaniuseData = AHashMap<BrowserName, BrowserStat>;
+pub type CaniuseData = FxHashMap<BrowserName, BrowserStat>;
 
 pub use crate::generated::caniuse_browsers::CANIUSE_BROWSERS;
 pub use crate::generated::caniuse_global_usage::CANIUSE_GLOBAL_USAGE;
 
 pub static BROWSER_VERSION_ALIASES: Lazy<
-    AHashMap<BrowserName, AHashMap<&'static str, &'static str>>,
+    FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>>,
 > = Lazy::new(|| {
     let mut aliases = CANIUSE_BROWSERS
         .iter()
@@ -43,7 +43,7 @@ pub static BROWSER_VERSION_ALIASES: Lazy<
                         .map(|(bottom, top)| (bottom, top, version.version))
                 })
                 .fold(
-                    AHashMap::<&str, &str>::new(),
+                    FxHashMap::<&str, &str>::default(),
                     move |mut aliases, (bottom, top, version)| {
                         let _ = aliases.insert(bottom, version);
                         let _ = aliases.insert(top, version);
@@ -56,9 +56,9 @@ pub static BROWSER_VERSION_ALIASES: Lazy<
                 Some((*name, aliases))
             }
         })
-        .collect::<AHashMap<BrowserName, _>>();
+        .collect::<FxHashMap<BrowserName, _>>();
     let _ = aliases.insert("op_mob", {
-        let mut aliases = AHashMap::new();
+        let mut aliases = FxHashMap::default();
         let _ = aliases.insert("59", "58");
         aliases
     });

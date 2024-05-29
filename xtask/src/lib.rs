@@ -131,7 +131,6 @@ pub fn build_node_release_schedule() -> Result<()> {
         root().join("node_modules/node-releases/data/release-schedule/release-schedule.json");
     let schedule: IndexMap<String, NodeRelease> =
         serde_json::from_slice(&fs::read(schedule_path)?)?;
-    let cap = schedule.len();
     let versions = schedule
         .into_iter()
         .map(|(version, NodeRelease { start, end })| {
@@ -142,15 +141,15 @@ pub fn build_node_release_schedule() -> Result<()> {
         });
 
     let output = quote! {
-        use ahash::AHashMap;
+        use rustc_hash::FxHashMap;
         use chrono::{NaiveDate, NaiveDateTime};
         use once_cell::sync::Lazy;
 
-        pub static RELEASE_SCHEDULE: Lazy<AHashMap<&'static str, (NaiveDateTime, NaiveDateTime)>> =
+        pub static RELEASE_SCHEDULE: Lazy<FxHashMap<&'static str, (NaiveDateTime, NaiveDateTime)>> =
             Lazy::new(|| {
                 let date_format = "%Y-%m-%d";
 
-                let mut map = ahash::AHashMap::with_capacity(#cap);
+                let mut map = FxHashMap::default();
                 #(#versions)*;
                 map
                     .into_iter()
@@ -181,7 +180,6 @@ pub fn build_node_release_schedule() -> Result<()> {
 pub fn build_caniuse_global() -> Result<()> {
     let data = parse_caniuse_global()?;
 
-    let map_cap = data.agents.len();
     let browser_stat = data.agents.iter().map(|(name, agent)| {
         let detail = agent.version_list.iter().map(|version| {
             let ver = &version.version;
@@ -207,17 +205,15 @@ pub fn build_caniuse_global() -> Result<()> {
         }
     });
 
-    let map_cap = syn::Index::from(map_cap);
-
     let output = quote! {
-        use ahash::AHashMap;
+        use rustc_hash::FxHashMap;
         use crate::data::caniuse::VersionDetail;
         use crate::data::caniuse::BrowserStat;
         use crate::data::caniuse::CaniuseData;
         use once_cell::sync::Lazy;
         pub static CANIUSE_BROWSERS: Lazy<CaniuseData> =
             Lazy::new(|| {
-                let mut map = AHashMap::with_capacity(#map_cap);
+                let mut map = FxHashMap::default();
                 #(#browser_stat)*;
                 map
             });
@@ -291,19 +287,19 @@ pub fn build_caniuse_global() -> Result<()> {
     let keys = data.data.keys().collect::<Vec<_>>();
 
     let output = quote! {
-        use ahash::AHashMap;
+        use rustc_hash::FxHashMap;
         use indexmap::IndexMap;
         use once_cell::sync::Lazy;
         use serde_json::from_str;
         use crate::data::BrowserName;
 
-        type Feature = AHashMap<BrowserName, IndexMap<&'static str, u8>>;
+        type Feature = FxHashMap<BrowserName, IndexMap<&'static str, u8>>;
 
         pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             match name {
                 #( #keys => {
-                    static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(|| {
-                        from_str::<AHashMap::<u8, IndexMap<&'static str, u8>>>(#features)
+                    static STAT: Lazy<FxHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(|| {
+                        from_str::<FxHashMap::<u8, IndexMap<&'static str, u8>>>(#features)
                             .unwrap()
                             .into_iter()
                             .map(|(browser, versions)| (crate::data::browser_name::decode_browser_name(browser), versions))

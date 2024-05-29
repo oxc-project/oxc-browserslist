@@ -34,7 +34,7 @@ name       = "browserslist"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-ahash = { version = "0.8", features = ["serde"] }
+rustc-hash = "1.1.0"
 chrono = { version = "0.4.31", features = [
   "clock",
   "oldtime",
