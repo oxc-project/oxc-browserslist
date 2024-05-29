@@ -1,3 +1,17 @@
+<div align="center">
+
+[![Crates.io][crates-badge]][crates-url]
+[![Docs.rs][docs-badge]][docs-url]
+
+[![MIT licensed][license-badge]][license-url]
+[![Build Status][ci-badge]][ci-url]
+[![Code Coverage][code-coverage-badge]][code-coverage-url]
+[![CodSpeed Badge][codspeed-badge]][codspeed-url]
+[![Sponsors][sponsors-badge]][sponsors-url]
+[![Discord chat][discord-badge]][discord-url]
+
+</div>
+
 # oxc-browserslist
 
 Rust port of [Browserslist](https://github.com/browserslist/browserslist), forked from [browserslist-rs](https://github.com/browserslist/browserslist-rs).
@@ -32,7 +46,19 @@ To get more help, you can run:
 cargo run --example inspect -- -h
 ```
 
-## Limitations
-
-The features below aren't supported currently:
-
+[discord-badge]: https://img.shields.io/discord/1079625926024900739?logo=discord&label=Discord
+[discord-url]: https://discord.gg/9uXCAwqQZW
+[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
+[license-url]: https://github.com/oxc-project/oxc-browserslist/blob/main/LICENSE
+[ci-badge]: https://github.com/oxc-project/oxc-browserslist/actions/workflows/ci.yml/badge.svg?event=push&branch=main
+[ci-url]: https://github.com/oxc-project/oxc-browserslist/actions/workflows/ci.yml?query=event%3Apush+branch%3Amain
+[code-coverage-badge]: https://codecov.io/github/oxc-project/oxc-browserslist/branch/main/graph/badge.svg
+[code-coverage-url]: https://codecov.io/gh/oxc-project/oxc-browserslist
+[sponsors-badge]: https://img.shields.io/github/sponsors/Boshen
+[sponsors-url]: https://github.com/sponsors/Boshen
+[codspeed-badge]: https://img.shields.io/endpoint?url=https://codspeed.io/badge.json
+[codspeed-url]: https://codspeed.io/oxc-project/oxc-browserslist
+[crates-badge]: https://img.shields.io/crates/d/oxc-browserslist?label=crates.io
+[crates-url]: https://crates.io/crates/oxc-browserslist
+[docs-badge]: https://img.shields.io/docsrs/oxc-browserslist
+[docs-url]: https://docs.rs/oxc-browserslist
