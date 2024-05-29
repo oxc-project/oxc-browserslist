@@ -1,10 +1,10 @@
 use crate::data::caniuse::BrowserStat;
 use crate::data::caniuse::CaniuseData;
 use crate::data::caniuse::VersionDetail;
-use ahash::AHashMap;
 use once_cell::sync::Lazy;
+use rustc_hash::FxHashMap;
 pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
-    let mut map = AHashMap::with_capacity(19);
+    let mut map = FxHashMap::default();
     map.insert(
         "ie",
         BrowserStat {

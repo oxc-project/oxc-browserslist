@@ -1,10 +1,10 @@
-use ahash::AHashMap;
 use chrono::{NaiveDate, NaiveDateTime};
 use once_cell::sync::Lazy;
-pub static RELEASE_SCHEDULE: Lazy<AHashMap<&'static str, (NaiveDateTime, NaiveDateTime)>> =
+use rustc_hash::FxHashMap;
+pub static RELEASE_SCHEDULE: Lazy<FxHashMap<&'static str, (NaiveDateTime, NaiveDateTime)>> =
     Lazy::new(|| {
         let date_format = "%Y-%m-%d";
-        let mut map = ahash::AHashMap::with_capacity(24usize);
+        let mut map = FxHashMap::default();
         map.insert("0.8", ("2012-06-25", "2014-07-31"));
         map.insert("0.10", ("2013-03-11", "2016-10-31"));
         map.insert("0.12", ("2015-02-06", "2016-12-31"));
