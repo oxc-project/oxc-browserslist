@@ -8,7 +8,7 @@ anyhow               = "1.0"
 indexmap             = { version = "2.1", features = ["serde"] }
 quote                = "1.0"
 serde                = { version = "1.0", features = ["derive"] }
-serde_json           = "1.0"
+serde_json           = { version = "1.0", features = ["preserve_order"] }
 string_cache_codegen = "0.5.2"
 prettyplease         = "0.2.20"
 project-root         = "0.2.2"

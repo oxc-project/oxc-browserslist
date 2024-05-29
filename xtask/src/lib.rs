@@ -3,11 +3,7 @@ use indexmap::IndexMap;
 use project_root::get_project_root;
 use quote::quote;
 use serde::{Deserialize, Serialize};
-use std::{
-    collections::{BTreeMap, HashMap},
-    fs,
-    path::PathBuf,
-};
+use std::{fs, path::PathBuf};
 
 fn out_dir() -> PathBuf {
     get_project_root().unwrap().join("src/generated")
@@ -49,13 +45,13 @@ fn encode_browser_name(name: &str) -> u8 {
 
 #[derive(Deserialize)]
 struct Caniuse {
-    agents: HashMap<String, Agent>,
-    data: BTreeMap<String, Feature>,
+    agents: IndexMap<String, Agent>,
+    data: IndexMap<String, Feature>,
 }
 
 #[derive(Deserialize)]
 struct Agent {
-    usage_global: HashMap<String, f32>,
+    usage_global: IndexMap<String, f32>,
     version_list: Vec<VersionDetail>,
 }
 
@@ -68,7 +64,7 @@ struct VersionDetail {
 
 #[derive(Deserialize)]
 pub struct Feature {
-    stats: HashMap<String, IndexMap<String, String>>,
+    stats: IndexMap<String, IndexMap<String, String>>,
 }
 
 pub fn generate_browser_names_cache() -> Result<()> {
@@ -89,7 +85,7 @@ pub fn generate_browser_names_cache() -> Result<()> {
 pub fn build_electron_to_chromium() -> Result<()> {
     let path = format!("{}/electron_to_chromium.rs", out_dir().to_string_lossy());
 
-    let mut data = serde_json::from_slice::<BTreeMap<String, String>>(&fs::read(format!(
+    let mut data = serde_json::from_slice::<IndexMap<String, String>>(&fs::read(format!(
         "{}/node_modules/electron-to-chromium/versions.json",
         root()
     ))?)?
@@ -150,7 +146,7 @@ pub fn build_node_release_schedule() -> Result<()> {
 
     let path = format!("{}/node_release_schedule.rs", out_dir().to_string_lossy());
 
-    let schedule: HashMap<String, NodeRelease> = serde_json::from_slice(&fs::read(format!(
+    let schedule: IndexMap<String, NodeRelease> = serde_json::from_slice(&fs::read(format!(
         "{}/node_modules/node-releases/data/release-schedule/release-schedule.json",
         root()
     ))?)?;
@@ -309,7 +305,7 @@ pub fn build_caniuse_global() -> Result<()> {
                                 .collect::<IndexMap<_, u8>>(),
                         )
                     })
-                    .collect::<HashMap<_, _>>(),
+                    .collect::<IndexMap<_, _>>(),
             )
             .unwrap()
         })
@@ -361,7 +357,7 @@ fn parse_caniuse_global() -> Result<Caniuse> {
 pub fn build_caniuse_region() -> Result<()> {
     #[derive(Deserialize)]
     struct RegionData {
-        data: HashMap<String, HashMap<String, Option<f32>>>,
+        data: IndexMap<String, IndexMap<String, Option<f32>>>,
     }
 
     let out_path = out_dir();

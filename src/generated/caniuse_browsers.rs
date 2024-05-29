@@ -7,6 +7,307 @@ use once_cell::sync::Lazy;
 pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
     let mut map = AHashMap::with_capacity(19);
     map.insert(
+        BrowserNameAtom::from("ie"),
+        BrowserStat {
+            name: BrowserNameAtom::from("ie"),
+            version_list: vec![
+                VersionDetail {
+                    version: "5.5",
+                    global_usage: 0f32,
+                    release_date: Some(962323200i64),
+                },
+                VersionDetail {
+                    version: "6",
+                    global_usage: 0f32,
+                    release_date: Some(998870400i64),
+                },
+                VersionDetail {
+                    version: "7",
+                    global_usage: 0f32,
+                    release_date: Some(1161129600i64),
+                },
+                VersionDetail {
+                    version: "8",
+                    global_usage: 0.0155495f32,
+                    release_date: Some(1237420800i64),
+                },
+                VersionDetail {
+                    version: "9",
+                    global_usage: 0.0466486f32,
+                    release_date: Some(1300060800i64),
+                },
+                VersionDetail {
+                    version: "10",
+                    global_usage: 0f32,
+                    release_date: Some(1346716800i64),
+                },
+                VersionDetail {
+                    version: "11",
+                    global_usage: 0.450937f32,
+                    release_date: Some(1381968000i64),
+                },
+            ],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("edge"),
+        BrowserStat {
+            name: BrowserNameAtom::from("edge"),
+            version_list: vec![
+                VersionDetail {
+                    version: "12",
+                    global_usage: 0.003801f32,
+                    release_date: Some(1438128000i64),
+                },
+                VersionDetail {
+                    version: "13",
+                    global_usage: 0f32,
+                    release_date: Some(1447286400i64),
+                },
+                VersionDetail {
+                    version: "14",
+                    global_usage: 0.003801f32,
+                    release_date: Some(1470096000i64),
+                },
+                VersionDetail {
+                    version: "15",
+                    global_usage: 0.003801f32,
+                    release_date: Some(1491868800i64),
+                },
+                VersionDetail {
+                    version: "16",
+                    global_usage: 0f32,
+                    release_date: Some(1508198400i64),
+                },
+                VersionDetail {
+                    version: "17",
+                    global_usage: 0.007602f32,
+                    release_date: Some(1525046400i64),
+                },
+                VersionDetail {
+                    version: "18",
+                    global_usage: 0.011403f32,
+                    release_date: Some(1542067200i64),
+                },
+                VersionDetail {
+                    version: "79",
+                    global_usage: 0f32,
+                    release_date: Some(1579046400i64),
+                },
+                VersionDetail {
+                    version: "80",
+                    global_usage: 0f32,
+                    release_date: Some(1581033600i64),
+                },
+                VersionDetail {
+                    version: "81",
+                    global_usage: 0f32,
+                    release_date: Some(1586736000i64),
+                },
+                VersionDetail {
+                    version: "83",
+                    global_usage: 0f32,
+                    release_date: Some(1590019200i64),
+                },
+                VersionDetail {
+                    version: "84",
+                    global_usage: 0f32,
+                    release_date: Some(1594857600i64),
+                },
+                VersionDetail {
+                    version: "85",
+                    global_usage: 0f32,
+                    release_date: Some(1598486400i64),
+                },
+                VersionDetail {
+                    version: "86",
+                    global_usage: 0f32,
+                    release_date: Some(1602201600i64),
+                },
+                VersionDetail {
+                    version: "87",
+                    global_usage: 0.053214f32,
+                    release_date: Some(1605830400i64),
+                },
+                VersionDetail {
+                    version: "88",
+                    global_usage: 0f32,
+                    release_date: Some(1611360000i64),
+                },
+                VersionDetail {
+                    version: "89",
+                    global_usage: 0f32,
+                    release_date: Some(1614816000i64),
+                },
+                VersionDetail {
+                    version: "90",
+                    global_usage: 0f32,
+                    release_date: Some(1618358400i64),
+                },
+                VersionDetail {
+                    version: "91",
+                    global_usage: 0f32,
+                    release_date: Some(1622073600i64),
+                },
+                VersionDetail {
+                    version: "92",
+                    global_usage: 0.011403f32,
+                    release_date: Some(1626912000i64),
+                },
+                VersionDetail {
+                    version: "93",
+                    global_usage: 0f32,
+                    release_date: Some(1630627200i64),
+                },
+                VersionDetail {
+                    version: "94",
+                    global_usage: 0f32,
+                    release_date: Some(1632441600i64),
+                },
+                VersionDetail {
+                    version: "95",
+                    global_usage: 0f32,
+                    release_date: Some(1634774400i64),
+                },
+                VersionDetail {
+                    version: "96",
+                    global_usage: 0f32,
+                    release_date: Some(1637539200i64),
+                },
+                VersionDetail {
+                    version: "97",
+                    global_usage: 0f32,
+                    release_date: Some(1641427200i64),
+                },
+                VersionDetail {
+                    version: "98",
+                    global_usage: 0f32,
+                    release_date: Some(1643932800i64),
+                },
+                VersionDetail {
+                    version: "99",
+                    global_usage: 0.011403f32,
+                    release_date: Some(1646265600i64),
+                },
+                VersionDetail {
+                    version: "100",
+                    global_usage: 0f32,
+                    release_date: Some(1649635200i64),
+                },
+                VersionDetail {
+                    version: "101",
+                    global_usage: 0f32,
+                    release_date: Some(1651190400i64),
+                },
+                VersionDetail {
+                    version: "102",
+                    global_usage: 0f32,
+                    release_date: Some(1653955200i64),
+                },
+                VersionDetail {
+                    version: "103",
+                    global_usage: 0f32,
+                    release_date: Some(1655942400i64),
+                },
+                VersionDetail {
+                    version: "104",
+                    global_usage: 0f32,
+                    release_date: Some(1659657600i64),
+                },
+                VersionDetail {
+                    version: "105",
+                    global_usage: 0f32,
+                    release_date: Some(1661990400i64),
+                },
+                VersionDetail {
+                    version: "106",
+                    global_usage: 0.003801f32,
+                    release_date: Some(1664755200i64),
+                },
+                VersionDetail {
+                    version: "107",
+                    global_usage: 0.007602f32,
+                    release_date: Some(1666915200i64),
+                },
+                VersionDetail {
+                    version: "108",
+                    global_usage: 0.007602f32,
+                    release_date: Some(1670198400i64),
+                },
+                VersionDetail {
+                    version: "109",
+                    global_usage: 0.068418f32,
+                    release_date: Some(1673481600i64),
+                },
+                VersionDetail {
+                    version: "110",
+                    global_usage: 0.007602f32,
+                    release_date: Some(1675900800i64),
+                },
+                VersionDetail {
+                    version: "111",
+                    global_usage: 0.007602f32,
+                    release_date: Some(1678665600i64),
+                },
+                VersionDetail {
+                    version: "112",
+                    global_usage: 0.007602f32,
+                    release_date: Some(1680825600i64),
+                },
+                VersionDetail {
+                    version: "113",
+                    global_usage: 0.015204f32,
+                    release_date: Some(1683158400i64),
+                },
+                VersionDetail {
+                    version: "114",
+                    global_usage: 0.019005f32,
+                    release_date: Some(1685664000i64),
+                },
+                VersionDetail {
+                    version: "115",
+                    global_usage: 0.011403f32,
+                    release_date: Some(1689897600i64),
+                },
+                VersionDetail {
+                    version: "116",
+                    global_usage: 0.011403f32,
+                    release_date: Some(1692576000i64),
+                },
+                VersionDetail {
+                    version: "117",
+                    global_usage: 0.015204f32,
+                    release_date: Some(1694649600i64),
+                },
+                VersionDetail {
+                    version: "118",
+                    global_usage: 0.022806f32,
+                    release_date: Some(1697155200i64),
+                },
+                VersionDetail {
+                    version: "119",
+                    global_usage: 0.133035f32,
+                    release_date: Some(1698969600i64),
+                },
+                VersionDetail {
+                    version: "120",
+                    global_usage: 0.277473f32,
+                    release_date: Some(1701993600i64),
+                },
+                VersionDetail {
+                    version: "121",
+                    global_usage: 3.58054f32,
+                    release_date: Some(1706227200i64),
+                },
+                VersionDetail {
+                    version: "122",
+                    global_usage: 0.551145f32,
+                    release_date: Some(1708732800i64),
+                },
+            ],
+        },
+    );
+    map.insert(
         BrowserNameAtom::from("firefox"),
         BrowserStat {
             name: BrowserNameAtom::from("firefox"),
@@ -650,394 +951,6 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("and_uc"),
-        BrowserStat {
-            name: BrowserNameAtom::from("and_uc"),
-            version_list: vec![VersionDetail {
-                version: "15.5",
-                global_usage: 0.818136f32,
-                release_date: Some(1687132800i64),
-            }],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("op_mob"),
-        BrowserStat {
-            name: BrowserNameAtom::from("op_mob"),
-            version_list: vec![
-                VersionDetail {
-                    version: "10",
-                    global_usage: 0f32,
-                    release_date: Some(1287100800i64),
-                },
-                VersionDetail {
-                    version: "11",
-                    global_usage: 0f32,
-                    release_date: Some(1300752000i64),
-                },
-                VersionDetail {
-                    version: "11.1",
-                    global_usage: 0f32,
-                    release_date: Some(1314835200i64),
-                },
-                VersionDetail {
-                    version: "11.5",
-                    global_usage: 0f32,
-                    release_date: Some(1318291200i64),
-                },
-                VersionDetail {
-                    version: "12",
-                    global_usage: 0f32,
-                    release_date: Some(1330300800i64),
-                },
-                VersionDetail {
-                    version: "12.1",
-                    global_usage: 0f32,
-                    release_date: Some(1349740800i64),
-                },
-                VersionDetail {
-                    version: "73",
-                    global_usage: 1.23017f32,
-                    release_date: Some(1673827200i64),
-                },
-            ],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("android"),
-        BrowserStat {
-            name: BrowserNameAtom::from("android"),
-            version_list: vec![
-                VersionDetail {
-                    version: "2.1",
-                    global_usage: 0f32,
-                    release_date: Some(1256515200i64),
-                },
-                VersionDetail {
-                    version: "2.2",
-                    global_usage: 0.0000582612f32,
-                    release_date: Some(1274313600i64),
-                },
-                VersionDetail {
-                    version: "2.3",
-                    global_usage: 0f32,
-                    release_date: Some(1291593600i64),
-                },
-                VersionDetail {
-                    version: "3",
-                    global_usage: 0f32,
-                    release_date: Some(1298332800i64),
-                },
-                VersionDetail {
-                    version: "4",
-                    global_usage: 0.0000582612f32,
-                    release_date: Some(1318896000i64),
-                },
-                VersionDetail {
-                    version: "4.1",
-                    global_usage: 0.0000582612f32,
-                    release_date: Some(1341792000i64),
-                },
-                VersionDetail {
-                    version: "4.2-4.3",
-                    global_usage: 0.000349567f32,
-                    release_date: Some(1374624000i64),
-                },
-                VersionDetail {
-                    version: "4.4",
-                    global_usage: 0f32,
-                    release_date: Some(1386547200i64),
-                },
-                VersionDetail {
-                    version: "4.4.3-4.4.4",
-                    global_usage: 0.00139827f32,
-                    release_date: Some(1401667200i64),
-                },
-                VersionDetail {
-                    version: "122",
-                    global_usage: 0.580223f32,
-                    release_date: Some(1709078400i64),
-                },
-            ],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("ie_mob"),
-        BrowserStat {
-            name: BrowserNameAtom::from("ie_mob"),
-            version_list: vec![
-                VersionDetail {
-                    version: "10",
-                    global_usage: 0f32,
-                    release_date: Some(1340150400i64),
-                },
-                VersionDetail {
-                    version: "11",
-                    global_usage: 0f32,
-                    release_date: Some(1353456000i64),
-                },
-            ],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("edge"),
-        BrowserStat {
-            name: BrowserNameAtom::from("edge"),
-            version_list: vec![
-                VersionDetail {
-                    version: "12",
-                    global_usage: 0.003801f32,
-                    release_date: Some(1438128000i64),
-                },
-                VersionDetail {
-                    version: "13",
-                    global_usage: 0f32,
-                    release_date: Some(1447286400i64),
-                },
-                VersionDetail {
-                    version: "14",
-                    global_usage: 0.003801f32,
-                    release_date: Some(1470096000i64),
-                },
-                VersionDetail {
-                    version: "15",
-                    global_usage: 0.003801f32,
-                    release_date: Some(1491868800i64),
-                },
-                VersionDetail {
-                    version: "16",
-                    global_usage: 0f32,
-                    release_date: Some(1508198400i64),
-                },
-                VersionDetail {
-                    version: "17",
-                    global_usage: 0.007602f32,
-                    release_date: Some(1525046400i64),
-                },
-                VersionDetail {
-                    version: "18",
-                    global_usage: 0.011403f32,
-                    release_date: Some(1542067200i64),
-                },
-                VersionDetail {
-                    version: "79",
-                    global_usage: 0f32,
-                    release_date: Some(1579046400i64),
-                },
-                VersionDetail {
-                    version: "80",
-                    global_usage: 0f32,
-                    release_date: Some(1581033600i64),
-                },
-                VersionDetail {
-                    version: "81",
-                    global_usage: 0f32,
-                    release_date: Some(1586736000i64),
-                },
-                VersionDetail {
-                    version: "83",
-                    global_usage: 0f32,
-                    release_date: Some(1590019200i64),
-                },
-                VersionDetail {
-                    version: "84",
-                    global_usage: 0f32,
-                    release_date: Some(1594857600i64),
-                },
-                VersionDetail {
-                    version: "85",
-                    global_usage: 0f32,
-                    release_date: Some(1598486400i64),
-                },
-                VersionDetail {
-                    version: "86",
-                    global_usage: 0f32,
-                    release_date: Some(1602201600i64),
-                },
-                VersionDetail {
-                    version: "87",
-                    global_usage: 0.053214f32,
-                    release_date: Some(1605830400i64),
-                },
-                VersionDetail {
-                    version: "88",
-                    global_usage: 0f32,
-                    release_date: Some(1611360000i64),
-                },
-                VersionDetail {
-                    version: "89",
-                    global_usage: 0f32,
-                    release_date: Some(1614816000i64),
-                },
-                VersionDetail {
-                    version: "90",
-                    global_usage: 0f32,
-                    release_date: Some(1618358400i64),
-                },
-                VersionDetail {
-                    version: "91",
-                    global_usage: 0f32,
-                    release_date: Some(1622073600i64),
-                },
-                VersionDetail {
-                    version: "92",
-                    global_usage: 0.011403f32,
-                    release_date: Some(1626912000i64),
-                },
-                VersionDetail {
-                    version: "93",
-                    global_usage: 0f32,
-                    release_date: Some(1630627200i64),
-                },
-                VersionDetail {
-                    version: "94",
-                    global_usage: 0f32,
-                    release_date: Some(1632441600i64),
-                },
-                VersionDetail {
-                    version: "95",
-                    global_usage: 0f32,
-                    release_date: Some(1634774400i64),
-                },
-                VersionDetail {
-                    version: "96",
-                    global_usage: 0f32,
-                    release_date: Some(1637539200i64),
-                },
-                VersionDetail {
-                    version: "97",
-                    global_usage: 0f32,
-                    release_date: Some(1641427200i64),
-                },
-                VersionDetail {
-                    version: "98",
-                    global_usage: 0f32,
-                    release_date: Some(1643932800i64),
-                },
-                VersionDetail {
-                    version: "99",
-                    global_usage: 0.011403f32,
-                    release_date: Some(1646265600i64),
-                },
-                VersionDetail {
-                    version: "100",
-                    global_usage: 0f32,
-                    release_date: Some(1649635200i64),
-                },
-                VersionDetail {
-                    version: "101",
-                    global_usage: 0f32,
-                    release_date: Some(1651190400i64),
-                },
-                VersionDetail {
-                    version: "102",
-                    global_usage: 0f32,
-                    release_date: Some(1653955200i64),
-                },
-                VersionDetail {
-                    version: "103",
-                    global_usage: 0f32,
-                    release_date: Some(1655942400i64),
-                },
-                VersionDetail {
-                    version: "104",
-                    global_usage: 0f32,
-                    release_date: Some(1659657600i64),
-                },
-                VersionDetail {
-                    version: "105",
-                    global_usage: 0f32,
-                    release_date: Some(1661990400i64),
-                },
-                VersionDetail {
-                    version: "106",
-                    global_usage: 0.003801f32,
-                    release_date: Some(1664755200i64),
-                },
-                VersionDetail {
-                    version: "107",
-                    global_usage: 0.007602f32,
-                    release_date: Some(1666915200i64),
-                },
-                VersionDetail {
-                    version: "108",
-                    global_usage: 0.007602f32,
-                    release_date: Some(1670198400i64),
-                },
-                VersionDetail {
-                    version: "109",
-                    global_usage: 0.068418f32,
-                    release_date: Some(1673481600i64),
-                },
-                VersionDetail {
-                    version: "110",
-                    global_usage: 0.007602f32,
-                    release_date: Some(1675900800i64),
-                },
-                VersionDetail {
-                    version: "111",
-                    global_usage: 0.007602f32,
-                    release_date: Some(1678665600i64),
-                },
-                VersionDetail {
-                    version: "112",
-                    global_usage: 0.007602f32,
-                    release_date: Some(1680825600i64),
-                },
-                VersionDetail {
-                    version: "113",
-                    global_usage: 0.015204f32,
-                    release_date: Some(1683158400i64),
-                },
-                VersionDetail {
-                    version: "114",
-                    global_usage: 0.019005f32,
-                    release_date: Some(1685664000i64),
-                },
-                VersionDetail {
-                    version: "115",
-                    global_usage: 0.011403f32,
-                    release_date: Some(1689897600i64),
-                },
-                VersionDetail {
-                    version: "116",
-                    global_usage: 0.011403f32,
-                    release_date: Some(1692576000i64),
-                },
-                VersionDetail {
-                    version: "117",
-                    global_usage: 0.015204f32,
-                    release_date: Some(1694649600i64),
-                },
-                VersionDetail {
-                    version: "118",
-                    global_usage: 0.022806f32,
-                    release_date: Some(1697155200i64),
-                },
-                VersionDetail {
-                    version: "119",
-                    global_usage: 0.133035f32,
-                    release_date: Some(1698969600i64),
-                },
-                VersionDetail {
-                    version: "120",
-                    global_usage: 0.277473f32,
-                    release_date: Some(1701993600i64),
-                },
-                VersionDetail {
-                    version: "121",
-                    global_usage: 3.58054f32,
-                    release_date: Some(1706227200i64),
-                },
-                VersionDetail {
-                    version: "122",
-                    global_usage: 0.551145f32,
-                    release_date: Some(1708732800i64),
-                },
-            ],
-        },
-    );
-    map.insert(
         BrowserNameAtom::from("chrome"),
         BrowserStat {
             name: BrowserNameAtom::from("chrome"),
@@ -1651,17 +1564,6 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("op_mini"),
-        BrowserStat {
-            name: BrowserNameAtom::from("op_mini"),
-            version_list: vec![VersionDetail {
-                version: "all",
-                global_usage: 0.09f32,
-                release_date: Some(1426464000i64),
-            }],
-        },
-    );
-    map.insert(
         BrowserNameAtom::from("safari"),
         BrowserStat {
             name: BrowserNameAtom::from("safari"),
@@ -1872,440 +1774,6 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
                     release_date: None,
                 },
             ],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("ios_saf"),
-        BrowserStat {
-            name: BrowserNameAtom::from("ios_saf"),
-            version_list: vec![
-                VersionDetail {
-                    version: "3.2",
-                    global_usage: 0f32,
-                    release_date: Some(1270252800i64),
-                },
-                VersionDetail {
-                    version: "4.0-4.1",
-                    global_usage: 0f32,
-                    release_date: Some(1283904000i64),
-                },
-                VersionDetail {
-                    version: "4.2-4.3",
-                    global_usage: 0.00293537f32,
-                    release_date: Some(1299628800i64),
-                },
-                VersionDetail {
-                    version: "5.0-5.1",
-                    global_usage: 0.00293537f32,
-                    release_date: Some(1331078400i64),
-                },
-                VersionDetail {
-                    version: "6.0-6.1",
-                    global_usage: 0.00880612f32,
-                    release_date: Some(1359331200i64),
-                },
-                VersionDetail {
-                    version: "7.0-7.1",
-                    global_usage: 0.0102738f32,
-                    release_date: Some(1394409600i64),
-                },
-                VersionDetail {
-                    version: "8",
-                    global_usage: 0f32,
-                    release_date: Some(1410912000i64),
-                },
-                VersionDetail {
-                    version: "8.1-8.4",
-                    global_usage: 0.00146769f32,
-                    release_date: Some(1413763200i64),
-                },
-                VersionDetail {
-                    version: "9.0-9.2",
-                    global_usage: 0.00733843f32,
-                    release_date: Some(1442361600i64),
-                },
-                VersionDetail {
-                    version: "9.3",
-                    global_usage: 0.0352245f32,
-                    release_date: Some(1458518400i64),
-                },
-                VersionDetail {
-                    version: "10.0-10.2",
-                    global_usage: 0.00587075f32,
-                    release_date: Some(1473724800i64),
-                },
-                VersionDetail {
-                    version: "10.3",
-                    global_usage: 0.0587075f32,
-                    release_date: Some(1490572800i64),
-                },
-                VersionDetail {
-                    version: "11.0-11.2",
-                    global_usage: 0.0264184f32,
-                    release_date: Some(1505779200i64),
-                },
-                VersionDetail {
-                    version: "11.3-11.4",
-                    global_usage: 0.0190799f32,
-                    release_date: Some(1522281600i64),
-                },
-                VersionDetail {
-                    version: "12.0-12.1",
-                    global_usage: 0.0102738f32,
-                    release_date: Some(1537142400i64),
-                },
-                VersionDetail {
-                    version: "12.2-12.5",
-                    global_usage: 0.265651f32,
-                    release_date: Some(1553472000i64),
-                },
-                VersionDetail {
-                    version: "13.0-13.1",
-                    global_usage: 0.00440306f32,
-                    release_date: Some(1568851200i64),
-                },
-                VersionDetail {
-                    version: "13.2",
-                    global_usage: 0.0425629f32,
-                    release_date: Some(1572220800i64),
-                },
-                VersionDetail {
-                    version: "13.3",
-                    global_usage: 0.0132092f32,
-                    release_date: Some(1580169600i64),
-                },
-                VersionDetail {
-                    version: "13.4-13.7",
-                    global_usage: 0.0572398f32,
-                    release_date: Some(1585008000i64),
-                },
-                VersionDetail {
-                    version: "14.0-14.4",
-                    global_usage: 0.121818f32,
-                    release_date: Some(1600214400i64),
-                },
-                VersionDetail {
-                    version: "14.5-14.8",
-                    global_usage: 0.15851f32,
-                    release_date: Some(1619395200i64),
-                },
-                VersionDetail {
-                    version: "15.0-15.1",
-                    global_usage: 0.0675136f32,
-                    release_date: Some(1632096000i64),
-                },
-                VersionDetail {
-                    version: "15.2-15.3",
-                    global_usage: 0.0792551f32,
-                    release_date: Some(1639353600i64),
-                },
-                VersionDetail {
-                    version: "15.4",
-                    global_usage: 0.0895289f32,
-                    release_date: Some(1647216000i64),
-                },
-                VersionDetail {
-                    version: "15.5",
-                    global_usage: 0.118883f32,
-                    release_date: Some(1652659200i64),
-                },
-                VersionDetail {
-                    version: "15.6-15.8",
-                    global_usage: 0.978947f32,
-                    release_date: Some(1658275200i64),
-                },
-                VersionDetail {
-                    version: "16.0",
-                    global_usage: 0.25391f32,
-                    release_date: Some(1662940800i64),
-                },
-                VersionDetail {
-                    version: "16.1",
-                    global_usage: 0.540109f32,
-                    release_date: Some(1666569600i64),
-                },
-                VersionDetail {
-                    version: "16.2",
-                    global_usage: 0.250974f32,
-                    release_date: Some(1670889600i64),
-                },
-                VersionDetail {
-                    version: "16.3",
-                    global_usage: 0.457918f32,
-                    release_date: Some(1674432000i64),
-                },
-                VersionDetail {
-                    version: "16.4",
-                    global_usage: 0.102738f32,
-                    release_date: Some(1679875200i64),
-                },
-                VersionDetail {
-                    version: "16.5",
-                    global_usage: 0.214282f32,
-                    release_date: Some(1684368000i64),
-                },
-                VersionDetail {
-                    version: "16.6-16.7",
-                    global_usage: 1.65702f32,
-                    release_date: Some(1690156800i64),
-                },
-                VersionDetail {
-                    version: "17.0",
-                    global_usage: 0.237765f32,
-                    release_date: Some(1694995200i64),
-                },
-                VersionDetail {
-                    version: "17.1",
-                    global_usage: 0.725037f32,
-                    release_date: Some(1698192000i64),
-                },
-                VersionDetail {
-                    version: "17.2",
-                    global_usage: 5.42163f32,
-                    release_date: Some(1702252800i64),
-                },
-                VersionDetail {
-                    version: "17.3",
-                    global_usage: 2.54497f32,
-                    release_date: Some(1705881600i64),
-                },
-                VersionDetail {
-                    version: "17.4",
-                    global_usage: 0.0733843f32,
-                    release_date: Some(1709596800i64),
-                },
-            ],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("and_chr"),
-        BrowserStat {
-            name: BrowserNameAtom::from("and_chr"),
-            version_list: vec![VersionDetail {
-                version: "122",
-                global_usage: 42.4244f32,
-                release_date: Some(1709078400i64),
-            }],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("ie"),
-        BrowserStat {
-            name: BrowserNameAtom::from("ie"),
-            version_list: vec![
-                VersionDetail {
-                    version: "5.5",
-                    global_usage: 0f32,
-                    release_date: Some(962323200i64),
-                },
-                VersionDetail {
-                    version: "6",
-                    global_usage: 0f32,
-                    release_date: Some(998870400i64),
-                },
-                VersionDetail {
-                    version: "7",
-                    global_usage: 0f32,
-                    release_date: Some(1161129600i64),
-                },
-                VersionDetail {
-                    version: "8",
-                    global_usage: 0.0155495f32,
-                    release_date: Some(1237420800i64),
-                },
-                VersionDetail {
-                    version: "9",
-                    global_usage: 0.0466486f32,
-                    release_date: Some(1300060800i64),
-                },
-                VersionDetail {
-                    version: "10",
-                    global_usage: 0f32,
-                    release_date: Some(1346716800i64),
-                },
-                VersionDetail {
-                    version: "11",
-                    global_usage: 0.450937f32,
-                    release_date: Some(1381968000i64),
-                },
-            ],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("and_qq"),
-        BrowserStat {
-            name: BrowserNameAtom::from("and_qq"),
-            version_list: vec![VersionDetail {
-                version: "13.1",
-                global_usage: 0.241722f32,
-                release_date: Some(1663718400i64),
-            }],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("bb"),
-        BrowserStat {
-            name: BrowserNameAtom::from("bb"),
-            version_list: vec![
-                VersionDetail {
-                    version: "7",
-                    global_usage: 0f32,
-                    release_date: Some(1325376000i64),
-                },
-                VersionDetail {
-                    version: "10",
-                    global_usage: 0f32,
-                    release_date: Some(1359504000i64),
-                },
-            ],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("baidu"),
-        BrowserStat {
-            name: BrowserNameAtom::from("baidu"),
-            version_list: vec![VersionDetail {
-                version: "13.18",
-                global_usage: 0f32,
-                release_date: Some(1663027200i64),
-            }],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("kaios"),
-        BrowserStat {
-            name: BrowserNameAtom::from("kaios"),
-            version_list: vec![
-                VersionDetail {
-                    version: "2.5",
-                    global_usage: 0.086772f32,
-                    release_date: Some(1527811200i64),
-                },
-                VersionDetail {
-                    version: "3.0-3.1",
-                    global_usage: 0f32,
-                    release_date: Some(1631664000i64),
-                },
-            ],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("samsung"),
-        BrowserStat {
-            name: BrowserNameAtom::from("samsung"),
-            version_list: vec![
-                VersionDetail {
-                    version: "4",
-                    global_usage: 0.13981f32,
-                    release_date: Some(1461024000i64),
-                },
-                VersionDetail {
-                    version: "5.0-5.4",
-                    global_usage: 0.0107546f32,
-                    release_date: Some(1481846400i64),
-                },
-                VersionDetail {
-                    version: "6.2-6.4",
-                    global_usage: 0f32,
-                    release_date: Some(1509408000i64),
-                },
-                VersionDetail {
-                    version: "7.2-7.4",
-                    global_usage: 0.0537732f32,
-                    release_date: Some(1528329600i64),
-                },
-                VersionDetail {
-                    version: "8.2",
-                    global_usage: 0f32,
-                    release_date: Some(1546128000i64),
-                },
-                VersionDetail {
-                    version: "9.2",
-                    global_usage: 0f32,
-                    release_date: Some(1554163200i64),
-                },
-                VersionDetail {
-                    version: "10.1",
-                    global_usage: 0f32,
-                    release_date: Some(1567900800i64),
-                },
-                VersionDetail {
-                    version: "11.1-11.2",
-                    global_usage: 0.0107546f32,
-                    release_date: Some(1582588800i64),
-                },
-                VersionDetail {
-                    version: "12.0",
-                    global_usage: 0f32,
-                    release_date: Some(1593475200i64),
-                },
-                VersionDetail {
-                    version: "13.0",
-                    global_usage: 0.0107546f32,
-                    release_date: Some(1605657600i64),
-                },
-                VersionDetail {
-                    version: "14.0",
-                    global_usage: 0f32,
-                    release_date: Some(1618531200i64),
-                },
-                VersionDetail {
-                    version: "15.0",
-                    global_usage: 0f32,
-                    release_date: Some(1629072000i64),
-                },
-                VersionDetail {
-                    version: "16.0",
-                    global_usage: 0.0107546f32,
-                    release_date: Some(1640736000i64),
-                },
-                VersionDetail {
-                    version: "17.0",
-                    global_usage: 0.0322639f32,
-                    release_date: Some(1651708800i64),
-                },
-                VersionDetail {
-                    version: "18.0",
-                    global_usage: 0.0215093f32,
-                    release_date: Some(1659657600i64),
-                },
-                VersionDetail {
-                    version: "19.0",
-                    global_usage: 0.0430185f32,
-                    release_date: Some(1667260800i64),
-                },
-                VersionDetail {
-                    version: "20",
-                    global_usage: 0.0322639f32,
-                    release_date: Some(1677369600i64),
-                },
-                VersionDetail {
-                    version: "21",
-                    global_usage: 0.0752824f32,
-                    release_date: Some(1684454400i64),
-                },
-                VersionDetail {
-                    version: "22",
-                    global_usage: 0.0860371f32,
-                    release_date: Some(1689292800i64),
-                },
-                VersionDetail {
-                    version: "23",
-                    global_usage: 2.04338f32,
-                    release_date: Some(1697587200i64),
-                },
-            ],
-        },
-    );
-    map.insert(
-        BrowserNameAtom::from("and_ff"),
-        BrowserStat {
-            name: BrowserNameAtom::from("and_ff"),
-            version_list: vec![VersionDetail {
-                version: "123",
-                global_usage: 0.291306f32,
-                release_date: Some(1708387200i64),
-            }],
         },
     );
     map.insert(
@@ -2817,6 +2285,538 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
                     version: "106",
                     global_usage: 0.661374f32,
                     release_date: Some(1702944000i64),
+                },
+            ],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("ios_saf"),
+        BrowserStat {
+            name: BrowserNameAtom::from("ios_saf"),
+            version_list: vec![
+                VersionDetail {
+                    version: "3.2",
+                    global_usage: 0f32,
+                    release_date: Some(1270252800i64),
+                },
+                VersionDetail {
+                    version: "4.0-4.1",
+                    global_usage: 0f32,
+                    release_date: Some(1283904000i64),
+                },
+                VersionDetail {
+                    version: "4.2-4.3",
+                    global_usage: 0.00293537f32,
+                    release_date: Some(1299628800i64),
+                },
+                VersionDetail {
+                    version: "5.0-5.1",
+                    global_usage: 0.00293537f32,
+                    release_date: Some(1331078400i64),
+                },
+                VersionDetail {
+                    version: "6.0-6.1",
+                    global_usage: 0.00880612f32,
+                    release_date: Some(1359331200i64),
+                },
+                VersionDetail {
+                    version: "7.0-7.1",
+                    global_usage: 0.0102738f32,
+                    release_date: Some(1394409600i64),
+                },
+                VersionDetail {
+                    version: "8",
+                    global_usage: 0f32,
+                    release_date: Some(1410912000i64),
+                },
+                VersionDetail {
+                    version: "8.1-8.4",
+                    global_usage: 0.00146769f32,
+                    release_date: Some(1413763200i64),
+                },
+                VersionDetail {
+                    version: "9.0-9.2",
+                    global_usage: 0.00733843f32,
+                    release_date: Some(1442361600i64),
+                },
+                VersionDetail {
+                    version: "9.3",
+                    global_usage: 0.0352245f32,
+                    release_date: Some(1458518400i64),
+                },
+                VersionDetail {
+                    version: "10.0-10.2",
+                    global_usage: 0.00587075f32,
+                    release_date: Some(1473724800i64),
+                },
+                VersionDetail {
+                    version: "10.3",
+                    global_usage: 0.0587075f32,
+                    release_date: Some(1490572800i64),
+                },
+                VersionDetail {
+                    version: "11.0-11.2",
+                    global_usage: 0.0264184f32,
+                    release_date: Some(1505779200i64),
+                },
+                VersionDetail {
+                    version: "11.3-11.4",
+                    global_usage: 0.0190799f32,
+                    release_date: Some(1522281600i64),
+                },
+                VersionDetail {
+                    version: "12.0-12.1",
+                    global_usage: 0.0102738f32,
+                    release_date: Some(1537142400i64),
+                },
+                VersionDetail {
+                    version: "12.2-12.5",
+                    global_usage: 0.265651f32,
+                    release_date: Some(1553472000i64),
+                },
+                VersionDetail {
+                    version: "13.0-13.1",
+                    global_usage: 0.00440306f32,
+                    release_date: Some(1568851200i64),
+                },
+                VersionDetail {
+                    version: "13.2",
+                    global_usage: 0.0425629f32,
+                    release_date: Some(1572220800i64),
+                },
+                VersionDetail {
+                    version: "13.3",
+                    global_usage: 0.0132092f32,
+                    release_date: Some(1580169600i64),
+                },
+                VersionDetail {
+                    version: "13.4-13.7",
+                    global_usage: 0.0572398f32,
+                    release_date: Some(1585008000i64),
+                },
+                VersionDetail {
+                    version: "14.0-14.4",
+                    global_usage: 0.121818f32,
+                    release_date: Some(1600214400i64),
+                },
+                VersionDetail {
+                    version: "14.5-14.8",
+                    global_usage: 0.15851f32,
+                    release_date: Some(1619395200i64),
+                },
+                VersionDetail {
+                    version: "15.0-15.1",
+                    global_usage: 0.0675136f32,
+                    release_date: Some(1632096000i64),
+                },
+                VersionDetail {
+                    version: "15.2-15.3",
+                    global_usage: 0.0792551f32,
+                    release_date: Some(1639353600i64),
+                },
+                VersionDetail {
+                    version: "15.4",
+                    global_usage: 0.0895289f32,
+                    release_date: Some(1647216000i64),
+                },
+                VersionDetail {
+                    version: "15.5",
+                    global_usage: 0.118883f32,
+                    release_date: Some(1652659200i64),
+                },
+                VersionDetail {
+                    version: "15.6-15.8",
+                    global_usage: 0.978947f32,
+                    release_date: Some(1658275200i64),
+                },
+                VersionDetail {
+                    version: "16.0",
+                    global_usage: 0.25391f32,
+                    release_date: Some(1662940800i64),
+                },
+                VersionDetail {
+                    version: "16.1",
+                    global_usage: 0.540109f32,
+                    release_date: Some(1666569600i64),
+                },
+                VersionDetail {
+                    version: "16.2",
+                    global_usage: 0.250974f32,
+                    release_date: Some(1670889600i64),
+                },
+                VersionDetail {
+                    version: "16.3",
+                    global_usage: 0.457918f32,
+                    release_date: Some(1674432000i64),
+                },
+                VersionDetail {
+                    version: "16.4",
+                    global_usage: 0.102738f32,
+                    release_date: Some(1679875200i64),
+                },
+                VersionDetail {
+                    version: "16.5",
+                    global_usage: 0.214282f32,
+                    release_date: Some(1684368000i64),
+                },
+                VersionDetail {
+                    version: "16.6-16.7",
+                    global_usage: 1.65702f32,
+                    release_date: Some(1690156800i64),
+                },
+                VersionDetail {
+                    version: "17.0",
+                    global_usage: 0.237765f32,
+                    release_date: Some(1694995200i64),
+                },
+                VersionDetail {
+                    version: "17.1",
+                    global_usage: 0.725037f32,
+                    release_date: Some(1698192000i64),
+                },
+                VersionDetail {
+                    version: "17.2",
+                    global_usage: 5.42163f32,
+                    release_date: Some(1702252800i64),
+                },
+                VersionDetail {
+                    version: "17.3",
+                    global_usage: 2.54497f32,
+                    release_date: Some(1705881600i64),
+                },
+                VersionDetail {
+                    version: "17.4",
+                    global_usage: 0.0733843f32,
+                    release_date: Some(1709596800i64),
+                },
+            ],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("op_mini"),
+        BrowserStat {
+            name: BrowserNameAtom::from("op_mini"),
+            version_list: vec![VersionDetail {
+                version: "all",
+                global_usage: 0.09f32,
+                release_date: Some(1426464000i64),
+            }],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("android"),
+        BrowserStat {
+            name: BrowserNameAtom::from("android"),
+            version_list: vec![
+                VersionDetail {
+                    version: "2.1",
+                    global_usage: 0f32,
+                    release_date: Some(1256515200i64),
+                },
+                VersionDetail {
+                    version: "2.2",
+                    global_usage: 0.0000582612f32,
+                    release_date: Some(1274313600i64),
+                },
+                VersionDetail {
+                    version: "2.3",
+                    global_usage: 0f32,
+                    release_date: Some(1291593600i64),
+                },
+                VersionDetail {
+                    version: "3",
+                    global_usage: 0f32,
+                    release_date: Some(1298332800i64),
+                },
+                VersionDetail {
+                    version: "4",
+                    global_usage: 0.0000582612f32,
+                    release_date: Some(1318896000i64),
+                },
+                VersionDetail {
+                    version: "4.1",
+                    global_usage: 0.0000582612f32,
+                    release_date: Some(1341792000i64),
+                },
+                VersionDetail {
+                    version: "4.2-4.3",
+                    global_usage: 0.000349567f32,
+                    release_date: Some(1374624000i64),
+                },
+                VersionDetail {
+                    version: "4.4",
+                    global_usage: 0f32,
+                    release_date: Some(1386547200i64),
+                },
+                VersionDetail {
+                    version: "4.4.3-4.4.4",
+                    global_usage: 0.00139827f32,
+                    release_date: Some(1401667200i64),
+                },
+                VersionDetail {
+                    version: "122",
+                    global_usage: 0.580223f32,
+                    release_date: Some(1709078400i64),
+                },
+            ],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("bb"),
+        BrowserStat {
+            name: BrowserNameAtom::from("bb"),
+            version_list: vec![
+                VersionDetail {
+                    version: "7",
+                    global_usage: 0f32,
+                    release_date: Some(1325376000i64),
+                },
+                VersionDetail {
+                    version: "10",
+                    global_usage: 0f32,
+                    release_date: Some(1359504000i64),
+                },
+            ],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("op_mob"),
+        BrowserStat {
+            name: BrowserNameAtom::from("op_mob"),
+            version_list: vec![
+                VersionDetail {
+                    version: "10",
+                    global_usage: 0f32,
+                    release_date: Some(1287100800i64),
+                },
+                VersionDetail {
+                    version: "11",
+                    global_usage: 0f32,
+                    release_date: Some(1300752000i64),
+                },
+                VersionDetail {
+                    version: "11.1",
+                    global_usage: 0f32,
+                    release_date: Some(1314835200i64),
+                },
+                VersionDetail {
+                    version: "11.5",
+                    global_usage: 0f32,
+                    release_date: Some(1318291200i64),
+                },
+                VersionDetail {
+                    version: "12",
+                    global_usage: 0f32,
+                    release_date: Some(1330300800i64),
+                },
+                VersionDetail {
+                    version: "12.1",
+                    global_usage: 0f32,
+                    release_date: Some(1349740800i64),
+                },
+                VersionDetail {
+                    version: "73",
+                    global_usage: 1.23017f32,
+                    release_date: Some(1673827200i64),
+                },
+            ],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("and_chr"),
+        BrowserStat {
+            name: BrowserNameAtom::from("and_chr"),
+            version_list: vec![VersionDetail {
+                version: "122",
+                global_usage: 42.4244f32,
+                release_date: Some(1709078400i64),
+            }],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("and_ff"),
+        BrowserStat {
+            name: BrowserNameAtom::from("and_ff"),
+            version_list: vec![VersionDetail {
+                version: "123",
+                global_usage: 0.291306f32,
+                release_date: Some(1708387200i64),
+            }],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("ie_mob"),
+        BrowserStat {
+            name: BrowserNameAtom::from("ie_mob"),
+            version_list: vec![
+                VersionDetail {
+                    version: "10",
+                    global_usage: 0f32,
+                    release_date: Some(1340150400i64),
+                },
+                VersionDetail {
+                    version: "11",
+                    global_usage: 0f32,
+                    release_date: Some(1353456000i64),
+                },
+            ],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("and_uc"),
+        BrowserStat {
+            name: BrowserNameAtom::from("and_uc"),
+            version_list: vec![VersionDetail {
+                version: "15.5",
+                global_usage: 0.818136f32,
+                release_date: Some(1687132800i64),
+            }],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("samsung"),
+        BrowserStat {
+            name: BrowserNameAtom::from("samsung"),
+            version_list: vec![
+                VersionDetail {
+                    version: "4",
+                    global_usage: 0.13981f32,
+                    release_date: Some(1461024000i64),
+                },
+                VersionDetail {
+                    version: "5.0-5.4",
+                    global_usage: 0.0107546f32,
+                    release_date: Some(1481846400i64),
+                },
+                VersionDetail {
+                    version: "6.2-6.4",
+                    global_usage: 0f32,
+                    release_date: Some(1509408000i64),
+                },
+                VersionDetail {
+                    version: "7.2-7.4",
+                    global_usage: 0.0537732f32,
+                    release_date: Some(1528329600i64),
+                },
+                VersionDetail {
+                    version: "8.2",
+                    global_usage: 0f32,
+                    release_date: Some(1546128000i64),
+                },
+                VersionDetail {
+                    version: "9.2",
+                    global_usage: 0f32,
+                    release_date: Some(1554163200i64),
+                },
+                VersionDetail {
+                    version: "10.1",
+                    global_usage: 0f32,
+                    release_date: Some(1567900800i64),
+                },
+                VersionDetail {
+                    version: "11.1-11.2",
+                    global_usage: 0.0107546f32,
+                    release_date: Some(1582588800i64),
+                },
+                VersionDetail {
+                    version: "12.0",
+                    global_usage: 0f32,
+                    release_date: Some(1593475200i64),
+                },
+                VersionDetail {
+                    version: "13.0",
+                    global_usage: 0.0107546f32,
+                    release_date: Some(1605657600i64),
+                },
+                VersionDetail {
+                    version: "14.0",
+                    global_usage: 0f32,
+                    release_date: Some(1618531200i64),
+                },
+                VersionDetail {
+                    version: "15.0",
+                    global_usage: 0f32,
+                    release_date: Some(1629072000i64),
+                },
+                VersionDetail {
+                    version: "16.0",
+                    global_usage: 0.0107546f32,
+                    release_date: Some(1640736000i64),
+                },
+                VersionDetail {
+                    version: "17.0",
+                    global_usage: 0.0322639f32,
+                    release_date: Some(1651708800i64),
+                },
+                VersionDetail {
+                    version: "18.0",
+                    global_usage: 0.0215093f32,
+                    release_date: Some(1659657600i64),
+                },
+                VersionDetail {
+                    version: "19.0",
+                    global_usage: 0.0430185f32,
+                    release_date: Some(1667260800i64),
+                },
+                VersionDetail {
+                    version: "20",
+                    global_usage: 0.0322639f32,
+                    release_date: Some(1677369600i64),
+                },
+                VersionDetail {
+                    version: "21",
+                    global_usage: 0.0752824f32,
+                    release_date: Some(1684454400i64),
+                },
+                VersionDetail {
+                    version: "22",
+                    global_usage: 0.0860371f32,
+                    release_date: Some(1689292800i64),
+                },
+                VersionDetail {
+                    version: "23",
+                    global_usage: 2.04338f32,
+                    release_date: Some(1697587200i64),
+                },
+            ],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("and_qq"),
+        BrowserStat {
+            name: BrowserNameAtom::from("and_qq"),
+            version_list: vec![VersionDetail {
+                version: "13.1",
+                global_usage: 0.241722f32,
+                release_date: Some(1663718400i64),
+            }],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("baidu"),
+        BrowserStat {
+            name: BrowserNameAtom::from("baidu"),
+            version_list: vec![VersionDetail {
+                version: "13.18",
+                global_usage: 0f32,
+                release_date: Some(1663027200i64),
+            }],
+        },
+    );
+    map.insert(
+        BrowserNameAtom::from("kaios"),
+        BrowserStat {
+            name: BrowserNameAtom::from("kaios"),
+            version_list: vec![
+                VersionDetail {
+                    version: "2.5",
+                    global_usage: 0.086772f32,
+                    release_date: Some(1527811200i64),
+                },
+                VersionDetail {
+                    version: "3.0-3.1",
+                    global_usage: 0f32,
+                    release_date: Some(1631664000i64),
                 },
             ],
         },
