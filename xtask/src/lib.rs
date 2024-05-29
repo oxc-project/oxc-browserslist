@@ -2,15 +2,15 @@ use anyhow::Result;
 use indexmap::IndexMap;
 use project_root::get_project_root;
 use quote::quote;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::{fs, path::PathBuf};
 
-fn out_dir() -> PathBuf {
-    get_project_root().unwrap().join("src/generated")
+fn root() -> PathBuf {
+    get_project_root().unwrap()
 }
 
-fn root() -> String {
-    get_project_root().unwrap().to_string_lossy().to_string()
+fn out_dir() -> PathBuf {
+    root().join("src/generated")
 }
 
 fn format_token_stream(token_stream: proc_macro2::TokenStream) -> String {
@@ -55,7 +55,7 @@ struct Agent {
     version_list: Vec<VersionDetail>,
 }
 
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Clone, Deserialize)]
 struct VersionDetail {
     version: String,
     global_usage: f32,
@@ -83,17 +83,15 @@ pub fn generate_browser_names_cache() -> Result<()> {
 }
 
 pub fn build_electron_to_chromium() -> Result<()> {
-    let path = format!("{}/electron_to_chromium.rs", out_dir().to_string_lossy());
+    let path = out_dir().join("electron_to_chromium.rs");
 
-    let mut data = serde_json::from_slice::<IndexMap<String, String>>(&fs::read(format!(
-        "{}/node_modules/electron-to-chromium/versions.json",
-        root()
-    ))?)?
-    .into_iter()
-    .map(|(electron_version, chromium_version)| {
-        (electron_version.parse::<f32>().unwrap(), chromium_version)
-    })
-    .collect::<Vec<_>>();
+    let data_path = root().join("node_modules/electron-to-chromium/versions.json");
+    let mut data = serde_json::from_slice::<IndexMap<String, String>>(&fs::read(data_path)?)?
+        .into_iter()
+        .map(|(electron_version, chromium_version)| {
+            (electron_version.parse::<f32>().unwrap(), chromium_version)
+        })
+        .collect::<Vec<_>>();
     data.sort_by(|(a, _), (b, _)| a.partial_cmp(b).unwrap());
     let data = data
         .into_iter()
@@ -119,12 +117,10 @@ pub fn build_node_versions() -> Result<()> {
         version: String,
     }
 
-    let path = format!("{}/node_versions.rs", out_dir().to_string_lossy());
+    let path = out_dir().join("node_versions.rs");
 
-    let releases: Vec<NodeRelease> = serde_json::from_slice(&fs::read(format!(
-        "{}/node_modules/node-releases/data/processed/envs.json",
-        root()
-    ))?)?;
+    let releases_path = root().join("node_modules/node-releases/data/processed/envs.json");
+    let releases: Vec<NodeRelease> = serde_json::from_slice(&fs::read(releases_path)?)?;
 
     let versions = releases.into_iter().map(|release| release.version);
     let output = quote! {
@@ -144,12 +140,12 @@ pub fn build_node_release_schedule() -> Result<()> {
         end: String,
     }
 
-    let path = format!("{}/node_release_schedule.rs", out_dir().to_string_lossy());
+    let path = out_dir().join("node_release_schedule.rs");
 
-    let schedule: IndexMap<String, NodeRelease> = serde_json::from_slice(&fs::read(format!(
-        "{}/node_modules/node-releases/data/release-schedule/release-schedule.json",
-        root()
-    ))?)?;
+    let schedule_path =
+        root().join("node_modules/node-releases/data/release-schedule/release-schedule.json");
+    let schedule: IndexMap<String, NodeRelease> =
+        serde_json::from_slice(&fs::read(schedule_path)?)?;
     let cap = schedule.len();
     let versions = schedule
         .into_iter()
@@ -198,9 +194,6 @@ pub fn build_node_release_schedule() -> Result<()> {
 }
 
 pub fn build_caniuse_global() -> Result<()> {
-    let out_path = out_dir();
-    let out_dir = out_path.to_string_lossy();
-
     let data = parse_caniuse_global()?;
 
     let map_cap = data.agents.len();
@@ -247,7 +240,7 @@ pub fn build_caniuse_global() -> Result<()> {
     };
 
     fs::write(
-        format!("{}/caniuse_browsers.rs", &out_dir),
+        out_dir().join("caniuse_browsers.rs"),
         format_token_stream(output),
     )?;
 
@@ -275,7 +268,7 @@ pub fn build_caniuse_global() -> Result<()> {
     };
 
     fs::write(
-        format!("{}/caniuse_global_usage.rs", &out_dir),
+        out_dir().join("caniuse_global_usage.rs"),
         format_token_stream(output),
     )?;
 
@@ -340,7 +333,7 @@ pub fn build_caniuse_global() -> Result<()> {
     };
 
     fs::write(
-        format!("{}/caniuse_feature_matching.rs", &out_dir),
+        out_dir().join("caniuse_feature_matching.rs"),
         format_token_stream(output),
     )?;
 
@@ -348,10 +341,8 @@ pub fn build_caniuse_global() -> Result<()> {
 }
 
 fn parse_caniuse_global() -> Result<Caniuse> {
-    Ok(serde_json::from_slice(&fs::read(format!(
-        "{}/node_modules/caniuse-db/fulldata-json/data-2.0.json",
-        root()
-    ))?)?)
+    let path = root().join("node_modules/caniuse-db/fulldata-json/data-2.0.json");
+    Ok(serde_json::from_slice(&fs::read(path)?)?)
 }
 
 pub fn build_caniuse_region() -> Result<()> {
@@ -363,12 +354,10 @@ pub fn build_caniuse_region() -> Result<()> {
     let out_path = out_dir();
     let out_dir = out_path.to_string_lossy();
 
-    let files = fs::read_dir(format!(
-        "{}/node_modules/caniuse-db/region-usage-json",
-        root()
-    ))?
-    .map(|entry| entry.map_err(anyhow::Error::from))
-    .collect::<Result<Vec<_>>>()?;
+    let files_path = root().join("node_modules/caniuse-db/region-usage-json");
+    let files = fs::read_dir(files_path)?
+        .map(|entry| entry.map_err(anyhow::Error::from))
+        .collect::<Result<Vec<_>>>()?;
 
     let Caniuse { agents, .. } = parse_caniuse_global()?;
 
