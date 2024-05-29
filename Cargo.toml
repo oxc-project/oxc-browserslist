@@ -69,3 +69,6 @@ harness = false
 default      = []
 wasm_bindgen = ["chrono/wasmbind", "getrandom", "getrandom/js", "js-sys", "serde-wasm-bindgen", "wasm-bindgen"]
 codspeed     = ["criterion2/codspeed"]
+
+[package.metadata.cargo-shear]
+ignored = ["getrandom"]
