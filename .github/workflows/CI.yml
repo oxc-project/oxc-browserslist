@@ -39,9 +39,7 @@ jobs:
           - os: macos-14
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
+      - uses: taiki-e/checkout-action@v1
       - uses: Boshen/setup-rust@main
         with:
           save-cache: ${{ github.ref_name == 'main' }}
@@ -57,9 +55,7 @@ jobs:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
+      - uses: taiki-e/checkout-action@v1
       - uses: Boshen/setup-rust@main
         with:
           components: clippy
