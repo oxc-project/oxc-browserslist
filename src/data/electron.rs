@@ -8,7 +8,7 @@ pub struct ElectronVersion {
 }
 
 impl ElectronVersion {
-    pub fn new(major: u16, minor: u16) -> Self {
+    pub const fn new(major: u16, minor: u16) -> Self {
         Self { major, minor }
     }
 

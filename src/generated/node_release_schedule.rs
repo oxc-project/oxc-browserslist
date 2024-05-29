@@ -1,7 +1,7 @@
 use chrono::{NaiveDate, NaiveDateTime};
 use once_cell::sync::Lazy;
 use rustc_hash::FxHashMap;
-pub static RELEASE_SCHEDULE: Lazy<FxHashMap<&'static str, (NaiveDateTime, NaiveDateTime)>> =
+pub static RELEASE_SCHEDULE: Lazy<FxHashMap<&str, (NaiveDateTime, NaiveDateTime)>> =
     Lazy::new(|| {
         let date_format = "%Y-%m-%d";
         let mut map = FxHashMap::default();

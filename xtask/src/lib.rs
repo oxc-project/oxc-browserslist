@@ -87,9 +87,8 @@ pub fn build_electron_to_chromium() -> Result<()> {
         });
 
     let output = quote! {
-        use once_cell::sync::Lazy;
         use crate::data::electron::ElectronVersion;
-        pub static ELECTRON_VERSIONS: Lazy<Vec<(ElectronVersion, &'static str)>> = Lazy::new(|| vec![#(#data),*]);
+        pub static ELECTRON_VERSIONS: &[(ElectronVersion, &str)] = &[#(#data),*];
     };
 
     fs::write(path, format_token_stream(output))?;
@@ -110,8 +109,7 @@ pub fn build_node_versions() -> Result<()> {
 
     let versions = releases.into_iter().map(|release| release.version);
     let output = quote! {
-        use once_cell::sync::Lazy;
-        pub static NODE_VERSIONS: Lazy<Vec<&'static str>> = Lazy::new(|| vec![#(#versions),*]);
+        pub static NODE_VERSIONS: &[&str] = &[#(#versions),*];
     };
 
     fs::write(path, format_token_stream(output))?;
@@ -146,7 +144,7 @@ pub fn build_node_release_schedule() -> Result<()> {
         use chrono::{NaiveDate, NaiveDateTime};
         use once_cell::sync::Lazy;
 
-        pub static RELEASE_SCHEDULE: Lazy<FxHashMap<&'static str, (NaiveDateTime, NaiveDateTime)>> =
+        pub static RELEASE_SCHEDULE: Lazy<FxHashMap<&str, (NaiveDateTime, NaiveDateTime)>> =
             Lazy::new(|| {
                 let date_format = "%Y-%m-%d";
 
@@ -243,9 +241,8 @@ pub fn build_caniuse_global() -> Result<()> {
     let push_usage = global_usage.into_iter().map(|(_, tokens)| tokens);
 
     let output = quote! {
-        use once_cell::sync::Lazy;
         use crate::data::BrowserName;
-        pub static CANIUSE_GLOBAL_USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| vec![#(#push_usage),*]);
+        pub static CANIUSE_GLOBAL_USAGE: &[(BrowserName, &str, f32)] = &[#(#push_usage),*];
     };
 
     fs::write(
