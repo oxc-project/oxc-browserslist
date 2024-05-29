@@ -6,7 +6,7 @@ use crate::{
 
 pub(super) fn electron_accurate(version: &str) -> QueryResult {
     let version_str = version;
-    let version: f32 = parse_version(version)?;
+    let version = parse_version(version)?;
 
     let distribs = ELECTRON_VERSIONS
         .iter()

@@ -5,7 +5,7 @@ use crate::{
 };
 
 pub(super) fn electron_unbounded_range(comparator: Comparator, version: &str) -> QueryResult {
-    let version: f32 = parse_version(version)?;
+    let version = parse_version(version)?;
 
     let distribs = ELECTRON_VERSIONS
         .iter()
