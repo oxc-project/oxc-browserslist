@@ -1,11 +1,11 @@
-use crate::data::browser_name::BrowserNameAtom;
+use crate::data::BrowserName;
 use once_cell::sync::Lazy;
 use serde_json::from_str;
-type RegionData = Vec<(BrowserNameAtom, &'static str, f32)>;
+type RegionData = Vec<(BrowserName, &'static str, f32)>;
 pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
     match region {
         "DO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -23,7 +23,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -41,7 +41,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SY" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -59,7 +59,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BW" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -77,7 +77,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -95,7 +95,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PF" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -113,7 +113,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GP" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -131,7 +131,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "UA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -149,7 +149,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BB" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -167,7 +167,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PS" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -185,7 +185,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -203,7 +203,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "DZ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -221,7 +221,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -239,7 +239,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MK" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -257,7 +257,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CD" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -275,7 +275,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SL" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -293,7 +293,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TK" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -311,7 +311,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "HU" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -329,7 +329,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AD" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -347,7 +347,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -365,7 +365,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "RS" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -383,7 +383,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LT" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -401,7 +401,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "EE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -419,7 +419,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "IS" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -437,7 +437,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -455,7 +455,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -473,7 +473,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GI" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -491,7 +491,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "VG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -509,7 +509,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "FO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -527,7 +527,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -545,7 +545,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CH" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -563,7 +563,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CI" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -581,7 +581,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -599,7 +599,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GH" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -617,7 +617,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "UY" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -635,7 +635,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -653,7 +653,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "IR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -671,7 +671,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BZ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -689,7 +689,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NL" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -707,7 +707,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LU" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -725,7 +725,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PK" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -743,7 +743,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -761,7 +761,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MS" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -779,7 +779,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "ST" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -797,7 +797,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "JM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -815,7 +815,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "HT" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -833,7 +833,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TJ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -851,7 +851,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -869,7 +869,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -887,7 +887,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "alt-an" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -905,7 +905,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GD" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -923,7 +923,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -941,7 +941,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NU" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -959,7 +959,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GQ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -977,7 +977,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -995,7 +995,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1013,7 +1013,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LY" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1031,7 +1031,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "QA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1049,7 +1049,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AI" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1067,7 +1067,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1085,7 +1085,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "DE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1103,7 +1103,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "OM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1121,7 +1121,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MT" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1139,7 +1139,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "RU" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1157,7 +1157,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PL" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1175,7 +1175,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1193,7 +1193,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "alt-sa" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1211,7 +1211,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "EC" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1229,7 +1229,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PY" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1247,7 +1247,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BH" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1265,7 +1265,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KY" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1283,7 +1283,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "ZW" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1301,7 +1301,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "VA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1319,7 +1319,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "FI" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1337,7 +1337,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1355,7 +1355,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1373,7 +1373,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AW" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1391,7 +1391,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MX" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1409,7 +1409,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1427,7 +1427,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "UG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1445,7 +1445,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1463,7 +1463,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LK" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1481,7 +1481,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BD" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1499,7 +1499,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "IL" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1517,7 +1517,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TT" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1535,7 +1535,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1553,7 +1553,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SK" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1571,7 +1571,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "ML" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1589,7 +1589,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AZ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1607,7 +1607,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "HK" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1625,7 +1625,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "alt-na" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1643,7 +1643,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "YE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1661,7 +1661,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "US" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1679,7 +1679,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "IM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1697,7 +1697,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GB" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1715,7 +1715,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PT" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1733,7 +1733,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1751,7 +1751,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GW" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1769,7 +1769,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1787,7 +1787,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NF" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1805,7 +1805,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1823,7 +1823,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CV" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1841,7 +1841,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MY" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1859,7 +1859,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1877,7 +1877,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1895,7 +1895,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1913,7 +1913,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "WF" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1931,7 +1931,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BI" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1949,7 +1949,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1967,7 +1967,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "IT" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -1985,7 +1985,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "WS" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2003,7 +2003,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LS" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2021,7 +2021,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2039,7 +2039,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CZ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2057,7 +2057,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MU" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2075,7 +2075,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2093,7 +2093,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "HR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2111,7 +2111,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "VU" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2129,7 +2129,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TL" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2147,7 +2147,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AU" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2165,7 +2165,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CL" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2183,7 +2183,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MC" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2201,7 +2201,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SD" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2219,7 +2219,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "alt-ww" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2237,7 +2237,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "FK" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2255,7 +2255,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TZ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2273,7 +2273,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "VC" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2291,7 +2291,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "ET" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2309,7 +2309,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2327,7 +2327,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BJ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2345,7 +2345,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2363,7 +2363,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NI" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2381,7 +2381,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2399,7 +2399,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "RW" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2417,7 +2417,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MV" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2435,7 +2435,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CY" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2453,7 +2453,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2471,7 +2471,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SH" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2489,7 +2489,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2507,7 +2507,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TV" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2525,7 +2525,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2543,7 +2543,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KW" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2561,7 +2561,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "IN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2579,7 +2579,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PW" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2597,7 +2597,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BF" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2615,7 +2615,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LI" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2633,7 +2633,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NP" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2651,7 +2651,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GT" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2669,7 +2669,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2687,7 +2687,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BS" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2705,7 +2705,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MZ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2723,7 +2723,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CU" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2741,7 +2741,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AL" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2759,7 +2759,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TC" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2777,7 +2777,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "DK" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2795,7 +2795,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "FR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2813,7 +2813,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "JE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2831,7 +2831,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "DJ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2849,7 +2849,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "ZM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2867,7 +2867,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2885,7 +2885,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2903,7 +2903,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GU" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2921,7 +2921,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2939,7 +2939,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "RO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2957,7 +2957,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "JP" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2975,7 +2975,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "VN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -2993,7 +2993,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TW" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3011,7 +3011,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3029,7 +3029,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AX" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3047,7 +3047,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3065,7 +3065,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SI" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3083,7 +3083,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "ZA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3101,7 +3101,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3119,7 +3119,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MW" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3137,7 +3137,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CX" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3155,7 +3155,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "alt-as" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3173,7 +3173,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GY" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3191,7 +3191,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GL" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3209,7 +3209,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "alt-af" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3227,7 +3227,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KZ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3245,7 +3245,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "FJ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3263,7 +3263,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3281,7 +3281,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AT" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3299,7 +3299,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3317,7 +3317,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3335,7 +3335,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CF" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3353,7 +3353,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "VI" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3371,7 +3371,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "HN" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3389,7 +3389,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3407,7 +3407,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3425,7 +3425,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NC" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3443,7 +3443,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "DM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3461,7 +3461,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AS" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3479,7 +3479,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "ME" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3497,7 +3497,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SB" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3515,7 +3515,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "FM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3533,7 +3533,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "VE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3551,7 +3551,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "ER" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3569,7 +3569,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "ID" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3587,7 +3587,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "UZ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3605,7 +3605,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LC" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3623,7 +3623,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NZ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3641,7 +3641,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KH" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3659,7 +3659,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "IQ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3677,7 +3677,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "EG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3695,7 +3695,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LV" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3713,7 +3713,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "NO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3731,7 +3731,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BY" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3749,7 +3749,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PH" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3767,7 +3767,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "alt-eu" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3785,7 +3785,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MP" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3803,7 +3803,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AF" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3821,7 +3821,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TH" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3839,7 +3839,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "JO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3857,7 +3857,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SV" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3875,7 +3875,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MQ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3893,7 +3893,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3911,7 +3911,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KI" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3929,7 +3929,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "RE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3947,7 +3947,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BM" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3965,7 +3965,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "LB" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -3983,7 +3983,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "ES" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4001,7 +4001,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "IE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4019,7 +4019,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SC" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4037,7 +4037,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CK" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4055,7 +4055,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "AR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4073,7 +4073,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MD" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4091,7 +4091,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "TD" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4109,7 +4109,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CR" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4127,7 +4127,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SZ" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4145,7 +4145,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BT" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4163,7 +4163,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "PE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4181,7 +4181,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KE" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4199,7 +4199,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "YT" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4217,7 +4217,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "BA" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4235,7 +4235,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "alt-oc" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4253,7 +4253,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "GF" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4271,7 +4271,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "KP" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4289,7 +4289,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "CG" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4307,7 +4307,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "MH" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(
@@ -4325,7 +4325,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             Some(&*USAGE)
         }
         "SO" => {
-            static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+            static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                 from_str::<
                     Vec<(u8, &'static str, f32)>,
                 >(

@@ -67,21 +67,6 @@ pub struct Feature {
     stats: IndexMap<String, IndexMap<String, String>>,
 }
 
-pub fn generate_browser_names_cache() -> Result<()> {
-    string_cache_codegen::AtomType::new(
-        "data::browser_name::BrowserNameAtom",
-        "browser_name_atom!",
-    )
-    .atoms(&[
-        "ie", "edge", "firefox", "chrome", "safari", "opera", "ios_saf", "op_mini", "android",
-        "bb", "op_mob", "and_chr", "and_ff", "ie_mob", "and_uc", "samsung", "and_qq", "baidu",
-        "kaios",
-    ])
-    .write_to_file(&out_dir().join("browser_name_atom.rs"))?;
-
-    Ok(())
-}
-
 pub fn build_electron_to_chromium() -> Result<()> {
     let path = out_dir().join("electron_to_chromium.rs");
 
@@ -215,8 +200,8 @@ pub fn build_caniuse_global() -> Result<()> {
             }
         });
         quote! {
-            map.insert(BrowserNameAtom::from(#name), BrowserStat {
-                name: BrowserNameAtom::from(#name),
+            map.insert(#name, BrowserStat {
+                name: #name,
                 version_list: vec![#(#detail),*],
             });
         }
@@ -226,7 +211,6 @@ pub fn build_caniuse_global() -> Result<()> {
 
     let output = quote! {
         use ahash::AHashMap;
-        use crate::data::browser_name::BrowserNameAtom;
         use crate::data::caniuse::VersionDetail;
         use crate::data::caniuse::BrowserStat;
         use crate::data::caniuse::CaniuseData;
@@ -252,7 +236,7 @@ pub fn build_caniuse_global() -> Result<()> {
                 (
                     usage,
                     quote! {
-                        (BrowserNameAtom::from(#name), #version, #usage)
+                        (#name, #version, #usage)
                     },
                 )
             })
@@ -263,8 +247,8 @@ pub fn build_caniuse_global() -> Result<()> {
 
     let output = quote! {
         use once_cell::sync::Lazy;
-        use crate::data::browser_name::BrowserNameAtom;
-        pub static CANIUSE_GLOBAL_USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| vec![#(#push_usage),*]);
+        use crate::data::BrowserName;
+        pub static CANIUSE_GLOBAL_USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| vec![#(#push_usage),*]);
     };
 
     fs::write(
@@ -311,14 +295,14 @@ pub fn build_caniuse_global() -> Result<()> {
         use indexmap::IndexMap;
         use once_cell::sync::Lazy;
         use serde_json::from_str;
-        use crate::data::browser_name::BrowserNameAtom;
+        use crate::data::BrowserName;
 
-        type Feature = AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>;
+        type Feature = AHashMap<BrowserName, IndexMap<&'static str, u8>>;
 
         pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             match name {
                 #( #keys => {
-                    static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(|| {
+                    static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(|| {
                         from_str::<AHashMap::<u8, IndexMap<&'static str, u8>>>(#features)
                             .unwrap()
                             .into_iter()
@@ -401,14 +385,14 @@ pub fn build_caniuse_region() -> Result<()> {
     let output = quote! {
         use once_cell::sync::Lazy;
         use serde_json::from_str;
-        use crate::data::browser_name::BrowserNameAtom;
+        use crate::data::BrowserName;
 
-        type RegionData = Vec<(BrowserNameAtom, &'static str, f32)>;
+        type RegionData = Vec<(BrowserName, &'static str, f32)>;
 
         pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             match region {
                 #( #keys => {
-                    static USAGE: Lazy<Vec<(BrowserNameAtom, &'static str, f32)>> = Lazy::new(|| {
+                    static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
                         from_str::<Vec<(u8, &'static str, f32)>>(#data)
                             .unwrap()
                             .into_iter()
