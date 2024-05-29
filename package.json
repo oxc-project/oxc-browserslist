@@ -1,8 +1,7 @@
 {
   "name": "browserslist-rs",
-  "author": "Pig Fang <g-plane@hotmail.com>",
+  "private": true,
   "license": "MIT",
-  "repository": "https://github.com/browserslist/browserslist-rs",
   "scripts": {
     "browserslist": "browserslist"
   },
