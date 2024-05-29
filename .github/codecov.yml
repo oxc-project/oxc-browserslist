@@ -9,3 +9,6 @@ coverage:
     changes:
       default:
         informational: true
+
+ignore:
+  - "src/generated"
