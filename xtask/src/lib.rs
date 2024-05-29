@@ -71,24 +71,25 @@ pub fn build_electron_to_chromium() -> Result<()> {
     let path = out_dir().join("electron_to_chromium.rs");
 
     let data_path = root().join("node_modules/electron-to-chromium/versions.json");
-    let mut data = serde_json::from_slice::<IndexMap<String, String>>(&fs::read(data_path)?)?
+    let data = serde_json::from_slice::<IndexMap<String, String>>(&fs::read(data_path)?)?
         .into_iter()
         .map(|(electron_version, chromium_version)| {
-            (electron_version.parse::<f32>().unwrap(), chromium_version)
-        })
-        .collect::<Vec<_>>();
-    data.sort_by(|(a, _), (b, _)| a.partial_cmp(b).unwrap());
-    let data = data
-        .into_iter()
-        .map(|(electron_version, chromium_version)| {
+            let split = electron_version.split('.').collect::<Vec<_>>();
+            assert!(
+                split.len() == 2,
+                "electron version must be in major.minor format"
+            );
+            let major: u16 = split[0].parse().unwrap();
+            let minor: u16 = split[1].parse().unwrap();
             quote! {
-                (#electron_version, #chromium_version)
+                (ElectronVersion::new(#major, #minor), #chromium_version)
             }
         });
 
     let output = quote! {
         use once_cell::sync::Lazy;
-        pub static ELECTRON_VERSIONS: Lazy<Vec<(f32, &'static str)>> = Lazy::new(|| vec![#(#data),*]);
+        use crate::data::electron::ElectronVersion;
+        pub static ELECTRON_VERSIONS: Lazy<Vec<(ElectronVersion, &'static str)>> = Lazy::new(|| vec![#(#data),*]);
     };
 
     fs::write(path, format_token_stream(output))?;

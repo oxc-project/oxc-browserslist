@@ -7,8 +7,8 @@ use crate::{
 pub(super) fn electron_bounded_range(from: &str, to: &str) -> QueryResult {
     let from_str = from;
     let to_str = to;
-    let from: f32 = parse_version(from)?;
-    let to: f32 = parse_version(to)?;
+    let from = parse_version(from)?;
+    let to = parse_version(to)?;
 
     if ELECTRON_VERSIONS
         .iter()

@@ -1,17 +1,51 @@
 use crate::error::Error;
-use nom::{
-    character::complete::{char, u16},
-    combinator::{all_consuming, opt},
-    number::complete::float,
-    sequence::{pair, terminated},
-};
-
 pub use crate::generated::electron_to_chromium::ELECTRON_VERSIONS;
 
-pub fn parse_version(version: &str) -> Result<f32, Error> {
-    all_consuming(terminated(float, opt(pair(char('.'), u16))))(version)
-        .map(|(_, v)| v)
-        .map_err(|_: nom::Err<nom::error::Error<_>>| {
-            Error::UnknownElectronVersion(version.to_string())
-        })
+#[derive(Debug, Default, Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
+pub struct ElectronVersion {
+    pub major: u16,
+    pub minor: u16,
+}
+
+impl ElectronVersion {
+    pub fn new(major: u16, minor: u16) -> Self {
+        Self { major, minor }
+    }
+
+    pub fn parse(major: &str, minor: &str) -> Result<Self, std::num::ParseIntError> {
+        let major = major.parse()?;
+        let minor = minor.parse()?;
+        Ok(Self { major, minor })
+    }
+}
+
+pub fn parse_version(version: &str) -> Result<ElectronVersion, Error> {
+    let mut split = version.split('.');
+
+    let Some(first) = split.next() else {
+        return Err(err(version));
+    };
+
+    let Some(second) = split.next().filter(|n| check_number(n)) else {
+        return Err(err(version));
+    };
+
+    if split.next().is_some() && split.next().is_some() {
+        return Err(err(version));
+    }
+
+    let election_version = ElectronVersion::parse(first, second).map_err(|_| err(version))?;
+    Ok(election_version)
+}
+
+fn check_number(n: &str) -> bool {
+    if n == "0" {
+        true
+    } else {
+        !n.starts_with('0')
+    }
+}
+
+fn err(version: &str) -> Error {
+    Error::UnknownElectronVersion(version.to_string())
 }
