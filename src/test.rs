@@ -33,7 +33,7 @@ pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
     let actual = resolve([query], opts)
         .unwrap()
         .iter()
-        .map(|d| d.to_string())
+        .map(std::string::ToString::to_string)
         .collect::<Vec<_>>();
 
     assert_eq!(expected, actual);

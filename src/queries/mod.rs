@@ -77,6 +77,7 @@ impl Distrib {
     ///
     /// assert_eq!(distrib.name(), "firefox");
     /// ```
+    #[must_use]
     pub fn name(&self) -> &str {
         self.0
     }
@@ -91,6 +92,7 @@ impl Distrib {
     ///
     /// assert_eq!(distrib.version(), "93");
     /// ```
+    #[must_use]
     pub fn version(&self) -> &str {
         &self.1
     }

@@ -402,7 +402,7 @@ fn parse_query_atom(input: &str) -> PResult<QueryAtom> {
 }
 
 #[derive(Debug)]
-pub(crate) struct SingleQuery<'a> {
+pub struct SingleQuery<'a> {
     pub(crate) raw: &'a str,
     pub(crate) atom: QueryAtom<'a>,
     pub(crate) negated: bool,
@@ -442,7 +442,7 @@ fn parse_single_query(input: &str) -> PResult<SingleQuery> {
     )(input)
 }
 
-pub(crate) fn parse_browserslist_query(input: &str) -> PResult<Vec<SingleQuery>> {
+pub fn parse_browserslist_query(input: &str) -> PResult<Vec<SingleQuery>> {
     let input = input.trim();
     // `many0` doesn't allow empty input, so we detect it here
     if input.is_empty() {

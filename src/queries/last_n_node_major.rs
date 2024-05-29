@@ -21,8 +21,7 @@ pub(super) fn last_n_node_major(count: usize) -> QueryResult {
         .filter(|version| {
             version
                 .parse::<Version>()
-                .map(|version| version.major() >= minimum)
-                .unwrap_or_default()
+                .is_ok_and(|version| version.major() >= minimum)
         })
         .rev()
         .map(|version| Distrib::new("node", *version))

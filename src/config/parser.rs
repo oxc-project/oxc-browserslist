@@ -2,7 +2,7 @@ use super::PartialConfig;
 use crate::error::Error;
 use ahash::AHashSet;
 
-pub(crate) fn parse<S: AsRef<str>>(
+pub fn parse<S: AsRef<str>>(
     source: &str,
     env: S,
     throw_on_missing: bool,
@@ -20,7 +20,7 @@ pub(crate) fn parse<S: AsRef<str>>(
                 line
             }
         })
-        .map(|line| line.trim())
+        .map(str::trim)
         .filter(|line| !line.is_empty())
         .try_fold(
             (Vec::new(), Option::<Vec<String>>::None),

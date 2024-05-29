@@ -8,7 +8,7 @@ use nom::{
 
 pub use crate::generated::electron_to_chromium::ELECTRON_VERSIONS;
 
-pub(crate) fn parse_version(version: &str) -> Result<f32, Error> {
+pub fn parse_version(version: &str) -> Result<f32, Error> {
     all_consuming(terminated(float, opt(pair(char('.'), u16))))(version)
         .map(|(_, v)| v)
         .map_err(|_: nom::Err<nom::error::Error<_>>| {

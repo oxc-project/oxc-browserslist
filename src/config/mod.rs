@@ -19,7 +19,7 @@ type Config = AHashMap<String, Vec<String>>;
 
 #[derive(Debug)]
 #[cfg_attr(test, derive(PartialEq, Eq))]
-pub(crate) struct PartialConfig {
+pub struct PartialConfig {
     defaults: Vec<String>,
     env: Option<Vec<String>>,
 }
@@ -27,7 +27,7 @@ pub(crate) struct PartialConfig {
 #[derive(Debug, Deserialize)]
 #[cfg_attr(test, derive(Serialize))]
 #[serde(untagged)]
-pub(crate) enum PkgConfig {
+pub enum PkgConfig {
     Str(String),
     Arr(Vec<String>),
     Obj(Config),
@@ -107,9 +107,7 @@ fn find_config<P: AsRef<Path>>(path: P) -> Result<Either<String, PkgConfig>, Err
         let path_plain = dir.join("browserslist");
         let plain = File::open(&path_plain);
         let is_plain_existed = if let Ok(file) = &plain {
-            file.metadata()
-                .map(|metadata| metadata.is_file())
-                .unwrap_or_default()
+            file.metadata().is_ok_and(|metadata| metadata.is_file())
         } else {
             false
         };
@@ -117,9 +115,7 @@ fn find_config<P: AsRef<Path>>(path: P) -> Result<Either<String, PkgConfig>, Err
         let path_rc = dir.join(".browserslistrc");
         let rc = File::open(&path_rc);
         let is_rc_existed = if let Ok(file) = &rc {
-            file.metadata()
-                .map(|metadata| metadata.is_file())
-                .unwrap_or_default()
+            file.metadata().is_ok_and(|metadata| metadata.is_file())
         } else {
             false
         };

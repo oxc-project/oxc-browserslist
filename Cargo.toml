@@ -13,6 +13,22 @@ include     = ["Cargo.toml", "src/**/*.rs"]
 [workspace]
 members = [".", "xtask"]
 
+[workspace.lints.rust]
+unsafe_code                            = "warn"
+absolute_paths_not_starting_with_crate = "warn"
+non_ascii_idents                       = "warn"
+unit-bindings                          = "warn"
+
+[workspace.lints.clippy]
+all           = { level = "warn" }
+dbg_macro     = "warn"
+todo          = "warn"
+unimplemented = "warn"
+cargo         = { level = "warn", priority = -1 }
+
+[lints]
+workspace = true
+
 [lib]
 name       = "browserslist"
 crate-type = ["cdylib", "rlib"]

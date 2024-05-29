@@ -1,7 +1,7 @@
 use std::{cmp::Ordering, num::ParseIntError, str::FromStr};
 
 #[derive(PartialEq, Eq, PartialOrd, Ord, Default, Debug, Clone)]
-pub(crate) struct Version(u32, u32, u32);
+pub struct Version(u32, u32, u32);
 
 impl Version {
     #[inline]
@@ -15,7 +15,7 @@ impl FromStr for Version {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         // this allows something like `4.4.3-4.4.4`
-        let mut segments = s.split_once('-').map(|(v, _)| v).unwrap_or(s).split('.');
+        let mut segments = s.split_once('-').map_or(s, |(v, _)| v).split('.');
         let major = match segments.next() {
             Some(n) => n.parse()?,
             None => 0,
@@ -33,13 +33,13 @@ impl FromStr for Version {
     }
 }
 
-pub(crate) fn compare(a: &str, b: &str) -> Ordering {
+pub fn compare(a: &str, b: &str) -> Ordering {
     a.parse::<Version>()
         .unwrap_or_default()
         .cmp(&b.parse().unwrap_or_default())
 }
 
-pub(crate) fn loose_compare(a: &str, b: &str) -> Ordering {
+pub fn loose_compare(a: &str, b: &str) -> Ordering {
     a.split('.')
         .take(2)
         .zip(b.split('.').take(2))

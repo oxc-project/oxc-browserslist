@@ -6,7 +6,7 @@ use crate::{
 };
 use chrono::{Duration, Utc};
 
-const ONE_YEAR_IN_SECONDS: f64 = 365.259641 * 24.0 * 60.0 * 60.0;
+const ONE_YEAR_IN_SECONDS: f64 = 365.259_641 * 24.0 * 60.0 * 60.0;
 
 pub(super) fn years(count: f64, opts: &Opts) -> QueryResult {
     let duration =

@@ -1,4 +1,4 @@
-#![allow(missing_docs, dead_code, clippy::all)]
+#![allow(missing_docs, dead_code, clippy::pedantic)]
 pub mod browser_name_atom;
 pub mod caniuse_browsers;
 pub mod caniuse_feature_matching;

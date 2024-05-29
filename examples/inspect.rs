@@ -25,9 +25,9 @@ fn main() {
     ) {
         Ok(versions) => {
             for version in versions {
-                println!("{}", version)
+                println!("{version}");
             }
         }
-        Err(error) => eprintln!("{}", error),
+        Err(error) => eprintln!("{error}"),
     };
 }

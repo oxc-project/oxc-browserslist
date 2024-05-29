@@ -3,8 +3,8 @@ use ahash::AHashMap;
 use once_cell::sync::Lazy;
 use std::borrow::Cow;
 
-pub(crate) mod features;
-pub(crate) mod region;
+pub mod features;
+pub mod region;
 
 pub const ANDROID_EVERGREEN_FIRST: f32 = 37.0;
 pub const OP_MOB_BLINK_FIRST: u32 = 14;
@@ -153,7 +153,7 @@ fn get_browser_alias(name: &str) -> &str {
     }
 }
 
-pub(crate) fn to_desktop_name(name: &str) -> Option<&'static str> {
+pub fn to_desktop_name(name: &str) -> Option<&'static str> {
     match name {
         "and_chr" | "android" => Some("chrome"),
         "and_ff" => Some("firefox"),
@@ -172,10 +172,7 @@ fn get_mobile_by_desktop_name(name: &str) -> &'static str {
     }
 }
 
-pub(crate) fn normalize_version<'a>(
-    stat: &'static BrowserStat,
-    version: &'a str,
-) -> Option<&'a str> {
+pub fn normalize_version<'a>(stat: &'static BrowserStat, version: &'a str) -> Option<&'a str> {
     if stat.version_list.iter().any(|v| v.version == version) {
         Some(version)
     } else if let Some(version) = BROWSER_VERSION_ALIASES

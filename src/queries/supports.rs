@@ -34,8 +34,7 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         .filter(|version| version.release_date.is_some())
                         .last()
                         .and_then(|latest_version| versions.get(latest_version.version))
-                        .map(|flags| is_supported(*flags, include_partial))
-                        .unwrap_or_default();
+                        .is_some_and(|flags| is_supported(*flags, include_partial));
                 browser_stat
                     .version_list
                     .iter()

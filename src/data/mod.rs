@@ -1,10 +1,10 @@
-pub(crate) mod caniuse;
-pub(crate) mod electron;
-pub(crate) mod node;
+pub mod caniuse;
+pub mod electron;
+pub mod node;
 
 #[doc(hidden)]
 #[allow(unused)]
-pub(crate) mod browser_name {
+pub mod browser_name {
     use crate::browser_name_atom;
     pub use crate::generated::browser_name_atom::*;
 

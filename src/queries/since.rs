@@ -9,7 +9,7 @@ use chrono::{LocalResult, TimeZone, Utc};
 pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult {
     let time = match Utc.with_ymd_and_hms(year, month, day, 0, 0, 0) {
         LocalResult::Single(date) => date.timestamp(),
-        _ => return Err(Error::InvalidDate(format!("{}-{}-{}", year, month, day))),
+        _ => return Err(Error::InvalidDate(format!("{year}-{month}-{day}"))),
     };
 
     let distribs = CANIUSE_BROWSERS

@@ -1,9 +1,3 @@
-#![allow(clippy::float_cmp)]
-#![deny(clippy::if_not_else)]
-#![deny(clippy::needless_borrow)]
-#![deny(clippy::unimplemented)]
-#![warn(missing_docs)]
-
 //! **browserslist-rs** is a Rust-based implementation of [Browserslist](https://github.com/browserslist/browserslist).
 //!
 //! ## Introduction

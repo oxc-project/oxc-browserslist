@@ -8,8 +8,7 @@ pub(super) fn last_n_electron_major(count: usize) -> QueryResult {
         .rev()
         .dedup()
         .nth(count - 1)
-        .map(|(electron_version, _)| electron_version)
-        .unwrap_or(&0.0);
+        .map_or(&0.0, |(electron_version, _)| electron_version);
 
     let distribs = ELECTRON_VERSIONS
         .iter()
