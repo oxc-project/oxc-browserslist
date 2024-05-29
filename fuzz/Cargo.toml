@@ -1,0 +1,20 @@
+[package]
+name    = "fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[package.metadata]
+cargo-fuzz = true
+
+[[bin]]
+name = "browserslist"
+path = "fuzz_targets/browserslist.rs"
+
+[dependencies]
+oxc-browserslist = { path = ".." }
+libfuzzer-sys = "0.4.7"
