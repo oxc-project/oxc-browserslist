@@ -47,7 +47,6 @@ jobs:
         with:
           version: latest
           run_install: true
-      - run: cargo codegen
       - run: cargo check --all-targets --all-features
       - run: cargo test
 
