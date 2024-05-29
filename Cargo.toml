@@ -8,7 +8,7 @@ repository  = "https://github.com/oxc-project/oxc-browserslist"
 license     = "MIT"
 keywords    = ["javascript", "web"]
 categories  = ["config", "web-programming"]
-include     = ["Cargo.toml", "src/**/*.rs"]
+include     = ["/src", "/examples", "/benches"]
 
 [workspace]
 members = [".", "xtask"]
