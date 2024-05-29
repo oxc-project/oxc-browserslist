@@ -90,7 +90,7 @@ pub fn build_electron_to_chromium() -> Result<()> {
     let path = format!("{}/electron_to_chromium.rs", out_dir().to_string_lossy());
 
     let mut data = serde_json::from_slice::<BTreeMap<String, String>>(&fs::read(format!(
-        "{}/vendor/electron-to-chromium/versions.json",
+        "{}/node_modules/electron-to-chromium/versions.json",
         root()
     ))?)?
     .into_iter()
@@ -126,7 +126,7 @@ pub fn build_node_versions() -> Result<()> {
     let path = format!("{}/node_versions.rs", out_dir().to_string_lossy());
 
     let releases: Vec<NodeRelease> = serde_json::from_slice(&fs::read(format!(
-        "{}/vendor/node-releases/data/processed/envs.json",
+        "{}/node_modules/node-releases/data/processed/envs.json",
         root()
     ))?)?;
 
@@ -151,7 +151,7 @@ pub fn build_node_release_schedule() -> Result<()> {
     let path = format!("{}/node_release_schedule.rs", out_dir().to_string_lossy());
 
     let schedule: HashMap<String, NodeRelease> = serde_json::from_slice(&fs::read(format!(
-        "{}/vendor/node-releases/data/release-schedule/release-schedule.json",
+        "{}/node_modules/node-releases/data/release-schedule/release-schedule.json",
         root()
     ))?)?;
     let cap = schedule.len();
@@ -353,7 +353,7 @@ pub fn build_caniuse_global() -> Result<()> {
 
 fn parse_caniuse_global() -> Result<Caniuse> {
     Ok(serde_json::from_slice(&fs::read(format!(
-        "{}/vendor/caniuse/fulldata-json/data-2.0.json",
+        "{}/node_modules/caniuse-db/fulldata-json/data-2.0.json",
         root()
     ))?)?)
 }
@@ -367,9 +367,12 @@ pub fn build_caniuse_region() -> Result<()> {
     let out_path = out_dir();
     let out_dir = out_path.to_string_lossy();
 
-    let files = fs::read_dir(format!("{}/vendor/caniuse/region-usage-json", root()))?
-        .map(|entry| entry.map_err(anyhow::Error::from))
-        .collect::<Result<Vec<_>>>()?;
+    let files = fs::read_dir(format!(
+        "{}/node_modules/caniuse-db/region-usage-json",
+        root()
+    ))?
+    .map(|entry| entry.map_err(anyhow::Error::from))
+    .collect::<Result<Vec<_>>>()?;
 
     let Caniuse { agents, .. } = parse_caniuse_global()?;
 
