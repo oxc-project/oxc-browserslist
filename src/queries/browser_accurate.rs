@@ -63,7 +63,7 @@ mod tests {
     #[test_case("ios 8.0"; "allow missing zero 2")]
     #[test_case("safari tp"; "safari tp")]
     #[test_case("Safari TP"; "safari tp case insensitive")]
-    #[test_case("and_uc 10"; "cutted version")]
+    #[test_case("and_uc 10"; "cut version")]
     #[test_case("chromeandroid 53"; "missing mobile versions 1")]
     #[test_case("and_ff 60"; "missing mobile versions 2")]
     fn default_options(query: &str) {

@@ -243,13 +243,13 @@ pub fn count_filter_versions(name: &str, mobile_to_desktop: bool, count: usize) 
             }
         }
         "op_mob" => {
-            let lastest = caniuse::get_browser_stat("android", mobile_to_desktop)
+            let latest = caniuse::get_browser_stat("android", mobile_to_desktop)
                 .unwrap()
                 .1
                 .version_list
                 .last()
                 .unwrap();
-            (lastest.version.parse::<Version>().unwrap().major() - caniuse::OP_MOB_BLINK_FIRST + 1)
+            (latest.version.parse::<Version>().unwrap().major() - caniuse::OP_MOB_BLINK_FIRST + 1)
                 as usize
         }
         _ => return count,
