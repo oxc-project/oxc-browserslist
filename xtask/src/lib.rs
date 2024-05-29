@@ -292,14 +292,12 @@ pub fn build_caniuse_global() -> Result<()> {
         use indexmap::IndexMap;
         use once_cell::sync::Lazy;
         use serde_json::from_str;
-        use crate::data::BrowserName;
-
-        type Feature = FxHashMap<BrowserName, IndexMap<&'static str, u8>>;
+        use crate::data::caniuse::features::Feature;
 
         pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             match name {
                 #( #keys => {
-                    static STAT: Lazy<FxHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(|| {
+                    static STAT: Lazy<Feature> = Lazy::new(|| {
                         from_str::<FxHashMap::<u8, IndexMap<&'static str, u8>>>(#features)
                             .unwrap()
                             .into_iter()
