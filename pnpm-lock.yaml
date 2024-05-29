@@ -9,11 +9,11 @@ devDependencies:
     specifier: 4.23.0
     version: 4.23.0
   caniuse-db:
-    specifier: 1.0.30001597
-    version: 1.0.30001597
+    specifier: 1.0.30001625
+    version: 1.0.30001625
   electron-to-chromium:
-    specifier: 1.4.702
-    version: 1.4.702
+    specifier: 1.4.783
+    version: 1.4.783
   node-releases:
     specifier: 2.0.14
     version: 2.0.14
@@ -25,22 +25,22 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001597
-      electron-to-chromium: 1.4.702
+      caniuse-lite: 1.0.30001625
+      electron-to-chromium: 1.4.783
       node-releases: 2.0.14
       update-browserslist-db: 1.0.16(browserslist@4.23.0)
     dev: true
 
-  /caniuse-db@1.0.30001597:
-    resolution: {integrity: sha512-iSDUKRsVRcVXFoBeWycN60ax+zYFe72ZswOMJESEOmn78WDfEVyykoP9RgAWBNVnyfCUoCfKYFaQAKXqqR9hnA==}
+  /caniuse-db@1.0.30001625:
+    resolution: {integrity: sha512-dNKjLoVlFRgCx/5eXM+h7qOHtw9fsypF6p8TsA8byf9BfYfdFwsa5kE3kmoo4VUG6BkOi0oIvUERU9usF+xv2Q==}
     dev: true
 
-  /caniuse-lite@1.0.30001597:
-    resolution: {integrity: sha512-7LjJvmQU6Sj7bL0j5b5WY/3n7utXUJvAe1lxhsHDbLmwX9mdL86Yjtr+5SRCyf8qME4M7pU2hswj0FpyBVCv9w==}
+  /caniuse-lite@1.0.30001625:
+    resolution: {integrity: sha512-4KE9N2gcRH+HQhpeiRZXd+1niLB/XNLAhSy4z7fI8EzcbcPoAqjNInxVHTiTwWfTIV4w096XG8OtCOCQQKPv3w==}
     dev: true
 
-  /electron-to-chromium@1.4.702:
-    resolution: {integrity: sha512-LYLXyEUsZ3nNSwiOWjI88N1PJUAMU2QphQSgGLVkFnb3FxZxNui2Vzi2PaKPgPWbsWbZstZnh6BMf/VQJamjiQ==}
+  /electron-to-chromium@1.4.783:
+    resolution: {integrity: sha512-bT0jEz/Xz1fahQpbZ1D7LgmPYZ3iHVY39NcWWro1+hA2IvjiPeaXtfSqrQ+nXjApMvQRE2ASt1itSLRrebHMRQ==}
     dev: true
 
   /escalade@3.1.2:
