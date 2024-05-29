@@ -7,13 +7,9 @@
     "browserslist": "browserslist"
   },
   "devDependencies": {
-    "browserslist": "4.23.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "caniuse-lite": "1.0.30001597",
-      "electron-to-chromium": "1.4.702",
-      "node-releases": "2.0.14"
-    }
+    "browserslist": "4.23.0",
+    "caniuse-db": "1.0.30001597",
+    "electron-to-chromium": "1.4.702",
+    "node-releases": "2.0.14"
   }
 }
