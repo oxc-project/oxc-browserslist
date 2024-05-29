@@ -1,34 +1,28 @@
 [package]
-name = "oxc-browserslist"
-version = "0.16.0"
-authors = ["Boshen <boshenc@gmail.com>", "Pig Fang <g-plane@hotmail.com>"]
-edition = "2021"
+name        = "oxc-browserslist"
+version     = "0.16.0"
+authors     = ["Boshen <boshenc@gmail.com>", "Pig Fang <g-plane@hotmail.com>"]
+edition     = "2021"
 description = "Rust-ported Browserslist for Oxc."
-repository = "https://github.com/oxc-project/oxc-browserslist"
-license = "MIT"
-keywords = ["web", "javascript"]
-categories = ["web-programming", "config"]
-include = [
-    "src/**/*.rs",
-    "Cargo.toml",
-]
+repository  = "https://github.com/oxc-project/oxc-browserslist"
+license     = "MIT"
+keywords    = ["javascript", "web"]
+categories  = ["config", "web-programming"]
+include     = ["Cargo.toml", "src/**/*.rs"]
 
 [workspace]
-members = [
-    ".",
-    "xtask",
-]
+members = [".", "xtask"]
 
 [lib]
-name = "browserslist"
+name       = "browserslist"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 ahash = { version = "0.8", features = ["serde"] }
 chrono = { version = "0.4.31", features = [
-    "std",
-    "clock",
-    "oldtime",
+  "clock",
+  "oldtime",
+  "std",
 ], default-features = false } # disable wasmbind by default
 either = "1.9"
 indexmap = { version = "2.1", features = ["serde"] }
@@ -41,28 +35,21 @@ string_cache = "0.8"
 thiserror = "1.0"
 
 [dev-dependencies]
-clap = { version = "4.4", features = ["derive"] }
+clap       = { version = "4.4", features = ["derive"] }
 criterion2 = { version = "0.9.0", default-features = false }
-test-case = "3.3"
+test-case  = "3.3"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-getrandom = { version = "0.2", optional = true }
-js-sys = { version = "0.3", optional = true }
+getrandom          = { version = "0.2", optional = true }
+js-sys             = { version = "0.3", optional = true }
 serde-wasm-bindgen = { version = "0.4", optional = true }
-wasm-bindgen = { version = "0.2", optional = true }
+wasm-bindgen       = { version = "0.2", optional = true }
 
 [[bench]]
-name = "resolve"
+name    = "resolve"
 harness = false
 
 [features]
-default = []
-wasm_bindgen = [
-    "chrono/wasmbind",
-    "getrandom",
-    "getrandom/js",
-    "js-sys",
-    "serde-wasm-bindgen",
-    "wasm-bindgen",
-]
-codspeed = ["criterion2/codspeed"]
+default      = []
+wasm_bindgen = ["chrono/wasmbind", "getrandom", "getrandom/js", "js-sys", "serde-wasm-bindgen", "wasm-bindgen"]
+codspeed     = ["criterion2/codspeed"]

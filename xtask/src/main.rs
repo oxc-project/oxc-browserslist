@@ -1,5 +1,6 @@
 use anyhow::Result;
 use std::fs;
+use std::process::Command;
 
 fn main() -> Result<()> {
     let dir = project_root::get_project_root()
@@ -14,5 +15,8 @@ fn main() -> Result<()> {
     xtask::build_node_release_schedule()?;
     xtask::build_caniuse_global()?;
     xtask::build_caniuse_region()?;
+
+    Command::new("cargo").arg("fmt").status().unwrap();
+
     Ok(())
 }

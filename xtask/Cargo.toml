@@ -1,16 +1,16 @@
 [package]
-name = "xtask"
+name    = "xtask"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow = "1.0"
-indexmap = { version = "2.1", features = ["serde"] }
-quote = "1.0"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+anyhow               = "1.0"
+indexmap             = { version = "2.1", features = ["serde"] }
+quote                = "1.0"
+serde                = { version = "1.0", features = ["derive"] }
+serde_json           = "1.0"
 string_cache_codegen = "0.5.2"
-prettyplease = "0.2.20"
-project-root = "0.2.2"
-syn = "2"
-proc-macro2 = "1.0.84"
+prettyplease         = "0.2.20"
+project-root         = "0.2.2"
+syn                  = "2"
+proc-macro2          = "1.0.84"
