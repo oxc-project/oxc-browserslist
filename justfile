@@ -14,8 +14,12 @@ ready:
   cargo codegen
   just fmt
   cargo check
+  just lint
   cargo test
 
 fmt:
   cargo fmt
   taplo format
+
+lint:
+  cargo clippy --all-targets --all-features -- -D warnings

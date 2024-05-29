@@ -23,6 +23,10 @@ defaults:
   run:
     shell: bash
 
+env:
+  CARGO_INCREMENTAL: 0
+  RUSTFLAGS: "-D warnings"
+
 jobs:
   test:
     name: Test
@@ -46,6 +50,7 @@ jobs:
           version: latest
           run_install: true
       - run: cargo codegen
+      - run: cargo check --all-targets --all-features
       - run: cargo test
 
   lint:
