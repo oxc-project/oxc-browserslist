@@ -430,7 +430,7 @@ checksum = "0ab1bc2a289d34bd04a330323ac98a1b4bc82c9d9fcb1e66b63caa84da26b575"
 
 [[package]]
 name = "oxc-browserslist"
-version = "0.16.0"
+version = "0.16.1"
 dependencies = [
  "chrono",
  "clap",
