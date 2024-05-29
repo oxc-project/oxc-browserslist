@@ -50,8 +50,8 @@ cargo run --example inspect -- -h
 [discord-url]: https://discord.gg/9uXCAwqQZW
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [license-url]: https://github.com/oxc-project/oxc-browserslist/blob/main/LICENSE
-[ci-badge]: https://github.com/oxc-project/oxc-browserslist/actions/workflows/ci.yml/badge.svg?event=push&branch=main
-[ci-url]: https://github.com/oxc-project/oxc-browserslist/actions/workflows/ci.yml?query=event%3Apush+branch%3Amain
+[ci-badge]: https://github.com/oxc-project/oxc-browserslist/actions/workflows/CI.yml/badge.svg?event=push&branch=main
+[ci-url]: https://github.com/oxc-project/oxc-browserslist/actions/workflows/CI.yml?query=event%3Apush+branch%3Amain
 [code-coverage-badge]: https://codecov.io/github/oxc-project/oxc-browserslist/branch/main/graph/badge.svg
 [code-coverage-url]: https://codecov.io/gh/oxc-project/oxc-browserslist
 [sponsors-badge]: https://img.shields.io/github/sponsors/Boshen
