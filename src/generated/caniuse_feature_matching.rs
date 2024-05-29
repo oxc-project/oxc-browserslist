@@ -1,13 +1,13 @@
-use crate::data::browser_name::BrowserNameAtom;
+use crate::data::BrowserName;
 use ahash::AHashMap;
 use indexmap::IndexMap;
 use once_cell::sync::Lazy;
 use serde_json::from_str;
-type Feature = AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>;
+type Feature = AHashMap<BrowserName, IndexMap<&'static str, u8>>;
 pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
     match name {
         "aac" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -26,7 +26,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "abortcontroller" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -45,7 +45,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "accelerometer" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -64,7 +64,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "addeventlistener" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -83,7 +83,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "ambient-light" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -102,7 +102,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "apng" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -121,7 +121,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "array-find" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -140,7 +140,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "array-find-index" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -159,7 +159,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "array-flat" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -178,7 +178,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "array-includes" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -197,7 +197,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "arrow-functions" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -216,7 +216,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "asmjs" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -235,7 +235,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "async-clipboard" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -254,7 +254,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "async-functions" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -273,7 +273,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "atob-btoa" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -292,7 +292,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "audio" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -311,7 +311,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "audio-api" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -330,7 +330,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "audiotracks" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -349,7 +349,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "autofocus" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -368,7 +368,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "auxclick" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -387,7 +387,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "av1" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -406,7 +406,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "avif" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -425,7 +425,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "background-attachment" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -444,7 +444,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "background-clip-text" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -463,7 +463,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "background-img-opts" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -482,7 +482,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "background-position-x-y" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -501,7 +501,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "background-repeat-round-space" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -520,7 +520,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "background-sync" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -539,7 +539,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "battery-status" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -558,7 +558,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "beacon" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -577,7 +577,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "beforeafterprint" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -596,7 +596,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "bigint" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -615,7 +615,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "blobbuilder" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -634,7 +634,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "bloburls" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -653,7 +653,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "border-image" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -672,7 +672,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "border-radius" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -691,7 +691,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "broadcastchannel" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -710,7 +710,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "brotli" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -729,7 +729,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "calc" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -748,7 +748,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "canvas" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -767,7 +767,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "canvas-blending" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -786,7 +786,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "canvas-text" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -805,7 +805,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "ch-unit" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -824,7 +824,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "chacha20-poly1305" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -843,7 +843,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "channel-messaging" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -862,7 +862,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "childnode-remove" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -881,7 +881,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "classlist" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -900,7 +900,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "client-hints-dpr-width-viewport" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -919,7 +919,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "clipboard" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -938,7 +938,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "colr" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -957,7 +957,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "colr-v1" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -976,7 +976,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "comparedocumentposition" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -995,7 +995,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "console-basic" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1014,7 +1014,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "console-time" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1033,7 +1033,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "const" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1052,7 +1052,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "constraint-validation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1071,7 +1071,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "contenteditable" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1090,7 +1090,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "contentsecuritypolicy" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1109,7 +1109,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "contentsecuritypolicy2" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1128,7 +1128,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "cookie-store-api" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1147,7 +1147,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "cors" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1166,7 +1166,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "createimagebitmap" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1185,7 +1185,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "credential-management" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1204,7 +1204,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "cryptography" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1223,7 +1223,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-all" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1242,7 +1242,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-anchor-positioning" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1261,7 +1261,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-animation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1280,7 +1280,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-any-link" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1299,7 +1299,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-appearance" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1318,7 +1318,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-at-counter-style" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1337,7 +1337,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-backdrop-filter" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1356,7 +1356,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-background-offsets" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1375,7 +1375,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-backgroundblendmode" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1394,7 +1394,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-boxdecorationbreak" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1413,7 +1413,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-boxshadow" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1432,7 +1432,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-canvas" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1451,7 +1451,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-caret-color" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1470,7 +1470,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-cascade-layers" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1489,7 +1489,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-cascade-scope" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1508,7 +1508,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-case-insensitive" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1527,7 +1527,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-clip-path" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1546,7 +1546,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-color-adjust" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1565,7 +1565,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-color-function" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1584,7 +1584,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-conic-gradients" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1603,7 +1603,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-container-queries" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1622,7 +1622,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-container-queries-style" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1641,7 +1641,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-container-query-units" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1660,7 +1660,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-containment" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1679,7 +1679,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-content-visibility" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1698,7 +1698,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-counters" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1717,7 +1717,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-crisp-edges" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1736,7 +1736,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-cross-fade" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1755,7 +1755,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-default-pseudo" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1774,7 +1774,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-descendant-gtgt" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1793,7 +1793,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-deviceadaptation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1812,7 +1812,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-dir-pseudo" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1831,7 +1831,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-display-contents" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1850,7 +1850,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-element-function" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1869,7 +1869,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-env-function" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1888,7 +1888,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-exclusions" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1907,7 +1907,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-featurequeries" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1926,7 +1926,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-filter-function" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1945,7 +1945,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-filters" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1964,7 +1964,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-first-letter" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -1983,7 +1983,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-first-line" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2002,7 +2002,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-fixed" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2021,7 +2021,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-focus-visible" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2040,7 +2040,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-focus-within" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2059,7 +2059,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-font-palette" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2078,7 +2078,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-font-rendering-controls" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2097,7 +2097,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-font-stretch" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2116,7 +2116,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-gencontent" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2135,7 +2135,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-gradients" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2154,7 +2154,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-grid" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2173,7 +2173,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-hanging-punctuation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2192,7 +2192,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-has" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2211,7 +2211,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-hyphens" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2230,7 +2230,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-image-orientation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2249,7 +2249,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-image-set" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2268,7 +2268,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-in-out-of-range" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2287,7 +2287,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-indeterminate-pseudo" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2306,7 +2306,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-initial-letter" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2325,7 +2325,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-initial-value" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2344,7 +2344,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-lch-lab" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2363,7 +2363,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-letter-spacing" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2382,7 +2382,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-line-clamp" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2401,7 +2401,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-logical-props" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2420,7 +2420,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-marker-pseudo" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2439,7 +2439,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-masks" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2458,7 +2458,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-matches-pseudo" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2477,7 +2477,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-math-functions" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2496,7 +2496,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-media-interaction" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2515,7 +2515,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-media-range-syntax" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2534,7 +2534,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-media-resolution" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2553,7 +2553,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-mediaqueries" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2572,7 +2572,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-mixblendmode" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2591,7 +2591,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-motion-paths" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2610,7 +2610,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-namespaces" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2629,7 +2629,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-nesting" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2648,7 +2648,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-not-sel-list" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2667,7 +2667,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-nth-child-of" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2686,7 +2686,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-opacity" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2705,7 +2705,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-optional-pseudo" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2724,7 +2724,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-overflow" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2743,7 +2743,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-overflow-anchor" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2762,7 +2762,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-overflow-overlay" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2781,7 +2781,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-overscroll-behavior" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2800,7 +2800,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-page-break" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2819,7 +2819,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-paged-media" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2838,7 +2838,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-paint-api" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2857,7 +2857,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-placeholder" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2876,7 +2876,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-placeholder-shown" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2895,7 +2895,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-read-only-write" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2914,7 +2914,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-rebeccapurple" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2933,7 +2933,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-reflections" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2952,7 +2952,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-regions" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2971,7 +2971,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-relative-colors" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -2990,7 +2990,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-repeating-gradients" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3009,7 +3009,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-resize" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3028,7 +3028,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-revert-value" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3047,7 +3047,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-rrggbbaa" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3066,7 +3066,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-scroll-behavior" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3085,7 +3085,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-scroll-timeline" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3104,7 +3104,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-scrollbar" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3123,7 +3123,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-sel2" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3142,7 +3142,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-sel3" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3161,7 +3161,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-selection" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3180,7 +3180,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-shapes" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3199,7 +3199,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-snappoints" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3218,7 +3218,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-sticky" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3237,7 +3237,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-subgrid" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3256,7 +3256,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-supports-api" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3275,7 +3275,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-table" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3294,7 +3294,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-text-align-last" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3313,7 +3313,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-text-box-trim" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3332,7 +3332,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-text-indent" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3351,7 +3351,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-text-justify" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3370,7 +3370,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-text-orientation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3389,7 +3389,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-text-wrap-balance" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3408,7 +3408,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-textshadow" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3427,7 +3427,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-touch-action" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3446,7 +3446,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-transitions" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3465,7 +3465,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-unset-value" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3484,7 +3484,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-variables" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3503,7 +3503,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-when-else" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3522,7 +3522,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-widows-orphans" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3541,7 +3541,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-writing-mode" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3560,7 +3560,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css-zoom" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3579,7 +3579,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css3-attr" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3598,7 +3598,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css3-boxsizing" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3617,7 +3617,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css3-colors" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3636,7 +3636,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css3-cursors" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3655,7 +3655,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css3-cursors-grab" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3674,7 +3674,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css3-cursors-newer" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3693,7 +3693,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "css3-tabsize" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3712,7 +3712,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "currentcolor" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3731,7 +3731,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "custom-elements" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3750,7 +3750,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "custom-elementsv1" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3769,7 +3769,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "customevent" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3788,7 +3788,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "datalist" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3807,7 +3807,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "dataset" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3826,7 +3826,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "datauri" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3845,7 +3845,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "date-tolocaledatestring" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3864,7 +3864,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "declarative-shadow-dom" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3883,7 +3883,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "decorators" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3902,7 +3902,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "details" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3921,7 +3921,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "deviceorientation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3940,7 +3940,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "devicepixelratio" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3959,7 +3959,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "dialog" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3978,7 +3978,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "dispatchevent" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -3997,7 +3997,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "dnssec" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4016,7 +4016,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "do-not-track" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4035,7 +4035,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "document-currentscript" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4054,7 +4054,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "document-evaluate-xpath" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4073,7 +4073,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "document-execcommand" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4092,7 +4092,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "document-policy" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4111,7 +4111,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "document-scrollingelement" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4130,7 +4130,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "documenthead" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4149,7 +4149,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "dom-manip-convenience" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4168,7 +4168,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "dom-range" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4187,7 +4187,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "domcontentloaded" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4206,7 +4206,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "dommatrix" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4225,7 +4225,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "download" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4244,7 +4244,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "dragndrop" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4263,7 +4263,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "element-closest" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4282,7 +4282,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "element-from-point" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4301,7 +4301,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "element-scroll-methods" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4320,7 +4320,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "eme" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4339,7 +4339,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "eot" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4358,7 +4358,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "es5" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4377,7 +4377,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "es6" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4396,7 +4396,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "es6-class" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4415,7 +4415,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "es6-generators" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4434,7 +4434,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "es6-module" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4453,7 +4453,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "es6-module-dynamic-import" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4472,7 +4472,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "es6-number" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4491,7 +4491,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "es6-string-includes" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4510,7 +4510,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "eventsource" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4529,7 +4529,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "extended-system-fonts" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4548,7 +4548,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "feature-policy" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4567,7 +4567,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "fetch" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4586,7 +4586,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "fieldset-disabled" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4605,7 +4605,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "fileapi" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4624,7 +4624,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "filereader" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4643,7 +4643,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "filereadersync" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4662,7 +4662,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "filesystem" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4681,7 +4681,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "flac" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4700,7 +4700,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "flexbox" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4719,7 +4719,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "flexbox-gap" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4738,7 +4738,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "flow-root" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4757,7 +4757,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "focusin-focusout-events" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4776,7 +4776,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "font-family-system-ui" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4795,7 +4795,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "font-feature" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4814,7 +4814,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "font-kerning" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4833,7 +4833,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "font-loading" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4852,7 +4852,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "font-size-adjust" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4871,7 +4871,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "font-smooth" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4890,7 +4890,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "font-unicode-range" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4909,7 +4909,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "font-variant-alternates" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4928,7 +4928,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "font-variant-numeric" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4947,7 +4947,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "fontface" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4966,7 +4966,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "form-attribute" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -4985,7 +4985,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "form-submit-attributes" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5004,7 +5004,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "form-validation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5023,7 +5023,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "fullscreen" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5042,7 +5042,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "gamepad" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5061,7 +5061,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "geolocation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5080,7 +5080,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "getboundingclientrect" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5099,7 +5099,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "getcomputedstyle" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5118,7 +5118,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "getelementsbyclassname" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5137,7 +5137,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "getrandomvalues" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5156,7 +5156,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "gyroscope" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5175,7 +5175,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "hardwareconcurrency" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5194,7 +5194,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "hashchange" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5213,7 +5213,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "heif" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5232,7 +5232,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "hevc" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5251,7 +5251,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "hidden" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5270,7 +5270,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "high-resolution-time" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5289,7 +5289,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "history" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5308,7 +5308,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "html-media-capture" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5327,7 +5327,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "html5semantic" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5346,7 +5346,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "http-live-streaming" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5365,7 +5365,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "http2" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5384,7 +5384,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "http3" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5403,7 +5403,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "iframe-sandbox" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5422,7 +5422,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "iframe-seamless" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5441,7 +5441,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "iframe-srcdoc" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5460,7 +5460,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "imagecapture" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5479,7 +5479,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "ime" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5498,7 +5498,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "img-naturalwidth-naturalheight" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5517,7 +5517,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "import-maps" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5536,7 +5536,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "imports" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5555,7 +5555,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "indeterminate-checkbox" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5574,7 +5574,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "indexeddb" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5593,7 +5593,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "indexeddb2" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5612,7 +5612,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "inline-block" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5631,7 +5631,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "innertext" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5650,7 +5650,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-autocomplete-onoff" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5669,7 +5669,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-color" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5688,7 +5688,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-datetime" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5707,7 +5707,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-email-tel-url" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5726,7 +5726,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-event" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5745,7 +5745,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-file-accept" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5764,7 +5764,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-file-directory" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5783,7 +5783,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-file-multiple" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5802,7 +5802,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-inputmode" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5821,7 +5821,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-minlength" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5840,7 +5840,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-number" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5859,7 +5859,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-pattern" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5878,7 +5878,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-placeholder" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5897,7 +5897,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-range" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5916,7 +5916,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-search" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5935,7 +5935,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "input-selection" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5954,7 +5954,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "insert-adjacent" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5973,7 +5973,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "insertadjacenthtml" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -5992,7 +5992,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "internationalization" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6011,7 +6011,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "intersectionobserver" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6030,7 +6030,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "intersectionobserver-v2" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6049,7 +6049,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "intl-pluralrules" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6068,7 +6068,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "intrinsic-width" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6087,7 +6087,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "jpeg2000" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6106,7 +6106,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "jpegxl" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6125,7 +6125,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "jpegxr" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6144,7 +6144,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "js-regexp-lookbehind" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6163,7 +6163,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "json" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6182,7 +6182,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "justify-content-space-evenly" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6201,7 +6201,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "kerning-pairs-ligatures" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6220,7 +6220,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "keyboardevent-charcode" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6239,7 +6239,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "keyboardevent-code" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6258,7 +6258,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "keyboardevent-getmodifierstate" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6277,7 +6277,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "keyboardevent-key" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6296,7 +6296,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "keyboardevent-location" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6315,7 +6315,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "keyboardevent-which" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6334,7 +6334,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "lazyload" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6353,7 +6353,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "let" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6372,7 +6372,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "link-icon-png" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6391,7 +6391,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "link-icon-svg" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6410,7 +6410,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "link-rel-dns-prefetch" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6429,7 +6429,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "link-rel-modulepreload" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6448,7 +6448,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "link-rel-preconnect" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6467,7 +6467,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "link-rel-prefetch" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6486,7 +6486,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "link-rel-preload" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6505,7 +6505,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "link-rel-prerender" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6524,7 +6524,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "loading-lazy-attr" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6543,7 +6543,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "localecompare" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6562,7 +6562,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "magnetometer" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6581,7 +6581,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "matchesselector" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6600,7 +6600,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "matchmedia" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6619,7 +6619,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "mathml" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6638,7 +6638,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "maxlength" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6657,7 +6657,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "media-fragments" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6676,7 +6676,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "mediacapture-fromelement" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6695,7 +6695,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "mediarecorder" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6714,7 +6714,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "mediasource" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6733,7 +6733,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "menu" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6752,7 +6752,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "meta-theme-color" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6771,7 +6771,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "meter" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6790,7 +6790,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "midi" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6809,7 +6809,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "minmaxwh" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6828,7 +6828,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "mp3" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6847,7 +6847,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "mpeg-dash" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6866,7 +6866,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "mpeg4" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6885,7 +6885,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "multibackgrounds" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6904,7 +6904,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "multicolumn" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6923,7 +6923,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "mutation-events" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6942,7 +6942,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "mutationobserver" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6961,7 +6961,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "namevalue-storage" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6980,7 +6980,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "native-filesystem-api" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -6999,7 +6999,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "nav-timing" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7018,7 +7018,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "netinfo" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7037,7 +7037,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "notifications" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7056,7 +7056,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "object-entries" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7075,7 +7075,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "object-fit" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7094,7 +7094,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "object-observe" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7113,7 +7113,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "object-values" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7132,7 +7132,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "objectrtc" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7151,7 +7151,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "offline-apps" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7170,7 +7170,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "offscreencanvas" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7189,7 +7189,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "ogg-vorbis" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7208,7 +7208,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "ogv" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7227,7 +7227,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "ol-reversed" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7246,7 +7246,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "once-event-listener" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7265,7 +7265,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "online-status" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7284,7 +7284,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "opus" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7303,7 +7303,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "orientation-sensor" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7322,7 +7322,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "outline" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7341,7 +7341,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "pad-start-end" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7360,7 +7360,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "page-transition-events" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7379,7 +7379,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "pagevisibility" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7398,7 +7398,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "passive-event-listener" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7417,7 +7417,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "passkeys" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7436,7 +7436,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "path2d" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7455,7 +7455,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "payment-request" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7474,7 +7474,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "pdf-viewer" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7493,7 +7493,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "permissions-api" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7512,7 +7512,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "permissions-policy" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7531,7 +7531,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "picture" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7550,7 +7550,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "picture-in-picture" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7569,7 +7569,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "ping" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7588,7 +7588,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "png-alpha" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7607,7 +7607,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "pointer" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7626,7 +7626,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "pointer-events" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7645,7 +7645,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "pointerlock" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7664,7 +7664,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "portals" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7683,7 +7683,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "prefers-color-scheme" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7702,7 +7702,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "prefers-reduced-motion" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7721,7 +7721,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "progress" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7740,7 +7740,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "promise-finally" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7759,7 +7759,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "promises" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7778,7 +7778,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "proximity" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7797,7 +7797,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "proxy" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7816,7 +7816,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "publickeypinning" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7835,7 +7835,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "push-api" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7854,7 +7854,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "queryselector" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7873,7 +7873,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "readonly-attr" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7892,7 +7892,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "referrer-policy" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7911,7 +7911,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "registerprotocolhandler" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7930,7 +7930,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "rel-noopener" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7949,7 +7949,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "rel-noreferrer" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7968,7 +7968,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "rellist" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -7987,7 +7987,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "rem" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8006,7 +8006,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "requestanimationframe" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8025,7 +8025,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "requestidlecallback" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8044,7 +8044,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "resizeobserver" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8063,7 +8063,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "resource-timing" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8082,7 +8082,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "rest-parameters" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8101,7 +8101,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "rtcpeerconnection" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8120,7 +8120,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "ruby" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8139,7 +8139,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "run-in" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8158,7 +8158,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "same-site-cookie-attribute" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8177,7 +8177,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "screen-orientation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8196,7 +8196,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "script-async" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8215,7 +8215,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "script-defer" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8234,7 +8234,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "scrollintoview" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8253,7 +8253,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "scrollintoviewifneeded" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8272,7 +8272,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "sdch" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8291,7 +8291,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "selection-api" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8310,7 +8310,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "selectlist" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8329,7 +8329,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "server-timing" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8348,7 +8348,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "serviceworkers" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8367,7 +8367,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "setimmediate" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8386,7 +8386,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "shadowdom" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8405,7 +8405,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "shadowdomv1" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8424,7 +8424,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "sharedarraybuffer" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8443,7 +8443,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "sharedworkers" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8462,7 +8462,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "sni" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8481,7 +8481,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "spdy" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8500,7 +8500,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "speech-recognition" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8519,7 +8519,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "speech-synthesis" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8538,7 +8538,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "spellcheck-attribute" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8557,7 +8557,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "sql-storage" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8576,7 +8576,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "srcset" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8595,7 +8595,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "stream" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8614,7 +8614,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "streams" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8633,7 +8633,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "stricttransportsecurity" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8652,7 +8652,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "style-scoped" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8671,7 +8671,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "subresource-integrity" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8690,7 +8690,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "svg" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8709,7 +8709,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "svg-css" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8728,7 +8728,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "svg-filters" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8747,7 +8747,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "svg-fonts" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8766,7 +8766,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "svg-fragment" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8785,7 +8785,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "svg-html" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8804,7 +8804,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "svg-html5" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8823,7 +8823,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "svg-img" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8842,7 +8842,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "svg-smil" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8861,7 +8861,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "sxg" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8880,7 +8880,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "tabindex-attr" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8899,7 +8899,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "template" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8918,7 +8918,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "template-literals" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8937,7 +8937,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "temporal" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8956,7 +8956,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "text-decoration" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8975,7 +8975,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "text-emphasis" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -8994,7 +8994,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "text-overflow" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9013,7 +9013,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "text-size-adjust" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9032,7 +9032,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "text-stroke" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9051,7 +9051,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "textcontent" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9070,7 +9070,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "textencoder" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9089,7 +9089,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "tls1-1" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9108,7 +9108,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "tls1-2" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9127,7 +9127,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "tls1-3" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9146,7 +9146,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "touch" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9165,7 +9165,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "transforms2d" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9184,7 +9184,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "transforms3d" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9203,7 +9203,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "trusted-types" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9222,7 +9222,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "ttf" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9241,7 +9241,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "typedarrays" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9260,7 +9260,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "u2f" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9279,7 +9279,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "unhandledrejection" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9298,7 +9298,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "upgradeinsecurerequests" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9317,7 +9317,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "url" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9336,7 +9336,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "url-scroll-to-text-fragment" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9355,7 +9355,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "urlsearchparams" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9374,7 +9374,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "use-strict" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9393,7 +9393,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "user-select-none" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9412,7 +9412,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "user-timing" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9431,7 +9431,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "variable-fonts" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9450,7 +9450,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "vector-effect" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9469,7 +9469,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "vibration" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9488,7 +9488,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "video" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9507,7 +9507,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "videotracks" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9526,7 +9526,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "view-transitions" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9545,7 +9545,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "viewport-unit-variants" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9564,7 +9564,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "viewport-units" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9583,7 +9583,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "wai-aria" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9602,7 +9602,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "wake-lock" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9621,7 +9621,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "wasm" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9640,7 +9640,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "wasm-reference-types" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9659,7 +9659,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "wav" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9678,7 +9678,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "wbr-element" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9697,7 +9697,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "web-animation" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9716,7 +9716,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "web-bluetooth" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9735,7 +9735,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "web-serial" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9754,7 +9754,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "web-share" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9773,7 +9773,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webauthn" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9792,7 +9792,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webcodecs" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9811,7 +9811,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webgl" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9830,7 +9830,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webgl2" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9849,7 +9849,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webgpu" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9868,7 +9868,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webhid" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9887,7 +9887,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webkit-user-drag" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9906,7 +9906,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webm" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9925,7 +9925,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webnfc" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9944,7 +9944,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webp" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9963,7 +9963,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "websockets" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -9982,7 +9982,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webtransport" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10001,7 +10001,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webusb" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10020,7 +10020,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webvr" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10039,7 +10039,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webvtt" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10058,7 +10058,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webworkers" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10077,7 +10077,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "webxr" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10096,7 +10096,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "will-change" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10115,7 +10115,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "woff" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10134,7 +10134,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "woff2" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10153,7 +10153,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "word-break" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10172,7 +10172,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "wordwrap" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10191,7 +10191,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "x-doc-messaging" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10210,7 +10210,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "x-frame-options" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10229,7 +10229,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "xhr2" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10248,7 +10248,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "xhtml" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10267,7 +10267,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "xhtmlsmil" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10286,7 +10286,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "xml-serializer" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,
@@ -10305,7 +10305,7 @@ pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
             Some(&*STAT)
         }
         "zstd" => {
-            static STAT: Lazy<AHashMap<BrowserNameAtom, IndexMap<&'static str, u8>>> = Lazy::new(
+            static STAT: Lazy<AHashMap<BrowserName, IndexMap<&'static str, u8>>> = Lazy::new(
                 || {
                     from_str::<
                     AHashMap<u8, IndexMap<&'static str, u8>>,

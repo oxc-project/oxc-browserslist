@@ -1,4 +1,3 @@
-use crate::data::browser_name::BrowserNameAtom;
 use crate::data::caniuse::BrowserStat;
 use crate::data::caniuse::CaniuseData;
 use crate::data::caniuse::VersionDetail;
@@ -7,9 +6,9 @@ use once_cell::sync::Lazy;
 pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
     let mut map = AHashMap::with_capacity(19);
     map.insert(
-        BrowserNameAtom::from("ie"),
+        "ie",
         BrowserStat {
-            name: BrowserNameAtom::from("ie"),
+            name: "ie",
             version_list: vec![
                 VersionDetail {
                     version: "5.5",
@@ -50,9 +49,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("edge"),
+        "edge",
         BrowserStat {
-            name: BrowserNameAtom::from("edge"),
+            name: "edge",
             version_list: vec![
                 VersionDetail {
                     version: "12",
@@ -308,9 +307,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("firefox"),
+        "firefox",
         BrowserStat {
-            name: BrowserNameAtom::from("firefox"),
+            name: "firefox",
             version_list: vec![
                 VersionDetail {
                     version: "2",
@@ -951,9 +950,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("chrome"),
+        "chrome",
         BrowserStat {
-            name: BrowserNameAtom::from("chrome"),
+            name: "chrome",
             version_list: vec![
                 VersionDetail {
                     version: "4",
@@ -1564,9 +1563,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("safari"),
+        "safari",
         BrowserStat {
-            name: BrowserNameAtom::from("safari"),
+            name: "safari",
             version_list: vec![
                 VersionDetail {
                     version: "3.1",
@@ -1777,9 +1776,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("opera"),
+        "opera",
         BrowserStat {
-            name: BrowserNameAtom::from("opera"),
+            name: "opera",
             version_list: vec![
                 VersionDetail {
                     version: "9",
@@ -2290,9 +2289,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("ios_saf"),
+        "ios_saf",
         BrowserStat {
-            name: BrowserNameAtom::from("ios_saf"),
+            name: "ios_saf",
             version_list: vec![
                 VersionDetail {
                     version: "3.2",
@@ -2493,9 +2492,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("op_mini"),
+        "op_mini",
         BrowserStat {
-            name: BrowserNameAtom::from("op_mini"),
+            name: "op_mini",
             version_list: vec![VersionDetail {
                 version: "all",
                 global_usage: 0.09f32,
@@ -2504,9 +2503,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("android"),
+        "android",
         BrowserStat {
-            name: BrowserNameAtom::from("android"),
+            name: "android",
             version_list: vec![
                 VersionDetail {
                     version: "2.1",
@@ -2562,9 +2561,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("bb"),
+        "bb",
         BrowserStat {
-            name: BrowserNameAtom::from("bb"),
+            name: "bb",
             version_list: vec![
                 VersionDetail {
                     version: "7",
@@ -2580,9 +2579,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("op_mob"),
+        "op_mob",
         BrowserStat {
-            name: BrowserNameAtom::from("op_mob"),
+            name: "op_mob",
             version_list: vec![
                 VersionDetail {
                     version: "10",
@@ -2623,9 +2622,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("and_chr"),
+        "and_chr",
         BrowserStat {
-            name: BrowserNameAtom::from("and_chr"),
+            name: "and_chr",
             version_list: vec![VersionDetail {
                 version: "122",
                 global_usage: 42.4244f32,
@@ -2634,9 +2633,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("and_ff"),
+        "and_ff",
         BrowserStat {
-            name: BrowserNameAtom::from("and_ff"),
+            name: "and_ff",
             version_list: vec![VersionDetail {
                 version: "123",
                 global_usage: 0.291306f32,
@@ -2645,9 +2644,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("ie_mob"),
+        "ie_mob",
         BrowserStat {
-            name: BrowserNameAtom::from("ie_mob"),
+            name: "ie_mob",
             version_list: vec![
                 VersionDetail {
                     version: "10",
@@ -2663,9 +2662,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("and_uc"),
+        "and_uc",
         BrowserStat {
-            name: BrowserNameAtom::from("and_uc"),
+            name: "and_uc",
             version_list: vec![VersionDetail {
                 version: "15.5",
                 global_usage: 0.818136f32,
@@ -2674,9 +2673,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("samsung"),
+        "samsung",
         BrowserStat {
-            name: BrowserNameAtom::from("samsung"),
+            name: "samsung",
             version_list: vec![
                 VersionDetail {
                     version: "4",
@@ -2782,9 +2781,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("and_qq"),
+        "and_qq",
         BrowserStat {
-            name: BrowserNameAtom::from("and_qq"),
+            name: "and_qq",
             version_list: vec![VersionDetail {
                 version: "13.1",
                 global_usage: 0.241722f32,
@@ -2793,9 +2792,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("baidu"),
+        "baidu",
         BrowserStat {
-            name: BrowserNameAtom::from("baidu"),
+            name: "baidu",
             version_list: vec![VersionDetail {
                 version: "13.18",
                 global_usage: 0f32,
@@ -2804,9 +2803,9 @@ pub static CANIUSE_BROWSERS: Lazy<CaniuseData> = Lazy::new(|| {
         },
     );
     map.insert(
-        BrowserNameAtom::from("kaios"),
+        "kaios",
         BrowserStat {
-            name: BrowserNameAtom::from("kaios"),
+            name: "kaios",
             version_list: vec![
                 VersionDetail {
                     version: "2.5",
