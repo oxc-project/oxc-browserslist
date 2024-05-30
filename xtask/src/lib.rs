@@ -107,9 +107,20 @@ pub fn build_node_versions() -> Result<()> {
     let releases_path = root().join("node_modules/node-releases/data/processed/envs.json");
     let releases: Vec<NodeRelease> = serde_json::from_slice(&fs::read(releases_path)?)?;
 
-    let versions = releases.into_iter().map(|release| release.version);
+    let versions = releases.into_iter().map(|release| {
+        let version = release.version.split('.').collect::<Vec<_>>();
+        assert_eq!(version.len(), 3);
+        let major: u32 = version[0].parse().unwrap();
+        let minor: u32 = version[1].parse().unwrap();
+        let patch: u32 = version[2].parse().unwrap();
+        quote! {
+            Version(#major, #minor, #patch)
+        }
+    });
     let output = quote! {
-        pub static NODE_VERSIONS: &[&str] = &[#(#versions),*];
+        use crate::semver::Version;
+
+        pub static NODE_VERSIONS: &[Version] = &[#(#versions),*];
     };
 
     fs::write(path, format_token_stream(output))?;
@@ -134,28 +145,36 @@ pub fn build_node_release_schedule() -> Result<()> {
         .into_iter()
         .map(|(version, NodeRelease { start, end })| {
             let version = version.trim_start_matches('v');
+            let version = version.split('.').collect::<Vec<_>>();
+            assert!(version.len() > 0);
+            let major: u32 = version[0].parse().unwrap();
+            let minor: u32 = version
+                .get(1)
+                .map(|v| v.parse().unwrap())
+                .unwrap_or_default();
+            let patch: u32 = version
+                .get(2)
+                .map(|v| v.parse().unwrap())
+                .unwrap_or_default();
             quote! {
-                map.insert(#version, (#start, #end));
+                (Version(#major, #minor, #patch), #start, #end)
             }
-        });
+        })
+        .collect::<Vec<_>>();
 
     let output = quote! {
-        use rustc_hash::FxHashMap;
         use chrono::{NaiveDate, NaiveDateTime};
         use once_cell::sync::Lazy;
+        use crate::semver::Version;
 
-        pub static RELEASE_SCHEDULE: Lazy<FxHashMap<&str, (NaiveDateTime, NaiveDateTime)>> =
+        pub static RELEASE_SCHEDULE: Lazy<Vec<(Version, NaiveDateTime, NaiveDateTime)>> =
             Lazy::new(|| {
                 let date_format = "%Y-%m-%d";
-
-                let mut map = FxHashMap::default();
-                #(#versions)*;
-                map
+                [#(#versions),*]
                     .into_iter()
-                    .map(|(version, (start, end))| {
+                    .map(|(version, start, end)| {
                         (
                             version,
-                            (
                                 NaiveDate::parse_from_str(start, date_format)
                                 .unwrap()
                                 .and_hms_opt(0, 0, 0)
@@ -164,10 +183,9 @@ pub fn build_node_release_schedule() -> Result<()> {
                                 .unwrap()
                                 .and_hms_opt(0, 0, 0)
                                 .unwrap(),
-                            ),
                         )
                     })
-                .collect()
+                .collect::<Vec<_>>()
             });
     };
 

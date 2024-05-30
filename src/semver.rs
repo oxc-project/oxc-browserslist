@@ -1,7 +1,7 @@
-use std::{cmp::Ordering, num::ParseIntError, str::FromStr};
+use std::{cmp::Ordering, fmt, num::ParseIntError, str::FromStr};
 
-#[derive(PartialEq, Eq, PartialOrd, Ord, Default, Debug, Clone)]
-pub struct Version(u32, u32, u32);
+#[derive(PartialEq, Eq, PartialOrd, Ord, Default, Debug, Copy, Clone)]
+pub struct Version(pub u32, pub u32, pub u32);
 
 impl Version {
     #[inline]
@@ -33,25 +33,27 @@ impl FromStr for Version {
     }
 }
 
-pub fn compare(a: &str, b: &str) -> Ordering {
-    a.parse::<Version>()
-        .unwrap_or_default()
-        .cmp(&b.parse().unwrap_or_default())
+impl fmt::Display for Version {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}.{}.{}", self.0, self.1, self.2)
+    }
 }
 
-pub fn loose_compare(a: &str, b: &str) -> Ordering {
-    a.split('.')
-        .take(2)
-        .zip(b.split('.').take(2))
-        .fold(Ordering::Equal, |ord, (a, b)| {
-            if ord == Ordering::Equal {
-                a.parse::<i32>()
-                    .unwrap_or_default()
-                    .cmp(&b.parse::<i32>().unwrap_or_default())
-            } else {
-                ord
-            }
-        })
+pub fn loose_compare(a: &Version, b: &str) -> Ordering {
+    let mut b = b.split('.');
+    let Some(first) = b.next() else {
+        return Ordering::Equal;
+    };
+    let first: u32 = first.parse().unwrap_or_default();
+    let x = a.0.cmp(&first);
+    if !x.is_eq() {
+        return x;
+    }
+    let Some(second) = b.next() else {
+        return Ordering::Equal;
+    };
+    let first: u32 = second.parse().unwrap_or_default();
+    a.1.cmp(&first)
 }
 
 #[cfg(test)]
