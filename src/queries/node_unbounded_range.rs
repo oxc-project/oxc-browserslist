@@ -1,12 +1,13 @@
 use super::{Distrib, QueryResult};
-use crate::{data::node::NODE_VERSIONS, parser::Comparator, semver::compare};
-use std::cmp::Ordering;
+use crate::{data::node::NODE_VERSIONS, parser::Comparator, semver::Version};
+use std::{cmp::Ordering, str::FromStr};
 
 pub(super) fn node_unbounded_range(comparator: Comparator, version: &str) -> QueryResult {
+    let version = Version::from_str(version).unwrap();
     let distribs = NODE_VERSIONS
         .iter()
         .filter(|v| {
-            let ord = compare(v, version);
+            let ord = (*v).cmp(&version);
             match comparator {
                 Comparator::Greater => matches!(ord, Ordering::Greater),
                 Comparator::Less => matches!(ord, Ordering::Less),
@@ -14,7 +15,7 @@ pub(super) fn node_unbounded_range(comparator: Comparator, version: &str) -> Que
                 Comparator::LessOrEqual => matches!(ord, Ordering::Less | Ordering::Equal),
             }
         })
-        .map(|version| Distrib::new("node", *version))
+        .map(|version| Distrib::new("node", version.to_string()))
         .collect();
     Ok(distribs)
 }

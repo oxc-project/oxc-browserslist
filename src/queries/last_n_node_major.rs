@@ -1,30 +1,21 @@
 use super::{Distrib, QueryResult};
-use crate::{data::node::NODE_VERSIONS, semver::Version};
+use crate::data::node::NODE_VERSIONS;
 use itertools::Itertools;
 
 pub(super) fn last_n_node_major(count: usize) -> QueryResult {
     let minimum = NODE_VERSIONS
         .iter()
         .rev()
-        .map(|version| {
-            version
-                .parse::<Version>()
-                .map(|version| version.major())
-                .unwrap_or_default()
-        })
+        .map(|version| version.major())
         .dedup()
         .nth(count - 1)
         .unwrap_or_default();
 
     let distribs = NODE_VERSIONS
         .iter()
-        .filter(|version| {
-            version
-                .parse::<Version>()
-                .is_ok_and(|version| version.major() >= minimum)
-        })
+        .filter(|version| version.major() >= minimum)
         .rev()
-        .map(|version| Distrib::new("node", *version))
+        .map(|version| Distrib::new("node", version.to_string()))
         .collect();
 
     Ok(distribs)
