@@ -1,6 +1,6 @@
 [package]
 name        = "oxc-browserslist"
-version     = "0.16.1"
+version     = "0.16.2"
 authors     = ["Boshen <boshenc@gmail.com>", "Pig Fang <g-plane@hotmail.com>"]
 edition     = "2021"
 description = "Rust-ported Browserslist for Oxc."
