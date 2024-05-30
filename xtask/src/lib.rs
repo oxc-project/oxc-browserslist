@@ -258,23 +258,27 @@ pub fn build_caniuse_global() -> Result<()> {
                 &feature
                     .stats
                     .iter()
-                    .map(|(name, versions)| {
-                        (
-                            encode_browser_name(name),
-                            versions
-                                .into_iter()
-                                .map(|(version, flags)| {
-                                    let mut bit = 0;
-                                    if flags.contains('y') {
-                                        bit |= 1;
-                                    }
-                                    if flags.contains('a') {
-                                        bit |= 2;
-                                    }
-                                    (version, bit)
-                                })
-                                .collect::<IndexMap<_, u8>>(),
-                        )
+                    .filter_map(|(name, versions)| {
+                        let name = encode_browser_name(name);
+                        let versions = versions
+                            .into_iter()
+                            .filter(|(_version, flag)| *flag != "n")
+                            .collect::<Vec<_>>();
+                        let y = versions
+                            .iter()
+                            .filter(|(_, flag)| flag.contains('y'))
+                            .map(|x| x.0.clone())
+                            .collect::<Vec<_>>();
+                        let a = versions
+                            .iter()
+                            .filter(|(_, flag)| flag.contains('a'))
+                            .map(|x| x.0.clone())
+                            .collect::<Vec<_>>();
+                        if y.is_empty() && a.is_empty() {
+                            None
+                        } else {
+                            Some((name, (y, a)))
+                        }
                     })
                     .collect::<IndexMap<_, _>>(),
             )
@@ -286,19 +290,19 @@ pub fn build_caniuse_global() -> Result<()> {
 
     let output = quote! {
         use rustc_hash::FxHashMap;
-        use indexmap::IndexMap;
         use once_cell::sync::Lazy;
         use serde_json::from_str;
-        use crate::data::caniuse::features::Feature;
+        use crate::data::caniuse::features::{Feature, FeatureSet};
+        use crate::data::browser_name::decode_browser_name;
 
-        pub(crate) fn _get_feature_stat(name: &str) -> Option<&'static Feature> {
+        pub(crate) fn get_feature_stat(name: &str) -> Option<&'static Feature> {
             match name {
                 #( #keys => {
                     static STAT: Lazy<Feature> = Lazy::new(|| {
-                        from_str::<FxHashMap::<u8, IndexMap<&'static str, u8>>>(#features)
+                        from_str::<FxHashMap::<u8, FeatureSet>>(#features)
                             .unwrap()
                             .into_iter()
-                            .map(|(browser, versions)| (crate::data::browser_name::decode_browser_name(browser), versions))
+                            .map(|(browser, versions)| (decode_browser_name(browser), versions))
                             .collect()
                     });
                     Some(&*STAT)
@@ -378,6 +382,7 @@ pub fn build_caniuse_region() -> Result<()> {
         use once_cell::sync::Lazy;
         use serde_json::from_str;
         use crate::data::BrowserName;
+        use crate::data::browser_name::decode_browser_name;
 
         type RegionData = Vec<(BrowserName, &'static str, f32)>;
 
@@ -388,7 +393,7 @@ pub fn build_caniuse_region() -> Result<()> {
                         from_str::<Vec<(u8, &'static str, f32)>>(#data)
                             .unwrap()
                             .into_iter()
-                            .map(|(browser, version, usage)| (crate::data::browser_name::decode_browser_name(browser), version, usage))
+                            .map(|(browser, version, usage)| (decode_browser_name(browser), version, usage))
                             .collect()
                     });
                     Some(&*USAGE)

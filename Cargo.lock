@@ -437,7 +437,6 @@ dependencies = [
  "criterion2",
  "either",
  "getrandom",
- "indexmap",
  "itertools",
  "js-sys",
  "nom",

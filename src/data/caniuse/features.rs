@@ -1,9 +1,12 @@
 use super::BrowserName;
-use indexmap::IndexMap;
-use rustc_hash::FxHashMap;
+use rustc_hash::{FxHashMap, FxHashSet};
 
-pub type Feature = FxHashMap<BrowserName, IndexMap<&'static str, u8>>;
+pub type FeatureSet = (
+    /* yes */ FxHashSet<&'static str>,
+    /* partial */ FxHashSet<&'static str>,
+);
+pub type Feature = FxHashMap<BrowserName, FeatureSet>;
 
 pub fn get_feature_stat(name: &str) -> Option<&'static Feature> {
-    crate::generated::caniuse_feature_matching::_get_feature_stat(name)
+    crate::generated::caniuse_feature_matching::get_feature_stat(name)
 }
