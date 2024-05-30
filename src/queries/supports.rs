@@ -1,13 +1,13 @@
 use super::{Distrib, QueryResult};
 use crate::{
-    data::caniuse::{features::get_feature_stat, get_browser_stat, to_desktop_name, VersionDetail},
+    data::caniuse::{
+        features::{get_feature_stat, FeatureSet},
+        get_browser_stat, to_desktop_name, VersionDetail,
+    },
     error::Error,
     parser::SupportKind,
     Opts,
 };
-
-const Y: u8 = 1;
-const A: u8 = 2;
 
 pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> QueryResult {
     let include_partial = matches!(kind, Some(SupportKind::Partially) | None);
@@ -30,23 +30,26 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         .iter()
                         .filter(|version| version.release_date.is_some())
                         .last()
-                        .and_then(|latest_version| versions.get(latest_version.version))
-                        .is_some_and(|flags| is_supported(*flags, include_partial));
+                        .is_some_and(|latest_version| {
+                            is_supported(versions, latest_version.version, include_partial)
+                        });
                 browser_stat
                     .version_list
                     .iter()
                     .filter_map(move |VersionDetail { version, .. }| {
-                        versions
-                            .get(version)
-                            .or_else(|| match desktop_name {
-                                Some(desktop_name) if check_desktop => feature
-                                    .get(desktop_name)
-                                    .and_then(|versions| versions.get(version)),
-                                _ => None,
-                            })
-                            .and_then(|flags| {
-                                is_supported(*flags, include_partial).then_some(version)
-                            })
+                        if is_supported(versions, version, include_partial) {
+                            return Some(version);
+                        }
+                        if check_desktop {
+                            if let Some(desktop_name) = desktop_name {
+                                if let Some(versions) = feature.get(desktop_name) {
+                                    if is_supported(versions, version, include_partial) {
+                                        return Some(version);
+                                    }
+                                }
+                            }
+                        }
+                        None
                     })
                     .map(move |version| Distrib::new(name, *version))
             })
@@ -57,8 +60,8 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
     }
 }
 
-fn is_supported(flags: u8, include_partial: bool) -> bool {
-    flags & Y != 0 || include_partial && flags & A != 0
+fn is_supported(set: &FeatureSet, version: &str, include_partial: bool) -> bool {
+    set.0.contains(&version) || (include_partial && set.1.contains(&version))
 }
 
 #[cfg(test)]

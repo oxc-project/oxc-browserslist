@@ -1,3 +1,4 @@
+use crate::data::browser_name::decode_browser_name;
 use crate::data::BrowserName;
 use once_cell::sync::Lazy;
 use serde_json::from_str;
@@ -14,7 +15,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -32,7 +33,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -50,7 +51,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -68,7 +69,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -86,7 +87,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -104,7 +105,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -122,7 +123,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -140,7 +141,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -158,7 +159,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -176,7 +177,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -194,7 +195,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -212,7 +213,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -230,7 +231,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -248,7 +249,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -266,7 +267,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -284,7 +285,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -302,7 +303,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -320,7 +321,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -338,7 +339,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -356,7 +357,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -374,7 +375,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -392,7 +393,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -410,7 +411,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -428,7 +429,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -446,7 +447,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -464,7 +465,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -482,7 +483,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -500,7 +501,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -518,7 +519,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -536,7 +537,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -554,7 +555,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -572,7 +573,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -590,7 +591,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -608,7 +609,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -626,7 +627,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -644,7 +645,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -662,7 +663,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -680,7 +681,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -698,7 +699,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -716,7 +717,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -734,7 +735,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -752,7 +753,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -770,7 +771,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -788,7 +789,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -806,7 +807,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -824,7 +825,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -842,7 +843,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -860,7 +861,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -878,7 +879,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -896,7 +897,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -914,7 +915,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -932,7 +933,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -950,7 +951,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -968,7 +969,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -986,7 +987,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1004,7 +1005,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1022,7 +1023,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1040,7 +1041,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1058,7 +1059,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1076,7 +1077,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1094,7 +1095,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1112,7 +1113,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1130,7 +1131,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1148,7 +1149,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1166,7 +1167,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1184,7 +1185,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1202,7 +1203,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1220,7 +1221,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1238,7 +1239,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1256,7 +1257,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1274,7 +1275,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1292,7 +1293,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1310,7 +1311,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1328,7 +1329,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1346,7 +1347,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1364,7 +1365,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1382,7 +1383,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1400,7 +1401,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1418,7 +1419,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1436,7 +1437,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1454,7 +1455,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1472,7 +1473,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1490,7 +1491,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1508,7 +1509,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1526,7 +1527,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1544,7 +1545,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1562,7 +1563,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1580,7 +1581,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1598,7 +1599,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1616,7 +1617,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1634,7 +1635,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1652,7 +1653,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1670,7 +1671,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1688,7 +1689,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1706,7 +1707,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1724,7 +1725,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1742,7 +1743,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1760,7 +1761,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1778,7 +1779,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1796,7 +1797,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1814,7 +1815,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1832,7 +1833,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1850,7 +1851,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1868,7 +1869,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1886,7 +1887,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1904,7 +1905,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1922,7 +1923,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1940,7 +1941,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1958,7 +1959,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1976,7 +1977,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -1994,7 +1995,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2012,7 +2013,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2030,7 +2031,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2048,7 +2049,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2066,7 +2067,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2084,7 +2085,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2102,7 +2103,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2120,7 +2121,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2138,7 +2139,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2156,7 +2157,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2174,7 +2175,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2192,7 +2193,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2210,7 +2211,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2228,7 +2229,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2246,7 +2247,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2264,7 +2265,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2282,7 +2283,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2300,7 +2301,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2318,7 +2319,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2336,7 +2337,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2354,7 +2355,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2372,7 +2373,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2390,7 +2391,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2408,7 +2409,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2426,7 +2427,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2444,7 +2445,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2462,7 +2463,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2480,7 +2481,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2498,7 +2499,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2516,7 +2517,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2534,7 +2535,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2552,7 +2553,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2570,7 +2571,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2588,7 +2589,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2606,7 +2607,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2624,7 +2625,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2642,7 +2643,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2660,7 +2661,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2678,7 +2679,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2696,7 +2697,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2714,7 +2715,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2732,7 +2733,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2750,7 +2751,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2768,7 +2769,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2786,7 +2787,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2804,7 +2805,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2822,7 +2823,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2840,7 +2841,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2858,7 +2859,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2876,7 +2877,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2894,7 +2895,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2912,7 +2913,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2930,7 +2931,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2948,7 +2949,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2966,7 +2967,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -2984,7 +2985,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3002,7 +3003,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3020,7 +3021,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3038,7 +3039,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3056,7 +3057,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3074,7 +3075,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3092,7 +3093,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3110,7 +3111,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3128,7 +3129,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3146,7 +3147,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3164,7 +3165,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3182,7 +3183,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3200,7 +3201,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3218,7 +3219,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3236,7 +3237,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3254,7 +3255,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3272,7 +3273,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3290,7 +3291,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3308,7 +3309,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3326,7 +3327,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3344,7 +3345,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3362,7 +3363,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3380,7 +3381,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3398,7 +3399,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3416,7 +3417,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3434,7 +3435,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3452,7 +3453,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3470,7 +3471,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3488,7 +3489,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3506,7 +3507,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3524,7 +3525,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3542,7 +3543,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3560,7 +3561,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3578,7 +3579,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3596,7 +3597,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3614,7 +3615,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3632,7 +3633,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3650,7 +3651,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3668,7 +3669,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3686,7 +3687,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3704,7 +3705,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3722,7 +3723,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3740,7 +3741,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3758,7 +3759,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3776,7 +3777,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3794,7 +3795,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3812,7 +3813,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3830,7 +3831,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3848,7 +3849,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3866,7 +3867,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3884,7 +3885,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3902,7 +3903,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3920,7 +3921,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3938,7 +3939,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3956,7 +3957,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3974,7 +3975,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -3992,7 +3993,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4010,7 +4011,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4028,7 +4029,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4046,7 +4047,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4064,7 +4065,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4082,7 +4083,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4100,7 +4101,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4118,7 +4119,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4136,7 +4137,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4154,7 +4155,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4172,7 +4173,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4190,7 +4191,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4208,7 +4209,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4226,7 +4227,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4244,7 +4245,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4262,7 +4263,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4280,7 +4281,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4298,7 +4299,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4316,7 +4317,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
@@ -4334,7 +4335,7 @@ pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
                     .unwrap()
                     .into_iter()
                     .map(|(browser, version, usage)| (
-                        crate::data::browser_name::decode_browser_name(browser),
+                        decode_browser_name(browser),
                         version,
                         usage,
                     ))
