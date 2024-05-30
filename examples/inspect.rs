@@ -1,25 +1,21 @@
 use browserslist::{resolve, Opts};
-use clap::Parser;
-
-#[derive(Parser)]
-struct Args {
-    #[arg(long)]
-    mobile_to_desktop: bool,
-
-    #[arg(long)]
-    ignore_unknown_versions: bool,
-
-    queries: Vec<String>,
-}
+use pico_args::Arguments;
 
 fn main() {
-    let args = Args::parse();
+    let mut args = Arguments::from_env();
+    let mobile_to_desktop = args.contains("--mobile-to-desktop");
+    let ignore_unknown_versions = args.contains("--ignore-unknown-versions");
+    let queries = args
+        .finish()
+        .into_iter()
+        .filter_map(|s| s.to_str().map(ToString::to_string))
+        .collect::<Vec<_>>();
 
     match resolve(
-        &args.queries,
+        queries,
         &Opts {
-            mobile_to_desktop: args.mobile_to_desktop,
-            ignore_unknown_versions: args.ignore_unknown_versions,
+            mobile_to_desktop,
+            ignore_unknown_versions,
             ..Default::default()
         },
     ) {
