@@ -1,5 +1,4 @@
 use crate::{error::Error, opts::Opts};
-use either::Either;
 use parser::parse;
 use rustc_hash::FxHashMap;
 use serde::Deserialize;
@@ -87,11 +86,11 @@ pub fn load(opts: &Opts) -> Result<Vec<String>, Error> {
             None => env::current_dir().map_err(|_| Error::FailedToAccessCurrentDir)?,
         };
         match find_config(path)? {
-            Either::Left(s) => {
+            FindConfig::String(s) => {
                 let config = parse(&s, get_env(opts), opts.throw_on_missing)?;
                 Ok(config.env.unwrap_or(config.defaults))
             }
-            Either::Right(config) => {
+            FindConfig::PkgConfig(config) => {
                 pick_queries_by_env(config, &get_env(opts), opts.throw_on_missing)
             }
         }
@@ -102,7 +101,12 @@ pub fn load_with_config(config: PkgConfig, opts: &Opts) -> Result<Vec<String>, E
     pick_queries_by_env(config, &get_env(opts), opts.throw_on_missing)
 }
 
-fn find_config<P: AsRef<Path>>(path: P) -> Result<Either<String, PkgConfig>, Error> {
+enum FindConfig {
+    String(Cow<'static, str>),
+    PkgConfig(PkgConfig),
+}
+
+fn find_config<P: AsRef<Path>>(path: P) -> Result<FindConfig, Error> {
     for dir in path.as_ref().ancestors() {
         let path_plain = dir.join("browserslist");
         let plain = File::open(&path_plain);
@@ -152,7 +156,7 @@ fn find_config<P: AsRef<Path>>(path: P) -> Result<Either<String, PkgConfig>, Err
                 plain
                     .read_to_string(&mut content)
                     .map_err(|_| Error::FailedToReadConfig(format!("{}", path_plain.display())))?;
-                return Ok(Either::Left(content));
+                return Ok(FindConfig::String(Cow::Owned(content)));
             }
             (_, Ok(_), Some(_)) if is_rc_existed => {
                 return Err(Error::DuplicatedConfig(
@@ -165,14 +169,14 @@ fn find_config<P: AsRef<Path>>(path: P) -> Result<Either<String, PkgConfig>, Err
                 let mut content = String::new();
                 rc.read_to_string(&mut content)
                     .map_err(|_| Error::FailedToReadConfig(format!("{}", path_rc.display())))?;
-                return Ok(Either::Left(content));
+                return Ok(FindConfig::String(Cow::Owned(content)));
             }
-            (_, _, Some(pkg)) => return Ok(Either::Right(pkg)),
+            (_, _, Some(pkg)) => return Ok(FindConfig::PkgConfig(pkg)),
             _ => continue,
         };
     }
 
-    Ok(Either::Left(String::from("defaults")))
+    Ok(FindConfig::String(Cow::Borrowed("defaults")))
 }
 
 fn get_env(opts: &Opts) -> Cow<str> {
