@@ -1,15 +1,14 @@
 use super::{Distrib, QueryResult};
 use crate::data::node::NODE_VERSIONS;
-use itertools::Itertools;
 
 pub(super) fn last_n_node_major(count: usize) -> QueryResult {
-    let minimum = NODE_VERSIONS
+    let mut vec = NODE_VERSIONS
         .iter()
         .rev()
         .map(|version| version.major())
-        .dedup()
-        .nth(count - 1)
-        .unwrap_or_default();
+        .collect::<Vec<_>>();
+    vec.dedup();
+    let minimum = vec.into_iter().nth(count - 1).unwrap_or_default();
 
     let distribs = NODE_VERSIONS
         .iter()

@@ -1,20 +1,21 @@
 use super::{count_filter_versions, Distrib, QueryResult};
 use crate::{data::caniuse::get_browser_stat, error::Error, opts::Opts};
-use itertools::Itertools;
 
 pub(super) fn last_n_x_major_browsers(count: usize, name: &str, opts: &Opts) -> QueryResult {
     let (name, stat) = get_browser_stat(name, opts.mobile_to_desktop)
         .ok_or_else(|| Error::BrowserNotFound(name.to_string()))?;
     let count = count_filter_versions(name, opts.mobile_to_desktop, count);
-    let minimum = stat
+    let mut vec = stat
         .version_list
         .iter()
         .filter(|version| version.release_date.is_some())
         .map(|version| version.version)
         .rev()
         .map(|version| version.split('.').next().unwrap())
-        .dedup()
-        .nth(count - 1)
+        .collect::<Vec<_>>();
+    vec.dedup();
+    let minimum = vec
+        .get(count - 1)
         .and_then(|minimum| minimum.parse().ok())
         .unwrap_or(0);
 
