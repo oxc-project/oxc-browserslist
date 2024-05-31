@@ -1,9 +1,9 @@
 use super::{Distrib, QueryResult};
 use crate::data::node::{NODE_VERSIONS, RELEASE_SCHEDULE};
-use chrono::Local;
+use time::OffsetDateTime;
 
 pub(super) fn maintained_node() -> QueryResult {
-    let now = Local::now().naive_local();
+    let now = OffsetDateTime::now_utc().to_julian_day();
 
     let versions = RELEASE_SCHEDULE
         .iter()

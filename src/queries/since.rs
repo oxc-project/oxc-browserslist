@@ -4,13 +4,14 @@ use crate::{
     error::Error,
     opts::Opts,
 };
-use chrono::{LocalResult, TimeZone, Utc};
+use time::{Date, Month, OffsetDateTime, Time};
 
 pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult {
-    let time = match Utc.with_ymd_and_hms(year, month, day, 0, 0, 0) {
-        LocalResult::Single(date) => date.timestamp(),
-        _ => return Err(Error::InvalidDate(format!("{year}-{month}-{day}"))),
-    };
+    let month = Month::try_from(month as u8)
+        .map_err(|_| Error::InvalidDate(format!("{year}-{month}-{day}")))?;
+    let date = Date::from_calendar_date(year, month, day as u8)
+        .map_err(|_| Error::InvalidDate(format!("{year}-{month}-{day}")))?;
+    let time = OffsetDateTime::new_utc(date, Time::MIDNIGHT).unix_timestamp();
 
     let distribs = CANIUSE_BROWSERS
         .keys()
