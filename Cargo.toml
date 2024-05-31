@@ -36,7 +36,6 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 rustc-hash = "1.1.0"
 time       = "0.3.36"
-either     = "1.9"
 itertools  = "0.13"
 nom        = "7.1"
 once_cell  = "1.19"
