@@ -17,14 +17,14 @@
 //! ```
 //! use browserslist::{Distrib, Opts, resolve, Error};
 //!
-//! let distribs = resolve(["ie <= 6"], &Opts::default()).unwrap();
+//! let distribs = resolve(&["ie <= 6"], &Opts::default()).unwrap();
 //! assert_eq!(distribs[0].name(), "ie");
 //! assert_eq!(distribs[0].version(), "6");
 //! assert_eq!(distribs[1].name(), "ie");
 //! assert_eq!(distribs[1].version(), "5.5");
 //!
 //! assert_eq!(
-//!     resolve(["yuru 1.0"], &Opts::default()),
+//!     resolve(&["yuru 1.0"], &Opts::default()),
 //!     Err(Error::BrowserNotFound(String::from("yuru")))
 //! );
 //! ```
@@ -37,7 +37,7 @@
 //! ```
 //! use browserslist::{Distrib, Opts, resolve, Error};
 //!
-//! let distribs = resolve(["ie <= 6"], &Opts::default()).unwrap();
+//! let distribs = resolve(&["ie <= 6"], &Opts::default()).unwrap();
 //! assert_eq!(
 //!     distribs.into_iter().map(|d| d.to_string()).collect::<Vec<_>>(),
 //!     vec![String::from("ie 6"), String::from("ie 5.5")]
@@ -81,29 +81,31 @@ mod wasm;
 /// ```
 /// use browserslist::{Distrib, Opts, resolve};
 ///
-/// let distribs = resolve(["ie <= 6"], &Opts::default()).unwrap();
+/// let distribs = resolve(&["ie <= 6"], &Opts::default()).unwrap();
 /// assert_eq!(distribs[0].name(), "ie");
 /// assert_eq!(distribs[0].version(), "6");
 /// assert_eq!(distribs[1].name(), "ie");
 /// assert_eq!(distribs[1].version(), "5.5");
 /// ```
-pub fn resolve<I, S>(queries: I, opts: &Opts) -> Result<Vec<Distrib>, Error>
+pub fn resolve<S>(queries: &[S], opts: &Opts) -> Result<Vec<Distrib>, Error>
 where
     S: AsRef<str>,
-    I: IntoIterator<Item = S>,
 {
-    let query = queries
-        .into_iter()
-        .enumerate()
-        .fold(String::new(), |mut s, (i, query)| {
-            if i > 0 {
-                s.push_str(", ");
-            }
-            s.push_str(query.as_ref());
-            s
-        });
+    if queries.len() == 1 {
+        _resolve(queries[0].as_ref(), opts)
+    } else {
+        let s = &queries
+            .iter()
+            .map(|q| q.as_ref())
+            .collect::<Vec<_>>()
+            .join(", ");
+        _resolve(s, opts)
+    }
+}
 
-    let mut distribs = parse_browserslist_query(&query)?
+// reduce generic monomorphization
+fn _resolve(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
+    let mut distribs = parse_browserslist_query(query)?
         .1
         .into_iter()
         .enumerate()
@@ -147,5 +149,5 @@ where
 /// assert!(!execute(&Opts::default()).unwrap().is_empty());
 /// ```
 pub fn execute(opts: &Opts) -> Result<Vec<Distrib>, Error> {
-    resolve(config::load(opts)?, opts)
+    resolve(&config::load(opts)?, opts)
 }
