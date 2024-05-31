@@ -78,7 +78,7 @@ impl Distrib {
     /// assert_eq!(distrib.name(), "firefox");
     /// ```
     #[must_use]
-    pub fn name(&self) -> &str {
+    pub fn name(&self) -> &'static str {
         self.0
     }
 

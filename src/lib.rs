@@ -53,7 +53,6 @@
 //! so you will receive an error when querying `current node` in those environments.
 
 use parser::parse_browserslist_query;
-use std::cmp::Ordering;
 #[cfg(all(feature = "wasm_bindgen", target_arch = "wasm32"))]
 pub use wasm::browserslist;
 pub use {error::Error, opts::Opts, queries::Distrib};
@@ -125,16 +124,9 @@ where
             Ok::<_, Error>(distribs)
         })?;
 
-    distribs.sort_by(|a, b| match a.name().cmp(b.name()) {
-        Ordering::Equal => {
-            let version_a = a.version().split('-').next().unwrap();
-            let version_b = b.version().split('-').next().unwrap();
-            version_b
-                .parse::<semver::Version>()
-                .unwrap_or_default()
-                .cmp(&version_a.parse().unwrap_or_default())
-        }
-        ord => ord,
+    distribs.sort_by_cached_key(|d| {
+        let version = d.version().parse::<semver::Version>().unwrap_or_default();
+        (d.name(), std::cmp::Reverse(version))
     });
     distribs.dedup();
 
