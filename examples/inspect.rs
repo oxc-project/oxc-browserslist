@@ -12,7 +12,7 @@ fn main() {
         .collect::<Vec<_>>();
 
     match resolve(
-        queries,
+        &queries,
         &Opts {
             mobile_to_desktop,
             ignore_unknown_versions,

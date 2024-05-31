@@ -30,7 +30,7 @@ pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
         .filter(|line| !line.is_empty())
         .collect::<Vec<_>>();
 
-    let actual = resolve([query], opts)
+    let actual = resolve(&[query], opts)
         .unwrap()
         .iter()
         .map(std::string::ToString::to_string)
@@ -40,5 +40,5 @@ pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
 }
 
 pub fn should_failed(query: &str, opts: &Opts) -> Error {
-    resolve([query], opts).unwrap_err()
+    resolve(&[query], opts).unwrap_err()
 }

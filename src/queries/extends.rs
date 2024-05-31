@@ -36,7 +36,7 @@ pub(super) fn extends(pkg: &str, opts: &Opts) -> QueryResult {
     let config = serde_json::from_str(&String::from_utf8_lossy(&output))
         .map_err(|_| Error::FailedToResolveExtend(pkg.to_string()))?;
 
-    resolve(config::load_with_config(config, opts)?, opts)
+    resolve(&config::load_with_config(config, opts)?, opts)
 }
 
 fn check_extend_name(pkg: &str) -> Result<(), Error> {
