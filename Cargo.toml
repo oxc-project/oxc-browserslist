@@ -30,7 +30,7 @@ cargo         = { level = "warn", priority = -1 }
 workspace = true
 
 [lib]
-name       = "browserslist"
+name = "browserslist"
 
 [[bench]]
 name    = "resolve"

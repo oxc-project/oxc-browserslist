@@ -1,6 +1,6 @@
 use super::{Distrib, QueryResult};
 use crate::{
-    data::caniuse::{get_browser_stat, CANIUSE_BROWSERS},
+    data::caniuse::{caniuse_browsers, get_browser_stat},
     error::Error,
     opts::Opts,
 };
@@ -13,7 +13,7 @@ pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult
         .map_err(|_| Error::InvalidDate(format!("{year}-{month}-{day}")))?;
     let time = OffsetDateTime::new_utc(date, Time::MIDNIGHT).unix_timestamp();
 
-    let distribs = CANIUSE_BROWSERS
+    let distribs = caniuse_browsers()
         .keys()
         .filter_map(|name| get_browser_stat(name, opts.mobile_to_desktop))
         .flat_map(|(name, stat)| {

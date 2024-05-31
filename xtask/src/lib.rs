@@ -203,25 +203,26 @@ pub fn build_caniuse_global() -> Result<()> {
             }
         });
         quote! {
-            map.insert(#name, BrowserStat {
+            (#name, BrowserStat {
                 name: #name,
-                version_list: vec![#(#detail),*],
-            });
+                version_list: vec![#(#detail),*]
+            })
         }
     });
 
     let output = quote! {
+        use std::sync::OnceLock;
         use rustc_hash::FxHashMap;
-        use crate::data::caniuse::VersionDetail;
-        use crate::data::caniuse::BrowserStat;
-        use crate::data::caniuse::CaniuseData;
-        use once_cell::sync::Lazy;
-        pub static CANIUSE_BROWSERS: Lazy<CaniuseData> =
-            Lazy::new(|| {
-                let mut map = FxHashMap::default();
-                #(#browser_stat)*;
-                map
-            });
+        use crate::data::caniuse::{BrowserStat, CaniuseData, VersionDetail};
+
+        pub fn caniuse_browsers() -> &'static CaniuseData {
+            static CANIUSE_BROWSERS: OnceLock<CaniuseData> = OnceLock::new();
+            CANIUSE_BROWSERS.get_or_init(|| {
+                FxHashMap::from_iter([
+                    #(#browser_stat),*
+                ])
+            })
+        }
     };
 
     fs::write(
