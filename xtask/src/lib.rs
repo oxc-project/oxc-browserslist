@@ -294,29 +294,37 @@ pub fn build_caniuse_global() -> Result<()> {
         .collect::<Vec<_>>();
 
     let keys = data.data.keys().collect::<Vec<_>>();
+    let idents = keys
+        .iter()
+        .map(|k| quote::format_ident!("_{}", k.replace('-', "_").to_ascii_uppercase()))
+        .collect::<Vec<_>>();
 
     let output = quote! {
         use rustc_hash::FxHashMap;
-        use once_cell::sync::Lazy;
+        use std::sync::OnceLock;
         use serde_json::from_str;
         use crate::data::caniuse::features::{Feature, FeatureSet};
         use crate::data::browser_name::decode_browser_name;
 
+        fn convert(s: &'static str) -> Feature {
+            from_str::<FxHashMap::<u8, FeatureSet>>(s)
+                .unwrap()
+                .into_iter()
+                .map(|(browser, versions)| (decode_browser_name(browser), versions))
+                .collect()
+        }
+
         pub(crate) fn get_feature_stat(name: &str) -> Option<&'static Feature> {
             match name {
                 #( #keys => {
-                    static STAT: Lazy<Feature> = Lazy::new(|| {
-                        from_str::<FxHashMap::<u8, FeatureSet>>(#features)
-                            .unwrap()
-                            .into_iter()
-                            .map(|(browser, versions)| (decode_browser_name(browser), versions))
-                            .collect()
-                    });
-                    Some(&*STAT)
+                    static STAT: OnceLock<Feature> = OnceLock::new();
+                    Some(STAT.get_or_init(|| convert(#idents)))
                 }, )*
                 _ => None,
             }
         }
+
+        #(const #idents: &str = #features;)*
     };
 
     fs::write(
@@ -385,29 +393,38 @@ pub fn build_caniuse_region() -> Result<()> {
         })
         .collect::<Vec<_>>();
 
+    let idents = keys
+        .iter()
+        .map(|k| quote::format_ident!("_{}", k.replace('-', "_").to_ascii_uppercase()))
+        .collect::<Vec<_>>();
+
     let output = quote! {
-        use once_cell::sync::Lazy;
+        use std::sync::OnceLock;
         use serde_json::from_str;
         use crate::data::BrowserName;
         use crate::data::browser_name::decode_browser_name;
 
         type RegionData = Vec<(BrowserName, &'static str, f32)>;
 
+        fn convert(s: &'static str) -> RegionData {
+            from_str::<Vec<(u8, &'static str, f32)>>(s)
+                .unwrap()
+                .into_iter()
+                .map(|(browser, version, usage)| (decode_browser_name(browser), version, usage))
+                .collect::<Vec<_>>()
+        }
+
         pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
             match region {
                 #( #keys => {
-                    static USAGE: Lazy<Vec<(BrowserName, &'static str, f32)>> = Lazy::new(|| {
-                        from_str::<Vec<(u8, &'static str, f32)>>(#data)
-                            .unwrap()
-                            .into_iter()
-                            .map(|(browser, version, usage)| (decode_browser_name(browser), version, usage))
-                            .collect()
-                    });
-                    Some(&*USAGE)
+                    static USAGE: OnceLock<RegionData> = OnceLock::new();
+                    Some(USAGE.get_or_init(|| convert(#idents)))
                 }, )*
                 _ => None,
             }
         }
+
+        #(const #idents: &str = #data;)*
     };
     fs::write(
         format!("{}/caniuse_region_matching.rs", &out_dir),
