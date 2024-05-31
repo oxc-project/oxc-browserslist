@@ -1,11 +1,11 @@
 use super::{count_filter_versions, Distrib, QueryResult};
 use crate::{
-    data::caniuse::{get_browser_stat, CANIUSE_BROWSERS},
+    data::caniuse::{caniuse_browsers, get_browser_stat},
     opts::Opts,
 };
 
 pub(super) fn last_n_browsers(count: usize, opts: &Opts) -> QueryResult {
-    let distribs = CANIUSE_BROWSERS
+    let distribs = caniuse_browsers()
         .keys()
         .filter_map(|name| get_browser_stat(name, opts.mobile_to_desktop))
         .flat_map(|(name, stat)| {

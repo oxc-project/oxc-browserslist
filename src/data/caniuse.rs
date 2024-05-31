@@ -24,13 +24,13 @@ pub struct VersionDetail {
 
 pub type CaniuseData = FxHashMap<BrowserName, BrowserStat>;
 
-pub use crate::generated::caniuse_browsers::CANIUSE_BROWSERS;
+pub use crate::generated::caniuse_browsers::caniuse_browsers;
 pub use crate::generated::caniuse_global_usage::CANIUSE_GLOBAL_USAGE;
 
 pub static BROWSER_VERSION_ALIASES: Lazy<
     FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>>,
 > = Lazy::new(|| {
-    let mut aliases = CANIUSE_BROWSERS
+    let mut aliases = caniuse_browsers()
         .iter()
         .filter_map(|(name, stat)| {
             let aliases = stat
@@ -66,8 +66,8 @@ pub static BROWSER_VERSION_ALIASES: Lazy<
 });
 
 static ANDROID_TO_DESKTOP: Lazy<BrowserStat> = Lazy::new(|| {
-    let chrome = CANIUSE_BROWSERS.get(&"chrome").unwrap();
-    let mut android = CANIUSE_BROWSERS.get("android").unwrap().clone();
+    let chrome = caniuse_browsers().get(&"chrome").unwrap();
+    let mut android = caniuse_browsers().get("android").unwrap().clone();
 
     android.version_list = android
         .version_list
@@ -102,7 +102,7 @@ static ANDROID_TO_DESKTOP: Lazy<BrowserStat> = Lazy::new(|| {
 });
 
 static OPERA_MOBILE_TO_DESKTOP: Lazy<BrowserStat> =
-    Lazy::new(|| CANIUSE_BROWSERS.get("opera").unwrap().clone());
+    Lazy::new(|| caniuse_browsers().get("opera").unwrap().clone());
 
 pub fn get_browser_stat(
     name: &str,
@@ -120,15 +120,15 @@ pub fn get_browser_stat(
             match name {
                 "android" => Some(("android", &ANDROID_TO_DESKTOP)),
                 "op_mob" => Some(("op_mob", &OPERA_MOBILE_TO_DESKTOP)),
-                _ => CANIUSE_BROWSERS
+                _ => caniuse_browsers()
                     .get(desktop_name)
                     .map(|stat| (get_mobile_by_desktop_name(desktop_name), stat)),
             }
         } else {
-            CANIUSE_BROWSERS.get(name).map(|stat| (stat.name, stat))
+            caniuse_browsers().get(name).map(|stat| (stat.name, stat))
         }
     } else {
-        CANIUSE_BROWSERS.get(name).map(|stat| (stat.name, stat))
+        caniuse_browsers().get(name).map(|stat| (stat.name, stat))
     }
 }
 
