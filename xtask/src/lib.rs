@@ -1,9 +1,11 @@
+use std::{fs, path::PathBuf};
+
 use anyhow::Result;
 use indexmap::IndexMap;
 use project_root::get_project_root;
 use quote::quote;
 use serde::Deserialize;
-use std::{fs, path::PathBuf};
+use time::OffsetDateTime;
 
 fn root() -> PathBuf {
     get_project_root().unwrap()
@@ -16,6 +18,12 @@ fn out_dir() -> PathBuf {
 fn format_token_stream(token_stream: proc_macro2::TokenStream) -> String {
     let syntax_tree = syn::parse2(token_stream).unwrap();
     prettyplease::unparse(&syntax_tree)
+}
+
+fn parse_date(s: &str) -> i32 {
+    let format = time::format_description::well_known::Iso8601::DATE;
+    let s = format!("{s}T00:00:00.000000000-00:00");
+    OffsetDateTime::parse(&s, &format).unwrap().to_julian_day()
 }
 
 fn encode_browser_name(name: &str) -> u8 {
@@ -59,7 +67,7 @@ struct Agent {
 struct VersionDetail {
     version: String,
     global_usage: f32,
-    release_date: Option<i64>,
+    release_date: Option<i64>, // unix timestamp (seconds)
 }
 
 #[derive(Deserialize)]
@@ -156,37 +164,17 @@ pub fn build_node_release_schedule() -> Result<()> {
                 .get(2)
                 .map(|v| v.parse().unwrap())
                 .unwrap_or_default();
+            let start_julian_day = parse_date(&start);
+            let end_julian_day = parse_date(&end);
             quote! {
-                (Version(#major, #minor, #patch), #start, #end)
+                (Version(#major, #minor, #patch), #start_julian_day, #end_julian_day)
             }
         })
         .collect::<Vec<_>>();
 
     let output = quote! {
-        use chrono::{NaiveDate, NaiveDateTime};
-        use once_cell::sync::Lazy;
         use crate::semver::Version;
-
-        pub static RELEASE_SCHEDULE: Lazy<Vec<(Version, NaiveDateTime, NaiveDateTime)>> =
-            Lazy::new(|| {
-                let date_format = "%Y-%m-%d";
-                [#(#versions),*]
-                    .into_iter()
-                    .map(|(version, start, end)| {
-                        (
-                            version,
-                                NaiveDate::parse_from_str(start, date_format)
-                                .unwrap()
-                                .and_hms_opt(0, 0, 0)
-                                .unwrap(),
-                                NaiveDate::parse_from_str(end, date_format)
-                                .unwrap()
-                                .and_hms_opt(0, 0, 0)
-                                .unwrap(),
-                        )
-                    })
-                .collect::<Vec<_>>()
-            });
+        pub static RELEASE_SCHEDULE: &[(Version, /* julian day */ i32, /* julian day */ i32)] = &[#(#versions),*];
     };
 
     fs::write(path, format_token_stream(output))?;

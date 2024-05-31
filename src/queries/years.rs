@@ -4,14 +4,14 @@ use crate::{
     error::Error,
     opts::Opts,
 };
-use chrono::{Duration, Utc};
+use time::{Duration, OffsetDateTime};
 
 const ONE_YEAR_IN_SECONDS: f64 = 365.259_641 * 24.0 * 60.0 * 60.0;
 
 pub(super) fn years(count: f64, opts: &Opts) -> QueryResult {
     let duration =
-        Duration::try_seconds((count * ONE_YEAR_IN_SECONDS) as i64).ok_or(Error::YearOverflow)?;
-    let time = (Utc::now() - duration).timestamp();
+        Duration::checked_seconds_f64(count * ONE_YEAR_IN_SECONDS).ok_or(Error::YearOverflow)?;
+    let time = (OffsetDateTime::now_utc() - duration).unix_timestamp();
 
     let distribs = CANIUSE_BROWSERS
         .keys()
