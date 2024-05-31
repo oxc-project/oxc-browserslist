@@ -3,7 +3,6 @@ use crate::{
     data::caniuse::{get_browser_stat, CANIUSE_BROWSERS},
     opts::Opts,
 };
-use itertools::Itertools;
 
 pub(super) fn last_n_major_browsers(count: usize, opts: &Opts) -> QueryResult {
     let distribs = CANIUSE_BROWSERS
@@ -12,14 +11,16 @@ pub(super) fn last_n_major_browsers(count: usize, opts: &Opts) -> QueryResult {
         .flat_map(|(name, stat)| {
             let count = count_filter_versions(name, opts.mobile_to_desktop, count);
 
-            let minimum: u32 = stat
+            let mut vec = stat
                 .version_list
                 .iter()
                 .filter(|version| version.release_date.is_some())
                 .rev()
                 .map(|version| version.version.split('.').next().unwrap())
-                .dedup()
-                .nth(count - 1)
+                .collect::<Vec<_>>();
+            vec.dedup();
+            let minimum = vec
+                .get(count - 1)
                 .and_then(|minimum| minimum.parse().ok())
                 .unwrap_or(0);
 

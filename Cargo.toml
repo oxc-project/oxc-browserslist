@@ -36,7 +36,6 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 rustc-hash = "1.1.0"
 time       = "0.3.36"
-itertools  = "0.13"
 nom        = "7.1"
 once_cell  = "1.19"
 serde      = { version = "1.0", features = ["derive"] }
@@ -59,5 +58,5 @@ serde-wasm-bindgen = { version = "0.6", optional = true }
 
 [features]
 default      = []
-wasm_bindgen = ["time/wasm-bindgen", "js-sys", "serde-wasm-bindgen", "wasm-bindgen"]
+wasm_bindgen = ["js-sys", "serde-wasm-bindgen", "time/wasm-bindgen", "wasm-bindgen"]
 codspeed     = ["criterion2/codspeed"]
