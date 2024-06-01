@@ -71,6 +71,16 @@ jobs:
           restore-cache: false
       - run: cargo fmt --all -- --check
 
+  doc:
+    name: Doc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: Boshen/setup-rust@main
+        with:
+          components: rust-docs
+      - run: RUSTDOCFLAGS='-D warnings' cargo doc --no-deps --document-private-items
+
   wasm:
     name: Wasm
     runs-on: ubuntu-latest
