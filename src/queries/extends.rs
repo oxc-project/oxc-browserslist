@@ -2,8 +2,11 @@ use super::QueryResult;
 use crate::{error::Error, opts::Opts};
 
 #[cfg(test)]
-static BASE_TEST_DIR: once_cell::sync::Lazy<std::path::PathBuf> =
-    once_cell::sync::Lazy::new(|| std::env::temp_dir().join("browserslist-test-pkgs"));
+fn base_test_dir() -> &'static std::path::Path {
+    use std::{env::temp_dir, path::PathBuf, sync::OnceLock};
+    static BASE_TEST_DIR: OnceLock<PathBuf> = OnceLock::new();
+    BASE_TEST_DIR.get_or_init(|| temp_dir().join("browserslist-test-pkgs"))
+}
 
 #[cfg(target_arch = "wasm32")]
 pub(super) fn extends(pkg: &str, opts: &Opts) -> QueryResult {
@@ -28,7 +31,7 @@ pub(super) fn extends(pkg: &str, opts: &Opts) -> QueryResult {
     let mut command = process::Command::new("node");
     command.args(["-p", &format!("JSON.stringify(require('{pkg}'))")]);
     #[cfg(test)]
-    command.current_dir(&*BASE_TEST_DIR);
+    command.current_dir(base_test_dir());
     let output = command
         .output()
         .map_err(|_| Error::UnsupportedExtends)?
@@ -77,7 +80,7 @@ mod tests {
     use test_case::test_case;
 
     fn mock(name: &str, value: serde_json::Value) {
-        let dir = BASE_TEST_DIR.join("node_modules").join(name);
+        let dir = base_test_dir().join("node_modules").join(name);
         fs::create_dir_all(&dir).unwrap();
         fs::write(
             dir.join("index.js"),
@@ -90,7 +93,7 @@ mod tests {
     }
 
     fn clean(name: &str) {
-        let _ = fs::remove_dir_all(BASE_TEST_DIR.join("node_modules").join(name));
+        let _ = fs::remove_dir_all(base_test_dir().join("node_modules").join(name));
     }
 
     #[test_case("browserslist-config-test", json!(["ie 11"]), "extends browserslist-config-test"; "package")]
@@ -104,7 +107,7 @@ mod tests {
     #[test_case("browserslist-config-with-defaults", json!({ "defaults": ["ie 10"] }), "extends browserslist-config-with-defaults"; "default env")]
     fn valid(pkg: &str, value: serde_json::Value, query: &str) {
         mock(pkg, value);
-        run_compare(query, &Default::default(), Some(&BASE_TEST_DIR));
+        run_compare(query, &Default::default(), Some(base_test_dir()));
         clean(pkg);
     }
 
@@ -117,7 +120,7 @@ mod tests {
                 dangerous_extend: true,
                 ..Default::default()
             },
-            Some(&BASE_TEST_DIR),
+            Some(base_test_dir()),
         );
         clean("pkg");
     }
@@ -132,7 +135,7 @@ mod tests {
         run_compare(
             "extends browserslist-config-a",
             &Default::default(),
-            Some(&BASE_TEST_DIR),
+            Some(base_test_dir()),
         );
         clean("browserslist-config-a");
         clean("browserslist-config-b");
@@ -147,7 +150,7 @@ mod tests {
                 env: Some("someEnv".into()),
                 ..Default::default()
             },
-            Some(&BASE_TEST_DIR),
+            Some(base_test_dir()),
         );
         clean("pkg");
     }
