@@ -101,25 +101,22 @@ where
 
 // reduce generic monomorphization
 fn _resolve(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
-    let mut distribs = parse_browserslist_query(query)?.1.into_iter().enumerate().try_fold(
-        vec![],
-        |mut distribs, (i, current)| {
-            if i == 0 && current.negated {
-                return Err(Error::NotAtFirst(current.raw.to_string()));
-            }
+    let queries = parse_browserslist_query(query)?;
+    let mut distribs = vec![];
+    for (i, current) in queries.1.into_iter().enumerate() {
+        if i == 0 && current.negated {
+            return Err(Error::NotAtFirst(current.raw.to_string()));
+        }
 
-            let mut dist = queries::query(current.atom, opts)?;
-            if current.negated {
-                distribs.retain(|distrib| !dist.contains(distrib));
-            } else if current.is_and {
-                distribs.retain(|distrib| dist.contains(distrib));
-            } else {
-                distribs.append(&mut dist);
-            }
-
-            Ok::<_, Error>(distribs)
-        },
-    )?;
+        let mut dist = queries::query(current.atom, opts)?;
+        if current.negated {
+            distribs.retain(|distrib| !dist.contains(distrib));
+        } else if current.is_and {
+            distribs.retain(|distrib| dist.contains(distrib));
+        } else {
+            distribs.append(&mut dist);
+        }
+    }
 
     distribs.sort_by_cached_key(|d| {
         let version = d.version().parse::<semver::Version>().unwrap_or_default();

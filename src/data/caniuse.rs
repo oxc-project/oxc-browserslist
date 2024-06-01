@@ -114,9 +114,9 @@ pub fn get_browser_stat(
     mobile_to_desktop: bool,
 ) -> Option<(&'static str, &'static BrowserStat)> {
     let name = if name.bytes().all(|b| b.is_ascii_lowercase()) {
-        Cow::from(name)
+        Cow::Borrowed(name)
     } else {
-        Cow::from(name.to_ascii_lowercase())
+        Cow::Owned(name.to_ascii_lowercase())
     };
     let name = get_browser_alias(&name);
 
