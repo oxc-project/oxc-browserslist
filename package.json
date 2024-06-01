@@ -1,5 +1,5 @@
 {
-  "name": "browserslist-rs",
+  "name": "oxc-browserslist",
   "private": true,
   "license": "MIT",
   "scripts": {

@@ -1,4 +1,4 @@
-//! **browserslist-rs** is a Rust-based implementation of [Browserslist](https://github.com/browserslist/browserslist).
+//! **oxc-browserslist** is a Rust-based implementation of [Browserslist](https://github.com/browserslist/browserslist).
 //!
 //! ## Introduction
 //!

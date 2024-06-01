@@ -30,7 +30,7 @@ Only custom usage is not supported: `> 0.5% in my stats` or `cover 99.5% in my s
 
 ## Usage
 
-See [docs.rs/oxc-browserslist-rs](https://docs.rs/oxc-browserslist-rs).
+See [docs.rs/oxc-browserslist](https://docs.rs/oxc-browserslist).
 
 ## Example Usage
 
