@@ -1,4 +1,3 @@
-#![allow(missing_docs, dead_code, clippy::pedantic)]
 pub mod caniuse_browsers;
 pub mod caniuse_feature_matching;
 pub mod caniuse_global_usage;
