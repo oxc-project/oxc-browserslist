@@ -16,6 +16,12 @@
 
 Rust port of [Browserslist](https://github.com/browserslist/browserslist), forked from [browserslist-rs](https://github.com/browserslist/browserslist-rs).
 
+The original crate did not meet the criteria of `oxc`, the following changes are made:
+
+* reduced compilation speed from one minute to a few seconds
+* removed all unnecessary, heavy or slow dependencies: `ahash`, `chrono`, `either`, `indexmap`, `itertools`, `once_cell`, `string_cache`
+* improved some runtime performance, e.g. [improve sort method](https://github.com/oxc-project/oxc-browserslist/pull/28), [precompute versions](https://github.com/oxc-project/oxc-browserslist/pull/10)
+
 ## Project Status
 
 > Can I use this library?
@@ -40,11 +46,10 @@ You can also specify additional options, for example:
 cargo run --example inspect -- --mobile-to-desktop 'last 2 versions, not dead'
 ```
 
-To get more help, you can run:
+## Future Work
 
-```sh
-cargo run --example inspect -- -h
-```
+* `nom` can be replaced by a hand written parser to improve runtime and compilation speed
+* to improve runtime performance, all semver versions with their string representation can be precomputed and code generated - current code is doing a lot of `parse` and `to_string` on semver versions right now
 
 [discord-badge]: https://img.shields.io/discord/1079625926024900739?logo=discord&label=Discord
 [discord-url]: https://discord.gg/9uXCAwqQZW
