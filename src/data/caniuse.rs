@@ -1,7 +1,8 @@
-use crate::data::BrowserName;
-use once_cell::sync::Lazy;
+use std::{borrow::Cow, sync::OnceLock};
+
 use rustc_hash::FxHashMap;
-use std::borrow::Cow;
+
+use crate::data::BrowserName;
 
 pub mod features;
 pub mod region;
@@ -27,82 +28,86 @@ pub type CaniuseData = FxHashMap<BrowserName, BrowserStat>;
 pub use crate::generated::caniuse_browsers::caniuse_browsers;
 pub use crate::generated::caniuse_global_usage::CANIUSE_GLOBAL_USAGE;
 
-pub static BROWSER_VERSION_ALIASES: Lazy<
-    FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>>,
-> = Lazy::new(|| {
-    let mut aliases = caniuse_browsers()
-        .iter()
-        .filter_map(|(name, stat)| {
-            let aliases = stat
-                .version_list
-                .iter()
-                .filter_map(|version| {
-                    version
-                        .version
-                        .split_once('-')
-                        .map(|(bottom, top)| (bottom, top, version.version))
-                })
-                .fold(
-                    FxHashMap::<&str, &str>::default(),
-                    move |mut aliases, (bottom, top, version)| {
-                        let _ = aliases.insert(bottom, version);
-                        let _ = aliases.insert(top, version);
-                        aliases
-                    },
-                );
-            if aliases.is_empty() {
-                None
-            } else {
-                Some((*name, aliases))
-            }
-        })
-        .collect::<FxHashMap<BrowserName, _>>();
-    let _ = aliases.insert("op_mob", {
-        let mut aliases = FxHashMap::default();
-        let _ = aliases.insert("59", "58");
+pub fn browser_version_aliases(
+) -> &'static FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>> {
+    static BROWSER_VERSION_ALIASES: OnceLock<
+        FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>>,
+    > = OnceLock::new();
+    BROWSER_VERSION_ALIASES.get_or_init(|| {
+        let mut aliases = caniuse_browsers()
+            .iter()
+            .filter_map(|(name, stat)| {
+                let aliases = stat
+                    .version_list
+                    .iter()
+                    .filter_map(|version| {
+                        version
+                            .version
+                            .split_once('-')
+                            .map(|(bottom, top)| (bottom, top, version.version))
+                    })
+                    .fold(
+                        FxHashMap::<&str, &str>::default(),
+                        move |mut aliases, (bottom, top, version)| {
+                            let _ = aliases.insert(bottom, version);
+                            let _ = aliases.insert(top, version);
+                            aliases
+                        },
+                    );
+                if aliases.is_empty() {
+                    None
+                } else {
+                    Some((*name, aliases))
+                }
+            })
+            .collect::<FxHashMap<BrowserName, _>>();
+        let _ = aliases.insert("op_mob", {
+            let mut aliases = FxHashMap::default();
+            let _ = aliases.insert("59", "58");
+            aliases
+        });
         aliases
-    });
-    aliases
-});
+    })
+}
 
-static ANDROID_TO_DESKTOP: Lazy<BrowserStat> = Lazy::new(|| {
-    let chrome = caniuse_browsers().get(&"chrome").unwrap();
-    let mut android = caniuse_browsers().get("android").unwrap().clone();
+fn android_to_desktop() -> &'static BrowserStat {
+    static ANDROID_TO_DESKTOP: OnceLock<BrowserStat> = OnceLock::new();
+    ANDROID_TO_DESKTOP.get_or_init(|| {
+        let chrome = &caniuse_browsers()["chrome"];
+        let mut android = caniuse_browsers()["android"].clone();
 
-    android.version_list = android
-        .version_list
-        .into_iter()
-        .filter(|version| {
-            let version = version.version;
-            version.starts_with("2.")
-                || version.starts_with("3.")
-                || version.starts_with("4.")
-                || version == "3"
-                || version == "4"
-        })
-        .chain(
-            chrome
-                .version_list
-                .iter()
-                .skip(
-                    chrome
-                        .version_list
-                        .iter()
-                        .position(|version| {
-                            version.version.parse::<usize>().unwrap()
-                                == ANDROID_EVERGREEN_FIRST as usize
-                        })
-                        .unwrap(),
-                )
-                .cloned(),
-        )
-        .collect();
+        android.version_list = android
+            .version_list
+            .into_iter()
+            .filter(|version| {
+                let version = version.version;
+                version.starts_with("2.")
+                    || version.starts_with("3.")
+                    || version.starts_with("4.")
+                    || version == "3"
+                    || version == "4"
+            })
+            .chain(
+                chrome
+                    .version_list
+                    .iter()
+                    .skip(
+                        chrome
+                            .version_list
+                            .iter()
+                            .position(|version| {
+                                version.version.parse::<usize>().unwrap()
+                                    == ANDROID_EVERGREEN_FIRST as usize
+                            })
+                            .unwrap(),
+                    )
+                    .cloned(),
+            )
+            .collect();
 
-    android
-});
-
-static OPERA_MOBILE_TO_DESKTOP: Lazy<BrowserStat> =
-    Lazy::new(|| caniuse_browsers().get("opera").unwrap().clone());
+        android.clone()
+    })
+}
 
 pub fn get_browser_stat(
     name: &str,
@@ -118,8 +123,8 @@ pub fn get_browser_stat(
     if mobile_to_desktop {
         if let Some(desktop_name) = to_desktop_name(name) {
             match name {
-                "android" => Some(("android", &ANDROID_TO_DESKTOP)),
-                "op_mob" => Some(("op_mob", &OPERA_MOBILE_TO_DESKTOP)),
+                "android" => Some(("android", android_to_desktop())),
+                "op_mob" => Some(("op_mob", &caniuse_browsers()["opera"])),
                 _ => caniuse_browsers()
                     .get(desktop_name)
                     .map(|stat| (get_mobile_by_desktop_name(desktop_name), stat)),
@@ -171,7 +176,7 @@ fn get_mobile_by_desktop_name(name: &str) -> &'static str {
 pub fn normalize_version<'a>(stat: &'static BrowserStat, version: &'a str) -> Option<&'a str> {
     if stat.version_list.iter().any(|v| v.version == version) {
         Some(version)
-    } else if let Some(version) = BROWSER_VERSION_ALIASES
+    } else if let Some(version) = browser_version_aliases()
         .get(&stat.name)
         .and_then(|aliases| aliases.get(version))
     {

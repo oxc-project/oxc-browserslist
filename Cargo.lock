@@ -266,7 +266,6 @@ dependencies = [
  "criterion2",
  "js-sys",
  "nom",
- "once_cell",
  "pico-args",
  "rustc-hash",
  "serde",
