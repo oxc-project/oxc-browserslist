@@ -24,8 +24,9 @@ pub(super) fn percentage(comparator: Comparator, popularity: f32) -> QueryResult
 
 #[cfg(test)]
 mod tests {
-    use crate::{opts::Opts, test::run_compare};
     use test_case::test_case;
+
+    use crate::{opts::Opts, test::run_compare};
 
     #[test_case("> 10%"; "greater")]
     #[test_case(">= 5%"; "greater or equal")]

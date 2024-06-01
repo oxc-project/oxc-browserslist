@@ -1,6 +1,7 @@
+use std::cmp::Ordering;
+
 use super::{Distrib, QueryResult};
 use crate::{data::node::NODE_VERSIONS, semver::loose_compare};
-use std::cmp::Ordering;
 
 pub(super) fn node_bounded_range(from: &str, to: &str) -> QueryResult {
     let distribs = NODE_VERSIONS
@@ -16,12 +17,13 @@ pub(super) fn node_bounded_range(from: &str, to: &str) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use crate::{
         error::Error,
         opts::Opts,
         test::{run_compare, should_failed},
     };
-    use test_case::test_case;
 
     #[test_case("node 4-6"; "semver major only")]
     #[test_case("node 4-6.0.0"; "different semver formats")]

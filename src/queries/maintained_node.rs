@@ -1,6 +1,7 @@
+use time::OffsetDateTime;
+
 use super::{Distrib, QueryResult};
 use crate::data::node::{NODE_VERSIONS, RELEASE_SCHEDULE};
-use time::OffsetDateTime;
 
 pub(super) fn maintained_node() -> QueryResult {
     let now = OffsetDateTime::now_utc().to_julian_day();
@@ -16,8 +17,9 @@ pub(super) fn maintained_node() -> QueryResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::{opts::Opts, test::run_compare};
     use test_case::test_case;
+
+    use crate::{opts::Opts, test::run_compare};
 
     #[test_case("maintained node versions"; "basic")]
     #[test_case("Maintained Node Versions"; "case insensitive")]

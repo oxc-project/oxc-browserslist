@@ -10,12 +10,13 @@ pub(super) fn dead(opts: &Opts) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::{
         error::Error,
         test::{run_compare, should_failed},
     };
-    use test_case::test_case;
 
     #[test_case("dead"; "basic")]
     #[test_case("Dead"; "case insensitive")]

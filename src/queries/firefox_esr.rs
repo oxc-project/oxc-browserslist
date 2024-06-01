@@ -6,8 +6,9 @@ pub(super) fn firefox_esr() -> QueryResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::{opts::Opts, test::run_compare};
     use test_case::test_case;
+
+    use crate::{opts::Opts, test::run_compare};
 
     #[test_case("firefox esr"; "firefox")]
     #[test_case("Firefox ESR"; "firefox case insensitive")]

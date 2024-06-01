@@ -38,9 +38,10 @@ pub(super) fn last_n_major_browsers(count: usize, opts: &Opts) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::run_compare;
-    use test_case::test_case;
 
     #[test_case("last 2 major versions"; "basic")]
     #[test_case("last 1 major version"; "support pluralization")]

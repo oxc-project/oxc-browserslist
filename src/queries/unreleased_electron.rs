@@ -6,8 +6,9 @@ pub(super) fn unreleased_electron() -> QueryResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::{opts::Opts, test::run_compare};
     use test_case::test_case;
+
+    use crate::{opts::Opts, test::run_compare};
 
     #[test_case("unreleased electron versions"; "basic")]
     #[test_case("Unreleased Electron Versions"; "case insensitive")]

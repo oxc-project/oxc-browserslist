@@ -41,9 +41,10 @@ pub(super) fn node_accurate(version_str: &str, opts: &Opts) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::{run_compare, should_failed};
-    use test_case::test_case;
 
     #[test_case("node 7.5.0"; "basic")]
     #[test_case("Node 7.5.0"; "case insensitive")]

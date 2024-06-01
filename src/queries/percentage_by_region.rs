@@ -28,12 +28,13 @@ pub(super) fn percentage_by_region(
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::{
         opts::Opts,
         test::{run_compare, should_failed},
     };
-    use test_case::test_case;
 
     #[test_case("> 10% in US"; "greater")]
     #[test_case(">= 5% in US"; "greater or equal")]

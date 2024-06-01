@@ -28,9 +28,10 @@ pub(super) fn browser_bounded_range(name: &str, from: &str, to: &str, opts: &Opt
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::{run_compare, should_failed};
-    use test_case::test_case;
 
     #[test_case("ie 8-10"; "basic")]
     #[test_case("ie 8   -  10"; "more spaces")]

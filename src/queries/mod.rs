@@ -1,3 +1,7 @@
+use std::{borrow::Cow, fmt::Display};
+
+use serde::{Deserialize, Serialize};
+
 use crate::{
     data::caniuse,
     error::Error,
@@ -5,8 +9,6 @@ use crate::{
     parser::{QueryAtom, Stats, VersionRange},
     semver::Version,
 };
-use serde::{Deserialize, Serialize};
-use std::{borrow::Cow, fmt::Display};
 
 mod browser_accurate;
 mod browser_bounded_range;

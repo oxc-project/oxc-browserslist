@@ -1,5 +1,6 @@
-use super::BrowserName;
 use rustc_hash::{FxHashMap, FxHashSet};
+
+use super::BrowserName;
 
 pub type FeatureSet =
     (/* yes */ FxHashSet<&'static str>, /* partial */ FxHashSet<&'static str>);

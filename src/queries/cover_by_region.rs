@@ -1,6 +1,7 @@
+use std::ops::ControlFlow;
+
 use super::{Distrib, QueryResult};
 use crate::{data::caniuse::region::get_usage_by_region, error::Error};
-use std::ops::ControlFlow;
 
 pub(super) fn cover_by_region(coverage: f32, region: &str) -> QueryResult {
     let normalized_region =
@@ -29,8 +30,9 @@ pub(super) fn cover_by_region(coverage: f32, region: &str) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::{opts::Opts, test::run_compare};
     use test_case::test_case;
+
+    use crate::{opts::Opts, test::run_compare};
 
     #[test_case("cover 0.1% in US"; "country")]
     #[test_case("Cover 0.1% in us"; "country case insensitive")]

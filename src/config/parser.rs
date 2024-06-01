@@ -1,6 +1,7 @@
+use rustc_hash::FxHashSet;
+
 use super::PartialConfig;
 use crate::error::Error;
-use rustc_hash::FxHashSet;
 
 pub fn parse(source: &str, env: &str, throw_on_missing: bool) -> Result<PartialConfig, Error> {
     let mut encountered_sections = FxHashSet::default();

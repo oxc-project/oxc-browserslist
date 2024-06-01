@@ -1,10 +1,11 @@
+use time::{Duration, OffsetDateTime};
+
 use super::{Distrib, QueryResult};
 use crate::{
     data::caniuse::{caniuse_browsers, get_browser_stat},
     error::Error,
     opts::Opts,
 };
-use time::{Duration, OffsetDateTime};
 
 const ONE_YEAR_IN_SECONDS: f64 = 365.259_641 * 24.0 * 60.0 * 60.0;
 
@@ -28,9 +29,10 @@ pub(super) fn years(count: f64, opts: &Opts) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::run_compare;
-    use test_case::test_case;
 
     #[test_case("last 2 years"; "basic")]
     #[test_case("last 1 year"; "one year")]

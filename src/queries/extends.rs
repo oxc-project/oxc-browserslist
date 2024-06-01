@@ -19,8 +19,9 @@ pub(super) fn extends(pkg: &str, opts: &Opts) -> QueryResult {
 
 #[cfg(not(target_arch = "wasm32"))]
 pub(super) fn extends(pkg: &str, opts: &Opts) -> QueryResult {
-    use crate::{config, resolve};
     use std::{env, process};
+
+    use crate::{config, resolve};
 
     let dangerous_extend =
         opts.dangerous_extend || env::var("BROWSERSLIST_DANGEROUS_EXTEND").is_ok();
@@ -61,14 +62,16 @@ fn check_extend_name(pkg: &str) -> Result<(), Error> {
 
 #[cfg(test)]
 mod tests {
+    use std::fs;
+
+    use serde_json::json;
+    use test_case::test_case;
+
     use super::*;
     use crate::{
         opts::Opts,
         test::{run_compare, should_failed},
     };
-    use serde_json::json;
-    use std::fs;
-    use test_case::test_case;
 
     fn mock(name: &str, value: serde_json::Value) {
         let dir = base_test_dir().join("node_modules").join(name);

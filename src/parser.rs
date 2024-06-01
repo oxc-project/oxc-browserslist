@@ -405,8 +405,9 @@ pub fn parse_browserslist_query(input: &str) -> PResult<Vec<SingleQuery>> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{opts::Opts, test::run_compare};
     use test_case::test_case;
+
+    use crate::{opts::Opts, test::run_compare};
 
     #[test_case(""; "empty")]
     #[test_case("ie >= 6, ie <= 7"; "comma")]

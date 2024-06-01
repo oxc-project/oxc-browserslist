@@ -18,12 +18,13 @@ pub(super) fn electron_accurate(version: &str) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::{
         opts::Opts,
         test::{run_compare, should_failed},
     };
-    use test_case::test_case;
 
     #[test_case("electron 1.1"; "basic")]
     #[test_case("electron 4.0.4"; "with semver patch version")]

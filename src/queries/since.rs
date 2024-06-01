@@ -1,10 +1,11 @@
+use time::{Date, Month, OffsetDateTime, Time};
+
 use super::{Distrib, QueryResult};
 use crate::{
     data::caniuse::{caniuse_browsers, get_browser_stat},
     error::Error,
     opts::Opts,
 };
-use time::{Date, Month, OffsetDateTime, Time};
 
 pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult {
     let month = Month::try_from(month as u8)
@@ -28,9 +29,10 @@ pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::run_compare;
-    use test_case::test_case;
 
     #[test_case("since 2017"; "year only")]
     #[test_case("Since 2017"; "case insensitive")]

@@ -1,5 +1,6 @@
-use crate::{opts::Opts, resolve};
 use wasm_bindgen::prelude::*;
+
+use crate::{opts::Opts, resolve};
 
 #[doc(hidden)]
 #[wasm_bindgen]

@@ -1,5 +1,6 @@
-use crate::{resolve, Error, Opts};
 use std::{path::Path, process::Command};
+
+use crate::{resolve, Error, Opts};
 
 pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
     #[cfg(target_os = "windows")]

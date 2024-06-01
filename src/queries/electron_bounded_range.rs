@@ -27,12 +27,13 @@ pub(super) fn electron_bounded_range(from: &str, to: &str) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::{
         opts::Opts,
         test::{run_compare, should_failed},
     };
-    use test_case::test_case;
 
     #[test_case("electron 0.36-1.2"; "basic")]
     #[test_case("Electron 0.37-1.0"; "case insensitive")]

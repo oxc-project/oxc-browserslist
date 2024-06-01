@@ -13,8 +13,9 @@ pub(super) fn last_n_node(count: usize) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::{opts::Opts, test::run_compare};
     use test_case::test_case;
+
+    use crate::{opts::Opts, test::run_compare};
 
     #[test_case("last 2 node versions"; "basic")]
     #[test_case("last 2 Node versions"; "case insensitive")]

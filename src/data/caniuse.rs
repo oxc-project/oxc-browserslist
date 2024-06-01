@@ -25,8 +25,9 @@ pub struct VersionDetail {
 
 pub type CaniuseData = FxHashMap<BrowserName, BrowserStat>;
 
-pub use crate::generated::caniuse_browsers::caniuse_browsers;
-pub use crate::generated::caniuse_global_usage::CANIUSE_GLOBAL_USAGE;
+pub use crate::generated::{
+    caniuse_browsers::caniuse_browsers, caniuse_global_usage::CANIUSE_GLOBAL_USAGE,
+};
 
 pub fn browser_version_aliases(
 ) -> &'static FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>> {

@@ -7,8 +7,9 @@ pub(super) fn phantom(is_later_version: bool) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::{opts::Opts, test::run_compare};
     use test_case::test_case;
+
+    use crate::{opts::Opts, test::run_compare};
 
     #[test_case("phantomjs 2.1"; "2.1")]
     #[test_case("PhantomJS 2.1"; "2.1 case insensitive")]

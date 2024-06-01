@@ -64,12 +64,13 @@ fn is_supported(set: &FeatureSet, version: &str, include_partial: bool) -> bool 
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::{
         opts::Opts,
         test::{run_compare, should_failed},
     };
-    use test_case::test_case;
 
     #[test_case("supports objectrtc"; "case 1")]
     #[test_case("supports    rtcpeerconnection"; "case 2")]

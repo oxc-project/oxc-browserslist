@@ -31,9 +31,10 @@ pub(super) fn last_n_x_major_browsers(count: usize, name: &str, opts: &Opts) -> 
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::run_compare;
-    use test_case::test_case;
 
     #[test_case("last 2 edge major versions"; "basic")]
     #[test_case("last 1 bb major version"; "support pluralization")]

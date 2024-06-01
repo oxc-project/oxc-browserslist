@@ -16,8 +16,9 @@ pub(super) fn cover(coverage: f32) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::{opts::Opts, test::run_compare};
     use test_case::test_case;
+
+    use crate::{opts::Opts, test::run_compare};
 
     #[test_case("cover 0.1%"; "global")]
     #[test_case("Cover 0.1%"; "global case insensitive")]

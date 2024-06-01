@@ -19,9 +19,10 @@ pub(super) fn last_n_x_browsers(count: usize, name: &str, opts: &Opts) -> QueryR
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::run_compare;
-    use test_case::test_case;
 
     #[test_case("last 2 ie versions"; "basic")]
     #[test_case("last 2 safari versions"; "do not include unreleased versions")]

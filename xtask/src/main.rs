@@ -1,6 +1,6 @@
+use std::{fs, process::Command};
+
 use anyhow::Result;
-use std::fs;
-use std::process::Command;
 
 fn main() -> Result<()> {
     let dir = project_root::get_project_root().unwrap().join("src/generated");

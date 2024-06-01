@@ -43,9 +43,10 @@ pub(super) fn browser_unbounded_range(
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::{run_compare, should_failed};
-    use test_case::test_case;
 
     #[test_case("ie > 9"; "greater")]
     #[test_case("ie >= 10"; "greater or equal")]

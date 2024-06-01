@@ -25,9 +25,10 @@ pub(super) fn last_n_browsers(count: usize, opts: &Opts) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::run_compare;
-    use test_case::test_case;
 
     #[test_case("last 2 versions"; "basic")]
     #[test_case("last 31 versions"; "android")]

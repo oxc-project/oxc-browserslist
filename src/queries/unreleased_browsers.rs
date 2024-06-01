@@ -20,9 +20,10 @@ pub(super) fn unreleased_browsers(opts: &Opts) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::run_compare;
-    use test_case::test_case;
 
     #[test_case("unreleased versions"; "basic")]
     #[test_case("Unreleased Versions"; "case insensitive")]

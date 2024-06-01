@@ -22,12 +22,13 @@ pub(super) fn electron_unbounded_range(comparator: Comparator, version: &str) ->
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use crate::{
         error::Error,
         opts::Opts,
         test::{run_compare, should_failed},
     };
-    use test_case::test_case;
 
     #[test_case("electron <= 0.21"; "basic")]
     #[test_case("Electron < 0.21"; "case insensitive")]

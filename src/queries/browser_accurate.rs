@@ -1,10 +1,11 @@
+use std::borrow::Cow;
+
 use super::{Distrib, QueryResult};
 use crate::{
     data::caniuse::{get_browser_stat, normalize_version},
     error::Error,
     opts::Opts,
 };
-use std::borrow::Cow;
 
 pub(super) fn browser_accurate(name: &str, version: &str, opts: &Opts) -> QueryResult {
     let original_name = name;
@@ -42,9 +43,10 @@ pub(super) fn browser_accurate(name: &str, version: &str, opts: &Opts) -> QueryR
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::{run_compare, should_failed};
-    use test_case::test_case;
 
     #[test_case("ie 10"; "by name")]
     #[test_case("IE 10"; "case insensitive")]

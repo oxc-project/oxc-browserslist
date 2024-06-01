@@ -7,9 +7,10 @@ pub(super) fn defaults(opts: &Opts) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::run_compare;
-    use test_case::test_case;
 
     #[test_case("defaults", &Opts::default(); "no options")]
     #[test_case("Defaults", &Opts::default(); "case insensitive")]

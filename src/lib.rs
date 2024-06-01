@@ -52,10 +52,12 @@
 //! but those environments aren't Node.js,
 //! so you will receive an error when querying `current node` in those environments.
 
+pub use error::Error;
+pub use opts::Opts;
 use parser::parse_browserslist_query;
+pub use queries::Distrib;
 #[cfg(all(feature = "wasm_bindgen", target_arch = "wasm32"))]
 pub use wasm::browserslist;
-pub use {error::Error, opts::Opts, queries::Distrib};
 
 #[cfg(not(target_arch = "wasm32"))]
 mod config;

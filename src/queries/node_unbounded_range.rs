@@ -1,6 +1,7 @@
+use std::{cmp::Ordering, str::FromStr};
+
 use super::{Distrib, QueryResult};
 use crate::{data::node::NODE_VERSIONS, parser::Comparator, semver::Version};
-use std::{cmp::Ordering, str::FromStr};
 
 pub(super) fn node_unbounded_range(comparator: Comparator, version: &str) -> QueryResult {
     let version = Version::from_str(version).unwrap();
@@ -22,12 +23,13 @@ pub(super) fn node_unbounded_range(comparator: Comparator, version: &str) -> Que
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use crate::{
         error::Error,
         opts::Opts,
         test::{run_compare, should_failed},
     };
-    use test_case::test_case;
 
     #[test_case("node <= 5"; "less or equal")]
     #[test_case("node < 5"; "less")]

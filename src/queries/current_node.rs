@@ -38,8 +38,9 @@ pub(super) fn current_node() -> QueryResult {
 
 #[cfg(test)]
 mod tests {
-    use crate::{opts::Opts, test::run_compare};
     use test_case::test_case;
+
+    use crate::{opts::Opts, test::run_compare};
 
     #[test_case("current node"; "basic")]
     #[test_case("Current Node"; "case insensitive")]

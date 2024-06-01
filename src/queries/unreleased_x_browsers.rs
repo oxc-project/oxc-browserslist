@@ -15,9 +15,10 @@ pub(super) fn unreleased_x_browsers(name: &str, opts: &Opts) -> QueryResult {
 
 #[cfg(test)]
 mod tests {
+    use test_case::test_case;
+
     use super::*;
     use crate::test::run_compare;
-    use test_case::test_case;
 
     #[test_case("unreleased edge versions"; "basic")]
     #[test_case("Unreleased Chrome Versions"; "case insensitive")]

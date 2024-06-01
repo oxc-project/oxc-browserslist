@@ -1,9 +1,3 @@
-use crate::{error::Error, opts::Opts};
-use parser::parse;
-use rustc_hash::FxHashMap;
-use serde::Deserialize;
-#[cfg(test)]
-use serde::Serialize;
 use std::{
     borrow::Cow,
     env,
@@ -11,6 +5,14 @@ use std::{
     io::{BufReader, Read},
     path::{Path, PathBuf},
 };
+
+use parser::parse;
+use rustc_hash::FxHashMap;
+use serde::Deserialize;
+#[cfg(test)]
+use serde::Serialize;
+
+use crate::{error::Error, opts::Opts};
 
 mod parser;
 
@@ -210,11 +212,12 @@ fn pick_queries_by_env(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use std::{
         env::{remove_var, set_var, temp_dir},
         fs,
     };
+
+    use super::*;
 
     #[test]
     fn load_config() {
