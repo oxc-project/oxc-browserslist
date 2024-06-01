@@ -5,7 +5,7 @@ use thiserror::Error;
 pub enum Error {
     #[error("failed to parse the rest of input: ...'{0}'")]
     /// Error of parsing query.
-    Nom(String),
+    Parse(String),
 
     #[error("invalid date: {0}")]
     /// Date format is invalid.
@@ -93,7 +93,7 @@ pub enum Error {
 impl<'a> From<nom::Err<nom::error::Error<&'a str>>> for Error {
     fn from(e: nom::Err<nom::error::Error<&'a str>>) -> Self {
         match e {
-            nom::Err::Error(e) | nom::Err::Failure(e) => Self::Nom(e.input.to_owned()),
+            nom::Err::Error(e) | nom::Err::Failure(e) => Self::Parse(e.input.to_owned()),
             _ => unreachable!(),
         }
     }

@@ -38,7 +38,7 @@ mod tests {
     }
 
     #[test_case(
-        "node 6-8.a", Error::Nom(String::from("a"));
+        "node 6-8.a", Error::Parse(String::from("a"));
         "malformed version"
     )]
     fn invalid(query: &str, error: Error) {
