@@ -22,13 +22,13 @@ The original crate did not meet the criteria of `oxc`, the following changes are
 * removed all unnecessary, heavy or slow dependencies: `ahash`, `chrono`, `either`, `indexmap`, `itertools`, `once_cell`, `string_cache`
 * improved some runtime performance, e.g. [improve sort method](https://github.com/oxc-project/oxc-browserslist/pull/28), [precompute versions](https://github.com/oxc-project/oxc-browserslist/pull/10)
 
-## Limitation
-
-Only custom usage is not supported: `> 0.5% in my stats` or `cover 99.5% in my stats`.
-
 ## Usage
 
 See [docs.rs/oxc-browserslist](https://docs.rs/oxc-browserslist).
+
+## Limitation
+
+Only custom usage is not supported: `> 0.5% in my stats` or `cover 99.5% in my stats`.
 
 ## Example
 
