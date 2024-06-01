@@ -44,10 +44,10 @@ You can also specify additional options, for example:
 cargo run --example inspect -- --mobile-to-desktop 'last 2 versions, not dead'
 ```
 
-## Future Work
+## Future Work (Pull request welcome)
 
 * `nom` can be replaced by a hand written parser to improve runtime and compilation speed
-* to improve runtime performance, all semver versions with their string representation can be precomputed and code generated - current code is doing a lot of `parse` and `to_string` on semver versions right now
+* to improve runtime performance, all semver versions with their string representation can be precomputed and code generated - current code is calling `parse` and `to_string` on semver versions
 * improve test coverage
 
 [discord-badge]: https://img.shields.io/discord/1079625926024900739?logo=discord&label=Discord
