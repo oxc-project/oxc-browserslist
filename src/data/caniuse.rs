@@ -176,9 +176,8 @@ fn get_mobile_by_desktop_name(name: &str) -> &'static str {
 pub fn normalize_version<'a>(stat: &'static BrowserStat, version: &'a str) -> Option<&'a str> {
     if stat.version_list.iter().any(|v| v.version == version) {
         Some(version)
-    } else if let Some(version) = browser_version_aliases()
-        .get(&stat.name)
-        .and_then(|aliases| aliases.get(version))
+    } else if let Some(version) =
+        browser_version_aliases().get(&stat.name).and_then(|aliases| aliases.get(version))
     {
         Some(version)
     } else if stat.version_list.len() == 1 {

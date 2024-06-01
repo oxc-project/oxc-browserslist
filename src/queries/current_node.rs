@@ -27,14 +27,10 @@ pub(super) fn current_node() -> QueryResult {
     {
         use std::process::Command;
 
-        let output = Command::new("node")
-            .arg("-v")
-            .output()
-            .map_err(|_| Error::UnsupportedCurrentNode)?;
-        let version = String::from_utf8_lossy(&output.stdout)
-            .trim()
-            .trim_start_matches('v')
-            .to_owned();
+        let output =
+            Command::new("node").arg("-v").output().map_err(|_| Error::UnsupportedCurrentNode)?;
+        let version =
+            String::from_utf8_lossy(&output.stdout).trim().trim_start_matches('v').to_owned();
 
         Ok(vec![Distrib::new("node", version)])
     }

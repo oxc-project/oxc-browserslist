@@ -9,22 +9,14 @@ use std::borrow::Cow;
 pub(super) fn browser_accurate(name: &str, version: &str, opts: &Opts) -> QueryResult {
     let original_name = name;
     let original_version = version;
-    let version = if original_version.eq_ignore_ascii_case("tp") {
-        "TP"
-    } else {
-        version
-    };
+    let version = if original_version.eq_ignore_ascii_case("tp") { "TP" } else { version };
 
     let (name, stat) = get_browser_stat(name, opts.mobile_to_desktop)
         .ok_or_else(|| Error::BrowserNotFound(name.to_string()))?;
 
     if let Some(version) = normalize_version(
         stat,
-        if original_version.eq_ignore_ascii_case("tp") {
-            "TP"
-        } else {
-            version
-        },
+        if original_version.eq_ignore_ascii_case("tp") { "TP" } else { version },
     ) {
         Ok(vec![Distrib::new(name, version.to_owned())])
     } else {
@@ -74,24 +66,14 @@ mod tests {
     #[test_case("and_ff 60"; "firefox")]
     #[test_case("ie_mob 9"; "ie mobile")]
     fn mobile_to_desktop(query: &str) {
-        run_compare(
-            query,
-            &Opts {
-                mobile_to_desktop: true,
-                ..Default::default()
-            },
-            None,
-        );
+        run_compare(query, &Opts { mobile_to_desktop: true, ..Default::default() }, None);
     }
 
     #[test]
     fn ignore_unknown_versions() {
         run_compare(
             "IE 1, IE 9",
-            &Opts {
-                ignore_unknown_versions: true,
-                ..Default::default()
-            },
+            &Opts { ignore_unknown_versions: true, ..Default::default() },
             None,
         );
     }

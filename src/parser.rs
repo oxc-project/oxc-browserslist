@@ -13,27 +13,12 @@ type PResult<'a, Output> = IResult<&'a str, Output>;
 
 #[derive(Debug, Clone)]
 pub enum QueryAtom<'a> {
-    Last {
-        count: u16,
-        major: bool,
-        name: Option<&'a str>,
-    },
+    Last { count: u16, major: bool, name: Option<&'a str> },
     Unreleased(Option<&'a str>),
     Years(f64),
-    Since {
-        year: i32,
-        month: u32,
-        day: u32,
-    },
-    Percentage {
-        comparator: Comparator,
-        popularity: f32,
-        stats: Stats<'a>,
-    },
-    Cover {
-        coverage: f32,
-        stats: Stats<'a>,
-    },
+    Since { year: i32, month: u32, day: u32 },
+    Percentage { comparator: Comparator, popularity: f32, stats: Stats<'a> },
+    Cover { coverage: f32, stats: Stats<'a> },
     Supports(&'a str, Option<SupportKind>),
     Electron(VersionRange<'a>),
     Node(VersionRange<'a>),
@@ -72,14 +57,11 @@ fn parse_last(input: &str) -> PResult<QueryAtom> {
             terminated(tag_no_case("last"), space1),
             terminated(u16, space1),
             opt(terminated(
-                verify(
-                    take_while1(|c: char| c.is_ascii_alphabetic() || c == '_'),
-                    |s: &str| {
-                        !s.eq_ignore_ascii_case("version")
-                            && !s.eq_ignore_ascii_case("versions")
-                            && !s.eq_ignore_ascii_case("major")
-                    },
-                ),
+                verify(take_while1(|c: char| c.is_ascii_alphabetic() || c == '_'), |s: &str| {
+                    !s.eq_ignore_ascii_case("version")
+                        && !s.eq_ignore_ascii_case("versions")
+                        && !s.eq_ignore_ascii_case("major")
+                }),
                 space1,
             )),
             opt(terminated(tag_no_case("major"), space1)),
@@ -87,17 +69,9 @@ fn parse_last(input: &str) -> PResult<QueryAtom> {
         )),
         |(_, count, name, major, _)| {
             if matches!(name, Some(name) if name.eq_ignore_ascii_case("major")) && major.is_none() {
-                QueryAtom::Last {
-                    count,
-                    major: true,
-                    name: None,
-                }
+                QueryAtom::Last { count, major: true, name: None }
             } else {
-                QueryAtom::Last {
-                    count,
-                    major: major.is_some(),
-                    name,
-                }
+                QueryAtom::Last { count, major: major.is_some(), name }
             }
         },
     )(input)
@@ -107,10 +81,7 @@ fn parse_unreleased(input: &str) -> PResult<QueryAtom> {
     map(
         delimited(
             terminated(tag_no_case("unreleased"), space1),
-            opt(terminated(
-                take_while1(|c: char| c.is_ascii_alphabetic() || c == '_'),
-                space1,
-            )),
+            opt(terminated(take_while1(|c: char| c.is_ascii_alphabetic() || c == '_'), space1)),
             parse_version_keyword,
         ),
         QueryAtom::Unreleased,
@@ -153,23 +124,17 @@ pub enum Comparator {
 }
 
 fn parse_compare_operator(input: &str) -> PResult<Comparator> {
-    map(
-        tuple((alt((char('<'), char('>'))), opt(char('=')))),
-        |(relation, equals)| match relation {
-            '<' if equals.is_some() => Comparator::LessOrEqual,
-            '<' => Comparator::Less,
-            '>' if equals.is_some() => Comparator::GreaterOrEqual,
-            _ => Comparator::Greater,
-        },
-    )(input)
+    map(tuple((alt((char('<'), char('>'))), opt(char('=')))), |(relation, equals)| match relation {
+        '<' if equals.is_some() => Comparator::LessOrEqual,
+        '<' => Comparator::Less,
+        '>' if equals.is_some() => Comparator::GreaterOrEqual,
+        _ => Comparator::Greater,
+    })(input)
 }
 
 fn parse_region(input: &str) -> PResult<Stats> {
     map(
-        recognize(preceded(
-            opt(tag_no_case("alt-")),
-            take_while_m_n(2, 2, char::is_alphabetic),
-        )),
+        recognize(preceded(opt(tag_no_case("alt-")), take_while_m_n(2, 2, char::is_alphabetic))),
         Stats::Region,
     )(input)
 }
@@ -179,10 +144,7 @@ fn parse_percentage(input: &str) -> PResult<QueryAtom> {
         tuple((
             terminated(parse_compare_operator, space0),
             terminated(float, char('%')),
-            opt(preceded(
-                tuple((space1, tag_no_case("in"), space1)),
-                parse_region,
-            )),
+            opt(preceded(tuple((space1, tag_no_case("in"), space1)), parse_region)),
         )),
         |(comparator, value, stats)| QueryAtom::Percentage {
             comparator,
@@ -195,14 +157,8 @@ fn parse_percentage(input: &str) -> PResult<QueryAtom> {
 fn parse_cover(input: &str) -> PResult<QueryAtom> {
     map(
         tuple((
-            preceded(
-                terminated(tag_no_case("cover"), space1),
-                terminated(float, char('%')),
-            ),
-            opt(preceded(
-                tuple((space1, tag_no_case("in"), space1)),
-                parse_region,
-            )),
+            preceded(terminated(tag_no_case("cover"), space1), terminated(float, char('%'))),
+            opt(preceded(tuple((space1, tag_no_case("in"), space1)), parse_region)),
         )),
         |(value, stats)| QueryAtom::Cover {
             coverage: value,
@@ -244,19 +200,12 @@ fn parse_version_range(input: &str) -> PResult<VersionRange> {
         map(
             preceded(
                 space1,
-                separated_pair(
-                    parse_version,
-                    delimited(space0, char('-'), space0),
-                    parse_version,
-                ),
+                separated_pair(parse_version, delimited(space0, char('-'), space0), parse_version),
             ),
             |(from, to)| VersionRange::Bounded(from, to),
         ),
         map(
-            preceded(
-                space0,
-                separated_pair(parse_compare_operator, space0, parse_version),
-            ),
+            preceded(space0, separated_pair(parse_compare_operator, space0, parse_version)),
             |(comparator, version)| VersionRange::Unbounded(comparator, version),
         ),
         map(preceded(space1, parse_version), VersionRange::Accurate),
@@ -264,17 +213,11 @@ fn parse_version_range(input: &str) -> PResult<VersionRange> {
 }
 
 fn parse_electron(input: &str) -> PResult<QueryAtom> {
-    map(
-        preceded(tag_no_case("electron"), parse_version_range),
-        QueryAtom::Electron,
-    )(input)
+    map(preceded(tag_no_case("electron"), parse_version_range), QueryAtom::Electron)(input)
 }
 
 fn parse_node(input: &str) -> PResult<QueryAtom> {
-    map(
-        preceded(tag_no_case("node"), parse_version_range),
-        QueryAtom::Node,
-    )(input)
+    map(preceded(tag_no_case("node"), parse_version_range), QueryAtom::Node)(input)
 }
 
 fn parse_browser(input: &str) -> PResult<QueryAtom> {
@@ -313,10 +256,9 @@ fn parse_opera_mini(input: &str) -> PResult<QueryAtom> {
 }
 
 fn parse_current_node(input: &str) -> PResult<QueryAtom> {
-    value(
-        QueryAtom::CurrentNode,
-        tuple((tag_no_case("current"), space1, tag_no_case("node"))),
-    )(input)
+    value(QueryAtom::CurrentNode, tuple((tag_no_case("current"), space1, tag_no_case("node"))))(
+        input,
+    )
 }
 
 fn parse_maintained_node(input: &str) -> PResult<QueryAtom> {
@@ -334,19 +276,13 @@ fn parse_maintained_node(input: &str) -> PResult<QueryAtom> {
 
 fn parse_phantom(input: &str) -> PResult<QueryAtom> {
     map(
-        preceded(
-            terminated(tag_no_case("phantomjs"), space1),
-            alt((tag("1.9"), tag("2.1"))),
-        ),
+        preceded(terminated(tag_no_case("phantomjs"), space1), alt((tag("1.9"), tag("2.1")))),
         |version| QueryAtom::Phantom(version == "2.1"),
     )(input)
 }
 
 fn parse_browserslist_config(input: &str) -> PResult<QueryAtom> {
-    value(
-        QueryAtom::BrowserslistConfig,
-        tag_no_case("browserslist config"),
-    )(input)
+    value(QueryAtom::BrowserslistConfig, tag_no_case("browserslist config"))(input)
 }
 
 fn parse_defaults(input: &str) -> PResult<QueryAtom> {
@@ -370,10 +306,7 @@ fn parse_extends(input: &str) -> PResult<QueryAtom> {
 }
 
 fn parse_unknown(input: &str) -> PResult<QueryAtom> {
-    map(
-        recognize(many_till(anychar, parse_composition_operator)),
-        QueryAtom::Unknown,
-    )(input)
+    map(recognize(many_till(anychar, parse_composition_operator)), QueryAtom::Unknown)(input)
 }
 
 fn parse_query_atom(input: &str) -> PResult<QueryAtom> {
@@ -428,10 +361,7 @@ fn parse_single_query(input: &str) -> PResult<SingleQuery> {
     map(
         tuple((
             parse_composition_operator,
-            consumed(pair(
-                opt(terminated(tag_no_case("not"), space1)),
-                parse_query_atom,
-            )),
+            consumed(pair(opt(terminated(tag_no_case("not"), space1)), parse_query_atom)),
         )),
         |(is_and, (raw, (negated, atom)))| SingleQuery {
             raw,

@@ -24,11 +24,7 @@ pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
         command.current_dir(cwd);
     }
     let output = String::from_utf8(command.output().unwrap().stdout).unwrap();
-    let expected = output
-        .trim()
-        .split('\n')
-        .filter(|line| !line.is_empty())
-        .collect::<Vec<_>>();
+    let expected = output.trim().split('\n').filter(|line| !line.is_empty()).collect::<Vec<_>>();
 
     let actual = resolve(&[query], opts)
         .unwrap()

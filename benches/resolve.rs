@@ -3,12 +3,7 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 pub fn bench(c: &mut Criterion) {
     c.bench_function("resolve 'defaults, not dead'", |b| {
-        b.iter(|| {
-            resolve(
-                black_box(&["defaults, not dead"]),
-                &black_box(Opts::default()),
-            )
-        });
+        b.iter(|| resolve(black_box(&["defaults, not dead"]), &black_box(Opts::default())));
     });
 
     c.bench_function("resolve '> 0.5%'", |b| {
@@ -28,12 +23,7 @@ pub fn bench(c: &mut Criterion) {
     });
 
     c.bench_function("resolve 'supports es6-module'", |b| {
-        b.iter(|| {
-            resolve(
-                black_box(&["supports es6-module"]),
-                &black_box(Opts::default()),
-            )
-        });
+        b.iter(|| resolve(black_box(&["supports es6-module"]), &black_box(Opts::default())));
     });
 }
 

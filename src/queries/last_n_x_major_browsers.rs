@@ -14,10 +14,7 @@ pub(super) fn last_n_x_major_browsers(count: usize, name: &str, opts: &Opts) -> 
         .map(|version| version.split('.').next().unwrap())
         .collect::<Vec<_>>();
     vec.dedup();
-    let minimum = vec
-        .get(count - 1)
-        .and_then(|minimum| minimum.parse().ok())
-        .unwrap_or(0);
+    let minimum = vec.get(count - 1).and_then(|minimum| minimum.parse().ok()).unwrap_or(0);
 
     let distribs = stat
         .version_list
@@ -52,10 +49,7 @@ mod tests {
     fn mobile_to_desktop() {
         run_compare(
             "last 2 android major versions",
-            &Opts {
-                mobile_to_desktop: true,
-                ..Default::default()
-            },
+            &Opts { mobile_to_desktop: true, ..Default::default() },
             None,
         );
     }

@@ -32,10 +32,7 @@ pub(super) fn extends(pkg: &str, opts: &Opts) -> QueryResult {
     command.args(["-p", &format!("JSON.stringify(require('{pkg}'))")]);
     #[cfg(test)]
     command.current_dir(base_test_dir());
-    let output = command
-        .output()
-        .map_err(|_| Error::UnsupportedExtends)?
-        .stdout;
+    let output = command.output().map_err(|_| Error::UnsupportedExtends)?.stdout;
     let config = serde_json::from_str(&String::from_utf8_lossy(&output))
         .map_err(|_| Error::FailedToResolveExtend(pkg.to_string()))?;
 
@@ -43,10 +40,8 @@ pub(super) fn extends(pkg: &str, opts: &Opts) -> QueryResult {
 }
 
 fn check_extend_name(pkg: &str) -> Result<(), Error> {
-    let unscoped = pkg
-        .strip_prefix('@')
-        .and_then(|s| s.find('/').and_then(|i| s.get(i + 1..)))
-        .unwrap_or(pkg);
+    let unscoped =
+        pkg.strip_prefix('@').and_then(|s| s.find('/').and_then(|i| s.get(i + 1..))).unwrap_or(pkg);
     if !(unscoped.starts_with("browserslist-config-")
         || pkg.starts_with('@') && unscoped == "browserslist-config")
     {
@@ -55,14 +50,10 @@ fn check_extend_name(pkg: &str) -> Result<(), Error> {
         ));
     }
     if unscoped.contains('.') {
-        return Err(Error::InvalidExtendName(
-            "`.` not allowed in Browserslist config name.",
-        ));
+        return Err(Error::InvalidExtendName("`.` not allowed in Browserslist config name."));
     }
     if pkg.contains("node_modules") {
-        return Err(Error::InvalidExtendName(
-            "`node_modules` not allowed in Browserslist config.",
-        ));
+        return Err(Error::InvalidExtendName("`node_modules` not allowed in Browserslist config."));
     }
 
     Ok(())
@@ -84,10 +75,7 @@ mod tests {
         fs::create_dir_all(&dir).unwrap();
         fs::write(
             dir.join("index.js"),
-            format!(
-                "module.exports = {}",
-                serde_json::to_string(&value).unwrap()
-            ),
+            format!("module.exports = {}", serde_json::to_string(&value).unwrap()),
         )
         .unwrap();
     }
@@ -116,10 +104,7 @@ mod tests {
         mock("pkg", json!(["ie 11"]));
         run_compare(
             "extends pkg",
-            &Opts {
-                dangerous_extend: true,
-                ..Default::default()
-            },
+            &Opts { dangerous_extend: true, ..Default::default() },
             Some(base_test_dir()),
         );
         clean("pkg");
@@ -127,16 +112,9 @@ mod tests {
 
     #[test]
     fn recursively_import() {
-        mock(
-            "browserslist-config-a",
-            json!(["extends browserslist-config-b", "ie 9"]),
-        );
+        mock("browserslist-config-a", json!(["extends browserslist-config-b", "ie 9"]));
         mock("browserslist-config-b", json!(["ie 10"]));
-        run_compare(
-            "extends browserslist-config-a",
-            &Default::default(),
-            Some(base_test_dir()),
-        );
+        run_compare("extends browserslist-config-a", &Default::default(), Some(base_test_dir()));
         clean("browserslist-config-a");
         clean("browserslist-config-b");
     }
@@ -146,10 +124,7 @@ mod tests {
         mock("browserslist-config-with-env-b", json!(["ie 11"]));
         run_compare(
             "extends browserslist-config-with-env-b",
-            &Opts {
-                env: Some("someEnv".into()),
-                ..Default::default()
-            },
+            &Opts { env: Some("someEnv".into()), ..Default::default() },
             Some(base_test_dir()),
         );
         clean("pkg");
@@ -169,9 +144,6 @@ mod tests {
     #[test_case("extends browserslist-config-package/../something"; "has dot")]
     #[test_case("extends browserslist-config-test/node_modules/a"; "has node_modules")]
     fn invalid_name(query: &str) {
-        assert!(matches!(
-            should_failed(query, &Default::default()),
-            Error::InvalidExtendName(..)
-        ));
+        assert!(matches!(should_failed(query, &Default::default()), Error::InvalidExtendName(..)));
     }
 }

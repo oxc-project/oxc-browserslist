@@ -78,10 +78,7 @@ pub fn build_electron_to_chromium() -> Result<()> {
         .into_iter()
         .map(|(electron_version, chromium_version)| {
             let split = electron_version.split('.').collect::<Vec<_>>();
-            assert!(
-                split.len() == 2,
-                "electron version must be in major.minor format"
-            );
+            assert!(split.len() == 2, "electron version must be in major.minor format");
             let major: u16 = split[0].parse().unwrap();
             let minor: u16 = split[1].parse().unwrap();
             quote! {
@@ -147,14 +144,8 @@ pub fn build_node_release_schedule() -> Result<()> {
             let version = version.split('.').collect::<Vec<_>>();
             assert!(version.len() > 0);
             let major: u32 = version[0].parse().unwrap();
-            let minor: u32 = version
-                .get(1)
-                .map(|v| v.parse().unwrap())
-                .unwrap_or_default();
-            let patch: u32 = version
-                .get(2)
-                .map(|v| v.parse().unwrap())
-                .unwrap_or_default();
+            let minor: u32 = version.get(1).map(|v| v.parse().unwrap()).unwrap_or_default();
+            let patch: u32 = version.get(2).map(|v| v.parse().unwrap()).unwrap_or_default();
             let start_julian_day = parse_date(&start);
             let end_julian_day = parse_date(&end);
             quote! {
@@ -361,15 +352,7 @@ pub fn build_caniuse_region() -> Result<()> {
 
     let keys = files
         .iter()
-        .map(|entry| {
-            entry
-                .path()
-                .file_stem()
-                .unwrap()
-                .to_str()
-                .map(|s| s.to_owned())
-                .unwrap()
-        })
+        .map(|entry| entry.path().file_stem().unwrap().to_str().map(|s| s.to_owned()).unwrap())
         .collect::<Vec<_>>();
 
     let idents = keys

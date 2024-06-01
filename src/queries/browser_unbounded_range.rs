@@ -62,14 +62,7 @@ mod tests {
 
     #[test_case("chromeandroid >= 52 and chromeandroid < 54"; "chrome")]
     fn mobile_to_desktop(query: &str) {
-        run_compare(
-            query,
-            &Opts {
-                mobile_to_desktop: true,
-                ..Default::default()
-            },
-            None,
-        );
+        run_compare(query, &Opts { mobile_to_desktop: true, ..Default::default() }, None);
     }
 
     #[test_case(

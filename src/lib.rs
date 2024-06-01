@@ -94,22 +94,16 @@ where
     if queries.len() == 1 {
         _resolve(queries[0].as_ref(), opts)
     } else {
-        let s = &queries
-            .iter()
-            .map(|q| q.as_ref())
-            .collect::<Vec<_>>()
-            .join(", ");
+        let s = &queries.iter().map(|q| q.as_ref()).collect::<Vec<_>>().join(", ");
         _resolve(s, opts)
     }
 }
 
 // reduce generic monomorphization
 fn _resolve(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
-    let mut distribs = parse_browserslist_query(query)?
-        .1
-        .into_iter()
-        .enumerate()
-        .try_fold(vec![], |mut distribs, (i, current)| {
+    let mut distribs = parse_browserslist_query(query)?.1.into_iter().enumerate().try_fold(
+        vec![],
+        |mut distribs, (i, current)| {
             if i == 0 && current.negated {
                 return Err(Error::NotAtFirst(current.raw.to_string()));
             }
@@ -124,7 +118,8 @@ fn _resolve(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
             }
 
             Ok::<_, Error>(distribs)
-        })?;
+        },
+    )?;
 
     distribs.sort_by_cached_key(|d| {
         let version = d.version().parse::<semver::Version>().unwrap_or_default();

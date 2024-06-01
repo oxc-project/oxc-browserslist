@@ -10,10 +10,7 @@ pub(super) fn electron_bounded_range(from: &str, to: &str) -> QueryResult {
     let from = parse_version(from)?;
     let to = parse_version(to)?;
 
-    if ELECTRON_VERSIONS
-        .iter()
-        .all(|(version, _)| *version != from)
-    {
+    if ELECTRON_VERSIONS.iter().all(|(version, _)| *version != from) {
         return Err(Error::UnknownElectronVersion(from_str.to_string()));
     }
     if ELECTRON_VERSIONS.iter().all(|(version, _)| *version != to) {

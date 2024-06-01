@@ -242,12 +242,9 @@ mod tests {
         // specify config file by options
         fs::write(&tmp, "firefox > 90").unwrap();
         assert_eq!(
-            load(&Opts {
-                config: Some(tmp.to_str().unwrap().into()),
-                ..Default::default()
-            })
-            .as_deref()
-            .unwrap(),
+            load(&Opts { config: Some(tmp.to_str().unwrap().into()), ..Default::default() })
+                .as_deref()
+                .unwrap(),
             ["firefox > 90"]
         );
         fs::remove_file(&tmp).unwrap();
@@ -263,12 +260,9 @@ mod tests {
         )
         .unwrap();
         assert_eq!(
-            load(&Opts {
-                config: Some(tmp.to_str().unwrap().into()),
-                ..Default::default()
-            })
-            .as_deref()
-            .unwrap(),
+            load(&Opts { config: Some(tmp.to_str().unwrap().into()), ..Default::default() })
+                .as_deref()
+                .unwrap(),
             ["node > 10"]
         );
 
@@ -282,12 +276,9 @@ mod tests {
         )
         .unwrap();
         assert_eq!(
-            load(&Opts {
-                config: Some(tmp.to_str().unwrap().into()),
-                ..Default::default()
-            })
-            .as_deref()
-            .unwrap(),
+            load(&Opts { config: Some(tmp.to_str().unwrap().into()), ..Default::default() })
+                .as_deref()
+                .unwrap(),
             ["node > 7.4"]
         );
 
@@ -299,19 +290,14 @@ mod tests {
         let _ = config_obj.insert("ssr".into(), vec!["node >= 12".into()]);
         fs::write(
             &tmp,
-            serde_json::to_string(&PackageJson {
-                browserslist: Some(PkgConfig::Obj(config_obj)),
-            })
-            .unwrap(),
+            serde_json::to_string(&PackageJson { browserslist: Some(PkgConfig::Obj(config_obj)) })
+                .unwrap(),
         )
         .unwrap();
         assert_eq!(
-            load(&Opts {
-                config: Some(tmp.to_str().unwrap().into()),
-                ..Default::default()
-            })
-            .as_deref()
-            .unwrap(),
+            load(&Opts { config: Some(tmp.to_str().unwrap().into()), ..Default::default() })
+                .as_deref()
+                .unwrap(),
             ["> 1%", "not dead"]
         );
 
@@ -329,22 +315,16 @@ mod tests {
             ["chrome >= 49"]
         );
         assert_eq!(
-            load(&Opts {
-                config: Some(tmp.to_str().unwrap().into()),
-                ..Default::default()
-            })
-            .as_deref()
-            .unwrap(),
+            load(&Opts { config: Some(tmp.to_str().unwrap().into()), ..Default::default() })
+                .as_deref()
+                .unwrap(),
             ["last 1 version"]
         );
         remove_var("BROWSERSLIST_ENV");
         assert_eq!(
-            load(&Opts {
-                config: Some(tmp.to_str().unwrap().into()),
-                ..Default::default()
-            })
-            .as_deref()
-            .unwrap(),
+            load(&Opts { config: Some(tmp.to_str().unwrap().into()), ..Default::default() })
+                .as_deref()
+                .unwrap(),
             ["node >= 12"]
         );
         remove_var("NODE_ENV");
@@ -390,31 +370,19 @@ last 1 version
         let tmp_dir = temp_dir();
         let tmp = tmp_dir.to_str().unwrap();
         assert_eq!(
-            load(&Opts {
-                path: Some(tmp.into()),
-                ..Default::default()
-            })
-            .unwrap_err(),
+            load(&Opts { path: Some(tmp.into()), ..Default::default() }).unwrap_err(),
             Error::DuplicatedConfig(tmp.to_string(), ERR_DUP_PLAIN, ERR_DUP_PKG)
         );
 
         fs::write(tmp_dir.join(".browserslistrc"), "electron > 12.0").unwrap();
         assert_eq!(
-            load(&Opts {
-                path: Some(tmp.into()),
-                ..Default::default()
-            })
-            .unwrap_err(),
+            load(&Opts { path: Some(tmp.into()), ..Default::default() }).unwrap_err(),
             Error::DuplicatedConfig(tmp.to_string(), ERR_DUP_PLAIN, ERR_DUP_RC)
         );
 
         fs::remove_file(tmp_dir.join("browserslist")).unwrap();
         assert_eq!(
-            load(&Opts {
-                path: Some(tmp.into()),
-                ..Default::default()
-            })
-            .unwrap_err(),
+            load(&Opts { path: Some(tmp.into()), ..Default::default() }).unwrap_err(),
             Error::DuplicatedConfig(tmp.to_string(), ERR_DUP_RC, ERR_DUP_PKG)
         );
 
@@ -423,23 +391,17 @@ last 1 version
 
         fs::write(temp_dir().join("browserslist/1/browserslist"), "node >= 16").unwrap();
         assert_eq!(
-            load(&Opts {
-                path: Some(tmp_dir.to_str().unwrap().into()),
-                ..Default::default()
-            })
-            .as_deref()
-            .unwrap(),
+            load(&Opts { path: Some(tmp_dir.to_str().unwrap().into()), ..Default::default() })
+                .as_deref()
+                .unwrap(),
             ["node >= 16"]
         );
 
         fs::write(temp_dir().join("browserslist/1/2/package.json"), "{}").unwrap();
         assert_eq!(
-            load(&Opts {
-                path: Some(tmp_dir.to_str().unwrap().into()),
-                ..Default::default()
-            })
-            .as_deref()
-            .unwrap(),
+            load(&Opts { path: Some(tmp_dir.to_str().unwrap().into()), ..Default::default() })
+                .as_deref()
+                .unwrap(),
             ["node >= 16"]
         );
 
@@ -448,12 +410,9 @@ last 1 version
         fs::remove_file(tmp.join("browserslist/1/2/package.json")).unwrap();
         fs::remove_file(tmp.join("browserslist/1/browserslist")).unwrap();
         assert_eq!(
-            load(&Opts {
-                path: Some(tmp_dir.to_str().unwrap().into()),
-                ..Default::default()
-            })
-            .as_deref()
-            .unwrap(),
+            load(&Opts { path: Some(tmp_dir.to_str().unwrap().into()), ..Default::default() })
+                .as_deref()
+                .unwrap(),
             ["electron > 12.0"]
         );
 

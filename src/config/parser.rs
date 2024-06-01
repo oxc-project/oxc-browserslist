@@ -13,13 +13,7 @@ pub fn parse<S: AsRef<str>>(
 
     let config = source
         .lines()
-        .map(|line| {
-            if let Some(index) = line.find('#') {
-                &line[..index]
-            } else {
-                line
-            }
-        })
+        .map(|line| if let Some(index) = line.find('#') { &line[..index] } else { line })
         .map(str::trim)
         .filter(|line| !line.is_empty())
         .try_fold(
@@ -148,10 +142,7 @@ not dead
 ";
         let config = parse(source, "production", false).unwrap();
         assert!(config.defaults.is_empty());
-        assert_eq!(
-            config.env.as_deref().unwrap(),
-            ["last 2 versions", "not dead"]
-        );
+        assert_eq!(config.env.as_deref().unwrap(), ["last 2 versions", "not dead"]);
     }
 
     #[test]
@@ -165,10 +156,7 @@ not dead
 ";
         let config = parse(source, "production", false).unwrap();
         assert_eq!(&*config.defaults, ["> 1%"]);
-        assert_eq!(
-            config.env.as_deref().unwrap(),
-            ["last 2 versions", "not dead"]
-        );
+        assert_eq!(config.env.as_deref().unwrap(), ["last 2 versions", "not dead"]);
     }
 
     #[test]

@@ -75,13 +75,6 @@ mod tests {
 
     #[test]
     fn ignore_unknown_versions() {
-        run_compare(
-            "node 3",
-            &Opts {
-                ignore_unknown_versions: true,
-                ..Default::default()
-            },
-            None,
-        );
+        run_compare("node 3", &Opts { ignore_unknown_versions: true, ..Default::default() }, None);
     }
 }

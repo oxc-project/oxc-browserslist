@@ -6,10 +6,8 @@ pub(super) fn node_bounded_range(from: &str, to: &str) -> QueryResult {
     let distribs = NODE_VERSIONS
         .iter()
         .filter(|version| {
-            matches!(
-                loose_compare(version, from),
-                Ordering::Greater | Ordering::Equal
-            ) && matches!(loose_compare(version, to), Ordering::Less | Ordering::Equal)
+            matches!(loose_compare(version, from), Ordering::Greater | Ordering::Equal)
+                && matches!(loose_compare(version, to), Ordering::Less | Ordering::Equal)
         })
         .map(|version| Distrib::new("node", version.to_string()))
         .collect();

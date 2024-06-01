@@ -9,14 +9,8 @@ use crate::{
 pub(super) fn browser_bounded_range(name: &str, from: &str, to: &str, opts: &Opts) -> QueryResult {
     let (name, stat) = get_browser_stat(name, opts.mobile_to_desktop)
         .ok_or_else(|| Error::BrowserNotFound(name.to_string()))?;
-    let from: Version = normalize_version(stat, from)
-        .unwrap_or(from)
-        .parse()
-        .unwrap_or_default();
-    let to: Version = normalize_version(stat, to)
-        .unwrap_or(to)
-        .parse()
-        .unwrap_or_default();
+    let from: Version = normalize_version(stat, from).unwrap_or(from).parse().unwrap_or_default();
+    let to: Version = normalize_version(stat, to).unwrap_or(to).parse().unwrap_or_default();
 
     let distribs = stat
         .version_list
@@ -49,14 +43,7 @@ mod tests {
     #[test_case("and_chr 52-53"; "chrome")]
     #[test_case("android 4.4-38"; "android")]
     fn mobile_to_desktop(query: &str) {
-        run_compare(
-            query,
-            &Opts {
-                mobile_to_desktop: true,
-                ..Default::default()
-            },
-            None,
-        );
+        run_compare(query, &Opts { mobile_to_desktop: true, ..Default::default() }, None);
     }
 
     #[test_case(
