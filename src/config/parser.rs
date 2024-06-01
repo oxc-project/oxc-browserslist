@@ -2,12 +2,7 @@ use super::PartialConfig;
 use crate::error::Error;
 use rustc_hash::FxHashSet;
 
-pub fn parse<S: AsRef<str>>(
-    source: &str,
-    env: S,
-    throw_on_missing: bool,
-) -> Result<PartialConfig, Error> {
-    let env = env.as_ref();
+pub fn parse(source: &str, env: &str, throw_on_missing: bool) -> Result<PartialConfig, Error> {
     let mut encountered_sections = FxHashSet::default();
     let mut current_section = Some("defaults");
 
@@ -31,9 +26,8 @@ pub fn parse<S: AsRef<str>>(
                     for section in sections {
                         if encountered_sections.contains(section) {
                             return Err(Error::DuplicatedSection(section.to_string()));
-                        } else {
-                            encountered_sections.insert(section);
                         }
+                        encountered_sections.insert(section);
                     }
                     Ok((
                         defaults_queries,

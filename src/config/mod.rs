@@ -76,7 +76,7 @@ pub fn load(opts: &Opts) -> Result<Vec<String>, Error> {
             _ => {
                 let content = fs::read_to_string(config_path)
                     .map_err(|_| Error::FailedToReadConfig(format!("{}", config_path.display())))?;
-                let config = parse(&content, get_env(opts), opts.throw_on_missing)?;
+                let config = parse(&content, &get_env(opts), opts.throw_on_missing)?;
                 Ok(config.env.unwrap_or(config.defaults))
             }
         }
@@ -85,9 +85,9 @@ pub fn load(opts: &Opts) -> Result<Vec<String>, Error> {
             Some(path) => PathBuf::from(path),
             None => env::current_dir().map_err(|_| Error::FailedToAccessCurrentDir)?,
         };
-        match find_config(path)? {
+        match find_config(&path)? {
             FindConfig::String(s) => {
-                let config = parse(&s, get_env(opts), opts.throw_on_missing)?;
+                let config = parse(&s, &get_env(opts), opts.throw_on_missing)?;
                 Ok(config.env.unwrap_or(config.defaults))
             }
             FindConfig::PkgConfig(config) => {
@@ -106,8 +106,8 @@ enum FindConfig {
     PkgConfig(PkgConfig),
 }
 
-fn find_config<P: AsRef<Path>>(path: P) -> Result<FindConfig, Error> {
-    for dir in path.as_ref().ancestors() {
+fn find_config(path: &Path) -> Result<FindConfig, Error> {
+    for dir in path.ancestors() {
         let path_plain = dir.join("browserslist");
         let plain = File::open(&path_plain);
         let is_plain_existed = if let Ok(file) = &plain {
@@ -179,13 +179,13 @@ fn find_config<P: AsRef<Path>>(path: P) -> Result<FindConfig, Error> {
     Ok(FindConfig::String(Cow::Borrowed("defaults")))
 }
 
-fn get_env(opts: &Opts) -> Cow<str> {
+fn get_env(opts: &Opts) -> Cow<'_, str> {
     opts.env
         .as_ref()
         .map(Cow::from)
-        .or_else(|| env::var("BROWSERSLIST_ENV").ok().map(Cow::from))
-        .or_else(|| env::var("NODE_ENV").ok().map(Cow::from))
-        .unwrap_or_else(|| Cow::from("production"))
+        .or_else(|| env::var("BROWSERSLIST_ENV").ok().map(Cow::Owned))
+        .or_else(|| env::var("NODE_ENV").ok().map(Cow::Owned))
+        .unwrap_or(Cow::Borrowed("production"))
 }
 
 fn pick_queries_by_env(
