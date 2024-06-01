@@ -38,7 +38,10 @@ jobs:
           tools: cargo-codspeed
 
       - name: Build benchmark
-        run: cargo codspeed build -p oxc-browserslist --features codspeed
+        run: |
+          rm -rf xtask # remove feature unification
+          cargo check
+          cargo codspeed build -p oxc-browserslist --features codspeed
 
       - name: Run benchmark
         uses: CodSpeedHQ/action@v2
