@@ -11,13 +11,10 @@ fn root() -> PathBuf {
     get_project_root().unwrap()
 }
 
-fn out_dir() -> PathBuf {
-    root().join("src/generated")
-}
-
-fn format_token_stream(token_stream: proc_macro2::TokenStream) -> String {
+fn generate_file(file: &str, token_stream: proc_macro2::TokenStream) {
     let syntax_tree = syn::parse2(token_stream).unwrap();
-    prettyplease::unparse(&syntax_tree)
+    let code = prettyplease::unparse(&syntax_tree);
+    fs::write(root().join("src/generated").join(file), code).unwrap();
 }
 
 fn parse_date(s: &str) -> i32 {
@@ -76,8 +73,6 @@ pub struct Feature {
 }
 
 pub fn build_electron_to_chromium() -> Result<()> {
-    let path = out_dir().join("electron_to_chromium.rs");
-
     let data_path = root().join("node_modules/electron-to-chromium/versions.json");
     let data = serde_json::from_slice::<IndexMap<String, String>>(&fs::read(data_path)?)?
         .into_iter()
@@ -99,7 +94,7 @@ pub fn build_electron_to_chromium() -> Result<()> {
         pub static ELECTRON_VERSIONS: &[(ElectronVersion, &str)] = &[#(#data),*];
     };
 
-    fs::write(path, format_token_stream(output))?;
+    generate_file("electron_to_chromium.rs", output);
 
     Ok(())
 }
@@ -109,8 +104,6 @@ pub fn build_node_versions() -> Result<()> {
     struct NodeRelease {
         version: String,
     }
-
-    let path = out_dir().join("node_versions.rs");
 
     let releases_path = root().join("node_modules/node-releases/data/processed/envs.json");
     let releases: Vec<NodeRelease> = serde_json::from_slice(&fs::read(releases_path)?)?;
@@ -131,7 +124,7 @@ pub fn build_node_versions() -> Result<()> {
         pub static NODE_VERSIONS: &[Version] = &[#(#versions),*];
     };
 
-    fs::write(path, format_token_stream(output))?;
+    generate_file("node_versions.rs", output);
 
     Ok(())
 }
@@ -142,8 +135,6 @@ pub fn build_node_release_schedule() -> Result<()> {
         start: String,
         end: String,
     }
-
-    let path = out_dir().join("node_release_schedule.rs");
 
     let schedule_path =
         root().join("node_modules/node-releases/data/release-schedule/release-schedule.json");
@@ -177,7 +168,7 @@ pub fn build_node_release_schedule() -> Result<()> {
         pub static RELEASE_SCHEDULE: &[(Version, /* julian day */ i32, /* julian day */ i32)] = &[#(#versions),*];
     };
 
-    fs::write(path, format_token_stream(output))?;
+    generate_file("node_release_schedule.rs", output);
 
     Ok(())
 }
@@ -225,10 +216,7 @@ pub fn build_caniuse_global() -> Result<()> {
         }
     };
 
-    fs::write(
-        out_dir().join("caniuse_browsers.rs"),
-        format_token_stream(output),
-    )?;
+    generate_file("caniuse_browsers.rs", output);
 
     let mut global_usage = data
         .agents
@@ -252,10 +240,7 @@ pub fn build_caniuse_global() -> Result<()> {
         pub static CANIUSE_GLOBAL_USAGE: &[(BrowserName, &str, f32)] = &[#(#push_usage),*];
     };
 
-    fs::write(
-        out_dir().join("caniuse_global_usage.rs"),
-        format_token_stream(output),
-    )?;
+    generate_file("caniuse_global_usage.rs", output);
 
     let features = data
         .data
@@ -327,10 +312,7 @@ pub fn build_caniuse_global() -> Result<()> {
         #(const #idents: &str = #features;)*
     };
 
-    fs::write(
-        out_dir().join("caniuse_feature_matching.rs"),
-        format_token_stream(output),
-    )?;
+    generate_file("caniuse_feature_matching.rs", output);
 
     Ok(())
 }
@@ -345,9 +327,6 @@ pub fn build_caniuse_region() -> Result<()> {
     struct RegionData {
         data: IndexMap<String, IndexMap<String, Option<f32>>>,
     }
-
-    let out_path = out_dir();
-    let out_dir = out_path.to_string_lossy();
 
     let files_path = root().join("node_modules/caniuse-db/region-usage-json");
     let files = fs::read_dir(files_path)?
@@ -426,10 +405,7 @@ pub fn build_caniuse_region() -> Result<()> {
 
         #(const #idents: &str = #data;)*
     };
-    fs::write(
-        format!("{}/caniuse_region_matching.rs", &out_dir),
-        format_token_stream(output),
-    )?;
+    generate_file("caniuse_region_matching.rs", output);
 
     Ok(())
 }
