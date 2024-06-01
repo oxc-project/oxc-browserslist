@@ -60,6 +60,17 @@ jobs:
           components: clippy
       - run: cargo clippy --all-targets --all-features -- -D warnings
 
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: taiki-e/checkout-action@v1
+      - uses: Boshen/setup-rust@main
+        with:
+          components: rustfmt
+          restore-cache: false
+      - run: cargo fmt --all -- --check
+
   wasm:
     name: Wasm
     runs-on: ubuntu-latest
