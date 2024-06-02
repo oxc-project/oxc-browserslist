@@ -4,16 +4,14 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize]
-    paths-ignore:
+    paths-ignore: &paths-ignore
       - '**/*.md'
       - '!.github/workflows/ci.yml'
   push:
     branches:
       - main
       - "renovate/**"
-    paths-ignore:
-      - '**/*.md'
-      - '!.github/workflows/ci.yml'
+    paths-ignore: *paths-ignore
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}

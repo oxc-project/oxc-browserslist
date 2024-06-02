@@ -6,15 +6,13 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize]
-    paths:
+    paths: &paths
       - '**.rs'
       - '.github/workflows/codecov.yml'
   push:
     branches:
       - main
-    paths:
-      - '**.rs'
-      - '.github/workflows/codecov.yml'
+    paths: *paths
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
