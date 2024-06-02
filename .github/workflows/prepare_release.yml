@@ -1,0 +1,29 @@
+name: Prepare Release PR
+
+on:
+  push:
+    branches:
+      - knope.toml
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name GitHub Actions
+          git config user.email github-actions@github.com
+
+      - uses: knope-dev/action@v2.1.0
+
+      - run: knope prepare-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
