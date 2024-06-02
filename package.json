@@ -7,7 +7,7 @@
   },
   "devDependencies": {
     "browserslist": "4.23.0",
-    "caniuse-db": "1.0.30001625",
+    "caniuse-db": "1.0.30001626",
     "electron-to-chromium": "1.4.788",
     "node-releases": "2.0.14"
   }
