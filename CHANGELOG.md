@@ -34,3 +34,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Other
 
 - Made everything slightly better
+## 0.18.0 (2024-06-02)
+
+### Breaking Changes
+
+- change API to accept `&[S]` instead of `IntoIterator<Item = S>` (#29)
+- change `Error::Nom` to `Error::parse` for future compatibility (#39)
+
+### Features
+
+- use codegen instead of build.rs (#2)
