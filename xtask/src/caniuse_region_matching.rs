@@ -1,0 +1,87 @@
+use std::fs;
+
+use anyhow::Result;
+use indexmap::IndexMap;
+use quote::quote;
+use serde::Deserialize;
+
+use super::{encode_browser_name, generate_file, root, Caniuse};
+
+#[derive(Deserialize)]
+struct RegionData {
+    data: IndexMap<String, IndexMap<String, Option<f32>>>,
+}
+
+pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
+    let agents = &data.agents;
+    let files_path = root().join("node_modules/caniuse-db/region-usage-json");
+    let files = fs::read_dir(files_path)?
+        .map(|entry| entry.map_err(anyhow::Error::from))
+        .collect::<Result<Vec<_>>>()?;
+
+    let data = files
+        .iter()
+        .map(|file| {
+            let RegionData { data } =
+                serde_json::from_slice(&fs::read(file.path()).unwrap()).unwrap();
+            let mut usage = data
+                .into_iter()
+                .flat_map(|(name, stat)| {
+                    let agent = agents.get(&name).unwrap();
+                    stat.into_iter().filter_map(move |(version, usage)| {
+                        let version = if version.as_str() == "0" {
+                            agent.version_list.last().unwrap().version.clone()
+                        } else {
+                            version
+                        };
+                        usage.map(|usage| (encode_browser_name(&name), version, usage))
+                    })
+                })
+                .collect::<Vec<_>>();
+            usage.sort_unstable_by(|(_, _, a), (_, _, b)| b.partial_cmp(a).unwrap());
+            serde_json::to_string(&usage).unwrap()
+        })
+        .collect::<Vec<_>>();
+
+    let keys = files
+        .iter()
+        .map(|entry| entry.path().file_stem().unwrap().to_str().map(|s| s.to_owned()).unwrap())
+        .collect::<Vec<_>>();
+
+    let idents = keys
+        .iter()
+        .map(|k| quote::format_ident!("_{}", k.replace('-', "_").to_ascii_uppercase()))
+        .collect::<Vec<_>>();
+
+    let output = quote! {
+        use std::sync::OnceLock;
+        use serde_json::from_str;
+        use crate::data::BrowserName;
+        use crate::data::browser_name::decode_browser_name;
+
+        type RegionData = Vec<(BrowserName, &'static str, f32)>;
+
+        fn convert(s: &'static str) -> RegionData {
+            from_str::<Vec<(u8, &'static str, f32)>>(s)
+                .unwrap()
+                .into_iter()
+                .map(|(browser, version, usage)| (decode_browser_name(browser), version, usage))
+                .collect::<Vec<_>>()
+        }
+
+        pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
+            match region {
+                #( #keys => {
+                    static USAGE: OnceLock<RegionData> = OnceLock::new();
+                    Some(USAGE.get_or_init(|| convert(#idents)))
+                }, )*
+                _ => None,
+            }
+        }
+
+        #(const #idents: &str = #data;)*
+    };
+    generate_file("caniuse_region_matching.rs", output);
+
+    Ok(())
+}
