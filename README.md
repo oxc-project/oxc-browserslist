@@ -54,6 +54,14 @@ cargo run --example inspect -- --mobile-to-desktop 'last 2 versions, not dead'
     * add more benchmarks
     * see [codspeed][codspeed-url] for current run performance
 
+## [Sponsored By](https://github.com/sponsors/Boshen)
+
+<p align="center">
+  <a href="https://github.com/sponsors/Boshen">
+    <img src="https://raw.githubusercontent.com/Boshen/sponsors/main/sponsors.svg" alt="My sponsors" />
+  </a>
+</p>
+
 [discord-badge]: https://img.shields.io/discord/1079625926024900739?logo=discord&label=Discord
 [discord-url]: https://discord.gg/9uXCAwqQZW
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
