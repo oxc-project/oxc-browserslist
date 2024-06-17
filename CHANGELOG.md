@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.1](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v0.17.0...oxc-browserslist-v0.17.1) - 2024-06-17
+
+### Other
+- u ([#45](https://github.com/oxc-project/oxc-browserslist/pull/45))
+- install pnpm with the correct versions ([#47](https://github.com/oxc-project/oxc-browserslist/pull/47))
+- *(deps)* update rust crate criterion2 to 0.11.0
+- *(deps)* update dependency rust to v1.79.0 ([#44](https://github.com/oxc-project/oxc-browserslist/pull/44))
+- Update README.md
+- *(deps)* lock file maintenance rust crates
+- *(deps)* lock file maintenance npm packages
+- release ignore markdown and yml files
+- update README
+- *(xtask)* split up code
+- update README
+- update README
+
 ## [0.17.0](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v0.16.2...oxc-browserslist-v0.17.0) - 2024-06-01
 
 ### Added
