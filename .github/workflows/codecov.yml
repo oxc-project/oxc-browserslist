@@ -35,9 +35,13 @@ jobs:
           components: llvm-tools-preview
 
       - uses: pnpm/action-setup@v4.0.0
+
+      - uses: actions/setup-node@v4
         with:
-          version: latest
-          run_install: true
+          node-version-file: .node-version
+          cache: pnpm
+
+      - run: pnpm install
 
       - run: cargo llvm-cov --lcov --output-path lcov.info
 
