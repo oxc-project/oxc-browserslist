@@ -6,9 +6,9 @@
     "browserslist": "browserslist"
   },
   "devDependencies": {
-    "browserslist": "4.23.0",
-    "caniuse-db": "1.0.30001636",
-    "electron-to-chromium": "1.4.806",
+    "browserslist": "4.23.1",
+    "caniuse-db": "1.0.30001639",
+    "electron-to-chromium": "1.4.815",
     "node-releases": "2.0.14"
   },
   "packageManager": "pnpm@9.4.0"
