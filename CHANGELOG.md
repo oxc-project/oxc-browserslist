@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.0.1...oxc-browserslist-v1.0.2) - 2024-07-01
+
+### Other
+- *(deps)* update npm packages ([#52](https://github.com/oxc-project/oxc-browserslist/pull/52))
+
 ## [1.0.1](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.0.0...oxc-browserslist-v1.0.1) - 2024-06-24
 
 ### Other
