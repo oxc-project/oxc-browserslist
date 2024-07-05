@@ -320,7 +320,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "126",
-                            global_usage: 0f32,
+                            global_usage: 0.00757f32,
                             release_date: Some(1718841600i64),
                         },
                     ],
@@ -2347,6 +2347,11 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                             version: "110",
                             global_usage: 0.04542f32,
                             release_date: Some(1716336000i64),
+                        },
+                        VersionDetail {
+                            version: "111",
+                            global_usage: 0f32,
+                            release_date: Some(1719273600i64),
                         },
                     ],
                 },
