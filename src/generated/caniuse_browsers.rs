@@ -318,11 +318,6 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                             global_usage: 1.57834f32,
                             release_date: Some(1715990400i64),
                         },
-                        VersionDetail {
-                            version: "126",
-                            global_usage: 0f32,
-                            release_date: Some(1718841600i64),
-                        },
                     ],
                 },
             ),
@@ -2623,9 +2618,9 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                             release_date: Some(1401667200i64),
                         },
                         VersionDetail {
-                            version: "126",
+                            version: "125",
                             global_usage: 0.656352f32,
-                            release_date: Some(1718064000i64),
+                            release_date: Some(1715731200i64),
                         },
                     ],
                 },
@@ -2696,9 +2691,9 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                 BrowserStat {
                     name: "and_chr",
                     version_list: vec![VersionDetail {
-                        version: "126",
+                        version: "125",
                         global_usage: 42.0636f32,
-                        release_date: Some(1718064000i64),
+                        release_date: Some(1715731200i64),
                     }],
                 },
             ),
@@ -2707,9 +2702,9 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                 BrowserStat {
                     name: "and_ff",
                     version_list: vec![VersionDetail {
-                        version: "127",
+                        version: "126",
                         global_usage: 0.31075f32,
-                        release_date: Some(1718064000i64),
+                        release_date: Some(1715644800i64),
                     }],
                 },
             ),
