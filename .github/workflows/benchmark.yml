@@ -41,7 +41,7 @@ jobs:
         run: cargo codspeed build -p oxc-browserslist --features codspeed
 
       - name: Run benchmark
-        uses: CodSpeedHQ/action@v2
+        uses: CodSpeedHQ/action@v3
         timeout-minutes: 15
         with:
           run: cargo codspeed run
