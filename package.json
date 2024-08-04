@@ -6,10 +6,10 @@
     "browserslist": "browserslist"
   },
   "devDependencies": {
-    "browserslist": "4.23.1",
-    "caniuse-db": "1.0.30001640",
-    "electron-to-chromium": "1.4.816",
-    "node-releases": "2.0.14"
+    "browserslist": "4.23.2",
+    "caniuse-db": "1.0.30001643",
+    "electron-to-chromium": "1.5.1",
+    "node-releases": "2.0.18"
   },
-  "packageManager": "pnpm@9.4.0"
+  "packageManager": "pnpm@9.6.0"
 }
