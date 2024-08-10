@@ -11,10 +11,19 @@ use std::{fs, path::PathBuf};
 use anyhow::Result;
 use indexmap::IndexMap;
 use project_root::get_project_root;
+use rkyv::ser::serializers::AllocSerializer;
 use serde::Deserialize;
 
 fn root() -> PathBuf {
     get_project_root().unwrap()
+}
+
+fn generate_rkyv<T, const N: usize>(file: &str, value: T)
+where
+    T: rkyv::Serialize<AllocSerializer<N>>,
+{
+    let bytes = rkyv::to_bytes(&value).unwrap();
+    fs::write(root().join("src/generated").join(file), bytes.as_slice()).unwrap();
 }
 
 fn generate_file(file: &str, token_stream: proc_macro2::TokenStream) {
@@ -40,7 +49,9 @@ pub struct Agent {
     pub version_list: Vec<VersionDetail>,
 }
 
-#[derive(Deserialize, Clone)]
+use rkyv::{Archive as RkyvArchive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
+
+#[derive(RkyvArchive, RkyvDeserialize, RkyvSerialize, Deserialize, Clone, Debug)]
 pub struct VersionDetail {
     pub version: String,
     pub global_usage: f32,

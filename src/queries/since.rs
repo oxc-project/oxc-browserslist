@@ -21,7 +21,7 @@ pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult
             stat.version_list
                 .iter()
                 .filter(|version| matches!(version.release_date, Some(date) if date >= time))
-                .map(|version| Distrib::new(name, version.version))
+                .map(|version| Distrib::new(name, version.version.as_str()))
         })
         .collect();
     Ok(distribs)

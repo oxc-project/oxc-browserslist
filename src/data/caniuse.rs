@@ -10,20 +10,22 @@ pub mod region;
 pub const ANDROID_EVERGREEN_FIRST: f32 = 37.0;
 pub const OP_MOB_BLINK_FIRST: u32 = 14;
 
-#[derive(Clone, Debug)]
+use rkyv::{Archive as RkyvArchive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
+
+#[derive(RkyvArchive, RkyvDeserialize, RkyvSerialize, Clone, Debug)]
 pub struct BrowserStat {
-    pub name: BrowserName,
+    pub name: String,
     pub version_list: Vec<VersionDetail>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(RkyvArchive, RkyvDeserialize, RkyvSerialize, Clone, Debug)]
 pub struct VersionDetail {
-    pub version: &'static str,
+    pub version: String,
     pub global_usage: f32,
     pub release_date: Option<i64>,
 }
 
-pub type CaniuseData = FxHashMap<BrowserName, BrowserStat>;
+pub type CaniuseData = std::collections::HashMap<String, BrowserStat>;
 
 pub use crate::generated::{
     caniuse_browsers::caniuse_browsers, caniuse_global_usage::CANIUSE_GLOBAL_USAGE,
@@ -45,20 +47,20 @@ pub fn browser_version_aliases(
                         version
                             .version
                             .split_once('-')
-                            .map(|(bottom, top)| (bottom, top, version.version))
+                            .map(|(bottom, top)| (bottom, top, version.version.as_str()))
                     })
                     .fold(
                         FxHashMap::<&str, &str>::default(),
                         move |mut aliases, (bottom, top, version)| {
-                            let _ = aliases.insert(bottom, version);
-                            let _ = aliases.insert(top, version);
+                            let _ = aliases.insert(bottom, &version);
+                            let _ = aliases.insert(top, &version);
                             aliases
                         },
                     );
                 if aliases.is_empty() {
                     None
                 } else {
-                    Some((*name, aliases))
+                    Some((name.as_str(), aliases))
                 }
             })
             .collect::<FxHashMap<BrowserName, _>>();
@@ -81,7 +83,7 @@ fn android_to_desktop() -> &'static BrowserStat {
             .version_list
             .into_iter()
             .filter(|version| {
-                let version = version.version;
+                let version = version.version.as_str();
                 version.starts_with("2.")
                     || version.starts_with("3.")
                     || version.starts_with("4.")
@@ -131,10 +133,10 @@ pub fn get_browser_stat(
                     .map(|stat| (get_mobile_by_desktop_name(desktop_name), stat)),
             }
         } else {
-            caniuse_browsers().get(name).map(|stat| (stat.name, stat))
+            caniuse_browsers().get(name).map(|stat| (stat.name.as_str(), stat))
         }
     } else {
-        caniuse_browsers().get(name).map(|stat| (stat.name, stat))
+        caniuse_browsers().get(name).map(|stat| (stat.name.as_str(), stat))
     }
 }
 
@@ -178,11 +180,11 @@ pub fn normalize_version<'a>(stat: &'static BrowserStat, version: &'a str) -> Op
     if stat.version_list.iter().any(|v| v.version == version) {
         Some(version)
     } else if let Some(version) =
-        browser_version_aliases().get(&stat.name).and_then(|aliases| aliases.get(version))
+        browser_version_aliases().get(stat.name.as_str()).and_then(|aliases| aliases.get(version))
     {
         Some(version)
     } else if stat.version_list.len() == 1 {
-        stat.version_list.first().map(|s| s.version)
+        stat.version_list.first().map(|s| s.version.as_str())
     } else {
         None
     }

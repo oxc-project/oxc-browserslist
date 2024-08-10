@@ -1,6 +1,5 @@
 use anyhow::Result;
 use indexmap::IndexMap;
-use proc_macro2::TokenStream;
 use quote::quote;
 
 use super::{encode_browser_name, generate_file, Caniuse};
@@ -10,35 +9,35 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         .data
         .iter()
         .map(|(_name, feature)| {
-            let features = feature
-                .stats
-                .iter()
-                .filter_map(|(name, versions)| {
-                    let name = encode_browser_name(name);
-                    let versions = versions
-                        .into_iter()
-                        .filter(|(_version, flag)| *flag != "n")
-                        .collect::<Vec<_>>();
-                    let y = versions
-                        .iter()
-                        .filter(|(_, flag)| flag.contains('y'))
-                        .map(|x| x.0.clone())
-                        .collect::<Vec<_>>();
-                    let a: Vec<_> = versions
-                        .iter()
-                        .filter(|(_, flag)| flag.contains('a'))
-                        .map(|x| x.0.clone())
-                        .collect();
-                    if y.is_empty() && a.is_empty() {
-                        None
-                    } else {
-                        Some((name, (y, a)))
-                    }
-                })
-                .collect::<IndexMap<_, _>>();
-
-            let raw = serde_json::value::to_raw_value(&features).unwrap();
-            format!("r#\"{}\"#", raw).parse::<TokenStream>().unwrap()
+            serde_json::to_string(
+                &feature
+                    .stats
+                    .iter()
+                    .filter_map(|(name, versions)| {
+                        let name = encode_browser_name(name);
+                        let versions = versions
+                            .into_iter()
+                            .filter(|(_version, flag)| *flag != "n")
+                            .collect::<Vec<_>>();
+                        let y = versions
+                            .iter()
+                            .filter(|(_, flag)| flag.contains('y'))
+                            .map(|x| x.0.clone())
+                            .collect::<Vec<_>>();
+                        let a = versions
+                            .iter()
+                            .filter(|(_, flag)| flag.contains('a'))
+                            .map(|x| x.0.clone())
+                            .collect::<Vec<_>>();
+                        if y.is_empty() && a.is_empty() {
+                            None
+                        } else {
+                            Some((name, (y, a)))
+                        }
+                    })
+                    .collect::<IndexMap<_, _>>(),
+            )
+            .unwrap()
         })
         .collect::<Vec<_>>();
 
