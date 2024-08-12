@@ -1,11 +1,9 @@
-use crate::data::caniuse::CaniuseData;
-use rkyv::Deserialize;
+use crate::data::caniuse::{ArchivedCaniuseData, CaniuseData};
 use std::sync::OnceLock;
-pub fn caniuse_browsers() -> &'static CaniuseData {
-    static CANIUSE_BROWSERS: OnceLock<CaniuseData> = OnceLock::new();
+pub fn caniuse_browsers() -> &'static ArchivedCaniuseData {
+    static CANIUSE_BROWSERS: OnceLock<&ArchivedCaniuseData> = OnceLock::new();
     CANIUSE_BROWSERS.get_or_init(|| {
         let bytes = include_bytes!("caniuse_browsers.rkyv");
-        let archived = unsafe { rkyv::archived_root::<CaniuseData>(bytes) };
-        archived.deserialize(&mut rkyv::Infallible).unwrap()
+        unsafe { rkyv::archived_root::<CaniuseData>(bytes) }
     })
 }

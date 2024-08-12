@@ -20,7 +20,7 @@ pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult
         .flat_map(|(name, stat)| {
             stat.version_list
                 .iter()
-                .filter(|version| matches!(version.release_date, Some(date) if date >= time))
+                .filter(|version| matches!(version.release_date, rkyv::option::ArchivedOption::Some(date) if date >= time))
                 .map(|version| Distrib::new(name, version.version.as_str()))
         })
         .collect();

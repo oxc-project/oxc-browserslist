@@ -25,6 +25,8 @@ pub struct VersionDetail {
     pub release_date: Option<i64>,
 }
 
+pub type ArchivedCaniuseData =
+    rkyv::collections::ArchivedHashMap<rkyv::string::ArchivedString, ArchivedBrowserStat>;
 pub type CaniuseData = std::collections::HashMap<String, BrowserStat>;
 
 pub use crate::generated::{
@@ -73,49 +75,10 @@ pub fn browser_version_aliases(
     })
 }
 
-fn android_to_desktop() -> &'static BrowserStat {
-    static ANDROID_TO_DESKTOP: OnceLock<BrowserStat> = OnceLock::new();
-    ANDROID_TO_DESKTOP.get_or_init(|| {
-        let chrome = &caniuse_browsers()["chrome"];
-        let mut android = caniuse_browsers()["android"].clone();
-
-        android.version_list = android
-            .version_list
-            .into_iter()
-            .filter(|version| {
-                let version = version.version.as_str();
-                version.starts_with("2.")
-                    || version.starts_with("3.")
-                    || version.starts_with("4.")
-                    || version == "3"
-                    || version == "4"
-            })
-            .chain(
-                chrome
-                    .version_list
-                    .iter()
-                    .skip(
-                        chrome
-                            .version_list
-                            .iter()
-                            .position(|version| {
-                                version.version.parse::<usize>().unwrap()
-                                    == ANDROID_EVERGREEN_FIRST as usize
-                            })
-                            .unwrap(),
-                    )
-                    .cloned(),
-            )
-            .collect();
-
-        android.clone()
-    })
-}
-
 pub fn get_browser_stat(
     name: &str,
     mobile_to_desktop: bool,
-) -> Option<(&'static str, &'static BrowserStat)> {
+) -> Option<(&'static str, &'static ArchivedBrowserStat)> {
     let name = if name.bytes().all(|b| b.is_ascii_lowercase()) {
         Cow::Borrowed(name)
     } else {
@@ -123,20 +86,22 @@ pub fn get_browser_stat(
     };
     let name = get_browser_alias(&name);
 
+    let browsers = caniuse_browsers();
+
     if mobile_to_desktop {
         if let Some(desktop_name) = to_desktop_name(name) {
             match name {
-                "android" => Some(("android", android_to_desktop())),
-                "op_mob" => Some(("op_mob", &caniuse_browsers()["opera"])),
-                _ => caniuse_browsers()
+                "android" => Some(("android", browsers.get("android_to_desktop").unwrap())),
+                "op_mob" => Some(("op_mob", browsers.get("opera").unwrap())),
+                _ => browsers
                     .get(desktop_name)
                     .map(|stat| (get_mobile_by_desktop_name(desktop_name), stat)),
             }
         } else {
-            caniuse_browsers().get(name).map(|stat| (stat.name.as_str(), stat))
+            browsers.get(name).map(|stat| (stat.name.as_str(), stat))
         }
     } else {
-        caniuse_browsers().get(name).map(|stat| (stat.name.as_str(), stat))
+        browsers.get(name).map(|stat| (stat.name.as_str(), stat))
     }
 }
 
@@ -176,7 +141,10 @@ fn get_mobile_by_desktop_name(name: &str) -> &'static str {
     }
 }
 
-pub fn normalize_version<'a>(stat: &'static BrowserStat, version: &'a str) -> Option<&'a str> {
+pub fn normalize_version<'a>(
+    stat: &'static ArchivedBrowserStat,
+    version: &'a str,
+) -> Option<&'a str> {
     if stat.version_list.iter().any(|v| v.version == version) {
         Some(version)
     } else if let Some(version) =
