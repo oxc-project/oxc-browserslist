@@ -1,7 +1,7 @@
 use super::{Distrib, QueryResult};
 use crate::{
     data::caniuse::{
-        features::{get_feature_stat, FeatureSet},
+        features::{get_feature_stat, ArchivedFeatureSet},
         get_browser_stat, to_desktop_name, ArchivedVersionDetail,
     },
     error::Error,
@@ -58,8 +58,8 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
     }
 }
 
-fn is_supported(set: &FeatureSet, version: &str, include_partial: bool) -> bool {
-    set.0.contains(&version) || (include_partial && set.1.contains(&version))
+fn is_supported(set: &ArchivedFeatureSet, version: &str, include_partial: bool) -> bool {
+    set.0.contains(version) || (include_partial && set.1.contains(version))
 }
 
 #[cfg(test)]

@@ -1,14 +1,15 @@
 use super::{Distrib, QueryResult};
-use crate::data::caniuse::CANIUSE_GLOBAL_USAGE;
+
+use crate::data::caniuse::caniuse_global_usage;
 
 pub(super) fn cover(coverage: f32) -> QueryResult {
     let mut distribs = vec![];
     let mut total = 0.0;
-    for (name, version, usage) in CANIUSE_GLOBAL_USAGE {
+    for (name, version, usage) in caniuse_global_usage().iter() {
         if total >= coverage || *usage == 0.0 {
             break;
         }
-        distribs.push(Distrib::new(name, *version));
+        distribs.push(Distrib::new(name, version.as_str()));
         total += usage;
     }
     Ok(distribs)

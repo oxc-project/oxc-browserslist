@@ -30,7 +30,7 @@ pub type ArchivedCaniuseData =
 pub type CaniuseData = std::collections::HashMap<String, BrowserStat>;
 
 pub use crate::generated::{
-    caniuse_browsers::caniuse_browsers, caniuse_global_usage::CANIUSE_GLOBAL_USAGE,
+    caniuse_browsers::caniuse_browsers, caniuse_global_usage::caniuse_global_usage,
 };
 
 pub fn browser_version_aliases(

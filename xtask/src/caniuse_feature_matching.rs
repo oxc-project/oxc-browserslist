@@ -1,80 +1,62 @@
 use anyhow::Result;
-use indexmap::IndexMap;
 use quote::quote;
 
-use super::{encode_browser_name, generate_file, Caniuse};
+use crate::generate_rkyv;
+
+use super::{generate_file, Caniuse};
+
+use std::collections::HashMap;
+use std::collections::HashSet;
+
+type SupportMap = HashMap<
+    /* browser */ String,
+    (/* fully */ HashSet<String>, /* partial */ HashSet<String>),
+>;
 
 pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
-    let features = data
-        .data
-        .iter()
-        .map(|(_name, feature)| {
-            serde_json::to_string(
-                &feature
-                    .stats
-                    .iter()
-                    .filter_map(|(name, versions)| {
-                        let name = encode_browser_name(name);
-                        let versions = versions
-                            .into_iter()
-                            .filter(|(_version, flag)| *flag != "n")
-                            .collect::<Vec<_>>();
-                        let y = versions
-                            .iter()
-                            .filter(|(_, flag)| flag.contains('y'))
-                            .map(|x| x.0.clone())
-                            .collect::<Vec<_>>();
-                        let a = versions
-                            .iter()
-                            .filter(|(_, flag)| flag.contains('a'))
-                            .map(|x| x.0.clone())
-                            .collect::<Vec<_>>();
-                        if y.is_empty() && a.is_empty() {
-                            None
-                        } else {
-                            Some((name, (y, a)))
-                        }
-                    })
-                    .collect::<IndexMap<_, _>>(),
-            )
-            .unwrap()
-        })
-        .collect::<Vec<_>>();
+    let mut features: HashMap<String, SupportMap> = HashMap::new();
 
-    let keys = data.data.keys().collect::<Vec<_>>();
-    let idents = keys
-        .iter()
-        .map(|k| quote::format_ident!("_{}", k.replace('-', "_").to_ascii_uppercase()))
-        .collect::<Vec<_>>();
+    for (name, feature) in &data.data {
+        // println!("NAME: {:?}, FEATURE: {:#?}", name, feature);
+
+        let mut support_map: SupportMap = SupportMap::new();
+
+        for (browser, versions) in &feature.stats {
+            let fully = versions
+                .iter()
+                .filter(|(_, flag)| flag.contains('y'))
+                .map(|x| x.0.clone())
+                .collect::<HashSet<_>>();
+
+            let partial = versions
+                .iter()
+                .filter(|(_, flag)| flag.contains('a'))
+                .map(|x| x.0.clone())
+                .collect::<HashSet<_>>();
+
+            support_map.insert(browser.clone(), (fully, partial));
+        }
+
+        features.insert(name.clone(), support_map);
+    }
 
     let output = quote! {
-        use rustc_hash::FxHashMap;
+        use crate::data::caniuse::features::{ArchivedFeature, ArchivedFeatures, Features};
+
         use std::sync::OnceLock;
-        use serde_json::from_str;
-        use crate::data::caniuse::features::{Feature, FeatureSet};
-        use crate::data::browser_name::decode_browser_name;
 
-        fn convert(s: &'static str) -> Feature {
-            from_str::<FxHashMap::<u8, FeatureSet>>(s)
-                .unwrap()
-                .into_iter()
-                .map(|(browser, versions)| (decode_browser_name(browser), versions))
-                .collect()
+        pub(crate) fn get_feature_stat(name: &str) -> Option<&'static ArchivedFeature> {
+            static CANIUSE_FEATURE_MATCHING: OnceLock<&ArchivedFeatures> = OnceLock::new();
+            let stats = CANIUSE_FEATURE_MATCHING.get_or_init(|| {
+                let bytes = include_bytes!("caniuse_feature_matching.rkyv");
+                unsafe { rkyv::archived_root::<Features>(bytes) }
+            });
+
+            return stats.get(name);
         }
-
-        pub(crate) fn get_feature_stat(name: &str) -> Option<&'static Feature> {
-            match name {
-                #( #keys => {
-                    static STAT: OnceLock<Feature> = OnceLock::new();
-                    Some(STAT.get_or_init(|| convert(#idents)))
-                }, )*
-                _ => None,
-            }
-        }
-
-        #(const #idents: &str = #features;)*
     };
 
+    generate_rkyv::<_, 256>("caniuse_feature_matching.rkyv", features);
     generate_file("caniuse_feature_matching.rs", output);
 
     Ok(())

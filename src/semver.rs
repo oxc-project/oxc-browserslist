@@ -1,12 +1,46 @@
+use rkyv::Archive as RkyvArchive;
+use rkyv::Deserialize as RkyvDeserialize;
 use std::{cmp::Ordering, fmt, num::ParseIntError, str::FromStr};
 
-#[derive(PartialEq, Eq, PartialOrd, Ord, Default, Debug, Copy, Clone)]
+#[derive(Default, PartialEq, Eq, PartialOrd, Ord, RkyvDeserialize, RkyvArchive)]
+#[archive(compare(PartialEq, PartialOrd))]
+#[archive_attr(derive(PartialEq, PartialOrd, Eq, Ord))]
 pub struct Version(pub u32, pub u32, pub u32);
 
 impl Version {
     #[inline]
     pub(crate) fn major(&self) -> u32 {
         self.0
+    }
+}
+
+impl ArchivedVersion {
+    #[inline]
+    pub(crate) fn major(&self) -> u32 {
+        self.0
+    }
+}
+
+impl FromStr for ArchivedVersion {
+    type Err = ParseIntError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        // this allows something like `4.4.3-4.4.4`
+        let mut segments = s.split_once('-').map_or(s, |(v, _)| v).split('.');
+        let major = match segments.next() {
+            Some(n) => n.parse()?,
+            None => 0,
+        };
+        let minor = match segments.next() {
+            Some(n) => n.parse()?,
+            None => 0,
+        };
+        let patch = match segments.next() {
+            Some(n) => n.parse()?,
+            None => 0,
+        };
+
+        Ok(Self(major, minor, patch))
     }
 }
 
@@ -33,13 +67,13 @@ impl FromStr for Version {
     }
 }
 
-impl fmt::Display for Version {
+impl fmt::Display for ArchivedVersion {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}.{}.{}", self.0, self.1, self.2)
     }
 }
 
-pub fn loose_compare(a: &Version, b: &str) -> Ordering {
+pub fn loose_compare(a: &ArchivedVersion, b: &str) -> Ordering {
     let mut b = b.split('.');
     let Some(first) = b.next() else {
         return Ordering::Equal;

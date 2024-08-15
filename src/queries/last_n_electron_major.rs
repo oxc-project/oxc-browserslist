@@ -1,19 +1,20 @@
 use super::{Distrib, QueryResult};
-use crate::data::electron::ELECTRON_VERSIONS;
+use crate::data::electron::get_electron_versions;
 
 pub(super) fn last_n_electron_major(count: usize) -> QueryResult {
-    let minimum = ELECTRON_VERSIONS
+    let minimum = get_electron_versions()
         .iter()
         .rev()
         .nth(count - 1)
-        .map(|(electron_version, _)| *electron_version)
+        .map(|(electron_version, _)| electron_version)
+        .cloned()
         .unwrap_or_default();
 
-    let distribs = ELECTRON_VERSIONS
+    let distribs = get_electron_versions()
         .iter()
         .filter(|(electron_version, _)| *electron_version >= minimum)
         .rev()
-        .map(|(_, chromium_version)| Distrib::new("chrome", *chromium_version))
+        .map(|(_, chromium_version)| Distrib::new("chrome", chromium_version.as_str()))
         .collect();
 
     Ok(distribs)
