@@ -54,8 +54,8 @@ pub fn browser_version_aliases(
                     .fold(
                         FxHashMap::<&str, &str>::default(),
                         move |mut aliases, (bottom, top, version)| {
-                            let _ = aliases.insert(bottom, &version);
-                            let _ = aliases.insert(top, &version);
+                            let _ = aliases.insert(bottom, version);
+                            let _ = aliases.insert(top, version);
                             aliases
                         },
                     );
