@@ -1,4 +1,4 @@
-use std::{borrow::Cow, sync::OnceLock};
+use std::{borrow::Cow, collections::HashMap, sync::OnceLock};
 
 use rustc_hash::FxHashMap;
 
@@ -10,7 +10,10 @@ pub mod region;
 pub const ANDROID_EVERGREEN_FIRST: f32 = 37.0;
 pub const OP_MOB_BLINK_FIRST: u32 = 14;
 
-use rkyv::{Archive as RkyvArchive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
+use rkyv::{
+    collections::ArchivedHashMap, string::ArchivedString, Archive as RkyvArchive,
+    Deserialize as RkyvDeserialize, Serialize as RkyvSerialize,
+};
 
 #[derive(RkyvArchive, RkyvDeserialize, RkyvSerialize, Clone, Debug)]
 pub struct BrowserStat {
@@ -25,9 +28,8 @@ pub struct VersionDetail {
     pub release_date: Option<i64>,
 }
 
-pub type ArchivedCaniuseData =
-    rkyv::collections::ArchivedHashMap<rkyv::string::ArchivedString, ArchivedBrowserStat>;
-pub type CaniuseData = std::collections::HashMap<String, BrowserStat>;
+pub type ArchivedCaniuseData = ArchivedHashMap<ArchivedString, ArchivedBrowserStat>;
+pub type CaniuseData = HashMap<String, BrowserStat>;
 
 pub use crate::generated::{
     caniuse_browsers::caniuse_browsers, caniuse_global_usage::caniuse_global_usage,

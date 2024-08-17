@@ -17,8 +17,6 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     let mut features: HashMap<String, SupportMap> = HashMap::new();
 
     for (name, feature) in &data.data {
-        // println!("NAME: {:?}, FEATURE: {:#?}", name, feature);
-
         let mut support_map: SupportMap = SupportMap::new();
 
         for (browser, versions) in &feature.stats {

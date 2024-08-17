@@ -43,7 +43,7 @@ pub struct Caniuse {
     pub data: IndexMap<String, Feature>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 pub struct Agent {
     pub usage_global: IndexMap<String, f32>,
     pub version_list: Vec<VersionDetail>,
@@ -51,14 +51,14 @@ pub struct Agent {
 
 use rkyv::{Archive as RkyvArchive, Deserialize as RkyvDeserialize, Serialize as RkyvSerialize};
 
-#[derive(RkyvArchive, RkyvDeserialize, RkyvSerialize, Deserialize, Clone, Debug)]
+#[derive(RkyvArchive, RkyvDeserialize, RkyvSerialize, Deserialize, Clone)]
 pub struct VersionDetail {
     pub version: String,
     pub global_usage: f32,
     pub release_date: Option<i64>, // unix timestamp (seconds)
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 pub struct Feature {
     pub stats: IndexMap<String, IndexMap<String, String>>,
 }

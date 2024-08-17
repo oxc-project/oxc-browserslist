@@ -9,7 +9,7 @@ use super::{generate_file, generate_rkyv, root};
 use rkyv::Archive as RkyvArchive;
 use rkyv::Serialize as RkyvSerialize;
 
-#[derive(Debug, RkyvSerialize, RkyvArchive)]
+#[derive(RkyvSerialize, RkyvArchive)]
 pub struct ElectronVersion {
     pub major: u16,
     pub minor: u16,

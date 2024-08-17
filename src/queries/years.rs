@@ -7,6 +7,8 @@ use crate::{
     opts::Opts,
 };
 
+use rkyv::option::ArchivedOption;
+
 const ONE_YEAR_IN_SECONDS: f64 = 365.259_641 * 24.0 * 60.0 * 60.0;
 
 pub(super) fn years(count: f64, opts: &Opts) -> QueryResult {
@@ -20,7 +22,7 @@ pub(super) fn years(count: f64, opts: &Opts) -> QueryResult {
         .flat_map(|(name, stat)| {
             stat.version_list
                 .iter()
-                .filter(|version| matches!(version.release_date, rkyv::option::ArchivedOption::Some(date) if date >= time))
+                .filter(|version| matches!(version.release_date, ArchivedOption::Some(date) if date >= time))
                 .map(|version| Distrib::new(name, version.version.as_str()))
         })
         .collect();

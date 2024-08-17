@@ -4,9 +4,7 @@ pub use crate::generated::electron_to_chromium::get_electron_versions;
 use rkyv::Archive as RkyvArchive;
 use rkyv::Deserialize as RkyvDeserialize;
 
-#[derive(
-    Debug, Default, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, RkyvArchive, RkyvDeserialize,
-)]
+#[derive(Eq, PartialEq, Ord, PartialOrd, RkyvArchive, RkyvDeserialize)]
 #[archive(compare(PartialEq, PartialOrd))]
 #[archive_attr(derive(Default, PartialEq, PartialOrd, Clone))]
 pub struct ElectronVersion {
