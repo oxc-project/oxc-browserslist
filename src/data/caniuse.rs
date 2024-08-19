@@ -81,7 +81,7 @@ pub fn get_browser_stat(
     name: &str,
     mobile_to_desktop: bool,
 ) -> Option<(&'static str, &'static ArchivedBrowserStat)> {
-    // This is extra key rkyv to resolve android mapping
+    // This is extra key in rkyv to resolve android mapping
     // it shouldn't be asked directly it's android with mobile_to_desktop set to true
     if name == "android_to_desktop" {
         return None;
