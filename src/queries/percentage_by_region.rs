@@ -6,8 +6,7 @@ pub(super) fn percentage_by_region(
     popularity: f32,
     region: &str,
 ) -> QueryResult {
-    let normalized_region =
-        if region.len() == 2 { region.to_uppercase() } else { region.to_lowercase() };
+    let normalized_region = region.replace("-", "_").to_uppercase();
 
     if let Some(region_data) = get_usage_by_region(&normalized_region) {
         let distribs = region_data

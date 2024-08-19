@@ -19,7 +19,7 @@ pub(super) fn electron_bounded_range(from: &str, to: &str) -> QueryResult {
 
     let distribs = get_electron_versions()
         .iter()
-        .filter(|(version, _)| from <= *version && *version <= to)
+        .filter(|(version, _)| from >= *version && *version <= to)
         .map(|(_, version)| Distrib::new("chrome", version.as_str()))
         .collect();
     Ok(distribs)

@@ -46,7 +46,7 @@ pub fn android_to_desktop(browsers: &HashMap<String, BrowserStat>) -> BrowserSta
 }
 
 pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
-    let mut browsers: HashMap<String, BrowserStat> = data
+    let browsers: HashMap<String, BrowserStat> = data
         .agents
         .iter()
         .map(|(name, agent)| {
@@ -57,8 +57,12 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
         })
         .collect();
 
-    let android_to_desktop = android_to_desktop(&browsers);
-    browsers.insert("android_to_desktop".to_string(), android_to_desktop);
+    let android_to_desktop = {
+        let browser = android_to_desktop(&browsers);
+        let mut map = HashMap::new();
+        map.insert("android_to_desktop".to_string(), browser);
+        map
+    };
 
     let output = quote! {
         use crate::data::caniuse::{ArchivedCaniuseData, CaniuseData};
@@ -84,9 +88,31 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
                 unsafe { rkyv::archived_root::<CaniuseData>(RKYV_BYTES) }
             })
         }
+
+        const RKYV_BYTES_2: &'static [u8] = {
+            #[repr(C)]
+            struct Aligned<T: ?Sized> {
+                _align: [usize; 0],
+                bytes: T,
+            }
+
+            const ALIGNED: &'static Aligned<[u8]> =
+                &Aligned { _align: [], bytes: *include_bytes!("caniuse_browsers_android_to_desktop.rkyv") };
+
+            &ALIGNED.bytes
+        };
+
+        pub fn caniuse_browsers_android_to_desktop() -> &'static ArchivedCaniuseData {
+            static CANIUSE_BROWSERS: OnceLock<&ArchivedCaniuseData> = OnceLock::new();
+            CANIUSE_BROWSERS.get_or_init(|| {
+                #[allow(unsafe_code)]
+                unsafe { rkyv::archived_root::<CaniuseData>(RKYV_BYTES_2) }
+            })
+        }
     };
 
     generate_rkyv::<_, 256>("caniuse_browsers.rkyv", browsers);
+    generate_rkyv::<_, 256>("caniuse_browsers_android_to_desktop.rkyv", android_to_desktop);
     generate_file("caniuse_browsers.rs", output);
 
     Ok(())

@@ -32,7 +32,8 @@ pub type ArchivedCaniuseData = ArchivedHashMap<ArchivedString, ArchivedBrowserSt
 pub type CaniuseData = HashMap<String, BrowserStat>;
 
 pub use crate::generated::{
-    caniuse_browsers::caniuse_browsers, caniuse_global_usage::caniuse_global_usage,
+    caniuse_browsers::{caniuse_browsers, caniuse_browsers_android_to_desktop},
+    caniuse_global_usage::caniuse_global_usage,
 };
 
 pub fn browser_version_aliases(
@@ -81,12 +82,6 @@ pub fn get_browser_stat(
     name: &str,
     mobile_to_desktop: bool,
 ) -> Option<(&'static str, &'static ArchivedBrowserStat)> {
-    // This is extra key in rkyv to resolve android mapping
-    // it shouldn't be asked directly it's android with mobile_to_desktop set to true
-    if name == "android_to_desktop" {
-        return None;
-    }
-
     let name = if name.bytes().all(|b| b.is_ascii_lowercase()) {
         Cow::Borrowed(name)
     } else {
@@ -99,7 +94,11 @@ pub fn get_browser_stat(
     if mobile_to_desktop {
         if let Some(desktop_name) = to_desktop_name(name) {
             match name {
-                "android" => Some(("android", browsers.get("android_to_desktop").unwrap())),
+                "android" => Some((
+                    "android",
+                    // TODO this doesn't need to be map
+                    caniuse_browsers_android_to_desktop().get("android_to_desktop").unwrap(),
+                )),
                 "op_mob" => Some(("op_mob", browsers.get("opera").unwrap())),
                 _ => browsers
                     .get(desktop_name)

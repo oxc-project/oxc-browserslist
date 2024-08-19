@@ -1,14 +1,24 @@
+use rkyv::string::ArchivedString;
+use rkyv::vec::ArchivedVec;
 use std::sync::OnceLock;
 type Data = Vec<(String, String, f32)>;
-type ArchivedData =
-    rkyv::vec::ArchivedVec<(rkyv::string::ArchivedString, rkyv::string::ArchivedString, f32)>;
+type ArchivedData = ArchivedVec<(ArchivedString, ArchivedString, f32)>;
+const RKYV_BYTES: &'static [u8] = {
+    #[repr(C)]
+    struct Aligned<T: ?Sized> {
+        _align: [usize; 0],
+        bytes: T,
+    }
+    const ALIGNED: &'static Aligned<[u8]> =
+        &Aligned { _align: [], bytes: *include_bytes!("caniuse_global_usage.rkyv") };
+    &ALIGNED.bytes
+};
 pub fn caniuse_global_usage() -> &'static ArchivedData {
     static CANIUSE_GLOBAL_USAGE: OnceLock<&ArchivedData> = OnceLock::new();
     CANIUSE_GLOBAL_USAGE.get_or_init(|| {
-        let bytes = include_bytes!("caniuse_global_usage.rkyv");
         #[allow(unsafe_code)]
         unsafe {
-            rkyv::archived_root::<Data>(bytes)
+            rkyv::archived_root::<Data>(RKYV_BYTES)
         }
     })
 }
