@@ -64,12 +64,24 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
         use crate::data::caniuse::{ArchivedCaniuseData, CaniuseData};
         use std::sync::OnceLock;
 
+        const RKYV_BYTES: &'static [u8] = {
+            #[repr(C)]
+            struct Aligned<T: ?Sized> {
+                _align: [usize; 0],
+                bytes: T,
+            }
+
+            const ALIGNED: &'static Aligned<[u8]> =
+                &Aligned { _align: [], bytes: *include_bytes!("caniuse_browsers.rkyv") };
+
+            &ALIGNED.bytes
+        };
+
         pub fn caniuse_browsers() -> &'static ArchivedCaniuseData {
             static CANIUSE_BROWSERS: OnceLock<&ArchivedCaniuseData> = OnceLock::new();
             CANIUSE_BROWSERS.get_or_init(|| {
-                let bytes = include_bytes!("caniuse_browsers.rkyv");
                 #[allow(unsafe_code)]
-                unsafe { rkyv::archived_root::<CaniuseData>(bytes) }
+                unsafe { rkyv::archived_root::<CaniuseData>(RKYV_BYTES) }
             })
         }
     };

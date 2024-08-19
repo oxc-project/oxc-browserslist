@@ -44,12 +44,22 @@ pub fn build_node_versions() -> Result<()> {
         type Data = Vec<Version>;
         type ArchivedData = ArchivedVec<ArchivedVersion>;
 
+        const RKYV_BYTES: &'static [u8] = {
+            #[repr(C)]
+            struct Aligned<T: ?Sized> {
+                _align: [usize; 0],
+                bytes: T,
+            }
+            const ALIGNED: &'static Aligned<[u8]> =
+                &Aligned { _align: [], bytes: *include_bytes!("node_versions.rkyv") };
+            &ALIGNED.bytes
+        };
+
         pub fn get_node_versions() -> &'static ArchivedData {
             static NODE_VERSIONS: OnceLock<&ArchivedData> = OnceLock::new();
             NODE_VERSIONS.get_or_init(|| {
-                let bytes = include_bytes!("node_versions.rkyv");
                 #[allow(unsafe_code)]
-                unsafe { rkyv::archived_root::<Data>(bytes) }
+                unsafe { rkyv::archived_root::<Data>(RKYV_BYTES) }
             })
         }
     };
