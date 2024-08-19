@@ -57,15 +57,10 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
         })
         .collect();
 
-    let android_to_desktop = {
-        let browser = android_to_desktop(&browsers);
-        let mut map = HashMap::new();
-        map.insert("android_to_desktop".to_string(), browser);
-        map
-    };
+    let android_to_desktop = android_to_desktop(&browsers);
 
     let output = quote! {
-        use crate::data::caniuse::{ArchivedCaniuseData, CaniuseData};
+        use crate::data::caniuse::{ArchivedBrowserStat, ArchivedCaniuseData, BrowserStat, CaniuseData};
         use std::sync::OnceLock;
 
         const RKYV_BYTES: &'static [u8] = {
@@ -102,11 +97,11 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
             &ALIGNED.bytes
         };
 
-        pub fn caniuse_browsers_android_to_desktop() -> &'static ArchivedCaniuseData {
-            static CANIUSE_BROWSERS: OnceLock<&ArchivedCaniuseData> = OnceLock::new();
+        pub fn caniuse_browsers_android_to_desktop() -> &'static ArchivedBrowserStat {
+            static CANIUSE_BROWSERS: OnceLock<&ArchivedBrowserStat> = OnceLock::new();
             CANIUSE_BROWSERS.get_or_init(|| {
                 #[allow(unsafe_code)]
-                unsafe { rkyv::archived_root::<CaniuseData>(RKYV_BYTES_2) }
+                unsafe { rkyv::archived_root::<BrowserStat>(RKYV_BYTES_2) }
             })
         }
     };
