@@ -10,7 +10,7 @@ use super::{generate_file, Caniuse};
 
 const ANDROID_EVERGREEN_FIRST: f32 = 37.0;
 
-#[derive(RkyvArchive, RkyvDeserialize, RkyvSerialize, Clone, Debug)]
+#[derive(RkyvArchive, RkyvDeserialize, RkyvSerialize, Clone)]
 pub struct BrowserStat {
     pub name: String,
     pub version_list: Vec<crate::VersionDetail>,
@@ -68,6 +68,7 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
             static CANIUSE_BROWSERS: OnceLock<&ArchivedCaniuseData> = OnceLock::new();
             CANIUSE_BROWSERS.get_or_init(|| {
                 let bytes = include_bytes!("caniuse_browsers.rkyv");
+                #[allow(unsafe_code)]
                 unsafe { rkyv::archived_root::<CaniuseData>(bytes) }
             })
         }

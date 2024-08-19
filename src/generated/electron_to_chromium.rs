@@ -8,6 +8,9 @@ pub fn get_electron_versions() -> &'static ArchivedData {
     static ELECTRON_VERSIONS: OnceLock<&ArchivedData> = OnceLock::new();
     ELECTRON_VERSIONS.get_or_init(|| {
         let bytes = include_bytes!("electron_to_chromium.rkyv");
-        unsafe { rkyv::archived_root::<Data>(bytes) }
+        #[allow(unsafe_code)]
+        unsafe {
+            rkyv::archived_root::<Data>(bytes)
+        }
     })
 }

@@ -47,6 +47,7 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
             static CANIUSE_FEATURE_MATCHING: OnceLock<&ArchivedFeatures> = OnceLock::new();
             let stats = CANIUSE_FEATURE_MATCHING.get_or_init(|| {
                 let bytes = include_bytes!("caniuse_feature_matching.rkyv");
+                #[allow(unsafe_code)]
                 unsafe { rkyv::archived_root::<Features>(bytes) }
             });
 

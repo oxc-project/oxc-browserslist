@@ -33,6 +33,7 @@ pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
             static CANIUSE_GLOBAL_USAGE: OnceLock<&ArchivedData> = OnceLock::new();
             CANIUSE_GLOBAL_USAGE.get_or_init(|| {
                 let bytes = include_bytes!("caniuse_global_usage.rkyv");
+                #[allow(unsafe_code)]
                 unsafe { rkyv::archived_root::<Data>(bytes) }
             })
         }

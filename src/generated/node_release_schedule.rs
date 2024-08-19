@@ -7,6 +7,9 @@ pub fn get_release_schedule() -> &'static ArchivedData {
     static RELEASE_SCHEDULE: OnceLock<&ArchivedData> = OnceLock::new();
     RELEASE_SCHEDULE.get_or_init(|| {
         let bytes = include_bytes!("node_release_schedule.rkyv");
-        unsafe { rkyv::archived_root::<Data>(bytes) }
+        #[allow(unsafe_code)]
+        unsafe {
+            rkyv::archived_root::<Data>(bytes)
+        }
     })
 }

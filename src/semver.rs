@@ -2,7 +2,7 @@ use rkyv::Archive as RkyvArchive;
 use rkyv::Deserialize as RkyvDeserialize;
 use std::{cmp::Ordering, fmt, num::ParseIntError, str::FromStr};
 
-#[derive(Default, PartialEq, Eq, PartialOrd, Ord, RkyvDeserialize, RkyvArchive)]
+#[derive(Default, Debug, PartialEq, Eq, PartialOrd, Ord, RkyvDeserialize, RkyvArchive)]
 #[archive(compare(PartialEq, PartialOrd))]
 #[archive_attr(derive(PartialEq, PartialOrd, Eq, Ord))]
 pub struct Version(pub u32, pub u32, pub u32);

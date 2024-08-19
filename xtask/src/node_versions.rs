@@ -48,6 +48,7 @@ pub fn build_node_versions() -> Result<()> {
             static NODE_VERSIONS: OnceLock<&ArchivedData> = OnceLock::new();
             NODE_VERSIONS.get_or_init(|| {
                 let bytes = include_bytes!("node_versions.rkyv");
+                #[allow(unsafe_code)]
                 unsafe { rkyv::archived_root::<Data>(bytes) }
             })
         }
