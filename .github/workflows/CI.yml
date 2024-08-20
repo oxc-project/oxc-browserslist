@@ -43,6 +43,7 @@ jobs:
       - uses: Boshen/setup-rust@main
         with:
           save-cache: ${{ github.ref_name == 'main' }}
+          components: rustfmt # for `cargo codegen`
       - uses: pnpm/action-setup@v4.0.0
       - uses: actions/setup-node@v4
         with:
@@ -52,7 +53,7 @@ jobs:
       - run: cargo check --all-targets --all-features
       - run: cargo test
       - run: cargo codegen
-      - run: git diff --exit-code --quiet
+      - run: git diff --exit-code
 
   lint:
     name: Clippy
