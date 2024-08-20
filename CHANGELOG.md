@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.0.2...oxc-browserslist-v1.0.3) - 2024-08-20
+
+### Fixed
+- downgrade caniuse-db to `1.0.30001639`
+
+### Other
+- sort caniuse_region_matching data
+- install rustfmt in test for `cargo codegen`
+- ??
+- try peerDependencies
+- `git diff --exit-code --quiet`
+- test change of generated files; run `cargo codegen` after lock file change
+- *(deps)* update rust crates
+- *(deps)* update rust crates
+- *(deps)* update rust crate criterion2 to v1
+- *(deps)* update dependency rust to v1.80.0 ([#59](https://github.com/oxc-project/oxc-browserslist/pull/59))
+
 ## [1.0.2](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.0.1...oxc-browserslist-v1.0.2) - 2024-07-01
 
 ### Other
