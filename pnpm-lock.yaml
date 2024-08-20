@@ -7,25 +7,26 @@ settings:
 importers:
 
   .:
+    dependencies:
+      caniuse-db:
+        specifier: 1.x
+        version: 1.0.30001639
+      electron-to-chromium:
+        specifier: 1.x
+        version: 1.4.816
+      node-releases:
+        specifier: 2.x
+        version: 2.0.14
     devDependencies:
       browserslist:
         specifier: 4.23.1
         version: 4.23.1
-      caniuse-db:
-        specifier: 1.0.30001639
-        version: 1.0.30001639
-      electron-to-chromium:
-        specifier: 1.4.816
-        version: 1.4.816
       husky:
         specifier: ^9.0.11
         version: 9.1.4
       lint-staged:
         specifier: ^15.2.5
         version: 15.2.9
-      node-releases:
-        specifier: 2.0.14
-        version: 2.0.14
 
 packages:
 
