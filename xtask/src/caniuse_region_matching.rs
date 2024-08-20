@@ -19,7 +19,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .map(|entry| entry.map_err(anyhow::Error::from))
         .collect::<Result<Vec<_>>>()?;
 
-    let data = files
+    let mut data = files
         .iter()
         .map(|file| {
             let RegionData { data } =
@@ -39,19 +39,21 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
                 })
                 .collect::<Vec<_>>();
             usage.sort_unstable_by(|(_, _, a), (_, _, b)| b.partial_cmp(a).unwrap());
-            serde_json::to_string(&usage).unwrap()
+            let key = file.path().file_stem().unwrap().to_str().map(|s| s.to_owned()).unwrap();
+            (key, serde_json::to_string(&usage).unwrap())
         })
         .collect::<Vec<_>>();
 
-    let keys = files
-        .iter()
-        .map(|entry| entry.path().file_stem().unwrap().to_str().map(|s| s.to_owned()).unwrap())
-        .collect::<Vec<_>>();
+    data.sort_unstable_by(|a, b| a.0.cmp(&b.0));
+
+    let keys = data.iter().map(|(key, _)| key).collect::<Vec<_>>();
 
     let idents = keys
         .iter()
         .map(|k| quote::format_ident!("_{}", k.replace('-', "_").to_ascii_uppercase()))
         .collect::<Vec<_>>();
+
+    let data = data.iter().map(|(_, value)| value).collect::<Vec<_>>();
 
     let output = quote! {
         use std::sync::OnceLock;
