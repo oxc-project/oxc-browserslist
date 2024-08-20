@@ -1,5 +1,5 @@
 use super::{Distrib, QueryResult};
-use crate::{data::node::NODE_VERSIONS, error::Error, opts::Opts};
+use crate::{data::node::get_node_versions, error::Error, opts::Opts};
 
 pub(super) fn node_accurate(version_str: &str, opts: &Opts) -> QueryResult {
     for v in version_str.split('.') {
@@ -14,7 +14,7 @@ pub(super) fn node_accurate(version_str: &str, opts: &Opts) -> QueryResult {
     let minor = s.next().map(|n| n.parse::<u32>().unwrap_or_default());
     let patch = s.next().map(|n| n.parse::<u32>().unwrap_or_default());
 
-    let distribs = NODE_VERSIONS
+    let distribs = get_node_versions()
         .iter()
         .rev()
         .find(|v| {

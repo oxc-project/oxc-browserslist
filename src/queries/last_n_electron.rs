@@ -1,12 +1,12 @@
 use super::{Distrib, QueryResult};
-use crate::data::electron::ELECTRON_VERSIONS;
+use crate::data::electron::get_electron_versions;
 
 pub(super) fn last_n_electron(count: usize) -> QueryResult {
-    let distribs = ELECTRON_VERSIONS
+    let distribs = get_electron_versions()
         .iter()
         .rev()
         .take(count)
-        .map(|(_, version)| Distrib::new("chrome", *version))
+        .map(|(_, version)| Distrib::new("chrome", version.as_str()))
         .collect();
     Ok(distribs)
 }

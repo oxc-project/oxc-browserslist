@@ -1,8 +1,8 @@
 use super::{Distrib, QueryResult};
-use crate::data::node::NODE_VERSIONS;
+use crate::data::node::get_node_versions;
 
 pub(super) fn last_n_node(count: usize) -> QueryResult {
-    let distribs = NODE_VERSIONS
+    let distribs = get_node_versions()
         .iter()
         .rev()
         .take(count)

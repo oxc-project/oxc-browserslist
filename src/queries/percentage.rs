@@ -16,7 +16,7 @@ pub(super) fn percentage(comparator: Comparator, popularity: f32) -> QueryResult
                         Comparator::LessOrEqual => usage <= popularity,
                     }
                 })
-                .map(|version| Distrib::new(name, version.version))
+                .map(|version| Distrib::new(name, version.version.as_str()))
         })
         .collect();
     Ok(distribs)
