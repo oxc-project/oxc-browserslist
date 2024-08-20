@@ -52,7 +52,7 @@ jobs:
       - run: cargo check --all-targets --all-features
       - run: cargo test
       - run: cargo codegen
-      - run: git diff --exit-code --quiet
+      - run: git diff --exit-code
 
   lint:
     name: Clippy
