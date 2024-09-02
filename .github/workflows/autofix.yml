@@ -1,0 +1,40 @@
+name: autofix.ci # For security reasons, the workflow in which the autofix.ci action is used must be named "autofix.ci".
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.ref_name != 'main' }}
+
+jobs:
+  autofix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: taiki-e/checkout-action@v1
+
+      - uses: Boshen/setup-rust@main
+        with:
+          restore-cache: true
+          tools: taplo-cli,cargo-shear@1
+          components: rustfmt
+
+      - uses: pnpm/action-setup@v4.0.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - run: pnpm install
+
+      - run: cargo codegen
+
+      - run: cargo shear --fix
+
+      - run: taplo fmt
+
+      - run: cargo fmt --all
+
+      - uses: autofix-ci/action@v1.3.1
