@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use anyhow::Result;
 use indexmap::IndexMap;
 use quote::quote;
@@ -9,35 +11,37 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         .data
         .iter()
         .map(|(_name, feature)| {
-            serde_json::to_string(
-                &feature
-                    .stats
-                    .iter()
-                    .filter_map(|(name, versions)| {
-                        let name = encode_browser_name(name);
-                        let versions = versions
-                            .into_iter()
-                            .filter(|(_version, flag)| *flag != "n")
-                            .collect::<Vec<_>>();
-                        let y = versions
-                            .iter()
-                            .filter(|(_, flag)| flag.contains('y'))
-                            .map(|x| x.0.clone())
-                            .collect::<Vec<_>>();
-                        let a = versions
-                            .iter()
-                            .filter(|(_, flag)| flag.contains('a'))
-                            .map(|x| x.0.clone())
-                            .collect::<Vec<_>>();
-                        if y.is_empty() && a.is_empty() {
-                            None
-                        } else {
-                            Some((name, (y, a)))
-                        }
-                    })
-                    .collect::<IndexMap<_, _>>(),
-            )
-            .unwrap()
+            feature
+                .stats
+                .iter()
+                .filter_map(|(name, versions)| {
+                    let name = encode_browser_name(name);
+                    let versions = versions
+                        .into_iter()
+                        .filter(|(_version, flag)| *flag != "n")
+                        .collect::<Vec<_>>();
+                    let y = versions
+                        .iter()
+                        .filter(|(_, flag)| flag.contains('y'))
+                        .map(|x| x.0.clone())
+                        .collect::<Vec<_>>();
+                    let a = versions
+                        .iter()
+                        .filter(|(_, flag)| flag.contains('a'))
+                        .map(|x| x.0.clone())
+                        .collect::<Vec<_>>();
+                    if y.is_empty() && a.is_empty() {
+                        None
+                    } else {
+                        Some((name, (y, a)))
+                    }
+                })
+                .collect::<IndexMap<_, _>>()
+        })
+        .map(|index_map| {
+            let s = serde_json::to_string(&index_map).unwrap();
+            let wrapped = format!("r#\"{}\"#", s);
+            proc_macro2::Literal::from_str(&wrapped).unwrap()
         })
         .collect::<Vec<_>>();
 

@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, str::FromStr};
 
 use anyhow::Result;
 use indexmap::IndexMap;
@@ -40,7 +40,12 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
                 .collect::<Vec<_>>();
             usage.sort_unstable_by(|(_, _, a), (_, _, b)| b.partial_cmp(a).unwrap());
             let key = file.path().file_stem().unwrap().to_str().map(|s| s.to_owned()).unwrap();
-            (key, serde_json::to_string(&usage).unwrap())
+            let value = {
+                let s = serde_json::to_string(&usage).unwrap();
+                let wrapped = format!("r#\"{}\"#", s);
+                proc_macro2::Literal::from_str(&wrapped).unwrap()
+            };
+            (key, value)
         })
         .collect::<Vec<_>>();
 
