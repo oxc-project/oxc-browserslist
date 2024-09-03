@@ -12,28 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - downgrade caniuse-db to `1.0.30001639`
 
 ### Other
-- update dependency rust to v1.81.0
 - print raw strings in `caniuse_region_matching` and `caniuse_feature_matching` ([#69](https://github.com/oxc-project/oxc-browserslist/pull/69))
-- add autofix.ci ([#68](https://github.com/oxc-project/oxc-browserslist/pull/68))
-- add ci.yml
-- rm CI.yml
-- *(deps)* update npm packages ([#65](https://github.com/oxc-project/oxc-browserslist/pull/65))
-- *(deps)* update rust crate prettyplease to v0.2.22
-- *(deps)* update rust crates
-- *(deps)* update npm packages ([#64](https://github.com/oxc-project/oxc-browserslist/pull/64))
-- Revert "bump deps"
-- bump deps
-- bump deps
 - sort caniuse_region_matching data
-- install rustfmt in test for `cargo codegen`
-- ??
-- try peerDependencies
-- `git diff --exit-code --quiet`
-- test change of generated files; run `cargo codegen` after lock file change
-- *(deps)* update rust crates
-- *(deps)* update rust crates
-- *(deps)* update rust crate criterion2 to v1
-- *(deps)* update dependency rust to v1.80.0 ([#59](https://github.com/oxc-project/oxc-browserslist/pull/59))
 
 ## [1.0.2](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.0.1...oxc-browserslist-v1.0.2) - 2024-07-01
 
