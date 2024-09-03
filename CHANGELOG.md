@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.0.2...oxc-browserslist-v1.0.3) - 2024-09-03
+
+### Fixed
+- downgrade caniuse-db to `1.0.30001639`
+
+### Other
+- print raw strings in `caniuse_region_matching` and `caniuse_feature_matching` ([#69](https://github.com/oxc-project/oxc-browserslist/pull/69))
+- sort caniuse_region_matching data
+
 ## [1.0.2](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.0.1...oxc-browserslist-v1.0.2) - 2024-07-01
 
 ### Other
