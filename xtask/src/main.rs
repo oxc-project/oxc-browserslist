@@ -3,7 +3,7 @@ use std::{fs, process::Command};
 use anyhow::Result;
 
 fn main() -> Result<()> {
-    let dir = project_root::get_project_root().unwrap().join("src/generated");
+    let dir = project_root::get_project_root()?.join("src/generated");
     let _ = fs::remove_dir_all(&dir);
     let _ = fs::create_dir(&dir);
 
@@ -18,7 +18,7 @@ fn main() -> Result<()> {
     xtask::caniuse_browsers::build_caniuse_browsers(&caniuse)?;
     xtask::caniuse_region_matching::build_caniuse_region_matching(&caniuse)?;
 
-    Command::new("cargo").arg("fmt").status().unwrap();
+    Command::new("cargo").arg("fmt").status()?;
 
     Ok(())
 }

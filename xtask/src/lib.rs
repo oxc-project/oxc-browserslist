@@ -25,7 +25,8 @@ fn generate_file(file: &str, token_stream: proc_macro2::TokenStream) {
 
 pub fn parse_caniuse_global() -> Result<Caniuse> {
     let path = root().join("node_modules/caniuse-db/fulldata-json/data-2.0.json");
-    Ok(serde_json::from_slice(&fs::read(path)?)?)
+    let json = fs::read_to_string(path)?;
+    Ok(serde_json::from_str(&json)?)
 }
 
 #[derive(Deserialize)]
