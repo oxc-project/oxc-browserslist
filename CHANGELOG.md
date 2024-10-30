@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.0.3...oxc-browserslist-v1.1.0) - 2024-10-30
+
+### Added
+
+- export `Version` ([#74](https://github.com/oxc-project/oxc-browserslist/pull/74))
+
+### Other
+
+- *(deps)* update rust crates
+- *(deps)* update rust crates
+- *(deps)* update rust crates
+- *(deps)* update rust crate indexmap to v2.6.0
+- *(deps)* update rust crates
+- *(deps)* update rust crates
+- *(deps)* update dependency rust to v1.81.0 ([#70](https://github.com/oxc-project/oxc-browserslist/pull/70))
+
 ## [1.0.3](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.0.2...oxc-browserslist-v1.0.3) - 2024-09-03
 
 ### Fixed
