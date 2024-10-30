@@ -56,6 +56,7 @@ pub use error::Error;
 pub use opts::Opts;
 use parser::parse_browserslist_query;
 pub use queries::Distrib;
+pub use semver::Version;
 #[cfg(all(feature = "wasm_bindgen", target_arch = "wasm32"))]
 pub use wasm::browserslist;
 
