@@ -38,7 +38,7 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     generate_rkyv("caniuse_feature_matching.rkyv", &features);
 
     let output = quote! {
-        use crate::data::caniuse::features::{ArchivedFeature, ArchivedFeatures, Features};
+        use crate::data::caniuse::features::{ArchivedFeature, ArchivedFeatures};
         use std::sync::OnceLock;
 
         const RKYV_BYTES: &'static [u8] = {

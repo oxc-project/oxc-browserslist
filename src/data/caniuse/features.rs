@@ -1,9 +1,3 @@
-use std::collections::{HashMap, HashSet};
-
-pub type FeatureSet = (/* yes */ HashSet<String>, /* partial */ HashSet<String>);
-pub type Feature = HashMap</* browser */ String, FeatureSet>;
-pub type Features = HashMap</* feature name */ String, Feature>;
-
 use rkyv::collections::swiss_table::{ArchivedHashMap, ArchivedHashSet};
 use rkyv::string::ArchivedString;
 

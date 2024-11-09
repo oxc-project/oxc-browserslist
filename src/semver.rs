@@ -22,7 +22,7 @@ impl ArchivedVersion {
             return Ordering::Equal;
         };
         let first: u32 = first.parse().unwrap_or_default();
-        let x = self.0.cmp(&first);
+        let x = self.0.to_native().cmp(&first);
         if !x.is_eq() {
             return x;
         }
@@ -30,7 +30,7 @@ impl ArchivedVersion {
             return Ordering::Equal;
         };
         let first: u32 = second.parse().unwrap_or_default();
-        self.1.cmp(&first)
+        self.1.to_native().cmp(&first)
     }
 }
 
@@ -88,6 +88,17 @@ impl Version {
         };
         let first: u32 = second.parse().unwrap_or_default();
         self.1.cmp(&first)
+    }
+}
+
+impl FromStr for ArchivedVersion {
+    type Err = ParseIntError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        // this allows something like `4.4.3-4.4.4`
+        let s = s.split_once('-').map_or(s, |(v, _)| v);
+        let v = Version::parse(s)?;
+        Ok(Self(v.0.into(), v.1.into(), v.2.into()))
     }
 }
 

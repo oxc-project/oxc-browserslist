@@ -1,4 +1,4 @@
-use crate::semver::{ArchivedVersion, Version};
+use crate::semver::ArchivedVersion;
 use rkyv::vec::ArchivedVec;
 use std::sync::OnceLock;
 type ArchivedData = ArchivedVec<(ArchivedVersion, i32, i32)>;

@@ -1,4 +1,4 @@
-use crate::data::electron::{ArchivedElectronVersion, ElectronVersion};
+use crate::data::electron::ArchivedElectronVersion;
 use rkyv::string::ArchivedString;
 use rkyv::vec::ArchivedVec;
 use std::sync::OnceLock;

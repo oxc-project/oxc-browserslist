@@ -3,7 +3,7 @@ use rkyv::string::ArchivedString;
 use super::{Distrib, QueryResult};
 use crate::{
     data::caniuse::{
-        features::{get_feature_stat, ArchivedFeatureSet, FeatureSet},
+        features::{get_feature_stat, ArchivedFeatureSet},
         get_browser_stat, to_desktop_name, ArchivedVersionDetail,
     },
     error::Error,

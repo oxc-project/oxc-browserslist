@@ -1,4 +1,4 @@
-use crate::data::caniuse::features::{ArchivedFeature, ArchivedFeatures, Features};
+use crate::data::caniuse::features::{ArchivedFeature, ArchivedFeatures};
 use std::sync::OnceLock;
 const RKYV_BYTES: &'static [u8] = {
     #[repr(C)]

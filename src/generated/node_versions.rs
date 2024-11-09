@@ -1,7 +1,6 @@
-use crate::semver::{ArchivedVersion, Version};
+use crate::semver::ArchivedVersion;
 use rkyv::vec::ArchivedVec;
 use std::sync::OnceLock;
-type Data = Vec<Version>;
 type ArchivedData = ArchivedVec<ArchivedVersion>;
 const RKYV_BYTES: &'static [u8] = {
     #[repr(C)]

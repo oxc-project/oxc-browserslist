@@ -46,7 +46,7 @@ pub fn build_node_release_schedule() -> Result<()> {
         .collect::<Vec<_>>();
 
     let output = quote! {
-        use crate::semver::{Version, ArchivedVersion};
+        use crate::semver::ArchivedVersion;
 
         use rkyv::vec::ArchivedVec;
         use std::sync::OnceLock;

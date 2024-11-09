@@ -1,10 +1,7 @@
 use rkyv::collections::swiss_table::ArchivedHashMap;
 use rkyv::string::ArchivedString;
 use rkyv::vec::ArchivedVec;
-use std::collections::HashMap;
 use std::sync::OnceLock;
-type RegionData = Vec<(String, String, f32)>;
-type Data = HashMap<String, RegionData>;
 type ArchivedRegionData = ArchivedVec<(ArchivedString, ArchivedString, f32)>;
 type ArchivedData = ArchivedHashMap<ArchivedString, ArchivedRegionData>;
 const RKYV_BYTES: &'static [u8] = {

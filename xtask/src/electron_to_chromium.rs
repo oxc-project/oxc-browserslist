@@ -36,7 +36,7 @@ pub fn build_electron_to_chromium() -> Result<()> {
         use rkyv::vec::ArchivedVec;
         use std::sync::OnceLock;
 
-        use crate::data::electron::{ElectronVersion, ArchivedElectronVersion};
+        use crate::data::electron::{ArchivedElectronVersion};
 
         type ArchivedData = ArchivedVec<(ArchivedElectronVersion, ArchivedString)>;
 
