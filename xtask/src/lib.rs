@@ -17,6 +17,21 @@ fn root() -> PathBuf {
     get_project_root().unwrap()
 }
 
+fn generate_rkyv(
+    file: &str,
+    value: &impl for<'a> rkyv::Serialize<
+        rkyv::api::high::HighSerializer<
+            rkyv::util::AlignedVec,
+            rkyv::ser::allocator::ArenaHandle<'a>,
+            rkyv::rancor::Error,
+        >,
+    >,
+) {
+    let bytes = rkyv::to_bytes::<rkyv::rancor::Error>(value).unwrap();
+    let path = root().join("src/generated").join(file);
+    std::fs::write(path, bytes.as_slice()).unwrap();
+}
+
 fn generate_file(file: &str, token_stream: proc_macro2::TokenStream) {
     let syntax_tree = syn::parse2(token_stream).unwrap();
     let code = prettyplease::unparse(&syntax_tree);
