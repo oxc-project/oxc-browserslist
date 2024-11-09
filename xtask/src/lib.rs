@@ -13,6 +13,9 @@ use indexmap::IndexMap;
 use project_root::get_project_root;
 use serde::Deserialize;
 
+use rkyv::Archive as RkyvArchive;
+use rkyv::Serialize as RkyvSerialize;
+
 fn root() -> PathBuf {
     get_project_root().unwrap()
 }
@@ -56,7 +59,7 @@ pub struct Agent {
     pub version_list: Vec<VersionDetail>,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(RkyvArchive, RkyvSerialize, Deserialize, Clone)]
 pub struct VersionDetail {
     pub version: String,
     pub global_usage: f32,

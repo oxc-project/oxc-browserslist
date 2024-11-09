@@ -43,7 +43,8 @@ syn = "2"
 test-case = "3.3"
 thiserror = "1.0"
 time = "0.3.36"
-rkyv = { version = "0.8.8", default-features = false, features = ["alloc"]}
+# TODO We don't need all features
+rkyv = { version = "0.8.8" }
 
 [lints]
 workspace = true

@@ -2,7 +2,7 @@ use super::{Distrib, QueryResult};
 use crate::{
     data::caniuse::{
         features::{get_feature_stat, FeatureSet},
-        get_browser_stat, to_desktop_name, VersionDetail,
+        get_browser_stat, to_desktop_name, ArchivedVersionDetail,
     },
     error::Error,
     parser::SupportKind,
@@ -29,12 +29,12 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         .filter(|version| version.release_date.is_some())
                         .last()
                         .is_some_and(|latest_version| {
-                            is_supported(versions, latest_version.version, include_partial)
+                            is_supported(versions, latest_version.version.as_str(), include_partial)
                         });
                 browser_stat
                     .version_list
                     .iter()
-                    .filter_map(move |VersionDetail { version, .. }| {
+                    .filter_map(move |ArchivedVersionDetail { version, .. }| {
                         if is_supported(versions, version, include_partial) {
                             return Some(version);
                         }
@@ -49,7 +49,7 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         }
                         None
                     })
-                    .map(move |version| Distrib::new(name, *version))
+                    .map(move |version| Distrib::new(name, version.as_str()))
             })
             .collect();
         Ok(distribs)

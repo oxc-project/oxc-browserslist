@@ -146,3 +146,8 @@ fn _resolve(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
 pub fn execute(opts: &Opts) -> Result<Vec<Distrib>, Error> {
     resolve(&config::load(opts)?, opts)
 }
+
+#[test]
+fn dummy() {
+    resolve(&["> 0.5%"], &Opts::default());
+}
