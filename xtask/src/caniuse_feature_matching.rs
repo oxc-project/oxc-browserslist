@@ -35,6 +35,7 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
 
         features.insert(name.clone(), support_map);
     }
+    generate_rkyv("caniuse_feature_matching.rkyv", &features);
 
     let output = quote! {
         use crate::data::caniuse::features::{ArchivedFeature, ArchivedFeatures, Features};
@@ -62,7 +63,6 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         }
     };
 
-    generate_rkyv("caniuse_feature_matching.rkyv", &features);
     generate_file("caniuse_feature_matching.rs", output);
 
     Ok(())
