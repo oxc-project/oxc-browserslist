@@ -15,6 +15,29 @@ impl ArchivedVersion {
     pub(crate) fn major(&self) -> u32_le {
         self.0
     }
+
+    pub fn loose_compare(&self, b: &str) -> Ordering {
+        let mut b = b.split('.');
+        let Some(first) = b.next() else {
+            return Ordering::Equal;
+        };
+        let first: u32 = first.parse().unwrap_or_default();
+        let x = self.0.cmp(&first);
+        if !x.is_eq() {
+            return x;
+        }
+        let Some(second) = b.next() else {
+            return Ordering::Equal;
+        };
+        let first: u32 = second.parse().unwrap_or_default();
+        self.1.cmp(&first)
+    }
+}
+
+impl fmt::Display for ArchivedVersion {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}.{}.{}", self.0, self.1, self.2)
+    }
 }
 
 impl Version {
