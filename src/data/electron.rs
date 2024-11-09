@@ -1,7 +1,13 @@
 use crate::error::Error;
-pub use crate::generated::electron_to_chromium::ELECTRON_VERSIONS;
+pub use crate::generated::electron_to_chromium::get_electron_versions;
 
-#[derive(Debug, Default, Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
+use rkyv::Archive as RkyvArchive;
+use rkyv::Deserialize as RkyvDeserialize;
+
+#[derive(
+    RkyvArchive, RkyvDeserialize, Debug, Default, Clone, Copy, Eq, PartialEq, Ord, PartialOrd,
+)]
+#[rkyv(compare(PartialEq, PartialOrd), derive(Default, PartialEq, PartialOrd, Clone))]
 pub struct ElectronVersion {
     pub major: u16,
     pub minor: u16,
