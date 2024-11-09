@@ -1,11 +1,20 @@
-use rustc_hash::{FxHashMap, FxHashSet};
+use std::collections::{HashMap, HashSet};
 
-use super::BrowserName;
+pub type FeatureSet = (/* yes */ HashSet<String>, /* partial */ HashSet<String>);
+pub type Feature = HashMap</* browser */ String, FeatureSet>;
+pub type Features = HashMap</* feature name */ String, Feature>;
 
-pub type FeatureSet =
-    (/* yes */ FxHashSet<&'static str>, /* partial */ FxHashSet<&'static str>);
-pub type Feature = FxHashMap<BrowserName, FeatureSet>;
+use rkyv::collections::swiss_table::{ArchivedHashMap, ArchivedHashSet};
+use rkyv::string::ArchivedString;
 
-pub fn get_feature_stat(name: &str) -> Option<&'static Feature> {
+pub type ArchivedFeatureSet = (
+    /* yes */ ArchivedHashSet<ArchivedString>,
+    /* partial */ ArchivedHashSet<ArchivedString>,
+);
+pub type ArchivedFeature = ArchivedHashMap</* browser */ ArchivedString, ArchivedFeatureSet>;
+pub type ArchivedFeatures =
+    ArchivedHashMap</* feature name */ ArchivedString, ArchivedFeature>;
+
+pub fn get_feature_stat(name: &str) -> Option<&'static ArchivedFeature> {
     crate::generated::caniuse_feature_matching::get_feature_stat(name)
 }
