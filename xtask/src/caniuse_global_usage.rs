@@ -19,7 +19,7 @@ pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
 
     global_usage.sort_unstable_by(|(_, _, a), (_, _, b)| b.partial_cmp(a).unwrap());
 
-    generate_rkyv("global_usage.rkyv", &global_usage);
+    generate_rkyv("caniuse_global_usage.rkyv", &global_usage);
 
     let output = quote! {
         use std::sync::OnceLock;
@@ -35,7 +35,7 @@ pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
                 bytes: T,
             }
             const ALIGNED: &'static Aligned<[u8]> =
-                &Aligned { _align: [], bytes: *include_bytes!("global_usage.rkyv") };
+                &Aligned { _align: [], bytes: *include_bytes!("caniuse_global_usage.rkyv") };
             &ALIGNED.bytes
         };
 

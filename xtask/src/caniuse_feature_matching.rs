@@ -1,7 +1,4 @@
-use std::str::FromStr;
-
 use anyhow::Result;
-use indexmap::IndexMap;
 use quote::quote;
 
 use std::collections::HashMap;
@@ -12,7 +9,7 @@ type SupportMap = HashMap<
     (/* fully */ HashSet<String>, /* partial */ HashSet<String>),
 >;
 
-use super::{encode_browser_name, generate_file, generate_rkyv, Caniuse};
+use super::{generate_file, generate_rkyv, Caniuse};
 
 pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     let mut features: HashMap<String, SupportMap> = HashMap::new();

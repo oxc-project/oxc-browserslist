@@ -9,7 +9,7 @@ const RKYV_BYTES: &'static [u8] = {
         bytes: T,
     }
     const ALIGNED: &'static Aligned<[u8]> =
-        &Aligned { _align: [], bytes: *include_bytes!("global_usage.rkyv") };
+        &Aligned { _align: [], bytes: *include_bytes!("caniuse_global_usage.rkyv") };
     &ALIGNED.bytes
 };
 pub fn caniuse_global_usage() -> &'static ArchivedData {
