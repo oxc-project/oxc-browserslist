@@ -1,8 +1,21 @@
+use rkyv::rend::u32_le;
+use rkyv::Archive as RkyvArchive;
+use rkyv::Deserialize as RkyvDeserialize;
 use std::{cmp::Ordering, fmt, num::ParseIntError, str::FromStr};
 
 /// Semver
-#[derive(PartialEq, Eq, PartialOrd, Ord, Default, Debug, Copy, Clone)]
+#[derive(
+    PartialEq, Eq, PartialOrd, Ord, Default, Debug, Copy, Clone, RkyvDeserialize, RkyvArchive,
+)]
+#[rkyv(compare(PartialEq, PartialOrd), derive(PartialEq, PartialOrd, Eq, Ord))]
 pub struct Version(pub u32, pub u32, pub u32);
+
+impl ArchivedVersion {
+    #[inline]
+    pub(crate) fn major(&self) -> u32_le {
+        self.0
+    }
+}
 
 impl Version {
     #[inline]

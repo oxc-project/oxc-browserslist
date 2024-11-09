@@ -1,27 +1,23 @@
-use crate::semver::Version;
-pub static RELEASE_SCHEDULE: &[(Version, i32, i32)] = &[
-    (Version(0u32, 8u32, 0u32), 2456104i32, 2456870i32),
-    (Version(0u32, 10u32, 0u32), 2456363i32, 2457693i32),
-    (Version(0u32, 12u32, 0u32), 2457060i32, 2457754i32),
-    (Version(4u32, 0u32, 0u32), 2457274i32, 2458239i32),
-    (Version(5u32, 0u32, 0u32), 2457325i32, 2457570i32),
-    (Version(6u32, 0u32, 0u32), 2457505i32, 2458604i32),
-    (Version(7u32, 0u32, 0u32), 2457687i32, 2457935i32),
-    (Version(8u32, 0u32, 0u32), 2457904i32, 2458849i32),
-    (Version(9u32, 0u32, 0u32), 2458028i32, 2458300i32),
-    (Version(10u32, 0u32, 0u32), 2458233i32, 2459335i32),
-    (Version(11u32, 0u32, 0u32), 2458415i32, 2458636i32),
-    (Version(12u32, 0u32, 0u32), 2458597i32, 2459700i32),
-    (Version(13u32, 0u32, 0u32), 2458779i32, 2459002i32),
-    (Version(14u32, 0u32, 0u32), 2458961i32, 2460065i32),
-    (Version(15u32, 0u32, 0u32), 2459143i32, 2459367i32),
-    (Version(16u32, 0u32, 0u32), 2459325i32, 2460199i32),
-    (Version(17u32, 0u32, 0u32), 2459507i32, 2459732i32),
-    (Version(18u32, 0u32, 0u32), 2459689i32, 2460796i32),
-    (Version(19u32, 0u32, 0u32), 2459871i32, 2460097i32),
-    (Version(20u32, 0u32, 0u32), 2460053i32, 2461161i32),
-    (Version(21u32, 0u32, 0u32), 2460235i32, 2460463i32),
-    (Version(22u32, 0u32, 0u32), 2460425i32, 2461526i32),
-    (Version(23u32, 0u32, 0u32), 2460599i32, 2460828i32),
-    (Version(24u32, 0u32, 0u32), 2460788i32, 2461892i32),
-];
+use crate::semver::{ArchivedVersion, Version};
+use rkyv::vec::ArchivedVec;
+use std::sync::OnceLock;
+type ArchivedData = ArchivedVec<(ArchivedVersion, i32, i32)>;
+const RKYV_BYTES: &'static [u8] = {
+    #[repr(C)]
+    struct Aligned<T: ?Sized> {
+        _align: [usize; 0],
+        bytes: T,
+    }
+    const ALIGNED: &'static Aligned<[u8]> =
+        &Aligned { _align: [], bytes: *include_bytes!("node_release_schedule.rkyv") };
+    &ALIGNED.bytes
+};
+pub fn get_release_schedule() -> &'static ArchivedData {
+    static RELEASE_SCHEDULE: OnceLock<&ArchivedData> = OnceLock::new();
+    RELEASE_SCHEDULE.get_or_init(|| {
+        #[allow(unsafe_code)]
+        unsafe {
+            rkyv::access_unchecked::<ArchivedData>(RKYV_BYTES)
+        }
+    })
+}
