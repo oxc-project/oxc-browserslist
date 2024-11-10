@@ -1,12 +1,13 @@
 use super::{Distrib, QueryResult};
-use crate::data::node::NODE_VERSIONS;
+use crate::data::node::get_node_versions;
 
 pub(super) fn last_n_node_major(count: usize) -> QueryResult {
-    let mut vec = NODE_VERSIONS.iter().rev().map(|version| version.major()).collect::<Vec<_>>();
+    let mut vec =
+        get_node_versions().iter().rev().map(|version| version.major()).collect::<Vec<_>>();
     vec.dedup();
     let minimum = vec.into_iter().nth(count - 1).unwrap_or_default();
 
-    let distribs = NODE_VERSIONS
+    let distribs = get_node_versions()
         .iter()
         .filter(|version| version.major() >= minimum)
         .rev()

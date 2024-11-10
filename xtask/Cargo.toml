@@ -18,3 +18,4 @@ project-root = { workspace = true }
 syn          = { workspace = true }
 proc-macro2  = { workspace = true }
 time         = { workspace = true, features = ["formatting", "macros", "parsing"] }
+rkyv         = { workspace = true }
