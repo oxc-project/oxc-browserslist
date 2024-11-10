@@ -2,13 +2,13 @@ use crate::semver::ArchivedVersion;
 use rkyv::vec::ArchivedVec;
 use std::sync::OnceLock;
 type ArchivedData = ArchivedVec<ArchivedVersion>;
-const RKYV_BYTES: &'static [u8] = {
+const RKYV_BYTES: &[u8] = {
     #[repr(C)]
     struct Aligned<T: ?Sized> {
         _align: [usize; 0],
         bytes: T,
     }
-    const ALIGNED: &'static Aligned<[u8]> =
+    const ALIGNED: &Aligned<[u8]> =
         &Aligned { _align: [], bytes: *include_bytes!("node_versions.rkyv") };
     &ALIGNED.bytes
 };

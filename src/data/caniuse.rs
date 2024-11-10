@@ -86,7 +86,7 @@ pub fn get_browser_stat(
     if mobile_to_desktop {
         if let Some(desktop_name) = to_desktop_name(name) {
             match name {
-                "android" => Some(("android", &caniuse_browsers_android_to_desktop())),
+                "android" => Some(("android", caniuse_browsers_android_to_desktop())),
                 "op_mob" => Some(("op_mob", &caniuse_browsers()["opera"])),
                 _ => caniuse_browsers()
                     .get(desktop_name)

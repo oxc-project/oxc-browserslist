@@ -70,14 +70,14 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
 
         pub type ArchivedCaniuseData = ArchivedHashMap<ArchivedString, ArchivedBrowserStat>;
 
-        const RKYV_BYTES: &'static [u8] = {
+        const RKYV_BYTES: &[u8] = {
             #[repr(C)]
             struct Aligned<T: ?Sized> {
                 _align: [usize; 0],
                 bytes: T,
             }
 
-            const ALIGNED: &'static Aligned<[u8]> =
+            const ALIGNED: &Aligned<[u8]> =
                 &Aligned { _align: [], bytes: *include_bytes!("caniuse_browsers.rkyv") };
 
             &ALIGNED.bytes
@@ -91,14 +91,14 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
             })
         }
 
-        const RKYV_BYTES_2: &'static [u8] = {
+        const RKYV_BYTES_2: &[u8] = {
             #[repr(C)]
             struct Aligned<T: ?Sized> {
                 _align: [usize; 0],
                 bytes: T,
             }
 
-            const ALIGNED: &'static Aligned<[u8]> =
+            const ALIGNED: &Aligned<[u8]> =
                 &Aligned { _align: [], bytes: *include_bytes!("caniuse_browsers_android_to_desktop.rkyv") };
 
             &ALIGNED.bytes

@@ -4,13 +4,13 @@ use rkyv::vec::ArchivedVec;
 use std::sync::OnceLock;
 type ArchivedRegionData = ArchivedVec<(ArchivedString, ArchivedString, f32)>;
 type ArchivedData = ArchivedHashMap<ArchivedString, ArchivedRegionData>;
-const RKYV_BYTES: &'static [u8] = {
+const RKYV_BYTES: &[u8] = {
     #[repr(C)]
     struct Aligned<T: ?Sized> {
         _align: [usize; 0],
         bytes: T,
     }
-    const ALIGNED: &'static Aligned<[u8]> =
+    const ALIGNED: &Aligned<[u8]> =
         &Aligned { _align: [], bytes: *include_bytes!("caniuse_region_matching.rkyv") };
     &ALIGNED.bytes
 };

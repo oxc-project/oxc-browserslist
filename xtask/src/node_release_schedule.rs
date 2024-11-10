@@ -53,13 +53,13 @@ pub fn build_node_release_schedule() -> Result<()> {
 
         type ArchivedData = ArchivedVec<(ArchivedVersion, i32, i32)>;
 
-        const RKYV_BYTES: &'static [u8] = {
+        const RKYV_BYTES: &[u8] = {
             #[repr(C)]
             struct Aligned<T: ?Sized> {
                 _align: [usize; 0],
                 bytes: T,
             }
-            const ALIGNED: &'static Aligned<[u8]> =
+            const ALIGNED: &Aligned<[u8]> =
                 &Aligned { _align: [], bytes: *include_bytes!("node_release_schedule.rkyv") };
             &ALIGNED.bytes
         };

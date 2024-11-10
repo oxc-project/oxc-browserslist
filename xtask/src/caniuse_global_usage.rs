@@ -28,13 +28,13 @@ pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
 
         type ArchivedData = ArchivedVec<(ArchivedString, ArchivedString, f32)>;
 
-        const RKYV_BYTES: &'static [u8] = {
+        const RKYV_BYTES: &[u8] = {
             #[repr(C)]
             struct Aligned<T: ?Sized> {
                 _align: [usize; 0],
                 bytes: T,
             }
-            const ALIGNED: &'static Aligned<[u8]> =
+            const ALIGNED: &Aligned<[u8]> =
                 &Aligned { _align: [], bytes: *include_bytes!("caniuse_global_usage.rkyv") };
             &ALIGNED.bytes
         };
