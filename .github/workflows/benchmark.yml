@@ -5,16 +5,16 @@ on:
   pull_request:
     types: [opened, synchronize]
     paths:
-      - '**/*.rs'
-      - 'Cargo.lock'
-      - '.github/workflows/benchmark.yml'
+      - "**/*.rs"
+      - "Cargo.lock"
+      - ".github/workflows/benchmark.yml"
   push:
     branches:
       - main
     paths:
-      - '**/*.rs'
-      - 'Cargo.lock'
-      - '.github/workflows/benchmark.yml'
+      - "**/*.rs"
+      - "Cargo.lock"
+      - ".github/workflows/benchmark.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}

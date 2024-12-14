@@ -18,9 +18,9 @@ Rust port of [Browserslist](https://github.com/browserslist/browserslist), forke
 
 The original crate did not meet the criteria of `oxc`, the following changes are made:
 
-* reduced compilation speed from one minute to a few seconds
-* removed all unnecessary, heavy or slow dependencies: `ahash`, `chrono`, `either`, `indexmap`, `itertools`, `once_cell`, `string_cache`
-* improved some runtime performance, e.g. [improve sort method](https://github.com/oxc-project/oxc-browserslist/pull/28), [precompute versions](https://github.com/oxc-project/oxc-browserslist/pull/10)
+- reduced compilation speed from one minute to a few seconds
+- removed all unnecessary, heavy or slow dependencies: `ahash`, `chrono`, `either`, `indexmap`, `itertools`, `once_cell`, `string_cache`
+- improved some runtime performance, e.g. [improve sort method](https://github.com/oxc-project/oxc-browserslist/pull/28), [precompute versions](https://github.com/oxc-project/oxc-browserslist/pull/10)
 
 ## Usage
 
@@ -46,13 +46,13 @@ cargo run --example inspect -- --mobile-to-desktop 'last 2 versions, not dead'
 
 ## Future Work (Pull Request Welcome)
 
-* `nom` can be replaced by a hand written parser to improve runtime and compilation speed
-* improve test coverage
-* [improve compilation speed and reduce compiled binary size](https://github.com/oxc-project/oxc-browserslist/issues/23)
-* improve runtime performance
-    * all semver versions with their string representation can be precomputed and code generated, current code is calling `parse` and `to_string` on semver versions
-    * add more benchmarks
-    * see [codspeed][codspeed-url] for current run performance
+- `nom` can be replaced by a hand written parser to improve runtime and compilation speed
+- improve test coverage
+- [improve compilation speed and reduce compiled binary size](https://github.com/oxc-project/oxc-browserslist/issues/23)
+- improve runtime performance
+  - all semver versions with their string representation can be precomputed and code generated, current code is calling `parse` and `to_string` on semver versions
+  - add more benchmarks
+  - see [codspeed][codspeed-url] for current run performance
 
 ## [Sponsored By](https://github.com/sponsors/Boshen)
 

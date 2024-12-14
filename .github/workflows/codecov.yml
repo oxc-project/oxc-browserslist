@@ -7,14 +7,14 @@ on:
   pull_request:
     types: [opened, synchronize]
     paths:
-      - '**.rs'
-      - '.github/workflows/codecov.yml'
+      - "**.rs"
+      - ".github/workflows/codecov.yml"
   push:
     branches:
       - main
     paths:
-      - '**.rs'
-      - '.github/workflows/codecov.yml'
+      - "**.rs"
+      - ".github/workflows/codecov.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

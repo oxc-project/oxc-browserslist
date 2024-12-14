@@ -6,7 +6,7 @@ _default:
 alias r := ready
 
 init:
-  cargo binstall cargo-watch typos-cli taplo-cli -y
+  cargo binstall cargo-watch typos-cli dprint -y
 
 ready:
   git diff --exit-code --quiet
@@ -19,7 +19,7 @@ ready:
 
 fmt:
   cargo fmt
-  taplo format
+  dprint fmt
 
 lint:
   cargo clippy --all-targets --all-features -- -D warnings
