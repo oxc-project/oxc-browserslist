@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.OXC_BOT_PAT }}
 
-      - uses: Boshen/setup-rust@main
+      - uses: oxc-project/setup-rust@v1.0.0
 
       - uses: MarcoIeni/release-plz-action@db75300cf27adcd986d6f0cf4a72a4ffcc11dae5 # v0.5
         env:
