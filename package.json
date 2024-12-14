@@ -7,7 +7,7 @@
   },
   "devDependencies": {
     "browserslist": "4.23.1",
-    "lint-staged": "^15.2.9",
+    "lint-staged": "^15.2.11",
     "simple-git-hooks": "^2.11.1"
   },
   "peerDependencies": {
