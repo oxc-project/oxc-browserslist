@@ -1,9 +1,5 @@
 {
   "lineWidth": 120,
-  "typescript": {
-    "quoteStyle": "preferSingle",
-    "binaryExpression.operatorPosition": "sameLine"
-  },
   "json": {
     "indentWidth": 2
   },

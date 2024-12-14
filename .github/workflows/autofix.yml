@@ -13,28 +13,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: taiki-e/checkout-action@v1
-
       - uses: Boshen/setup-rust@main
         with:
           restore-cache: true
-          tools: taplo-cli,cargo-shear@1
+          tools: just,cargo-shear@1,dprint
           components: rustfmt
-
       - uses: pnpm/action-setup@v4.0.0
-
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
           cache: pnpm
-
       - run: pnpm install
-
       - run: cargo codegen
-
       - run: cargo shear --fix
-
-      - run: taplo fmt
-
+      - run: dprint fmt
       - run: cargo fmt --all
-
       - uses: autofix-ci/action@v1.3.1
