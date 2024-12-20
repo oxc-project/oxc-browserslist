@@ -1,7 +1,8 @@
 use super::{Distrib, QueryResult};
 
 pub(super) fn firefox_esr() -> QueryResult {
-    Ok(vec![Distrib::new("firefox", "115")])
+    // https://github.com/browserslist/browserslist/pull/858
+    Ok(vec![Distrib::new("firefox", "128")])
 }
 
 #[cfg(test)]
