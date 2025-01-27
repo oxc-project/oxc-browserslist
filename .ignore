@@ -1,0 +1,5 @@
+# For watchexec https://github.com/watchexec/watchexec/tree/main/crates/cli#features
+
+target/**
+**/node_modules/**
+src/generated/**/*.rs
