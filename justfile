@@ -6,7 +6,7 @@ _default:
 alias r := ready
 
 init:
-  cargo binstall cargo-watch typos-cli dprint -y
+  cargo binstall watchexec-cli typos-cli dprint -y
 
 ready:
   git diff --exit-code --quiet
@@ -23,3 +23,9 @@ fmt:
 
 lint:
   cargo clippy --all-targets --all-features -- -D warnings
+
+watch *args='':
+  watchexec --no-vcs-ignore {{args}}
+
+watch-check:
+  just watch "'cargo check; cargo clippy'"

@@ -5,8 +5,8 @@ use nom::{
     combinator::{all_consuming, consumed, map, opt, recognize, value, verify},
     multi::{many0, many_till},
     number::complete::{double, float},
-    sequence::{delimited, pair, preceded, separated_pair, terminated, tuple},
-    IResult,
+    sequence::{delimited, pair, preceded, separated_pair, terminated},
+    IResult, Parser,
 };
 
 type PResult<'a, Output> = IResult<&'a str, Output>;
@@ -48,12 +48,12 @@ pub enum SupportKind {
 }
 
 fn parse_version_keyword(input: &str) -> PResult<&str> {
-    terminated(tag_no_case("version"), opt(char('s')))(input)
+    terminated(tag_no_case("version"), opt(char('s'))).parse(input)
 }
 
 fn parse_last(input: &str) -> PResult<QueryAtom> {
     map(
-        tuple((
+        (
             terminated(tag_no_case("last"), space1),
             terminated(u16, space1),
             opt(terminated(
@@ -66,7 +66,7 @@ fn parse_last(input: &str) -> PResult<QueryAtom> {
             )),
             opt(terminated(tag_no_case("major"), space1)),
             parse_version_keyword,
-        )),
+        ),
         |(_, count, name, major, _)| {
             if matches!(name, Some(name) if name.eq_ignore_ascii_case("major")) && major.is_none() {
                 QueryAtom::Last { count, major: true, name: None }
@@ -74,7 +74,8 @@ fn parse_last(input: &str) -> PResult<QueryAtom> {
                 QueryAtom::Last { count, major: major.is_some(), name }
             }
         },
-    )(input)
+    )
+    .parse(input)
 }
 
 fn parse_unreleased(input: &str) -> PResult<QueryAtom> {
@@ -85,7 +86,8 @@ fn parse_unreleased(input: &str) -> PResult<QueryAtom> {
             parse_version_keyword,
         ),
         QueryAtom::Unreleased,
-    )(input)
+    )
+    .parse(input)
 }
 
 fn parse_years(input: &str) -> PResult<QueryAtom> {
@@ -96,23 +98,25 @@ fn parse_years(input: &str) -> PResult<QueryAtom> {
             terminated(tag_no_case("year"), opt(char('s'))),
         ),
         QueryAtom::Years,
-    )(input)
+    )
+    .parse(input)
 }
 
 fn parse_since(input: &str) -> PResult<QueryAtom> {
     map(
-        tuple((
+        (
             terminated(tag_no_case("since"), one_of(" \t")),
             i32,
             opt(preceded(char('-'), u32)),
             opt(preceded(char('-'), u32)),
-        )),
+        ),
         |(_, year, month, day)| QueryAtom::Since {
             year,
             month: month.unwrap_or(1),
             day: day.unwrap_or(1),
         },
-    )(input)
+    )
+    .parse(input)
 }
 
 #[derive(Debug, Clone)]
@@ -124,47 +128,51 @@ pub enum Comparator {
 }
 
 fn parse_compare_operator(input: &str) -> PResult<Comparator> {
-    map(tuple((alt((char('<'), char('>'))), opt(char('=')))), |(relation, equals)| match relation {
+    map((alt((char('<'), char('>'))), opt(char('='))), |(relation, equals)| match relation {
         '<' if equals.is_some() => Comparator::LessOrEqual,
         '<' => Comparator::Less,
         '>' if equals.is_some() => Comparator::GreaterOrEqual,
         _ => Comparator::Greater,
-    })(input)
+    })
+    .parse(input)
 }
 
 fn parse_region(input: &str) -> PResult<Stats> {
     map(
         recognize(preceded(opt(tag_no_case("alt-")), take_while_m_n(2, 2, char::is_alphabetic))),
         Stats::Region,
-    )(input)
+    )
+    .parse(input)
 }
 
 fn parse_percentage(input: &str) -> PResult<QueryAtom> {
     map(
-        tuple((
+        (
             terminated(parse_compare_operator, space0),
             terminated(float, char('%')),
-            opt(preceded(tuple((space1, tag_no_case("in"), space1)), parse_region)),
-        )),
+            opt(preceded((space1, tag_no_case("in"), space1), parse_region)),
+        ),
         |(comparator, value, stats)| QueryAtom::Percentage {
             comparator,
             popularity: value,
             stats: stats.unwrap_or(Stats::Global),
         },
-    )(input)
+    )
+    .parse(input)
 }
 
 fn parse_cover(input: &str) -> PResult<QueryAtom> {
     map(
-        tuple((
+        (
             preceded(terminated(tag_no_case("cover"), space1), terminated(float, char('%'))),
-            opt(preceded(tuple((space1, tag_no_case("in"), space1)), parse_region)),
-        )),
+            opt(preceded((space1, tag_no_case("in"), space1), parse_region)),
+        ),
         |(value, stats)| QueryAtom::Cover {
             coverage: value,
             stats: stats.unwrap_or(Stats::Global),
         },
-    )(input)
+    )
+    .parse(input)
 }
 
 fn parse_supports(input: &str) -> PResult<QueryAtom> {
@@ -181,7 +189,8 @@ fn parse_supports(input: &str) -> PResult<QueryAtom> {
             take_while1(|c: char| c.is_alphanumeric() || c == '-'),
         ),
         |(kind, name)| QueryAtom::Supports(name, kind),
-    )(input)
+    )
+    .parse(input)
 }
 
 #[derive(Debug, Clone)]
@@ -209,15 +218,16 @@ fn parse_version_range(input: &str) -> PResult<VersionRange> {
             |(comparator, version)| VersionRange::Unbounded(comparator, version),
         ),
         map(preceded(space1, parse_version), VersionRange::Accurate),
-    ))(input)
+    ))
+    .parse(input)
 }
 
 fn parse_electron(input: &str) -> PResult<QueryAtom> {
-    map(preceded(tag_no_case("electron"), parse_version_range), QueryAtom::Electron)(input)
+    map(preceded(tag_no_case("electron"), parse_version_range), QueryAtom::Electron).parse(input)
 }
 
 fn parse_node(input: &str) -> PResult<QueryAtom> {
-    map(preceded(tag_no_case("node"), parse_version_range), QueryAtom::Node)(input)
+    map(preceded(tag_no_case("node"), parse_version_range), QueryAtom::Node).parse(input)
 }
 
 fn parse_browser(input: &str) -> PResult<QueryAtom> {
@@ -230,67 +240,61 @@ fn parse_browser(input: &str) -> PResult<QueryAtom> {
             )),
         ),
         |(name, version)| QueryAtom::Browser(name, version),
-    )(input)
+    )
+    .parse(input)
 }
 
 fn parse_firefox_esr(input: &str) -> PResult<QueryAtom> {
     value(
         QueryAtom::FirefoxESR,
-        tuple((
+        (
             alt((tag_no_case("firefox"), tag_no_case("fx"), tag_no_case("ff"))),
             space1,
             tag_no_case("esr"),
-        )),
-    )(input)
+        ),
+    )
+    .parse(input)
 }
 
 fn parse_opera_mini(input: &str) -> PResult<QueryAtom> {
     value(
         QueryAtom::OperaMini,
-        tuple((
-            alt((tag_no_case("operamini"), tag_no_case("op_mini"))),
-            space1,
-            tag_no_case("all"),
-        )),
-    )(input)
+        (alt((tag_no_case("operamini"), tag_no_case("op_mini"))), space1, tag_no_case("all")),
+    )
+    .parse(input)
 }
 
 fn parse_current_node(input: &str) -> PResult<QueryAtom> {
-    value(QueryAtom::CurrentNode, tuple((tag_no_case("current"), space1, tag_no_case("node"))))(
-        input,
-    )
+    value(QueryAtom::CurrentNode, (tag_no_case("current"), space1, tag_no_case("node")))
+        .parse(input)
 }
 
 fn parse_maintained_node(input: &str) -> PResult<QueryAtom> {
     value(
         QueryAtom::MaintainedNode,
-        tuple((
-            tag_no_case("maintained"),
-            space1,
-            tag_no_case("node"),
-            space1,
-            tag_no_case("versions"),
-        )),
-    )(input)
+        (tag_no_case("maintained"), space1, tag_no_case("node"), space1, tag_no_case("versions")),
+    )
+    .parse(input)
 }
 
 fn parse_phantom(input: &str) -> PResult<QueryAtom> {
     map(
         preceded(terminated(tag_no_case("phantomjs"), space1), alt((tag("1.9"), tag("2.1")))),
         |version| QueryAtom::Phantom(version == "2.1"),
-    )(input)
+    )
+    .parse(input)
 }
 
 fn parse_browserslist_config(input: &str) -> PResult<QueryAtom> {
-    value(QueryAtom::BrowserslistConfig, tag_no_case("browserslist config"))(input)
+    value(QueryAtom::BrowserslistConfig, tag_no_case("browserslist config")).parse(input)
 }
 
 fn parse_defaults(input: &str) -> PResult<QueryAtom> {
-    value(QueryAtom::Defaults, tag_no_case("defaults"))(input)
+    value(QueryAtom::Defaults, tag_no_case("defaults")).parse(input)
 }
 
 fn parse_dead(input: &str) -> PResult<QueryAtom> {
-    value(QueryAtom::Dead, tag_no_case("dead"))(input)
+    value(QueryAtom::Dead, tag_no_case("dead")).parse(input)
 }
 
 fn parse_extends(input: &str) -> PResult<QueryAtom> {
@@ -302,11 +306,12 @@ fn parse_extends(input: &str) -> PResult<QueryAtom> {
             }),
         ),
         QueryAtom::Extends,
-    )(input)
+    )
+    .parse(input)
 }
 
 fn parse_unknown(input: &str) -> PResult<QueryAtom> {
-    map(recognize(many_till(anychar, parse_composition_operator)), QueryAtom::Unknown)(input)
+    map(recognize(many_till(anychar, parse_composition_operator)), QueryAtom::Unknown).parse(input)
 }
 
 fn parse_query_atom(input: &str) -> PResult<QueryAtom> {
@@ -331,7 +336,8 @@ fn parse_query_atom(input: &str) -> PResult<QueryAtom> {
         parse_dead,
         parse_extends,
         parse_unknown,
-    ))(input)
+    ))
+    .parse(input)
 }
 
 #[derive(Debug)]
@@ -343,33 +349,35 @@ pub struct SingleQuery<'a> {
 }
 
 fn parse_and(input: &str) -> PResult<bool> {
-    value(true, delimited(space1, tag_no_case("and"), space1))(input)
+    value(true, delimited(space1, tag_no_case("and"), space1)).parse(input)
 }
 
 fn parse_or(input: &str) -> PResult<bool> {
     alt((
         value(false, delimited(space0, char(','), space0)),
         value(false, delimited(space1, tag_no_case("or"), space1)),
-    ))(input)
+    ))
+    .parse(input)
 }
 
 fn parse_composition_operator(input: &str) -> PResult<bool> {
-    alt((parse_and, parse_or))(input)
+    alt((parse_and, parse_or)).parse(input)
 }
 
 fn parse_single_query(input: &str) -> PResult<SingleQuery> {
     map(
-        tuple((
+        (
             parse_composition_operator,
             consumed(pair(opt(terminated(tag_no_case("not"), space1)), parse_query_atom)),
-        )),
+        ),
         |(is_and, (raw, (negated, atom)))| SingleQuery {
             raw,
             atom,
             negated: negated.is_some(),
             is_and,
         },
-    )(input)
+    )
+    .parse(input)
 }
 
 pub fn parse_browserslist_query(input: &str) -> PResult<Vec<SingleQuery>> {
@@ -380,14 +388,14 @@ pub fn parse_browserslist_query(input: &str) -> PResult<Vec<SingleQuery>> {
     }
 
     map(
-        all_consuming(tuple((
+        all_consuming((
             consumed(pair(
                 // this isn't allowed, but for better error report
                 opt(terminated(tag_no_case("not"), space1)),
                 parse_query_atom,
             )),
             many0(parse_single_query),
-        ))),
+        )),
         |((first_raw, (negated, first)), mut queries)| {
             queries.insert(
                 0,
@@ -400,7 +408,8 @@ pub fn parse_browserslist_query(input: &str) -> PResult<Vec<SingleQuery>> {
             );
             queries
         },
-    )(input)
+    )
+    .parse(input)
 }
 
 #[cfg(test)]
