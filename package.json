@@ -18,10 +18,10 @@
   "lint-staged": {
     "pnpm-lock.yaml": "cargo codegen"
   },
-  "packageManager": "pnpm@9.15.4",
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
+  "packageManager": "pnpm@10.1.0",
   "volta": {
     "node": "22.11.0"
   }
