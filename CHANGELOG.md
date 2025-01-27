@@ -11,13 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Other
 
-- *(deps)* update rust crate nom to v8 (#86)
-- *(deps)* update rust crates
-- *(deps)* update rust crates
-- *(deps)* update rust crates
-- *(deps)* update rust crates
-- *(deps)* update rust crates
-- *(deps)* update npm packages (#81)
+- _(deps)_ update rust crate nom to v8 (#86)
+- _(deps)_ update rust crates
+- _(deps)_ update rust crates
+- _(deps)_ update rust crates
+- _(deps)_ update rust crates
+- _(deps)_ update rust crates
+- _(deps)_ update npm packages (#81)
 
 ## [1.1.1](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.1.0...oxc-browserslist-v1.1.1) - 2024-12-14
 
