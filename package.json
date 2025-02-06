@@ -21,7 +21,7 @@
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
-  "packageManager": "pnpm@10.1.0",
+  "packageManager": "pnpm@10.2.1",
   "volta": {
     "node": "22.11.0"
   }
