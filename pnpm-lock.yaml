@@ -10,10 +10,10 @@ importers:
     dependencies:
       caniuse-db:
         specifier: 1.x
-        version: 1.0.30001688
+        version: 1.0.30001699
       electron-to-chromium:
         specifier: 1.x
-        version: 1.5.73
+        version: 1.5.100
       node-releases:
         specifier: 2.x
         version: 2.0.19
@@ -51,11 +51,11 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
-  caniuse-db@1.0.30001688:
-    resolution: {integrity: sha512-A/Iczixdj5egZW0TNw9DYS/sqKvKDLAbLEZa5wadHzQy2q0DtCIdB7d4PAeKluWbwmE+f5orWbduaTMYcMQCag==}
+  caniuse-db@1.0.30001699:
+    resolution: {integrity: sha512-21/2D9AhXEWn47IOpsLdn6kCMl5itpdp/0AeYyQpLmAiZXV2664k8Z+hQYYTM2i5hDmkch5DMRfynEY1c9Xf3A==}
 
-  caniuse-lite@1.0.30001688:
-    resolution: {integrity: sha512-Nmqpru91cuABu/DTCXbM2NSRHzM2uVHfPnhJ/1zEAJx/ILBRVmz3pzH4N7DZqbdG0gWClsCC05Oj0mJ/1AWMbA==}
+  caniuse-lite@1.0.30001699:
+    resolution: {integrity: sha512-b+uH5BakXZ9Do9iK+CkDmctUSEqZl+SP056vc5usa0PL+ev5OHw003rZXcnjNDv3L8P5j6rwT6C0BPKSikW08w==}
 
   chalk@5.4.1:
     resolution: {integrity: sha512-zgVZuo2WcZgfUEmsn6eO3kINexW8RAE4maiQ8QNs8CtpPCSyMiYsULR3HQYkm3w8FIA3SberyMJMSldGsW+U3w==}
@@ -89,8 +89,8 @@ packages:
       supports-color:
         optional: true
 
-  electron-to-chromium@1.5.73:
-    resolution: {integrity: sha512-8wGNxG9tAG5KhGd3eeA0o6ixhiNdgr0DcHWm85XPCphwZgD1lIEoi6t3VERayWao7SF7AAZTw6oARGJeVjH8Kg==}
+  electron-to-chromium@1.5.100:
+    resolution: {integrity: sha512-u1z9VuzDXV86X2r3vAns0/5ojfXBue9o0+JDUDBKYqGLjxLkSqsSUoPU/6kW0gx76V44frHaf6Zo+QF74TQCMg==}
 
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
@@ -266,8 +266,8 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
-  update-browserslist-db@1.1.1:
-    resolution: {integrity: sha512-R8UzCaa9Az+38REPiJ1tXlImTJXlVfgHZsglwBD/k6nj76ctsH1E3q4doGrukiLQd3sGQYu56r5+lo5r94l29A==}
+  update-browserslist-db@1.1.2:
+    resolution: {integrity: sha512-PPypAm5qvlD7XMZC3BujecnaOxwhrtoFR+Dqkk5Aa/6DssiH0ibKoketaj9w8LP7Bont1rYeoV5plxD7RTEPRg==}
     hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
@@ -302,14 +302,14 @@ snapshots:
 
   browserslist@4.24.4:
     dependencies:
-      caniuse-lite: 1.0.30001688
-      electron-to-chromium: 1.5.73
+      caniuse-lite: 1.0.30001699
+      electron-to-chromium: 1.5.100
       node-releases: 2.0.19
-      update-browserslist-db: 1.1.1(browserslist@4.24.4)
+      update-browserslist-db: 1.1.2(browserslist@4.24.4)
 
-  caniuse-db@1.0.30001688: {}
+  caniuse-db@1.0.30001699: {}
 
-  caniuse-lite@1.0.30001688: {}
+  caniuse-lite@1.0.30001699: {}
 
   chalk@5.4.1: {}
 
@@ -336,7 +336,7 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  electron-to-chromium@1.5.73: {}
+  electron-to-chromium@1.5.100: {}
 
   emoji-regex@10.4.0: {}
 
@@ -496,7 +496,7 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  update-browserslist-db@1.1.1(browserslist@4.24.4):
+  update-browserslist-db@1.1.2(browserslist@4.24.4):
     dependencies:
       browserslist: 4.24.4
       escalade: 3.2.0
