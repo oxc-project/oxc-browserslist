@@ -1,12 +1,12 @@
 use nom::{
+    IResult, Parser,
     branch::alt,
-    bytes::complete::{tag, tag_no_case, take_while1, take_while_m_n},
+    bytes::complete::{tag, tag_no_case, take_while_m_n, take_while1},
     character::complete::{anychar, char, i32, one_of, space0, space1, u16, u32},
     combinator::{all_consuming, consumed, map, opt, recognize, value, verify},
-    multi::{many0, many_till},
+    multi::{many_till, many0},
     number::complete::{double, float},
     sequence::{delimited, pair, preceded, separated_pair, terminated},
-    IResult, Parser,
 };
 
 type PResult<'a, Output> = IResult<&'a str, Output>;

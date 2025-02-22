@@ -39,11 +39,7 @@ pub fn parse_version(version: &str) -> Result<ElectronVersion, Error> {
 }
 
 fn check_number(n: &str) -> bool {
-    if n == "0" {
-        true
-    } else {
-        !n.starts_with('0')
-    }
+    if n == "0" { true } else { !n.starts_with('0') }
 }
 
 fn err(version: &str) -> Error {

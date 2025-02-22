@@ -1,7 +1,7 @@
 use anyhow::Result;
 use quote::quote;
 
-use super::{generate_file, Caniuse};
+use super::{Caniuse, generate_file};
 
 pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
     let browser_stat = data.agents.iter().map(|(name, agent)| {

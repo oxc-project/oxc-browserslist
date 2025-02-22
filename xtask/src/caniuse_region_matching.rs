@@ -5,7 +5,7 @@ use indexmap::IndexMap;
 use quote::quote;
 use serde::Deserialize;
 
-use super::{encode_browser_name, generate_file, root, Caniuse};
+use super::{Caniuse, encode_browser_name, generate_file, root};
 
 #[derive(Deserialize)]
 struct RegionData {

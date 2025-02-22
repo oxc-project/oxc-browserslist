@@ -1,4 +1,4 @@
-use super::{count_filter_versions, Distrib, QueryResult};
+use super::{Distrib, QueryResult, count_filter_versions};
 use crate::{data::caniuse::get_browser_stat, error::Error, opts::Opts};
 
 pub(super) fn last_n_x_browsers(count: usize, name: &str, opts: &Opts) -> QueryResult {

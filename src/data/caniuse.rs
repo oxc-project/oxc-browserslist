@@ -29,8 +29,8 @@ pub use crate::generated::{
     caniuse_browsers::caniuse_browsers, caniuse_global_usage::CANIUSE_GLOBAL_USAGE,
 };
 
-pub fn browser_version_aliases(
-) -> &'static FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>> {
+pub fn browser_version_aliases()
+-> &'static FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>> {
     static BROWSER_VERSION_ALIASES: OnceLock<
         FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>>,
     > = OnceLock::new();
@@ -55,11 +55,7 @@ pub fn browser_version_aliases(
                             aliases
                         },
                     );
-                if aliases.is_empty() {
-                    None
-                } else {
-                    Some((*name, aliases))
-                }
+                if aliases.is_empty() { None } else { Some((*name, aliases)) }
             })
             .collect::<FxHashMap<BrowserName, _>>();
         let _ = aliases.insert("op_mob", {

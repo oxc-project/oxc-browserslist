@@ -3,11 +3,12 @@ name = "oxc-browserslist"
 version = "1.1.2"
 authors = ["Boshen <boshenc@gmail.com>", "Pig Fang <g-plane@hotmail.com>"]
 categories = ["config", "web-programming"]
-edition = "2021"
+edition = "2024"
 include = ["/benches", "/examples", "/src"]
 keywords = ["javascript", "web"]
 license = "MIT"
 repository = "https://github.com/oxc-project/oxc-browserslist"
+rust-version = "1.85.0"
 description = "Rust-ported Browserslist for Oxc."
 
 [workspace]

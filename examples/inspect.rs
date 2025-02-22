@@ -1,4 +1,4 @@
-use browserslist::{resolve, Opts};
+use browserslist::{Opts, resolve};
 use pico_args::Arguments;
 
 fn main() {

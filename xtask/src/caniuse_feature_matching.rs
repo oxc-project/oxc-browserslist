@@ -4,7 +4,7 @@ use anyhow::Result;
 use indexmap::IndexMap;
 use quote::quote;
 
-use super::{encode_browser_name, generate_file, Caniuse};
+use super::{Caniuse, encode_browser_name, generate_file};
 
 pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     let features = data
@@ -30,11 +30,7 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
                         .filter(|(_, flag)| flag.contains('a'))
                         .map(|x| x.0.clone())
                         .collect::<Vec<_>>();
-                    if y.is_empty() && a.is_empty() {
-                        None
-                    } else {
-                        Some((name, (y, a)))
-                    }
+                    if y.is_empty() && a.is_empty() { None } else { Some((name, (y, a))) }
                 })
                 .collect::<IndexMap<_, _>>()
         })
