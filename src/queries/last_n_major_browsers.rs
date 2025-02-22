@@ -1,4 +1,4 @@
-use super::{count_filter_versions, Distrib, QueryResult};
+use super::{Distrib, QueryResult, count_filter_versions};
 use crate::{
     data::caniuse::{caniuse_browsers, get_browser_stat},
     opts::Opts,

@@ -1,5 +1,5 @@
-use browserslist::{resolve, Opts};
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use browserslist::{Opts, resolve};
+use criterion::{Criterion, black_box, criterion_group, criterion_main};
 
 pub fn bench(c: &mut Criterion) {
     c.bench_function("resolve 'defaults, not dead'", |b| {

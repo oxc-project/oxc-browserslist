@@ -1,6 +1,6 @@
 use super::{Distrib, QueryResult};
 use crate::{
-    data::electron::{parse_version, ELECTRON_VERSIONS},
+    data::electron::{ELECTRON_VERSIONS, parse_version},
     error::Error,
 };
 

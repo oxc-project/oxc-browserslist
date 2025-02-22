@@ -1,5 +1,5 @@
-use crate::data::browser_name::decode_browser_name;
 use crate::data::BrowserName;
+use crate::data::browser_name::decode_browser_name;
 use serde_json::from_str;
 use std::sync::OnceLock;
 type RegionData = Vec<(BrowserName, &'static str, f32)>;

@@ -1,12 +1,13 @@
 use super::{Distrib, QueryResult};
 use crate::{
+    Opts,
     data::caniuse::{
-        features::{get_feature_stat, FeatureSet},
-        get_browser_stat, to_desktop_name, VersionDetail,
+        VersionDetail,
+        features::{FeatureSet, get_feature_stat},
+        get_browser_stat, to_desktop_name,
     },
     error::Error,
     parser::SupportKind,
-    Opts,
 };
 
 pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> QueryResult {
