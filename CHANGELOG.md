@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.3](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.1.2...oxc-browserslist-v1.1.3) - 2025-02-22
+
+### Other
+
+- Rust Edition 2024 ([#92](https://github.com/oxc-project/oxc-browserslist/pull/92))
+
 ## [1.1.2](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.1.1...oxc-browserslist-v1.1.2) - 2025-01-27
 
 ### Other
