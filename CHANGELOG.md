@@ -11,10 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Other
 
-- *(deps)* lock file maintenance rust crates ([#101](https://github.com/oxc-project/oxc-browserslist/pull/101))
-- *(deps)* lock file maintenance rust crates ([#99](https://github.com/oxc-project/oxc-browserslist/pull/99))
-- *(deps)* lock file maintenance ([#96](https://github.com/oxc-project/oxc-browserslist/pull/96))
-- *(deps)* update rust crate criterion2 to v3 ([#94](https://github.com/oxc-project/oxc-browserslist/pull/94))
+- _(deps)_ lock file maintenance rust crates ([#101](https://github.com/oxc-project/oxc-browserslist/pull/101))
+- _(deps)_ lock file maintenance rust crates ([#99](https://github.com/oxc-project/oxc-browserslist/pull/99))
+- _(deps)_ lock file maintenance ([#96](https://github.com/oxc-project/oxc-browserslist/pull/96))
+- _(deps)_ update rust crate criterion2 to v3 ([#94](https://github.com/oxc-project/oxc-browserslist/pull/94))
 
 ## [1.1.3](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.1.2...oxc-browserslist-v1.1.3) - 2025-02-22
 
