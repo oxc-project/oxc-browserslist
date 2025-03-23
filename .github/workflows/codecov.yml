@@ -1,6 +1,6 @@
-# Run cargo-llvm-cov and upload to codecov.io
+name: Code Coverage # Run cargo-llvm-cov and upload to codecov.io
 
-name: Code Coverage
+permissions: {}
 
 on:
   workflow_dispatch:
