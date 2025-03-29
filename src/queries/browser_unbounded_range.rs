@@ -67,7 +67,7 @@ mod tests {
     }
 
     #[test_case(
-        "unknow > 10", Error::BrowserNotFound(String::from("unknow"));
+        "unknown > 10", Error::BrowserNotFound(String::from("unknown"));
         "unknown browser"
     )]
     fn invalid(query: &str, error: Error) {
