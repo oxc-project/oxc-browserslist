@@ -27,12 +27,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "8",
-                            global_usage: 0.0155714f32,
+                            global_usage: 0f32,
                             release_date: Some(1237420800i64),
                         },
                         VersionDetail {
                             version: "9",
-                            global_usage: 0.0311427f32,
+                            global_usage: 0.033801f32,
                             release_date: Some(1300060800i64),
                         },
                         VersionDetail {
@@ -42,7 +42,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "11",
-                            global_usage: 0.373713f32,
+                            global_usage: 0.371811f32,
                             release_date: Some(1381968000i64),
                         },
                     ],
@@ -80,12 +80,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "17",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1525046400i64),
                         },
                         VersionDetail {
                             version: "18",
-                            global_usage: 0.056528f32,
+                            global_usage: 0.117414f32,
                             release_date: Some(1542067200i64),
                         },
                         VersionDetail {
@@ -150,7 +150,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "92",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1626912000i64),
                         },
                         VersionDetail {
@@ -230,123 +230,128 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "108",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1670198400i64),
                         },
                         VersionDetail {
                             version: "109",
-                            global_usage: 0.052995f32,
+                            global_usage: 0.049812f32,
                             release_date: Some(1673481600i64),
                         },
                         VersionDetail {
                             version: "110",
-                            global_usage: 0.003533f32,
+                            global_usage: 0f32,
                             release_date: Some(1675900800i64),
                         },
                         VersionDetail {
                             version: "111",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1678665600i64),
                         },
                         VersionDetail {
                             version: "112",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1680825600i64),
                         },
                         VersionDetail {
                             version: "113",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1683158400i64),
                         },
                         VersionDetail {
                             version: "114",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1685664000i64),
                         },
                         VersionDetail {
                             version: "115",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1689897600i64),
                         },
                         VersionDetail {
                             version: "116",
-                            global_usage: 0.003533f32,
+                            global_usage: 0f32,
                             release_date: Some(1692576000i64),
                         },
                         VersionDetail {
                             version: "117",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1694649600i64),
                         },
                         VersionDetail {
                             version: "118",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1697155200i64),
                         },
                         VersionDetail {
                             version: "119",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1698969600i64),
                         },
                         VersionDetail {
                             version: "120",
-                            global_usage: 0.028264f32,
+                            global_usage: 0.021348f32,
                             release_date: Some(1701993600i64),
                         },
                         VersionDetail {
                             version: "121",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1706227200i64),
                         },
                         VersionDetail {
                             version: "122",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.014232f32,
                             release_date: Some(1708732800i64),
                         },
                         VersionDetail {
                             version: "123",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1711152000i64),
                         },
                         VersionDetail {
                             version: "124",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1713398400i64),
                         },
                         VersionDetail {
                             version: "125",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1715990400i64),
                         },
                         VersionDetail {
                             version: "126",
-                            global_usage: 0.028264f32,
+                            global_usage: 0.021348f32,
                             release_date: Some(1718841600i64),
                         },
                         VersionDetail {
                             version: "127",
-                            global_usage: 0.028264f32,
+                            global_usage: 0.021348f32,
                             release_date: Some(1721865600i64),
                         },
                         VersionDetail {
                             version: "128",
-                            global_usage: 0.038863f32,
+                            global_usage: 0.01779f32,
                             release_date: Some(1724371200i64),
                         },
                         VersionDetail {
                             version: "129",
-                            global_usage: 0.144853f32,
+                            global_usage: 0.021348f32,
                             release_date: Some(1726704000i64),
                         },
                         VersionDetail {
                             version: "130",
-                            global_usage: 2.5049f32,
+                            global_usage: 0.067602f32,
                             release_date: Some(1729123200i64),
                         },
                         VersionDetail {
                             version: "131",
-                            global_usage: 1.55805f32,
+                            global_usage: 2.88198f32,
                             release_date: Some(1731542400i64),
+                        },
+                        VersionDetail {
+                            version: "132",
+                            global_usage: 1.62245f32,
+                            release_date: Some(1737417600i64),
                         },
                     ],
                 },
@@ -413,7 +418,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "11",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.021348f32,
                             release_date: Some(1327968000i64),
                         },
                         VersionDetail {
@@ -573,12 +578,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "43",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1450137600i64),
                         },
                         VersionDetail {
                             version: "44",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1453852800i64),
                         },
                         VersionDetail {
@@ -593,7 +598,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "47",
-                            global_usage: 0f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1465257600i64),
                         },
                         VersionDetail {
@@ -618,7 +623,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "52",
-                            global_usage: 0.024731f32,
+                            global_usage: 0.028464f32,
                             release_date: Some(1488844800i64),
                         },
                         VersionDetail {
@@ -633,12 +638,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "55",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1502150400i64),
                         },
                         VersionDetail {
                             version: "56",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.014232f32,
                             release_date: Some(1506556800i64),
                         },
                         VersionDetail {
@@ -653,7 +658,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "59",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1520985600i64),
                         },
                         VersionDetail {
@@ -718,7 +723,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "72",
-                            global_usage: 0.003533f32,
+                            global_usage: 0f32,
                             release_date: Some(1578355200i64),
                         },
                         VersionDetail {
@@ -748,7 +753,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "78",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1593475200i64),
                         },
                         VersionDetail {
@@ -798,7 +803,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "88",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1618790400i64),
                         },
                         VersionDetail {
@@ -868,12 +873,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "102",
-                            global_usage: 0.003533f32,
+                            global_usage: 0f32,
                             release_date: Some(1656374400i64),
                         },
                         VersionDetail {
                             version: "103",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1658793600i64),
                         },
                         VersionDetail {
@@ -903,7 +908,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "109",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1673913600i64),
                         },
                         VersionDetail {
@@ -923,7 +928,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "113",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1683590400i64),
                         },
                         VersionDetail {
@@ -933,7 +938,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "115",
-                            global_usage: 0.250843f32,
+                            global_usage: 0.234828f32,
                             release_date: Some(1688428800i64),
                         },
                         VersionDetail {
@@ -948,7 +953,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "118",
-                            global_usage: 0.07066f32,
+                            global_usage: 0.085392f32,
                             release_date: Some(1695686400i64),
                         },
                         VersionDetail {
@@ -958,12 +963,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "120",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1700524800i64),
                         },
                         VersionDetail {
                             version: "121",
-                            global_usage: 0f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1702944000i64),
                         },
                         VersionDetail {
@@ -973,7 +978,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "123",
-                            global_usage: 0.003533f32,
+                            global_usage: 0f32,
                             release_date: Some(1708387200i64),
                         },
                         VersionDetail {
@@ -983,52 +988,62 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "125",
-                            global_usage: 0.017665f32,
+                            global_usage: 0.01779f32,
                             release_date: Some(1713225600i64),
                         },
                         VersionDetail {
                             version: "126",
-                            global_usage: 0.010599f32,
+                            global_usage: 0f32,
                             release_date: Some(1715644800i64),
                         },
                         VersionDetail {
                             version: "127",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1718064000i64),
                         },
                         VersionDetail {
                             version: "128",
-                            global_usage: 0.07066f32,
+                            global_usage: 0.078276f32,
                             release_date: Some(1720483200i64),
                         },
                         VersionDetail {
                             version: "129",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1722902400i64),
                         },
                         VersionDetail {
                             version: "130",
-                            global_usage: 0.017665f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1725321600i64),
                         },
                         VersionDetail {
                             version: "131",
-                            global_usage: 0.113056f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1727740800i64),
                         },
                         VersionDetail {
                             version: "132",
-                            global_usage: 1.36727f32,
+                            global_usage: 0.021348f32,
                             release_date: Some(1730160000i64),
                         },
                         VersionDetail {
                             version: "133",
-                            global_usage: 0.113056f32,
+                            global_usage: 0.49812f32,
                             release_date: Some(1732579200i64),
                         },
-                        VersionDetail { version: "134", global_usage: 0f32, release_date: None },
-                        VersionDetail { version: "135", global_usage: 0f32, release_date: None },
+                        VersionDetail {
+                            version: "134",
+                            global_usage: 1.02826f32,
+                            release_date: Some(1736208000i64),
+                        },
+                        VersionDetail {
+                            version: "135",
+                            global_usage: 0.007116f32,
+                            release_date: Some(1738627200i64),
+                        },
                         VersionDetail { version: "136", global_usage: 0f32, release_date: None },
+                        VersionDetail { version: "137", global_usage: 0f32, release_date: None },
+                        VersionDetail { version: "138", global_usage: 0f32, release_date: None },
                     ],
                 },
             ),
@@ -1209,7 +1224,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "38",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1412640000i64),
                         },
                         VersionDetail {
@@ -1244,7 +1259,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "45",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1441152000i64),
                         },
                         VersionDetail {
@@ -1254,22 +1269,22 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "47",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1449014400i64),
                         },
                         VersionDetail {
                             version: "48",
-                            global_usage: 0.017665f32,
+                            global_usage: 0.014232f32,
                             release_date: Some(1453248000i64),
                         },
                         VersionDetail {
                             version: "49",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.014232f32,
                             release_date: Some(1456963200i64),
                         },
                         VersionDetail {
                             version: "50",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.024906f32,
                             release_date: Some(1460592000i64),
                         },
                         VersionDetail {
@@ -1279,12 +1294,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "52",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1469059200i64),
                         },
                         VersionDetail {
                             version: "53",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1472601600i64),
                         },
                         VersionDetail {
@@ -1299,7 +1314,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "56",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1485302400i64),
                         },
                         VersionDetail {
@@ -1309,7 +1324,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "58",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1492560000i64),
                         },
                         VersionDetail {
@@ -1319,12 +1334,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "60",
-                            global_usage: 0.003533f32,
+                            global_usage: 0f32,
                             release_date: Some(1500940800i64),
                         },
                         VersionDetail {
                             version: "61",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1504569600i64),
                         },
                         VersionDetail {
@@ -1349,7 +1364,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "66",
-                            global_usage: 0.017665f32,
+                            global_usage: 0.021348f32,
                             release_date: Some(1523923200i64),
                         },
                         VersionDetail {
@@ -1364,12 +1379,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "69",
-                            global_usage: 0.056528f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1536019200i64),
                         },
                         VersionDetail {
                             version: "70",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1539648000i64),
                         },
                         VersionDetail {
@@ -1384,305 +1399,311 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "73",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1552348800i64),
                         },
                         VersionDetail {
                             version: "74",
-                            global_usage: 0.017665f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1555977600i64),
                         },
                         VersionDetail {
                             version: "75",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1559606400i64),
                         },
                         VersionDetail {
                             version: "76",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1564444800i64),
                         },
                         VersionDetail {
                             version: "77",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1568073600i64),
                         },
                         VersionDetail {
                             version: "78",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1571702400i64),
                         },
                         VersionDetail {
                             version: "79",
-                            global_usage: 0.084792f32,
+                            global_usage: 0.08895f32,
                             release_date: Some(1575936000i64),
                         },
                         VersionDetail {
                             version: "80",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1580860800i64),
                         },
                         VersionDetail {
                             version: "81",
-                            global_usage: 0.031797f32,
+                            global_usage: 0.024906f32,
                             release_date: Some(1586304000i64),
                         },
                         VersionDetail {
                             version: "83",
-                            global_usage: 0.028264f32,
+                            global_usage: 0.032022f32,
                             release_date: Some(1589846400i64),
                         },
                         VersionDetail {
                             version: "84",
-                            global_usage: 0.003533f32,
+                            global_usage: 0f32,
                             release_date: Some(1594684800i64),
                         },
                         VersionDetail {
                             version: "85",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1598313600i64),
                         },
                         VersionDetail {
                             version: "86",
-                            global_usage: 0.024731f32,
+                            global_usage: 0.01779f32,
                             release_date: Some(1601942400i64),
                         },
                         VersionDetail {
                             version: "87",
-                            global_usage: 0.060061f32,
+                            global_usage: 0.067602f32,
                             release_date: Some(1605571200i64),
                         },
                         VersionDetail {
                             version: "88",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1611014400i64),
                         },
                         VersionDetail {
                             version: "89",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1614556800i64),
                         },
                         VersionDetail {
                             version: "90",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1618272000i64),
                         },
                         VersionDetail {
                             version: "91",
-                            global_usage: 0.045929f32,
+                            global_usage: 0.03558f32,
                             release_date: Some(1621987200i64),
                         },
                         VersionDetail {
                             version: "92",
-                            global_usage: 0.031797f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1626739200i64),
                         },
                         VersionDetail {
                             version: "93",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1630368000i64),
                         },
                         VersionDetail {
                             version: "94",
-                            global_usage: 0.038863f32,
+                            global_usage: 0.032022f32,
                             release_date: Some(1632268800i64),
                         },
                         VersionDetail {
                             version: "95",
-                            global_usage: 0.038863f32,
+                            global_usage: 0.014232f32,
                             release_date: Some(1634601600i64),
                         },
                         VersionDetail {
                             version: "96",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1637020800i64),
                         },
                         VersionDetail {
                             version: "97",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.014232f32,
                             release_date: Some(1641340800i64),
                         },
                         VersionDetail {
                             version: "98",
-                            global_usage: 0.03533f32,
+                            global_usage: 0.039138f32,
                             release_date: Some(1643673600i64),
                         },
                         VersionDetail {
                             version: "99",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1646092800i64),
                         },
                         VersionDetail {
                             version: "100",
-                            global_usage: 0.017665f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1648512000i64),
                         },
                         VersionDetail {
                             version: "101",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.014232f32,
                             release_date: Some(1650931200i64),
                         },
                         VersionDetail {
                             version: "102",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1653350400i64),
                         },
                         VersionDetail {
                             version: "103",
-                            global_usage: 0.102457f32,
+                            global_usage: 0.099624f32,
                             release_date: Some(1655769600i64),
                         },
                         VersionDetail {
                             version: "104",
-                            global_usage: 0.03533f32,
+                            global_usage: 0.042696f32,
                             release_date: Some(1659398400i64),
                         },
                         VersionDetail {
                             version: "105",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1661817600i64),
                         },
                         VersionDetail {
                             version: "106",
-                            global_usage: 0.021198f32,
+                            global_usage: 0.01779f32,
                             release_date: Some(1664236800i64),
                         },
                         VersionDetail {
                             version: "107",
-                            global_usage: 0.021198f32,
+                            global_usage: 0.024906f32,
                             release_date: Some(1666656000i64),
                         },
                         VersionDetail {
                             version: "108",
-                            global_usage: 0.03533f32,
+                            global_usage: 0.039138f32,
                             release_date: Some(1669680000i64),
                         },
                         VersionDetail {
                             version: "109",
-                            global_usage: 1.18002f32,
+                            global_usage: 1.04605f32,
                             release_date: Some(1673308800i64),
                         },
                         VersionDetail {
                             version: "110",
-                            global_usage: 0.017665f32,
+                            global_usage: 0.021348f32,
                             release_date: Some(1675728000i64),
                         },
                         VersionDetail {
                             version: "111",
-                            global_usage: 0.031797f32,
+                            global_usage: 0.028464f32,
                             release_date: Some(1678147200i64),
                         },
                         VersionDetail {
                             version: "112",
-                            global_usage: 0.031797f32,
+                            global_usage: 0.039138f32,
                             release_date: Some(1680566400i64),
                         },
                         VersionDetail {
                             version: "113",
-                            global_usage: 0.084792f32,
+                            global_usage: 0.145878f32,
                             release_date: Some(1682985600i64),
                         },
                         VersionDetail {
                             version: "114",
-                            global_usage: 0.074193f32,
+                            global_usage: 0.07116f32,
                             release_date: Some(1685404800i64),
                         },
                         VersionDetail {
                             version: "115",
-                            global_usage: 0.021198f32,
+                            global_usage: 0.024906f32,
                             release_date: Some(1689724800i64),
                         },
                         VersionDetail {
                             version: "116",
-                            global_usage: 0.14132f32,
+                            global_usage: 0.110298f32,
                             release_date: Some(1692057600i64),
                         },
                         VersionDetail {
                             version: "117",
-                            global_usage: 0.063594f32,
+                            global_usage: 0.067602f32,
                             release_date: Some(1694476800i64),
                         },
                         VersionDetail {
                             version: "118",
-                            global_usage: 0.063594f32,
+                            global_usage: 0.056928f32,
                             release_date: Some(1696896000i64),
                         },
                         VersionDetail {
                             version: "119",
-                            global_usage: 0.042396f32,
+                            global_usage: 0.039138f32,
                             release_date: Some(1698710400i64),
                         },
                         VersionDetail {
                             version: "120",
-                            global_usage: 0.07066f32,
+                            global_usage: 0.056928f32,
                             release_date: Some(1701993600i64),
                         },
                         VersionDetail {
                             version: "121",
-                            global_usage: 0.095391f32,
+                            global_usage: 0.08895f32,
                             release_date: Some(1705968000i64),
                         },
                         VersionDetail {
                             version: "122",
-                            global_usage: 0.084792f32,
+                            global_usage: 0.074718f32,
                             release_date: Some(1708387200i64),
                         },
                         VersionDetail {
                             version: "123",
-                            global_usage: 0.095391f32,
+                            global_usage: 0.078276f32,
                             release_date: Some(1710806400i64),
                         },
                         VersionDetail {
                             version: "124",
-                            global_usage: 0.144853f32,
+                            global_usage: 0.138762f32,
                             release_date: Some(1713225600i64),
                         },
                         VersionDetail {
                             version: "125",
-                            global_usage: 0.731331f32,
+                            global_usage: 0.814782f32,
                             release_date: Some(1715644800i64),
                         },
                         VersionDetail {
                             version: "126",
-                            global_usage: 0.349767f32,
+                            global_usage: 0.295314f32,
                             release_date: Some(1718064000i64),
                         },
                         VersionDetail {
                             version: "127",
-                            global_usage: 0.261442f32,
+                            global_usage: 0.224154f32,
                             release_date: Some(1721174400i64),
                         },
                         VersionDetail {
                             version: "128",
-                            global_usage: 0.293239f32,
+                            global_usage: 0.156552f32,
                             release_date: Some(1724112000i64),
                         },
                         VersionDetail {
                             version: "129",
-                            global_usage: 0.907981f32,
+                            global_usage: 0.14232f32,
                             release_date: Some(1726531200i64),
                         },
                         VersionDetail {
                             version: "130",
-                            global_usage: 10.274f32,
+                            global_usage: 0.384264f32,
                             release_date: Some(1728950400i64),
                         },
                         VersionDetail {
                             version: "131",
-                            global_usage: 5.69166f32,
+                            global_usage: 12.7946f32,
                             release_date: Some(1731369600i64),
                         },
                         VersionDetail {
                             version: "132",
-                            global_usage: 0.014132f32,
-                            release_date: None,
+                            global_usage: 3.25201f32,
+                            release_date: Some(1736812800i64),
                         },
                         VersionDetail {
                             version: "133",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.014232f32,
+                            release_date: Some(1738627200i64),
+                        },
+                        VersionDetail {
+                            version: "134",
+                            global_usage: 0.007116f32,
                             release_date: None,
                         },
-                        VersionDetail { version: "134", global_usage: 0f32, release_date: None },
+                        VersionDetail { version: "135", global_usage: 0f32, release_date: None },
+                        VersionDetail { version: "136", global_usage: 0f32, release_date: None },
                     ],
                 },
             ),
@@ -1768,7 +1789,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "11.1",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1522281600i64),
                         },
                         VersionDetail {
@@ -1778,145 +1799,150 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "12.1",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1553472000i64),
                         },
                         VersionDetail {
                             version: "13",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1568851200i64),
                         },
                         VersionDetail {
                             version: "13.1",
-                            global_usage: 0.049462f32,
+                            global_usage: 0.039138f32,
                             release_date: Some(1585008000i64),
                         },
                         VersionDetail {
                             version: "14",
-                            global_usage: 0.021198f32,
+                            global_usage: 0.01779f32,
                             release_date: Some(1600214400i64),
                         },
                         VersionDetail {
                             version: "14.1",
-                            global_usage: 0.060061f32,
+                            global_usage: 0.05337f32,
                             release_date: Some(1619395200i64),
                         },
                         VersionDetail {
                             version: "15",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1632096000i64),
                         },
                         VersionDetail {
                             version: "15.1",
-                            global_usage: 0.017665f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1635292800i64),
                         },
                         VersionDetail {
                             version: "15.2-15.3",
-                            global_usage: 0.007066f32,
+                            global_usage: 0.007116f32,
                             release_date: Some(1639353600i64),
                         },
                         VersionDetail {
                             version: "15.4",
-                            global_usage: 0.017665f32,
+                            global_usage: 0.014232f32,
                             release_date: Some(1647216000i64),
                         },
                         VersionDetail {
                             version: "15.5",
-                            global_usage: 0.021198f32,
+                            global_usage: 0.01779f32,
                             release_date: Some(1652745600i64),
                         },
                         VersionDetail {
                             version: "15.6",
-                            global_usage: 0.180183f32,
+                            global_usage: 0.167226f32,
                             release_date: Some(1658275200i64),
                         },
                         VersionDetail {
                             version: "16.0",
-                            global_usage: 0.024731f32,
+                            global_usage: 0.024906f32,
                             release_date: Some(1662940800i64),
                         },
                         VersionDetail {
                             version: "16.1",
-                            global_usage: 0.031797f32,
+                            global_usage: 0.028464f32,
                             release_date: Some(1666569600i64),
                         },
                         VersionDetail {
                             version: "16.2",
-                            global_usage: 0.024731f32,
+                            global_usage: 0.021348f32,
                             release_date: Some(1670889600i64),
                         },
                         VersionDetail {
                             version: "16.3",
-                            global_usage: 0.056528f32,
+                            global_usage: 0.049812f32,
                             release_date: Some(1674432000i64),
                         },
                         VersionDetail {
                             version: "16.4",
-                            global_usage: 0.021198f32,
+                            global_usage: 0.01779f32,
                             release_date: Some(1679875200i64),
                         },
                         VersionDetail {
                             version: "16.5",
-                            global_usage: 0.03533f32,
+                            global_usage: 0.028464f32,
                             release_date: Some(1684368000i64),
                         },
                         VersionDetail {
                             version: "16.6",
-                            global_usage: 0.24731f32,
+                            global_usage: 0.224154f32,
                             release_date: Some(1690156800i64),
                         },
                         VersionDetail {
                             version: "17.0",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.014232f32,
                             release_date: Some(1695686400i64),
                         },
                         VersionDetail {
                             version: "17.1",
-                            global_usage: 0.031797f32,
+                            global_usage: 0.024906f32,
                             release_date: Some(1698192000i64),
                         },
                         VersionDetail {
                             version: "17.2",
-                            global_usage: 0.031797f32,
+                            global_usage: 0.024906f32,
                             release_date: Some(1702252800i64),
                         },
                         VersionDetail {
                             version: "17.3",
-                            global_usage: 0.03533f32,
+                            global_usage: 0.028464f32,
                             release_date: Some(1705881600i64),
                         },
                         VersionDetail {
                             version: "17.4",
-                            global_usage: 0.084792f32,
+                            global_usage: 0.064044f32,
                             release_date: Some(1709596800i64),
                         },
                         VersionDetail {
                             version: "17.5",
-                            global_usage: 0.194315f32,
+                            global_usage: 0.131646f32,
                             release_date: Some(1715558400i64),
                         },
                         VersionDetail {
                             version: "17.6",
-                            global_usage: 1.05283f32,
+                            global_usage: 0.39138f32,
                             release_date: Some(1722211200i64),
                         },
                         VersionDetail {
                             version: "18.0",
-                            global_usage: 0.28264f32,
+                            global_usage: 0.067602f32,
                             release_date: Some(1726444800i64),
                         },
                         VersionDetail {
                             version: "18.1",
-                            global_usage: 0.378031f32,
+                            global_usage: 0.939312f32,
                             release_date: Some(1730073600i64),
                         },
                         VersionDetail {
                             version: "18.2",
-                            global_usage: 0.010599f32,
+                            global_usage: 0.416286f32,
                             release_date: Some(1733875200i64),
                         },
-                        VersionDetail { version: "18.3", global_usage: 0f32, release_date: None },
+                        VersionDetail {
+                            version: "18.3",
+                            global_usage: 0.028464f32,
+                            release_date: Some(1737936000i64),
+                        },
+                        VersionDetail { version: "18.4", global_usage: 0f32, release_date: None },
                         VersionDetail { version: "TP", global_usage: 0f32, release_date: None },
                     ],
                 },
@@ -2108,7 +2134,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "40",
-                            global_usage: 0.003533f32,
+                            global_usage: 0.003558f32,
                             release_date: Some(1474329600i64),
                         },
                         VersionDetail {
@@ -2138,7 +2164,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "46",
-                            global_usage: 0.014132f32,
+                            global_usage: 0.014232f32,
                             release_date: Some(1498003200i64),
                         },
                         VersionDetail {
@@ -2323,17 +2349,17 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "85",
-                            global_usage: 0.024731f32,
+                            global_usage: 0f32,
                             release_date: Some(1647993600i64),
                         },
                         VersionDetail {
                             version: "86",
-                            global_usage: 0f32,
+                            global_usage: 0.032022f32,
                             release_date: Some(1650412800i64),
                         },
                         VersionDetail {
                             version: "87",
-                            global_usage: 0f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1652745600i64),
                         },
                         VersionDetail {
@@ -2373,7 +2399,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "95",
-                            global_usage: 0.031797f32,
+                            global_usage: 0.032022f32,
                             release_date: Some(1675209600i64),
                         },
                         VersionDetail {
@@ -2408,7 +2434,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "102",
-                            global_usage: 0.028264f32,
+                            global_usage: 0.010674f32,
                             release_date: Some(1692748800i64),
                         },
                         VersionDetail {
@@ -2463,12 +2489,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "113",
-                            global_usage: 0.060061f32,
+                            global_usage: 0f32,
                             release_date: Some(1724284800i64),
                         },
                         VersionDetail {
                             version: "114",
-                            global_usage: 0.770194f32,
+                            global_usage: 0.313104f32,
                             release_date: Some(1727222400i64),
                         },
                     ],
@@ -2491,7 +2517,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "4.2-4.3",
-                            global_usage: 0.001479f32,
+                            global_usage: 0.00293498f32,
                             release_date: Some(1299628800i64),
                         },
                         VersionDetail {
@@ -2501,12 +2527,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "6.0-6.1",
-                            global_usage: 0.00591601f32,
+                            global_usage: 0.00733744f32,
                             release_date: Some(1359331200i64),
                         },
                         VersionDetail {
                             version: "7.0-7.1",
-                            global_usage: 0.00739501f32,
+                            global_usage: 0.00880493f32,
                             release_date: Some(1394409600i64),
                         },
                         VersionDetail {
@@ -2521,185 +2547,190 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "9.0-9.2",
-                            global_usage: 0.00591601f32,
+                            global_usage: 0.00293498f32,
                             release_date: Some(1442361600i64),
                         },
                         VersionDetail {
                             version: "9.3",
-                            global_usage: 0.020706f32,
+                            global_usage: 0.0220123f32,
                             release_date: Some(1458518400i64),
                         },
                         VersionDetail {
                             version: "10.0-10.2",
-                            global_usage: 0.00443701f32,
+                            global_usage: 0.00440246f32,
                             release_date: Some(1473724800i64),
                         },
                         VersionDetail {
                             version: "10.3",
-                            global_usage: 0.0340171f32,
+                            global_usage: 0.0322847f32,
                             release_date: Some(1490572800i64),
                         },
                         VersionDetail {
                             version: "11.0-11.2",
-                            global_usage: 0.399331f32,
+                            global_usage: 0.0924517f32,
                             release_date: Some(1505779200i64),
                         },
                         VersionDetail {
                             version: "11.3-11.4",
-                            global_usage: 0.010353f32,
+                            global_usage: 0.0102724f32,
                             release_date: Some(1522281600i64),
                         },
                         VersionDetail {
                             version: "12.0-12.1",
-                            global_usage: 0.00591601f32,
+                            global_usage: 0.00586995f32,
                             release_date: Some(1537142400i64),
                         },
                         VersionDetail {
                             version: "12.2-12.5",
-                            global_usage: 0.155295f32,
+                            global_usage: 0.155554f32,
                             release_date: Some(1553472000i64),
                         },
                         VersionDetail {
                             version: "13.0-13.1",
-                            global_usage: 0.00295801f32,
+                            global_usage: 0.00293498f32,
                             release_date: Some(1568851200i64),
                         },
                         VersionDetail {
                             version: "13.2",
-                            global_usage: 0.0414121f32,
+                            global_usage: 0.0176099f32,
                             release_date: Some(1572220800i64),
                         },
                         VersionDetail {
                             version: "13.3",
-                            global_usage: 0.00591601f32,
+                            global_usage: 0.00586995f32,
                             release_date: Some(1580169600i64),
                         },
                         VersionDetail {
                             version: "13.4-13.7",
-                            global_usage: 0.022185f32,
+                            global_usage: 0.0220123f32,
                             release_date: Some(1585008000i64),
                         },
                         VersionDetail {
                             version: "14.0-14.4",
-                            global_usage: 0.0902192f32,
+                            global_usage: 0.143814f32,
                             release_date: Some(1600214400i64),
                         },
                         VersionDetail {
                             version: "14.5-14.8",
-                            global_usage: 0.0695131f32,
+                            global_usage: 0.0689719f32,
                             release_date: Some(1619395200i64),
                         },
                         VersionDetail {
                             version: "15.0-15.1",
-                            global_usage: 0.0399331f32,
+                            global_usage: 0.0352197f32,
                             release_date: Some(1632096000i64),
                         },
                         VersionDetail {
                             version: "15.2-15.3",
-                            global_usage: 0.0369751f32,
+                            global_usage: 0.0366872f32,
                             release_date: Some(1639353600i64),
                         },
                         VersionDetail {
                             version: "15.4",
-                            global_usage: 0.0443701f32,
+                            global_usage: 0.0425571f32,
                             release_date: Some(1647216000i64),
                         },
                         VersionDetail {
                             version: "15.5",
-                            global_usage: 0.0517651f32,
+                            global_usage: 0.0498946f32,
                             release_date: Some(1652659200i64),
                         },
                         VersionDetail {
                             version: "15.6-15.8",
-                            global_usage: 0.553147f32,
+                            global_usage: 0.585528f32,
                             release_date: Some(1658275200i64),
                         },
                         VersionDetail {
                             version: "16.0",
-                            global_usage: 0.105009f32,
+                            global_usage: 0.0880493f32,
                             release_date: Some(1662940800i64),
                         },
                         VersionDetail {
                             version: "16.1",
-                            global_usage: 0.220371f32,
+                            global_usage: 0.192241f32,
                             release_date: Some(1666569600i64),
                         },
                         VersionDetail {
                             version: "16.2",
-                            global_usage: 0.110925f32,
+                            global_usage: 0.0983217f32,
                             release_date: Some(1670889600i64),
                         },
                         VersionDetail {
                             version: "16.3",
-                            global_usage: 0.189312f32,
+                            global_usage: 0.171696f32,
                             release_date: Some(1674432000i64),
                         },
                         VersionDetail {
                             version: "16.4",
-                            global_usage: 0.0384541f32,
+                            global_usage: 0.0366872f32,
                             release_date: Some(1679875200i64),
                         },
                         VersionDetail {
                             version: "16.5",
-                            global_usage: 0.0754291f32,
+                            global_usage: 0.0704394f32,
                             release_date: Some(1684368000i64),
                         },
                         VersionDetail {
                             version: "16.6-16.7",
-                            global_usage: 0.72619f32,
+                            global_usage: 0.713199f32,
                             release_date: Some(1690156800i64),
                         },
                         VersionDetail {
                             version: "17.0",
-                            global_usage: 0.0532441f32,
+                            global_usage: 0.0454921f32,
                             release_date: Some(1694995200i64),
                         },
                         VersionDetail {
                             version: "17.1",
-                            global_usage: 0.0887402f32,
+                            global_usage: 0.0807118f32,
                             release_date: Some(1698192000i64),
                         },
                         VersionDetail {
                             version: "17.2",
-                            global_usage: 0.0739501f32,
+                            global_usage: 0.063102f32,
                             release_date: Some(1702252800i64),
                         },
                         VersionDetail {
                             version: "17.3",
-                            global_usage: 0.112404f32,
+                            global_usage: 0.0895167f32,
                             release_date: Some(1705881600i64),
                         },
                         VersionDetail {
                             version: "17.4",
-                            global_usage: 0.241077f32,
+                            global_usage: 0.192241f32,
                             release_date: Some(1709596800i64),
                         },
                         VersionDetail {
                             version: "17.5",
-                            global_usage: 0.718795f32,
+                            global_usage: 0.463726f32,
                             release_date: Some(1715558400i64),
                         },
                         VersionDetail {
                             version: "17.6-17.7",
-                            global_usage: 6.20146f32,
+                            global_usage: 1.59369f32,
                             release_date: Some(1722211200i64),
                         },
                         VersionDetail {
                             version: "18.0",
-                            global_usage: 2.19928f32,
+                            global_usage: 0.490141f32,
                             release_date: Some(1726444800i64),
                         },
                         VersionDetail {
                             version: "18.1",
-                            global_usage: 1.93454f32,
+                            global_usage: 6.52592f32,
                             release_date: Some(1730073600i64),
                         },
                         VersionDetail {
                             version: "18.2",
-                            global_usage: 0.0783872f32,
+                            global_usage: 2.20123f32,
                             release_date: Some(1733875200i64),
                         },
-                        VersionDetail { version: "18.3", global_usage: 0f32, release_date: None },
+                        VersionDetail {
+                            version: "18.3",
+                            global_usage: 0.190773f32,
+                            release_date: Some(1737936000i64),
+                        },
+                        VersionDetail { version: "18.4", global_usage: 0f32, release_date: None },
                     ],
                 },
             ),
@@ -2746,12 +2777,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "4.1",
-                            global_usage: 0f32,
+                            global_usage: 0.0000309216f32,
                             release_date: Some(1341792000i64),
                         },
                         VersionDetail {
                             version: "4.2-4.3",
-                            global_usage: 0.0000640233f32,
+                            global_usage: 0.0000618432f32,
                             release_date: Some(1374624000i64),
                         },
                         VersionDetail {
@@ -2761,13 +2792,13 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "4.4.3-4.4.4",
-                            global_usage: 0.000277434f32,
+                            global_usage: 0.000371059f32,
                             release_date: Some(1401667200i64),
                         },
                         VersionDetail {
-                            version: "131",
-                            global_usage: 0.212941f32,
-                            release_date: Some(1731369600i64),
+                            version: "132",
+                            global_usage: 0.308567f32,
+                            release_date: Some(1737676800i64),
                         },
                     ],
                 },
@@ -2827,7 +2858,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "80",
-                            global_usage: 0.975319f32,
+                            global_usage: 1.03581f32,
                             release_date: Some(1709769600i64),
                         },
                     ],
@@ -2838,9 +2869,9 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                 BrowserStat {
                     name: "and_chr",
                     version_list: vec![VersionDetail {
-                        version: "131",
-                        global_usage: 46.0128f32,
-                        release_date: Some(1731369600i64),
+                        version: "132",
+                        global_usage: 46.1904f32,
+                        release_date: Some(1737676800i64),
                     }],
                 },
             ),
@@ -2850,7 +2881,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                     name: "and_ff",
                     version_list: vec![VersionDetail {
                         version: "132",
-                        global_usage: 0.329817f32,
+                        global_usage: 0.334984f32,
                         release_date: Some(1730160000i64),
                     }],
                 },
@@ -2879,7 +2910,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                     name: "and_uc",
                     version_list: vec![VersionDetail {
                         version: "15.5",
-                        global_usage: 0.801908f32,
+                        global_usage: 0.83746f32,
                         release_date: Some(1710115200i64),
                     }],
                 },
@@ -2891,12 +2922,12 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                     version_list: vec![
                         VersionDetail {
                             version: "4",
-                            global_usage: 0.075667f32,
+                            global_usage: 0.0661544f32,
                             release_date: Some(1461024000i64),
                         },
                         VersionDetail {
                             version: "5.0-5.4",
-                            global_usage: 0.0108096f32,
+                            global_usage: 0.0110257f32,
                             release_date: Some(1481846400i64),
                         },
                         VersionDetail {
@@ -2906,7 +2937,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "7.2-7.4",
-                            global_usage: 0.0108096f32,
+                            global_usage: 0.0110257f32,
                             release_date: Some(1528329600i64),
                         },
                         VersionDetail {
@@ -2956,7 +2987,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "17.0",
-                            global_usage: 0.0108096f32,
+                            global_usage: 0.0110257f32,
                             release_date: Some(1651708800i64),
                         },
                         VersionDetail {
@@ -2966,47 +2997,47 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         },
                         VersionDetail {
                             version: "19.0",
-                            global_usage: 0.0108096f32,
+                            global_usage: 0f32,
                             release_date: Some(1667260800i64),
                         },
                         VersionDetail {
                             version: "20",
-                            global_usage: 0.0108096f32,
+                            global_usage: 0f32,
                             release_date: Some(1677369600i64),
                         },
                         VersionDetail {
                             version: "21",
-                            global_usage: 0.0324287f32,
+                            global_usage: 0.0220515f32,
                             release_date: Some(1684454400i64),
                         },
                         VersionDetail {
                             version: "22",
-                            global_usage: 0.0324287f32,
+                            global_usage: 0.0330772f32,
                             release_date: Some(1689292800i64),
                         },
                         VersionDetail {
                             version: "23",
-                            global_usage: 0.0432383f32,
+                            global_usage: 0.0330772f32,
                             release_date: Some(1697587200i64),
                         },
                         VersionDetail {
                             version: "24",
-                            global_usage: 0.0540479f32,
+                            global_usage: 0.0441029f32,
                             release_date: Some(1711497600i64),
                         },
                         VersionDetail {
                             version: "25",
-                            global_usage: 0.0540479f32,
+                            global_usage: 0.0441029f32,
                             release_date: Some(1715126400i64),
                         },
                         VersionDetail {
                             version: "26",
-                            global_usage: 1.05934f32,
+                            global_usage: 0.110257f32,
                             release_date: Some(1717718400i64),
                         },
                         VersionDetail {
                             version: "27",
-                            global_usage: 0.832337f32,
+                            global_usage: 1.90745f32,
                             release_date: Some(1725667200i64),
                         },
                     ],
@@ -3018,7 +3049,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                     name: "and_qq",
                     version_list: vec![VersionDetail {
                         version: "14.9",
-                        global_usage: 0.200477f32,
+                        global_usage: 0.199702f32,
                         release_date: Some(1710288000i64),
                     }],
                 },
@@ -3041,7 +3072,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                     version_list: vec![
                         VersionDetail {
                             version: "2.5",
-                            global_usage: 0.019401f32,
+                            global_usage: 0.019326f32,
                             release_date: Some(1527811200i64),
                         },
                         VersionDetail {
