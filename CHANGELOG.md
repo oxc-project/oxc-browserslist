@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.0...oxc-browserslist-v2.0.1) - 2025-04-14
+
+### Other
+
+- _(deps)_ lock file maintenance rust crates ([#118](https://github.com/oxc-project/oxc-browserslist/pull/118))
+- _(deps)_ lock file maintenance ([#116](https://github.com/oxc-project/oxc-browserslist/pull/116))
+- _(deps)_ lock file maintenance rust crates ([#114](https://github.com/oxc-project/oxc-browserslist/pull/114))
+- _(deps)_ update dependency rust to v1.86.0 ([#112](https://github.com/oxc-project/oxc-browserslist/pull/112))
+- _(deps)_ lock file maintenance ([#110](https://github.com/oxc-project/oxc-browserslist/pull/110))
+- _(deps)_ update crate-ci/typos action to v1.31.0 ([#108](https://github.com/oxc-project/oxc-browserslist/pull/108))
+- _(deps)_ lock file maintenance rust crates ([#106](https://github.com/oxc-project/oxc-browserslist/pull/106))
+- _(deps)_ lock file maintenance rust crates ([#105](https://github.com/oxc-project/oxc-browserslist/pull/105))
+- _(deps)_ lock file maintenance rust crates ([#101](https://github.com/oxc-project/oxc-browserslist/pull/101))
+- _(deps)_ lock file maintenance rust crates ([#99](https://github.com/oxc-project/oxc-browserslist/pull/99))
+- _(deps)_ lock file maintenance ([#96](https://github.com/oxc-project/oxc-browserslist/pull/96))
+- _(deps)_ update rust crate criterion2 to v3 ([#94](https://github.com/oxc-project/oxc-browserslist/pull/94))
+
 ## [1.1.3](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v1.1.2...oxc-browserslist-v1.1.3) - 2025-02-22
 
 ### Other
