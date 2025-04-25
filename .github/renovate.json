@@ -1,11 +1,5 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>Boshen/renovate"],
-  "packageRules": [
-    {
-      "groupName": "npm packages",
-      "matchManagers": ["npm"],
-      "schedule": ["at any time"]
-    }
-  ]
+  "ignoreDeps": ["caniuse-db", "electron-to-chromium", "node-releases"]
 }
