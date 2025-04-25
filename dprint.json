@@ -6,7 +6,8 @@
   "toml": {
   },
   "excludes": [
-    "pnpm-lock.yaml"
+    "pnpm-lock.yaml",
+    "CHANGELOG.md"
   ],
   "plugins": [
     "https://plugins.dprint.dev/json-0.19.4.wasm",
