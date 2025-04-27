@@ -5,7 +5,7 @@ permissions: {}
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *' # Everyday
+    - cron: "0 0 * * *" # Everyday
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
