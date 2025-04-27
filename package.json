@@ -5,15 +5,17 @@
   "scripts": {
     "browserslist": "browserslist"
   },
-  "devDependencies": {
-    "browserslist": "4.24.4",
-    "lint-staged": "^15.5.1",
-    "simple-git-hooks": "^2.13.0"
+  "dependencies": {
+    "browserslist": "4.24.4"
   },
   "peerDependencies": {
     "caniuse-db": "1.x",
     "electron-to-chromium": "1.x",
     "node-releases": "2.x"
+  },
+  "devDependencies": {
+    "lint-staged": "^15.5.1",
+    "simple-git-hooks": "^2.13.0"
   },
   "lint-staged": {
     "pnpm-lock.yaml": "cargo codegen"

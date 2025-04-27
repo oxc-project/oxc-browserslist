@@ -30,9 +30,7 @@ jobs:
           node-version-file: .node-version
           cache: pnpm
 
-      - run: pnpm install
-
-      - run: pnpm update caniuse-db electron-to-chromium node-releases
+      - run: pnpm update caniuse-db electron-to-chromium node-releases --prod
 
       - run: cargo codegen
 
