@@ -11,6 +11,7 @@ init:
 ready:
   git diff --exit-code --quiet
   typos
+  pnpm install
   cargo codegen
   just fmt
   cargo check

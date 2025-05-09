@@ -21,17 +21,26 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                     .map(|(name, stat)| (name, stat, versions))
             })
             .flat_map(|(name, browser_stat, versions)| {
-                let desktop_name =
-                    opts.mobile_to_desktop.then_some(to_desktop_name(name)).flatten();
+                // dbg!(&versions);
+                let desktop_name = opts.mobile_to_desktop.then(|| to_desktop_name(name)).flatten();
                 let check_desktop = desktop_name.is_some()
                     && browser_stat
                         .version_list
                         .iter()
-                        .filter(|version| version.release_date.is_some())
+                        .filter(|version| {
+                            println!("{name} {versions:?}");
+                            version.release_date.is_some()
+                        })
+                        .filter(|latest_version| {
+                            versions.0.contains(latest_version.version)
+                                || versions.1.contains(latest_version.version)
+                        })
                         .next_back()
                         .is_some_and(|latest_version| {
                             is_supported(versions, latest_version.version, include_partial)
                         });
+                println!("{name} {check_desktop}");
+
                 browser_stat
                     .version_list
                     .iter()
