@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.2](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.1...oxc-browserslist-v2.0.2) - 2025-05-09
+
+### Fixed
+
+- fix querying desktop `and_chr`; update browserslist ([#131](https://github.com/oxc-project/oxc-browserslist/pull/131))
+
+### Other
+
+- test assertion show difference between actual and expected
+
 ## [2.0.1](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.0...oxc-browserslist-v2.0.1) - 2025-04-25
 
 ### Other
