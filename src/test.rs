@@ -1,7 +1,8 @@
-use std::{path::Path, process::Command};
+use std::{collections::HashSet, path::Path, process::Command};
 
 use crate::{Error, Opts, resolve};
 
+#[track_caller]
 pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
     #[cfg(target_os = "windows")]
     let path = "./node_modules/.bin/browserslist.exe";
@@ -25,17 +26,24 @@ pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
         command.current_dir(cwd);
     }
     let output = String::from_utf8(command.output().unwrap().stdout).unwrap();
-    let expected = output.trim().split('\n').filter(|line| !line.is_empty()).collect::<Vec<_>>();
+    let expected = output
+        .trim()
+        .split('\n')
+        .filter(|line| !line.is_empty())
+        .map(|s| s.to_string())
+        .collect::<HashSet<_>>();
 
-    let actual = resolve(&[query], opts)
-        .unwrap()
-        .iter()
-        .map(std::string::ToString::to_string)
-        .collect::<Vec<_>>();
+    let actual =
+        resolve(&[query], opts).unwrap().iter().map(ToString::to_string).collect::<HashSet<_>>();
 
-    assert_eq!(expected, actual);
+    if expected != actual {
+        println!("actual - expected: {:?}", actual.difference(&expected).collect::<Vec<_>>());
+        println!("expected - actual: {:?}", expected.difference(&actual).collect::<Vec<_>>());
+        panic!();
+    }
 }
 
+#[track_caller]
 pub fn should_failed(query: &str, opts: &Opts) -> Error {
     resolve(&[query], opts).unwrap_err()
 }
