@@ -14,7 +14,7 @@
     "node-releases": "2.x"
   },
   "devDependencies": {
-    "lint-staged": "^15.5.2",
+    "lint-staged": "^16.0.0",
     "simple-git-hooks": "^2.13.0"
   },
   "lint-staged": {
