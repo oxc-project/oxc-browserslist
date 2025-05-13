@@ -37,6 +37,7 @@ jobs:
       - run: cargo test
 
       - uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+        id: cpr
         with:
           token: ${{ secrets.OXC_BOT_PAT }}
           commit-message: Update browserslist
@@ -45,3 +46,10 @@ jobs:
           title: Update browserslist
           assignees: Boshen
           base: main
+
+      - uses: peter-evans/enable-pull-request-automerge@v3
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        with:
+          token: ${{ secrets.OXC_BOT_PAT }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
