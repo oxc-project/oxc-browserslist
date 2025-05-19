@@ -47,7 +47,7 @@ jobs:
           assignees: Boshen
           base: main
 
-      - uses: peter-evans/enable-pull-request-automerge@v3
+      - uses: peter-evans/enable-pull-request-automerge@a660677d5469627102a1c1e11409dd063606628d # v3
         if: steps.cpr.outputs.pull-request-operation == 'created'
         with:
           token: ${{ secrets.OXC_BOT_PAT }}
