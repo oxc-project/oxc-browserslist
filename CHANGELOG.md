@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.7](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.6...oxc-browserslist-v2.0.7) - 2025-06-30
+
+### Other
+
+- *(deps)* lock file maintenance npm packages ([#181](https://github.com/oxc-project/oxc-browserslist/pull/181))
+- *(deps)* lock file maintenance rust crates ([#182](https://github.com/oxc-project/oxc-browserslist/pull/182))
+- Update browserslist ([#178](https://github.com/oxc-project/oxc-browserslist/pull/178))
+- Update browserslist ([#175](https://github.com/oxc-project/oxc-browserslist/pull/175))
+
 ## [2.0.6](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.5...oxc-browserslist-v2.0.6) - 2025-06-20
 
 ### Other
