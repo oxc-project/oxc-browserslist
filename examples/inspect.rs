@@ -1,3 +1,5 @@
+#![expect(clippy::print_stdout)]
+
 use browserslist::{Opts, resolve};
 use pico_args::Arguments;
 
@@ -20,6 +22,6 @@ fn main() {
                 println!("{version}");
             }
         }
-        Err(error) => eprintln!("{error}"),
+        Err(error) => println!("{error}"),
     };
 }

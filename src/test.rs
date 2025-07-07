@@ -2,6 +2,7 @@ use std::{collections::HashSet, path::Path, process::Command};
 
 use crate::{Error, Opts, resolve};
 
+#[expect(clippy::print_stdout)]
 #[track_caller]
 pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
     #[cfg(target_os = "windows")]

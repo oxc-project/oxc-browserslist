@@ -25,6 +25,8 @@ all = { level = "warn", priority = -1 }
 dbg_macro = "warn"
 todo = "warn"
 unimplemented = "warn"
+print_stdout = "warn" # Must be opt-in
+print_stderr = "warn" # Must be opt-in
 cargo = { level = "warn", priority = -1 }
 
 [workspace.dependencies]
