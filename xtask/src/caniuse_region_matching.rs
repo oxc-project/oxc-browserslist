@@ -76,10 +76,11 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         }
 
         pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
-            match region {
-                #( #keys => Some(convert(#idents)), )*
-                _ => None,
-            }
+            let data = match region {
+                #( #keys => #idents, )*
+                _ => return None,
+            };
+            Some(convert(data))
         }
 
         #(const #idents: &str = #data;)*
