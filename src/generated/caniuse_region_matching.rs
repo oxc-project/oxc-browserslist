@@ -1,7 +1,6 @@
 use crate::data::BrowserName;
 use crate::data::browser_name::decode_browser_name;
 use serde_json::from_str;
-use std::sync::OnceLock;
 type RegionData = Vec<(BrowserName, &'static str, f32)>;
 fn convert(s: &'static str) -> RegionData {
     from_str::<Vec<(u8, &'static str, f32)>>(s)
@@ -10,968 +9,248 @@ fn convert(s: &'static str) -> RegionData {
         .map(|(browser, version, usage)| (decode_browser_name(browser), version, usage))
         .collect::<Vec<_>>()
 }
-pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
+pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
     match region {
-        "AD" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AD)))
-        }
-        "AE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AE)))
-        }
-        "AF" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AF)))
-        }
-        "AG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AG)))
-        }
-        "AI" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AI)))
-        }
-        "AL" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AL)))
-        }
-        "AM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AM)))
-        }
-        "AO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AO)))
-        }
-        "AR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AR)))
-        }
-        "AS" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AS)))
-        }
-        "AT" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AT)))
-        }
-        "AU" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AU)))
-        }
-        "AW" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AW)))
-        }
-        "AX" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AX)))
-        }
-        "AZ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_AZ)))
-        }
-        "BA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BA)))
-        }
-        "BB" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BB)))
-        }
-        "BD" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BD)))
-        }
-        "BE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BE)))
-        }
-        "BF" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BF)))
-        }
-        "BG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BG)))
-        }
-        "BH" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BH)))
-        }
-        "BI" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BI)))
-        }
-        "BJ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BJ)))
-        }
-        "BM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BM)))
-        }
-        "BN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BN)))
-        }
-        "BO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BO)))
-        }
-        "BR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BR)))
-        }
-        "BS" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BS)))
-        }
-        "BT" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BT)))
-        }
-        "BW" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BW)))
-        }
-        "BY" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BY)))
-        }
-        "BZ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_BZ)))
-        }
-        "CA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CA)))
-        }
-        "CD" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CD)))
-        }
-        "CF" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CF)))
-        }
-        "CG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CG)))
-        }
-        "CH" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CH)))
-        }
-        "CI" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CI)))
-        }
-        "CK" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CK)))
-        }
-        "CL" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CL)))
-        }
-        "CM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CM)))
-        }
-        "CN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CN)))
-        }
-        "CO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CO)))
-        }
-        "CR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CR)))
-        }
-        "CU" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CU)))
-        }
-        "CV" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CV)))
-        }
-        "CX" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CX)))
-        }
-        "CY" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CY)))
-        }
-        "CZ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_CZ)))
-        }
-        "DE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_DE)))
-        }
-        "DJ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_DJ)))
-        }
-        "DK" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_DK)))
-        }
-        "DM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_DM)))
-        }
-        "DO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_DO)))
-        }
-        "DZ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_DZ)))
-        }
-        "EC" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_EC)))
-        }
-        "EE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_EE)))
-        }
-        "EG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_EG)))
-        }
-        "ER" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ER)))
-        }
-        "ES" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ES)))
-        }
-        "ET" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ET)))
-        }
-        "FI" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_FI)))
-        }
-        "FJ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_FJ)))
-        }
-        "FK" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_FK)))
-        }
-        "FM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_FM)))
-        }
-        "FO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_FO)))
-        }
-        "FR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_FR)))
-        }
-        "GA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GA)))
-        }
-        "GB" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GB)))
-        }
-        "GD" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GD)))
-        }
-        "GE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GE)))
-        }
-        "GF" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GF)))
-        }
-        "GG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GG)))
-        }
-        "GH" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GH)))
-        }
-        "GI" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GI)))
-        }
-        "GL" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GL)))
-        }
-        "GM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GM)))
-        }
-        "GN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GN)))
-        }
-        "GP" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GP)))
-        }
-        "GQ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GQ)))
-        }
-        "GR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GR)))
-        }
-        "GT" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GT)))
-        }
-        "GU" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GU)))
-        }
-        "GW" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GW)))
-        }
-        "GY" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_GY)))
-        }
-        "HK" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_HK)))
-        }
-        "HN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_HN)))
-        }
-        "HR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_HR)))
-        }
-        "HT" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_HT)))
-        }
-        "HU" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_HU)))
-        }
-        "ID" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ID)))
-        }
-        "IE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_IE)))
-        }
-        "IL" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_IL)))
-        }
-        "IM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_IM)))
-        }
-        "IN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_IN)))
-        }
-        "IQ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_IQ)))
-        }
-        "IR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_IR)))
-        }
-        "IS" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_IS)))
-        }
-        "IT" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_IT)))
-        }
-        "JE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_JE)))
-        }
-        "JM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_JM)))
-        }
-        "JO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_JO)))
-        }
-        "JP" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_JP)))
-        }
-        "KE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KE)))
-        }
-        "KG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KG)))
-        }
-        "KH" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KH)))
-        }
-        "KI" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KI)))
-        }
-        "KM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KM)))
-        }
-        "KN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KN)))
-        }
-        "KP" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KP)))
-        }
-        "KR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KR)))
-        }
-        "KW" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KW)))
-        }
-        "KY" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KY)))
-        }
-        "KZ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_KZ)))
-        }
-        "LA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LA)))
-        }
-        "LB" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LB)))
-        }
-        "LC" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LC)))
-        }
-        "LI" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LI)))
-        }
-        "LK" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LK)))
-        }
-        "LR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LR)))
-        }
-        "LS" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LS)))
-        }
-        "LT" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LT)))
-        }
-        "LU" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LU)))
-        }
-        "LV" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LV)))
-        }
-        "LY" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_LY)))
-        }
-        "MA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MA)))
-        }
-        "MC" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MC)))
-        }
-        "MD" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MD)))
-        }
-        "ME" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ME)))
-        }
-        "MG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MG)))
-        }
-        "MH" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MH)))
-        }
-        "MK" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MK)))
-        }
-        "ML" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ML)))
-        }
-        "MM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MM)))
-        }
-        "MN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MN)))
-        }
-        "MO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MO)))
-        }
-        "MP" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MP)))
-        }
-        "MQ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MQ)))
-        }
-        "MR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MR)))
-        }
-        "MS" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MS)))
-        }
-        "MT" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MT)))
-        }
-        "MU" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MU)))
-        }
-        "MV" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MV)))
-        }
-        "MW" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MW)))
-        }
-        "MX" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MX)))
-        }
-        "MY" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MY)))
-        }
-        "MZ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_MZ)))
-        }
-        "NA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NA)))
-        }
-        "NC" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NC)))
-        }
-        "NE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NE)))
-        }
-        "NF" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NF)))
-        }
-        "NG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NG)))
-        }
-        "NI" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NI)))
-        }
-        "NL" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NL)))
-        }
-        "NO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NO)))
-        }
-        "NP" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NP)))
-        }
-        "NR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NR)))
-        }
-        "NU" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NU)))
-        }
-        "NZ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_NZ)))
-        }
-        "OM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_OM)))
-        }
-        "PA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PA)))
-        }
-        "PE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PE)))
-        }
-        "PF" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PF)))
-        }
-        "PG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PG)))
-        }
-        "PH" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PH)))
-        }
-        "PK" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PK)))
-        }
-        "PL" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PL)))
-        }
-        "PM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PM)))
-        }
-        "PN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PN)))
-        }
-        "PR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PR)))
-        }
-        "PS" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PS)))
-        }
-        "PT" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PT)))
-        }
-        "PW" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PW)))
-        }
-        "PY" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_PY)))
-        }
-        "QA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_QA)))
-        }
-        "RE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_RE)))
-        }
-        "RO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_RO)))
-        }
-        "RS" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_RS)))
-        }
-        "RU" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_RU)))
-        }
-        "RW" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_RW)))
-        }
-        "SA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SA)))
-        }
-        "SB" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SB)))
-        }
-        "SC" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SC)))
-        }
-        "SD" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SD)))
-        }
-        "SE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SE)))
-        }
-        "SG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SG)))
-        }
-        "SH" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SH)))
-        }
-        "SI" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SI)))
-        }
-        "SK" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SK)))
-        }
-        "SL" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SL)))
-        }
-        "SM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SM)))
-        }
-        "SN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SN)))
-        }
-        "SO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SO)))
-        }
-        "SR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SR)))
-        }
-        "ST" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ST)))
-        }
-        "SV" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SV)))
-        }
-        "SY" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SY)))
-        }
-        "SZ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_SZ)))
-        }
-        "TC" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TC)))
-        }
-        "TD" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TD)))
-        }
-        "TG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TG)))
-        }
-        "TH" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TH)))
-        }
-        "TJ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TJ)))
-        }
-        "TL" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TL)))
-        }
-        "TM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TM)))
-        }
-        "TN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TN)))
-        }
-        "TO" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TO)))
-        }
-        "TR" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TR)))
-        }
-        "TT" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TT)))
-        }
-        "TV" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TV)))
-        }
-        "TW" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TW)))
-        }
-        "TZ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_TZ)))
-        }
-        "UA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_UA)))
-        }
-        "UG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_UG)))
-        }
-        "US" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_US)))
-        }
-        "UY" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_UY)))
-        }
-        "UZ" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_UZ)))
-        }
-        "VA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_VA)))
-        }
-        "VC" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_VC)))
-        }
-        "VE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_VE)))
-        }
-        "VG" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_VG)))
-        }
-        "VI" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_VI)))
-        }
-        "VN" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_VN)))
-        }
-        "VU" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_VU)))
-        }
-        "WF" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_WF)))
-        }
-        "WS" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_WS)))
-        }
-        "YE" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_YE)))
-        }
-        "YT" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_YT)))
-        }
-        "ZA" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ZA)))
-        }
-        "ZM" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ZM)))
-        }
-        "ZW" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ZW)))
-        }
-        "alt-af" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ALT_AF)))
-        }
-        "alt-an" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ALT_AN)))
-        }
-        "alt-as" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ALT_AS)))
-        }
-        "alt-eu" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ALT_EU)))
-        }
-        "alt-na" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ALT_NA)))
-        }
-        "alt-oc" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ALT_OC)))
-        }
-        "alt-sa" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ALT_SA)))
-        }
-        "alt-ww" => {
-            static USAGE: OnceLock<RegionData> = OnceLock::new();
-            Some(USAGE.get_or_init(|| convert(_ALT_WW)))
-        }
+        "AD" => Some(convert(_AD)),
+        "AE" => Some(convert(_AE)),
+        "AF" => Some(convert(_AF)),
+        "AG" => Some(convert(_AG)),
+        "AI" => Some(convert(_AI)),
+        "AL" => Some(convert(_AL)),
+        "AM" => Some(convert(_AM)),
+        "AO" => Some(convert(_AO)),
+        "AR" => Some(convert(_AR)),
+        "AS" => Some(convert(_AS)),
+        "AT" => Some(convert(_AT)),
+        "AU" => Some(convert(_AU)),
+        "AW" => Some(convert(_AW)),
+        "AX" => Some(convert(_AX)),
+        "AZ" => Some(convert(_AZ)),
+        "BA" => Some(convert(_BA)),
+        "BB" => Some(convert(_BB)),
+        "BD" => Some(convert(_BD)),
+        "BE" => Some(convert(_BE)),
+        "BF" => Some(convert(_BF)),
+        "BG" => Some(convert(_BG)),
+        "BH" => Some(convert(_BH)),
+        "BI" => Some(convert(_BI)),
+        "BJ" => Some(convert(_BJ)),
+        "BM" => Some(convert(_BM)),
+        "BN" => Some(convert(_BN)),
+        "BO" => Some(convert(_BO)),
+        "BR" => Some(convert(_BR)),
+        "BS" => Some(convert(_BS)),
+        "BT" => Some(convert(_BT)),
+        "BW" => Some(convert(_BW)),
+        "BY" => Some(convert(_BY)),
+        "BZ" => Some(convert(_BZ)),
+        "CA" => Some(convert(_CA)),
+        "CD" => Some(convert(_CD)),
+        "CF" => Some(convert(_CF)),
+        "CG" => Some(convert(_CG)),
+        "CH" => Some(convert(_CH)),
+        "CI" => Some(convert(_CI)),
+        "CK" => Some(convert(_CK)),
+        "CL" => Some(convert(_CL)),
+        "CM" => Some(convert(_CM)),
+        "CN" => Some(convert(_CN)),
+        "CO" => Some(convert(_CO)),
+        "CR" => Some(convert(_CR)),
+        "CU" => Some(convert(_CU)),
+        "CV" => Some(convert(_CV)),
+        "CX" => Some(convert(_CX)),
+        "CY" => Some(convert(_CY)),
+        "CZ" => Some(convert(_CZ)),
+        "DE" => Some(convert(_DE)),
+        "DJ" => Some(convert(_DJ)),
+        "DK" => Some(convert(_DK)),
+        "DM" => Some(convert(_DM)),
+        "DO" => Some(convert(_DO)),
+        "DZ" => Some(convert(_DZ)),
+        "EC" => Some(convert(_EC)),
+        "EE" => Some(convert(_EE)),
+        "EG" => Some(convert(_EG)),
+        "ER" => Some(convert(_ER)),
+        "ES" => Some(convert(_ES)),
+        "ET" => Some(convert(_ET)),
+        "FI" => Some(convert(_FI)),
+        "FJ" => Some(convert(_FJ)),
+        "FK" => Some(convert(_FK)),
+        "FM" => Some(convert(_FM)),
+        "FO" => Some(convert(_FO)),
+        "FR" => Some(convert(_FR)),
+        "GA" => Some(convert(_GA)),
+        "GB" => Some(convert(_GB)),
+        "GD" => Some(convert(_GD)),
+        "GE" => Some(convert(_GE)),
+        "GF" => Some(convert(_GF)),
+        "GG" => Some(convert(_GG)),
+        "GH" => Some(convert(_GH)),
+        "GI" => Some(convert(_GI)),
+        "GL" => Some(convert(_GL)),
+        "GM" => Some(convert(_GM)),
+        "GN" => Some(convert(_GN)),
+        "GP" => Some(convert(_GP)),
+        "GQ" => Some(convert(_GQ)),
+        "GR" => Some(convert(_GR)),
+        "GT" => Some(convert(_GT)),
+        "GU" => Some(convert(_GU)),
+        "GW" => Some(convert(_GW)),
+        "GY" => Some(convert(_GY)),
+        "HK" => Some(convert(_HK)),
+        "HN" => Some(convert(_HN)),
+        "HR" => Some(convert(_HR)),
+        "HT" => Some(convert(_HT)),
+        "HU" => Some(convert(_HU)),
+        "ID" => Some(convert(_ID)),
+        "IE" => Some(convert(_IE)),
+        "IL" => Some(convert(_IL)),
+        "IM" => Some(convert(_IM)),
+        "IN" => Some(convert(_IN)),
+        "IQ" => Some(convert(_IQ)),
+        "IR" => Some(convert(_IR)),
+        "IS" => Some(convert(_IS)),
+        "IT" => Some(convert(_IT)),
+        "JE" => Some(convert(_JE)),
+        "JM" => Some(convert(_JM)),
+        "JO" => Some(convert(_JO)),
+        "JP" => Some(convert(_JP)),
+        "KE" => Some(convert(_KE)),
+        "KG" => Some(convert(_KG)),
+        "KH" => Some(convert(_KH)),
+        "KI" => Some(convert(_KI)),
+        "KM" => Some(convert(_KM)),
+        "KN" => Some(convert(_KN)),
+        "KP" => Some(convert(_KP)),
+        "KR" => Some(convert(_KR)),
+        "KW" => Some(convert(_KW)),
+        "KY" => Some(convert(_KY)),
+        "KZ" => Some(convert(_KZ)),
+        "LA" => Some(convert(_LA)),
+        "LB" => Some(convert(_LB)),
+        "LC" => Some(convert(_LC)),
+        "LI" => Some(convert(_LI)),
+        "LK" => Some(convert(_LK)),
+        "LR" => Some(convert(_LR)),
+        "LS" => Some(convert(_LS)),
+        "LT" => Some(convert(_LT)),
+        "LU" => Some(convert(_LU)),
+        "LV" => Some(convert(_LV)),
+        "LY" => Some(convert(_LY)),
+        "MA" => Some(convert(_MA)),
+        "MC" => Some(convert(_MC)),
+        "MD" => Some(convert(_MD)),
+        "ME" => Some(convert(_ME)),
+        "MG" => Some(convert(_MG)),
+        "MH" => Some(convert(_MH)),
+        "MK" => Some(convert(_MK)),
+        "ML" => Some(convert(_ML)),
+        "MM" => Some(convert(_MM)),
+        "MN" => Some(convert(_MN)),
+        "MO" => Some(convert(_MO)),
+        "MP" => Some(convert(_MP)),
+        "MQ" => Some(convert(_MQ)),
+        "MR" => Some(convert(_MR)),
+        "MS" => Some(convert(_MS)),
+        "MT" => Some(convert(_MT)),
+        "MU" => Some(convert(_MU)),
+        "MV" => Some(convert(_MV)),
+        "MW" => Some(convert(_MW)),
+        "MX" => Some(convert(_MX)),
+        "MY" => Some(convert(_MY)),
+        "MZ" => Some(convert(_MZ)),
+        "NA" => Some(convert(_NA)),
+        "NC" => Some(convert(_NC)),
+        "NE" => Some(convert(_NE)),
+        "NF" => Some(convert(_NF)),
+        "NG" => Some(convert(_NG)),
+        "NI" => Some(convert(_NI)),
+        "NL" => Some(convert(_NL)),
+        "NO" => Some(convert(_NO)),
+        "NP" => Some(convert(_NP)),
+        "NR" => Some(convert(_NR)),
+        "NU" => Some(convert(_NU)),
+        "NZ" => Some(convert(_NZ)),
+        "OM" => Some(convert(_OM)),
+        "PA" => Some(convert(_PA)),
+        "PE" => Some(convert(_PE)),
+        "PF" => Some(convert(_PF)),
+        "PG" => Some(convert(_PG)),
+        "PH" => Some(convert(_PH)),
+        "PK" => Some(convert(_PK)),
+        "PL" => Some(convert(_PL)),
+        "PM" => Some(convert(_PM)),
+        "PN" => Some(convert(_PN)),
+        "PR" => Some(convert(_PR)),
+        "PS" => Some(convert(_PS)),
+        "PT" => Some(convert(_PT)),
+        "PW" => Some(convert(_PW)),
+        "PY" => Some(convert(_PY)),
+        "QA" => Some(convert(_QA)),
+        "RE" => Some(convert(_RE)),
+        "RO" => Some(convert(_RO)),
+        "RS" => Some(convert(_RS)),
+        "RU" => Some(convert(_RU)),
+        "RW" => Some(convert(_RW)),
+        "SA" => Some(convert(_SA)),
+        "SB" => Some(convert(_SB)),
+        "SC" => Some(convert(_SC)),
+        "SD" => Some(convert(_SD)),
+        "SE" => Some(convert(_SE)),
+        "SG" => Some(convert(_SG)),
+        "SH" => Some(convert(_SH)),
+        "SI" => Some(convert(_SI)),
+        "SK" => Some(convert(_SK)),
+        "SL" => Some(convert(_SL)),
+        "SM" => Some(convert(_SM)),
+        "SN" => Some(convert(_SN)),
+        "SO" => Some(convert(_SO)),
+        "SR" => Some(convert(_SR)),
+        "ST" => Some(convert(_ST)),
+        "SV" => Some(convert(_SV)),
+        "SY" => Some(convert(_SY)),
+        "SZ" => Some(convert(_SZ)),
+        "TC" => Some(convert(_TC)),
+        "TD" => Some(convert(_TD)),
+        "TG" => Some(convert(_TG)),
+        "TH" => Some(convert(_TH)),
+        "TJ" => Some(convert(_TJ)),
+        "TL" => Some(convert(_TL)),
+        "TM" => Some(convert(_TM)),
+        "TN" => Some(convert(_TN)),
+        "TO" => Some(convert(_TO)),
+        "TR" => Some(convert(_TR)),
+        "TT" => Some(convert(_TT)),
+        "TV" => Some(convert(_TV)),
+        "TW" => Some(convert(_TW)),
+        "TZ" => Some(convert(_TZ)),
+        "UA" => Some(convert(_UA)),
+        "UG" => Some(convert(_UG)),
+        "US" => Some(convert(_US)),
+        "UY" => Some(convert(_UY)),
+        "UZ" => Some(convert(_UZ)),
+        "VA" => Some(convert(_VA)),
+        "VC" => Some(convert(_VC)),
+        "VE" => Some(convert(_VE)),
+        "VG" => Some(convert(_VG)),
+        "VI" => Some(convert(_VI)),
+        "VN" => Some(convert(_VN)),
+        "VU" => Some(convert(_VU)),
+        "WF" => Some(convert(_WF)),
+        "WS" => Some(convert(_WS)),
+        "YE" => Some(convert(_YE)),
+        "YT" => Some(convert(_YT)),
+        "ZA" => Some(convert(_ZA)),
+        "ZM" => Some(convert(_ZM)),
+        "ZW" => Some(convert(_ZW)),
+        "alt-af" => Some(convert(_ALT_AF)),
+        "alt-an" => Some(convert(_ALT_AN)),
+        "alt-as" => Some(convert(_ALT_AS)),
+        "alt-eu" => Some(convert(_ALT_EU)),
+        "alt-na" => Some(convert(_ALT_NA)),
+        "alt-oc" => Some(convert(_ALT_OC)),
+        "alt-sa" => Some(convert(_ALT_SA)),
+        "alt-ww" => Some(convert(_ALT_WW)),
         _ => None,
     }
 }
