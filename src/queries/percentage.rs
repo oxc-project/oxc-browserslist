@@ -8,7 +8,7 @@ pub(super) fn percentage(comparator: Comparator, popularity: f32) -> QueryResult
             stat.version_list
                 .iter()
                 .filter(|version| {
-                    let usage = version.global_usage;
+                    let usage = version.global_usage();
                     match comparator {
                         Comparator::Greater => usage > popularity,
                         Comparator::GreaterOrEqual => usage >= popularity,
@@ -16,7 +16,7 @@ pub(super) fn percentage(comparator: Comparator, popularity: f32) -> QueryResult
                         Comparator::LessOrEqual => usage <= popularity,
                     }
                 })
-                .map(|version| Distrib::new(name, version.version))
+                .map(|version| Distrib::new(name, version.version()))
         })
         .collect();
     Ok(distribs)

@@ -20,8 +20,8 @@ pub(super) fn years(count: f64, opts: &Opts) -> QueryResult {
         .flat_map(|(name, stat)| {
             stat.version_list
                 .iter()
-                .filter(|version| matches!(version.release_date, Some(date) if date >= time))
-                .map(|version| Distrib::new(name, version.version))
+                .filter(|version| matches!(version.release_date(), Some(date) if date >= time))
+                .map(|version| Distrib::new(name, version.version()))
         })
         .collect();
     Ok(distribs)

@@ -16,11 +16,25 @@ pub struct BrowserStat {
     pub version_list: Vec<VersionDetail>,
 }
 
-#[derive(Clone, Debug)]
-pub struct VersionDetail {
-    pub version: &'static str,
-    pub global_usage: f32,
-    pub release_date: Option<i64>,
+#[derive(Debug, Clone, Copy)]
+pub struct VersionDetail(
+    /* version */ pub &'static str,
+    /* global_usage */ pub f32,
+    /* release_date */ pub Option<i64>,
+);
+
+impl VersionDetail {
+    pub fn version(&self) -> &'static str {
+        self.0
+    }
+
+    pub fn global_usage(&self) -> f32 {
+        self.1
+    }
+
+    pub fn release_date(&self) -> Option<i64> {
+        self.2
+    }
 }
 
 pub type CaniuseData = FxHashMap<BrowserName, BrowserStat>;
@@ -43,9 +57,9 @@ pub fn browser_version_aliases()
                     .iter()
                     .filter_map(|version| {
                         version
-                            .version
+                            .version()
                             .split_once('-')
-                            .map(|(bottom, top)| (bottom, top, version.version))
+                            .map(|(bottom, top)| (bottom, top, version.version()))
                     })
                     .fold(
                         FxHashMap::<&str, &str>::default(),
@@ -77,7 +91,7 @@ fn android_to_desktop() -> &'static BrowserStat {
             .version_list
             .into_iter()
             .filter(|version| {
-                let version = version.version;
+                let version = version.version();
                 version.starts_with("2.")
                     || version.starts_with("3.")
                     || version.starts_with("4.")
@@ -93,7 +107,7 @@ fn android_to_desktop() -> &'static BrowserStat {
                             .version_list
                             .iter()
                             .position(|version| {
-                                version.version.parse::<usize>().unwrap()
+                                version.version().parse::<usize>().unwrap()
                                     == ANDROID_EVERGREEN_FIRST as usize
                             })
                             .unwrap(),
@@ -171,14 +185,14 @@ fn get_mobile_by_desktop_name(name: &str) -> &'static str {
 }
 
 pub fn normalize_version<'a>(stat: &'static BrowserStat, version: &'a str) -> Option<&'a str> {
-    if stat.version_list.iter().any(|v| v.version == version) {
+    if stat.version_list.iter().any(|v| v.version() == version) {
         Some(version)
     } else if let Some(version) =
         browser_version_aliases().get(&stat.name).and_then(|aliases| aliases.get(version))
     {
         Some(version)
     } else if stat.version_list.len() == 1 {
-        stat.version_list.first().map(|s| s.version)
+        stat.version_list.first().map(|s| s.version())
     } else {
         None
     }
