@@ -61,7 +61,6 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     let data = data.iter().map(|(_, value)| value).collect::<Vec<_>>();
 
     let output = quote! {
-        use std::sync::OnceLock;
         use serde_json::from_str;
         use crate::data::BrowserName;
         use crate::data::browser_name::decode_browser_name;
@@ -76,12 +75,9 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
                 .collect::<Vec<_>>()
         }
 
-        pub fn get_usage_by_region(region: &str) -> Option<&'static RegionData> {
+        pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
             match region {
-                #( #keys => {
-                    static USAGE: OnceLock<RegionData> = OnceLock::new();
-                    Some(USAGE.get_or_init(|| convert(#idents)))
-                }, )*
+                #( #keys => Some(convert(#idents)), )*
                 _ => None,
             }
         }
