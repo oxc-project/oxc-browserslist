@@ -2,7 +2,6 @@ use super::{Distrib, QueryResult};
 use crate::{
     Opts,
     data::caniuse::{
-        VersionDetail,
         features::{FeatureSet, get_feature_stat},
         get_browser_stat, to_desktop_name,
     },
@@ -29,22 +28,23 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         .iter()
                         .filter(|version| {
                             println!("{name} {versions:?}");
-                            version.release_date.is_some()
+                            version.release_date().is_some()
                         })
                         .filter(|latest_version| {
-                            versions.0.contains(latest_version.version)
-                                || versions.1.contains(latest_version.version)
+                            versions.0.contains(latest_version.version())
+                                || versions.1.contains(latest_version.version())
                         })
                         .next_back()
                         .is_some_and(|latest_version| {
-                            is_supported(versions, latest_version.version, include_partial)
+                            is_supported(versions, latest_version.version(), include_partial)
                         });
                 println!("{name} {check_desktop}");
 
                 browser_stat
                     .version_list
                     .iter()
-                    .filter_map(move |VersionDetail { version, .. }| {
+                    .filter_map(move |version_detail| {
+                        let version = version_detail.version();
                         if is_supported(versions, version, include_partial) {
                             return Some(version);
                         }
@@ -59,7 +59,7 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         }
                         None
                     })
-                    .map(move |version| Distrib::new(name, *version))
+                    .map(move |version| Distrib::new(name, version))
             })
             .collect();
         Ok(distribs)

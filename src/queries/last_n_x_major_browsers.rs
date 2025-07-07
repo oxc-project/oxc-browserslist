@@ -8,8 +8,8 @@ pub(super) fn last_n_x_major_browsers(count: usize, name: &str, opts: &Opts) -> 
     let mut vec = stat
         .version_list
         .iter()
-        .filter(|version| version.release_date.is_some())
-        .map(|version| version.version)
+        .filter(|version| version.release_date().is_some())
+        .map(|version| version.version())
         .rev()
         .map(|version| version.split('.').next().unwrap())
         .collect::<Vec<_>>();
@@ -19,8 +19,8 @@ pub(super) fn last_n_x_major_browsers(count: usize, name: &str, opts: &Opts) -> 
     let distribs = stat
         .version_list
         .iter()
-        .filter(|version| version.release_date.is_some())
-        .map(|version| version.version)
+        .filter(|version| version.release_date().is_some())
+        .map(|version| version.version())
         .filter(move |version| version.split('.').next().unwrap().parse().unwrap_or(0) >= minimum)
         .rev()
         .map(move |version| Distrib::new(name, version))

@@ -215,8 +215,8 @@ pub fn count_filter_versions(name: &str, mobile_to_desktop: bool, count: usize) 
                     .1
                     .version_list
                     .iter()
-                    .filter(|version| version.release_date.is_some())
-                    .map(|version| version.version)
+                    .filter(|version| version.release_date().is_some())
+                    .map(|version| version.version())
                     .next_back()
                     .unwrap()
                     .parse::<f32>()
@@ -231,7 +231,7 @@ pub fn count_filter_versions(name: &str, mobile_to_desktop: bool, count: usize) 
                 .version_list
                 .last()
                 .unwrap();
-            (latest.version.parse::<Version>().unwrap().major() - caniuse::OP_MOB_BLINK_FIRST + 1)
+            (latest.version().parse::<Version>().unwrap().major() - caniuse::OP_MOB_BLINK_FIRST + 1)
                 as usize
         }
         _ => return count,

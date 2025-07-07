@@ -7,8 +7,8 @@ pub(super) fn unreleased_x_browsers(name: &str, opts: &Opts) -> QueryResult {
     let distribs = stat
         .version_list
         .iter()
-        .filter(|version| version.release_date.is_none())
-        .map(|version| Distrib::new(name, version.version))
+        .filter(|version| version.release_date().is_none())
+        .map(|version| Distrib::new(name, version.version()))
         .collect();
     Ok(distribs)
 }

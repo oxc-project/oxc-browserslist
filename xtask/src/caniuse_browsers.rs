@@ -14,11 +14,7 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
                 quote! { None }
             };
             quote! {
-                VersionDetail {
-                    version: #ver,
-                    global_usage: #global_usage,
-                    release_date: #release_date,
-                }
+                VersionDetail(#ver, #global_usage, #release_date)
             }
         });
         quote! {

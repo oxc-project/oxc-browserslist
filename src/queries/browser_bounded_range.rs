@@ -15,8 +15,8 @@ pub(super) fn browser_bounded_range(name: &str, from: &str, to: &str, opts: &Opt
     let distribs = stat
         .version_list
         .iter()
-        .filter(|version| version.release_date.is_some())
-        .map(|version| version.version)
+        .filter(|version| version.release_date().is_some())
+        .map(|version| version.version())
         .filter(|version| {
             let version = version.parse().unwrap_or_default();
             from <= version && version <= to
