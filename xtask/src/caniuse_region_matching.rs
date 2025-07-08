@@ -1,15 +1,22 @@
-use std::{fs, str::FromStr};
+use std::fs;
 
 use anyhow::Result;
+use bincode::encode_to_vec;
 use indexmap::IndexMap;
 use quote::quote;
 use serde::Deserialize;
 
-use super::{Caniuse, encode_browser_name, generate_file, root};
+use super::{Caniuse, encode_browser_name, generate_file, root, save_bin};
 
 #[derive(Deserialize)]
 struct RegionData {
     data: IndexMap<String, IndexMap<String, Option<f32>>>,
+}
+
+struct RegionDatum {
+    browser: u8,
+    version: String,
+    usage: f32,
 }
 
 pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
@@ -34,18 +41,17 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
                         } else {
                             version
                         };
-                        usage.map(|usage| (encode_browser_name(&name), version, usage))
+                        usage.map(|usage| RegionDatum {
+                            browser: encode_browser_name(&name),
+                            version,
+                            usage,
+                        })
                     })
                 })
                 .collect::<Vec<_>>();
-            usage.sort_unstable_by(|(_, _, a), (_, _, b)| b.partial_cmp(a).unwrap());
+            usage.sort_unstable_by(|a, b| b.usage.partial_cmp(&a.usage).unwrap());
             let key = file.path().file_stem().unwrap().to_str().map(|s| s.to_owned()).unwrap();
-            let value = {
-                let s = serde_json::to_string(&usage).unwrap();
-                let wrapped = format!("r#\"{}\"#", s);
-                proc_macro2::Literal::from_str(&wrapped).unwrap()
-            };
-            (key, value)
+            (key, usage)
         })
         .collect::<Vec<_>>();
 
@@ -53,39 +59,65 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
 
     let keys = data.iter().map(|(key, _)| key).collect::<Vec<_>>();
 
-    let idents = keys
+    let browsers = data
         .iter()
-        .map(|k| quote::format_ident!("_{}", k.replace('-', "_").to_ascii_uppercase()))
+        .map(|(_region, datums)| datums.iter().map(|x| x.browser).collect::<Vec<_>>())
+        .collect::<Vec<_>>();
+    let browsers_ranges = create_ranges(&browsers);
+    let browsers_bytes = browsers.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
+    save_bin("caniuse_region_browsers.bin", &browsers_bytes);
+
+    let versions = data
+        .iter()
+        .map(|(_, datums)| {
+            let versions = datums.iter().map(|x| x.version.clone()).collect::<Vec<_>>();
+            encode_to_vec(versions, bincode::config::standard()).unwrap()
+        })
+        .collect::<Vec<_>>();
+    let version_ranges = create_ranges(&versions);
+    let version_bytes = versions.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
+    save_bin("caniuse_region_versions.bin", &version_bytes);
+
+    let percentages = data
+        .iter()
+        .map(|(_region, datums)| {
+            let percentages = datums.iter().map(|x| x.usage).collect::<Vec<_>>();
+            encode_to_vec(percentages, bincode::config::standard()).unwrap()
+        })
+        .collect::<Vec<_>>();
+    let percent_ranges = create_ranges(&percentages);
+    let percent_bytes = percentages.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
+    save_bin("caniuse_region_percentages.bin", &percent_bytes);
+
+    let ranges = browsers_ranges
+        .iter()
+        .zip(version_ranges.iter())
+        .zip(percent_ranges.iter())
+        .map(|(((a, b), (c, d)), (e, f))| quote! { (#a, #b, #c, #d, #e, #f) })
         .collect::<Vec<_>>();
 
-    let data = data.iter().map(|(_, value)| value).collect::<Vec<_>>();
-
     let output = quote! {
-        use serde_json::from_str;
-        use crate::data::BrowserName;
-        use crate::data::browser_name::decode_browser_name;
-
-        type RegionData = Vec<(BrowserName, &'static str, f32)>;
-
-        fn convert(s: &'static str) -> RegionData {
-            from_str::<Vec<(u8, &'static str, f32)>>(s)
-                .unwrap()
-                .into_iter()
-                .map(|(browser, version, usage)| (decode_browser_name(browser), version, usage))
-                .collect::<Vec<_>>()
-        }
+        use crate::data::caniuse::region::RegionData;
 
         pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
-            let data = match region {
-                #( #keys => #idents, )*
+            let ranges = match region {
+                #( #keys => #ranges, )*
                 _ => return None,
             };
-            Some(convert(data))
+            Some(RegionData::new(ranges.0, ranges.1, ranges.2, ranges.3, ranges.4, ranges.5))
         }
-
-        #(const #idents: &str = #data;)*
     };
     generate_file("caniuse_region_matching.rs", output);
 
     Ok(())
+}
+
+fn create_ranges(v: &Vec<Vec<u8>>) -> Vec<(u32, u32)> {
+    let mut offset = 0;
+    let mut ranges = vec![];
+    for values in v {
+        ranges.push((offset as u32, (offset + values.len()) as u32));
+        offset += values.len();
+    }
+    ranges
 }
