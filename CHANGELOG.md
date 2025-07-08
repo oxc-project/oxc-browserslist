@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.9](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.8...oxc-browserslist-v2.0.9) - 2025-07-08
+
+### Other
+
+- Update browserslist ([#194](https://github.com/oxc-project/oxc-browserslist/pull/194))
+- disallow println
+- shorten generated code in caniuse_region_matching.rs
+- remove `OnceLock` from `src/generated/caniuse_region_matching.rs` ([#193](https://github.com/oxc-project/oxc-browserslist/pull/193))
+- make `VersionDetail` smaller; make the crate compile faster ([#191](https://github.com/oxc-project/oxc-browserslist/pull/191))
+
 ## [2.0.8](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.7...oxc-browserslist-v2.0.8) - 2025-07-07
 
 ### Other
