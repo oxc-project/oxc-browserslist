@@ -1,5 +1,3 @@
-use rustc_hash::FxHashMap;
-
 use super::BrowserName;
 
 pub use crate::generated::caniuse_feature_matching::get_feature_stat;
@@ -20,4 +18,12 @@ impl FeatureSet {
     }
 }
 
-pub type Feature = FxHashMap<BrowserName, FeatureSet>;
+pub struct Feature {
+    pub data: Vec<(BrowserName, FeatureSet)>,
+}
+
+impl Feature {
+    pub fn new(data: Vec<(BrowserName, FeatureSet)>) -> Self {
+        Self { data }
+    }
+}

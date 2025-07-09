@@ -11,6 +11,7 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
 
     if let Some(feature) = get_feature_stat(name) {
         let distribs = feature
+            .data
             .iter()
             .filter_map(|(name, versions)| {
                 get_browser_stat(name, opts.mobile_to_desktop)
@@ -42,7 +43,11 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         }
                         if check_desktop {
                             if let Some(desktop_name) = desktop_name {
-                                if let Some(versions) = feature.get(desktop_name) {
+                                if let Some(versions) =
+                                    feature.data.iter().find_map(|(name, versions)| {
+                                        (*name == desktop_name).then_some(versions)
+                                    })
+                                {
                                     if versions.supports(version, include_partial) {
                                         return Some(version);
                                     }

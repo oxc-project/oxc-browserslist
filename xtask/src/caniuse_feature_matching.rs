@@ -1,7 +1,6 @@
 use std::str::FromStr;
 
 use anyhow::Result;
-use indexmap::IndexMap;
 use quote::quote;
 
 use super::{Caniuse, encode_browser_name, generate_file};
@@ -32,12 +31,12 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
                         .map(|x| x.0.clone())
                         .collect::<Vec<_>>();
                     a.sort_unstable();
-                    if y.is_empty() && a.is_empty() { None } else { Some((name, (y, a))) }
+                    if y.is_empty() && a.is_empty() { None } else { Some((name, y, a)) }
                 })
-                .collect::<IndexMap<_, _>>()
+                .collect::<Vec<_>>()
         })
-        .map(|index_map| {
-            let s = serde_json::to_string(&index_map).unwrap();
+        .map(|list| {
+            let s = serde_json::to_string(&list).unwrap();
             let wrapped = format!("r#\"{}\"#", s);
             proc_macro2::Literal::from_str(&wrapped).unwrap()
         })
@@ -51,17 +50,16 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
 
     let output = quote! {
         use std::sync::OnceLock;
-        use rustc_hash::FxHashMap;
         use serde_json::from_str;
         use crate::data::caniuse::features::{Feature, FeatureSet};
         use crate::data::browser_name::decode_browser_name;
 
         fn convert(s: &'static str) -> Feature {
-            from_str::<FxHashMap<u8, (Vec<&'static str>, Vec<&'static str>)>>(s)
+            Feature::new(from_str::<Vec<(u8, Vec<&'static str>, Vec<&'static str>)>>(s)
                 .unwrap()
                 .into_iter()
-                .map(|(browser, versions)| (decode_browser_name(browser), FeatureSet::new(versions.0, versions.1)))
-                .collect()
+                .map(|(browser, yes, partial)| (decode_browser_name(browser), FeatureSet::new(yes, partial)))
+                .collect())
         }
 
         pub fn get_feature_stat(name: &str) -> Option<&'static Feature> {
