@@ -1,11 +1,23 @@
-use rustc_hash::{FxHashMap, FxHashSet};
+use rustc_hash::FxHashMap;
 
 use super::BrowserName;
 
-pub type FeatureSet =
-    (/* yes */ FxHashSet<&'static str>, /* partial */ FxHashSet<&'static str>);
-pub type Feature = FxHashMap<BrowserName, FeatureSet>;
+pub use crate::generated::caniuse_feature_matching::get_feature_stat;
 
-pub fn get_feature_stat(name: &str) -> Option<&'static Feature> {
-    crate::generated::caniuse_feature_matching::get_feature_stat(name)
+pub struct FeatureSet {
+    yes: Vec</* version */ &'static str>,
+    partial: Vec</* version */ &'static str>,
 }
+
+impl FeatureSet {
+    pub fn new(yes: Vec<&'static str>, partial: Vec<&'static str>) -> Self {
+        Self { yes, partial }
+    }
+
+    pub fn supports(&self, version: &str, include_partial: bool) -> bool {
+        self.yes.binary_search(&version).is_ok()
+            || (include_partial && self.partial.binary_search(&version).is_ok())
+    }
+}
+
+pub type Feature = FxHashMap<BrowserName, FeatureSet>;
