@@ -1,10 +1,7 @@
 use super::{Distrib, QueryResult};
 use crate::{
     Opts,
-    data::caniuse::{
-        features::{FeatureSet, get_feature_stat},
-        get_browser_stat, to_desktop_name,
-    },
+    data::caniuse::{features::get_feature_stat, get_browser_stat, to_desktop_name},
     error::Error,
     parser::SupportKind,
 };
@@ -27,12 +24,12 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         .iter()
                         .filter(|version| version.release_date().is_some())
                         .filter(|latest_version| {
-                            versions.0.contains(latest_version.version())
-                                || versions.1.contains(latest_version.version())
+                            versions
+                                .supports(latest_version.version(), /* include_partial */ true)
                         })
                         .next_back()
                         .is_some_and(|latest_version| {
-                            is_supported(versions, latest_version.version(), include_partial)
+                            versions.supports(latest_version.version(), include_partial)
                         });
 
                 browser_stat
@@ -40,13 +37,13 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                     .iter()
                     .filter_map(move |version_detail| {
                         let version = version_detail.version();
-                        if is_supported(versions, version, include_partial) {
+                        if versions.supports(version, include_partial) {
                             return Some(version);
                         }
                         if check_desktop {
                             if let Some(desktop_name) = desktop_name {
                                 if let Some(versions) = feature.get(desktop_name) {
-                                    if is_supported(versions, version, include_partial) {
+                                    if versions.supports(version, include_partial) {
                                         return Some(version);
                                     }
                                 }
@@ -61,10 +58,6 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
     } else {
         Err(Error::UnknownBrowserFeature(name.to_string()))
     }
-}
-
-fn is_supported(set: &FeatureSet, version: &str, include_partial: bool) -> bool {
-    set.0.contains(&version) || (include_partial && set.1.contains(&version))
 }
 
 #[cfg(test)]
