@@ -79,3 +79,10 @@ serde-wasm-bindgen = { version = "0.6", optional = true }
 default = []
 wasm_bindgen = ["js-sys", "serde-wasm-bindgen", "time/wasm-bindgen", "wasm-bindgen"]
 codspeed = ["criterion2/codspeed"]
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = "symbols" # Set to `false` for debug information
+debug = false # Set to `true` for debug information
