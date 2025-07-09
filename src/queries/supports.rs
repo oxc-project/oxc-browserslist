@@ -9,9 +9,10 @@ use crate::{
 pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> QueryResult {
     let include_partial = matches!(kind, Some(SupportKind::Partially) | None);
 
-    if let Some(feature) = get_feature_stat(name) {
+    if let Some(stat) = get_feature_stat(name) {
+        let feature = stat.create_data();
+        let feature = feature.as_slice();
         let distribs = feature
-            .data
             .iter()
             .filter_map(|(name, versions)| {
                 get_browser_stat(name, opts.mobile_to_desktop)
@@ -44,7 +45,7 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         if check_desktop {
                             if let Some(desktop_name) = desktop_name {
                                 if let Some(versions) =
-                                    feature.data.iter().find_map(|(name, versions)| {
+                                    feature.iter().find_map(|(name, versions)| {
                                         (*name == desktop_name).then_some(versions)
                                     })
                                 {
@@ -56,7 +57,7 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         }
                         None
                     })
-                    .map(move |version| Distrib::new(name, version))
+                    .map(|version| Distrib::new(name, version))
             })
             .collect();
         Ok(distribs)

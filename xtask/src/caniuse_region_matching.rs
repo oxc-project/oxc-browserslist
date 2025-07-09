@@ -1,12 +1,12 @@
 use std::fs;
 
 use anyhow::Result;
-use bincode::encode_to_vec;
+use bincode::{config::Configuration, encode_to_vec};
 use indexmap::IndexMap;
 use quote::quote;
 use serde::Deserialize;
 
-use super::{Caniuse, encode_browser_name, generate_file, root, save_bin};
+use super::{Caniuse, create_ranges, encode_browser_name, generate_file, root, save_bin};
 
 #[derive(Deserialize)]
 struct RegionData {
@@ -18,6 +18,8 @@ struct RegionDatum {
     version: String,
     usage: f32,
 }
+
+const STANDARD: Configuration = bincode::config::standard();
 
 pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     let agents = &data.agents;
@@ -71,7 +73,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .iter()
         .map(|(_, datums)| {
             let versions = datums.iter().map(|x| x.version.clone()).collect::<Vec<_>>();
-            encode_to_vec(versions, bincode::config::standard()).unwrap()
+            encode_to_vec(versions, STANDARD).unwrap()
         })
         .collect::<Vec<_>>();
     let version_ranges = create_ranges(&versions);
@@ -82,7 +84,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .iter()
         .map(|(_region, datums)| {
             let percentages = datums.iter().map(|x| x.usage).collect::<Vec<_>>();
-            encode_to_vec(percentages, bincode::config::standard()).unwrap()
+            encode_to_vec(percentages, STANDARD).unwrap()
         })
         .collect::<Vec<_>>();
     let percent_ranges = create_ranges(&percentages);
@@ -93,8 +95,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .iter()
         .zip(version_ranges.iter())
         .zip(percent_ranges.iter())
-        .map(|(((a, b), (c, d)), (e, f))| quote! { (#a, #b, #c, #d, #e, #f) })
-        .collect::<Vec<_>>();
+        .map(|(((a, b), (c, d)), (e, f))| quote! { (#a, #b, #c, #d, #e, #f) });
 
     let output = quote! {
         use crate::data::caniuse::region::RegionData;
@@ -110,14 +111,4 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     generate_file("caniuse_region_matching.rs", output);
 
     Ok(())
-}
-
-fn create_ranges(v: &Vec<Vec<u8>>) -> Vec<(u32, u32)> {
-    let mut offset = 0;
-    let mut ranges = vec![];
-    for values in v {
-        ranges.push((offset as u32, (offset + values.len()) as u32));
-        offset += values.len();
-    }
-    ranges
 }

@@ -1,6 +1,9 @@
 use super::BrowserName;
 
+use crate::data::browser_name::decode_browser_name;
 pub use crate::generated::caniuse_feature_matching::get_feature_stat;
+
+const FEATURES: &[u8; 927319] = include_bytes!("../../generated/caniuse_feature_matching.bin");
 
 pub struct FeatureSet {
     yes: Vec</* version */ &'static str>,
@@ -19,11 +22,26 @@ impl FeatureSet {
 }
 
 pub struct Feature {
-    pub data: Vec<(BrowserName, FeatureSet)>,
+    start: u32,
+    end: u32,
 }
 
 impl Feature {
-    pub fn new(data: Vec<(BrowserName, FeatureSet)>) -> Self {
-        Self { data }
+    pub fn new(start: u32, end: u32) -> Self {
+        Self { start, end }
+    }
+
+    #[expect(clippy::type_complexity)]
+    pub fn create_data(&self) -> Vec<(BrowserName, FeatureSet)> {
+        let (features, _): (Vec<(u8, Vec<&'static str>, Vec<&'static str>)>, _) =
+            bincode::borrow_decode_from_slice(
+                &FEATURES[self.start as usize..self.end as usize],
+                bincode::config::standard(),
+            )
+            .unwrap();
+        features
+            .into_iter()
+            .map(|(b, yes, partial)| (decode_browser_name(b), FeatureSet::new(yes, partial)))
+            .collect::<Vec<_>>()
     }
 }

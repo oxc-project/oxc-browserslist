@@ -1,9 +1,8 @@
-use std::str::FromStr;
-
 use anyhow::Result;
+use bincode::encode_to_vec;
 use quote::quote;
 
-use super::{Caniuse, encode_browser_name, generate_file};
+use super::{Caniuse, create_ranges, encode_browser_name, generate_file, save_bin};
 
 pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     let features = data
@@ -35,44 +34,29 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
                 })
                 .collect::<Vec<_>>()
         })
-        .map(|list| {
-            let s = serde_json::to_string(&list).unwrap();
-            let wrapped = format!("r#\"{}\"#", s);
-            proc_macro2::Literal::from_str(&wrapped).unwrap()
-        })
         .collect::<Vec<_>>();
 
     let keys = data.data.keys().collect::<Vec<_>>();
-    let idents = keys
+
+    let data = features
         .iter()
-        .map(|k| quote::format_ident!("_{}", k.replace('-', "_").to_ascii_uppercase()))
+        .map(|v| encode_to_vec(v, bincode::config::standard()).unwrap())
         .collect::<Vec<_>>();
+    let data_bytes = data.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
+    save_bin("caniuse_feature_matching.bin", &data_bytes);
+    let data_ranges = create_ranges(&data);
+    let ranges = data_ranges.iter().map(|(a, b)| quote! {(#a, #b)});
 
     let output = quote! {
-        use std::sync::OnceLock;
-        use serde_json::from_str;
-        use crate::data::caniuse::features::{Feature, FeatureSet};
-        use crate::data::browser_name::decode_browser_name;
+        use crate::data::caniuse::features::Feature;
 
-        fn convert(s: &'static str) -> Feature {
-            Feature::new(from_str::<Vec<(u8, Vec<&'static str>, Vec<&'static str>)>>(s)
-                .unwrap()
-                .into_iter()
-                .map(|(browser, yes, partial)| (decode_browser_name(browser), FeatureSet::new(yes, partial)))
-                .collect())
+        pub fn get_feature_stat(name: &str) -> Option<Feature> {
+            let ranges = match name {
+                #( #keys => #ranges, )*
+                _ => return None,
+            };
+            Some(Feature::new(ranges.0, ranges.1))
         }
-
-        pub fn get_feature_stat(name: &str) -> Option<&'static Feature> {
-            match name {
-                #( #keys => {
-                    static STAT: OnceLock<Feature> = OnceLock::new();
-                    Some(STAT.get_or_init(|| convert(#idents)))
-                }, )*
-                _ => None,
-            }
-        }
-
-        #(const #idents: &str = #features;)*
     };
 
     generate_file("caniuse_feature_matching.rs", output);

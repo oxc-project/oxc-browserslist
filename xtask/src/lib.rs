@@ -27,6 +27,16 @@ fn generate_file(file: &str, token_stream: proc_macro2::TokenStream) {
     fs::write(root().join("src/generated").join(file), code).unwrap();
 }
 
+fn create_ranges(v: &Vec<Vec<u8>>) -> Vec<(u32, u32)> {
+    let mut offset = 0;
+    let mut ranges = vec![];
+    for values in v {
+        ranges.push((offset as u32, (offset + values.len()) as u32));
+        offset += values.len();
+    }
+    ranges
+}
+
 pub fn parse_caniuse_global() -> Result<Caniuse> {
     let path = root().join("node_modules/caniuse-db/fulldata-json/data-2.0.json");
     let json = fs::read_to_string(path)?;
