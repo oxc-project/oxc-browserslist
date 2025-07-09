@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.10](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.9...oxc-browserslist-v2.0.10) - 2025-07-09
+
+### Other
+
+- remove an extra `mod`
+- compact `Feature` data ([#199](https://github.com/oxc-project/oxc-browserslist/pull/199))
+- change `Feature` from `FxHashMap` to `Vec` ([#198](https://github.com/oxc-project/oxc-browserslist/pull/198))
+- change `Feature` and `FeatureSet` data storage from set to vec ([#197](https://github.com/oxc-project/oxc-browserslist/pull/197))
+- compact region data ([#196](https://github.com/oxc-project/oxc-browserslist/pull/196))
+- add release profile
+
 ## [2.0.9](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.8...oxc-browserslist-v2.0.9) - 2025-07-08
 
 ### Other
