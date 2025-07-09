@@ -1,4 +1,4 @@
-use crate::data::{BrowserName, browser_name::decode_browser_name};
+use crate::data::{BrowserName, decode_browser_name};
 pub use crate::generated::caniuse_region_matching::get_usage_by_region;
 
 const BROWSER_NAMES: &[u8; 51537] = include_bytes!("../../generated/caniuse_region_browsers.bin");
