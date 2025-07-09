@@ -17,6 +17,10 @@ fn root() -> PathBuf {
     get_project_root().unwrap()
 }
 
+fn save_bin(file: &str, bytes: &[u8]) {
+    fs::write(root().join("src/generated").join(file), bytes).unwrap();
+}
+
 fn generate_file(file: &str, token_stream: proc_macro2::TokenStream) {
     let syntax_tree = syn::parse2(token_stream).unwrap();
     let code = prettyplease::unparse(&syntax_tree);
