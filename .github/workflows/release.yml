@@ -6,10 +6,6 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - "**/*.md"
-      - "**/*.yml"
-      - "!.github/workflows/release.yml"
 
 jobs:
   release-plz:
