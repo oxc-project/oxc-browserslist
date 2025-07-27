@@ -97,7 +97,7 @@ where
     if queries.len() == 1 {
         _resolve(queries[0].as_ref(), opts)
     } else {
-        let s = &queries.iter().map(|q| q.as_ref()).collect::<Vec<_>>().join(", ");
+        let s = &queries.iter().map(|q| q.as_ref()).collect::<Vec<_>>().join(",");
         _resolve(s, opts)
     }
 }
