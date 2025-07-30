@@ -1,9 +1,9 @@
 use crate::data::{BrowserName, decode_browser_name};
 pub use crate::generated::caniuse_region_matching::get_usage_by_region;
 
-const BROWSER_NAMES: &[u8; 51537] = include_bytes!("../../generated/caniuse_region_browsers.bin");
-const VERSIONS: &[u8; 233911] = include_bytes!("../../generated/caniuse_region_versions.bin");
-const PERCENTAGES: &[u8; 206510] = include_bytes!("../../generated/caniuse_region_percentages.bin");
+static BROWSER_NAMES: &[u8] = include_bytes!("../../generated/caniuse_region_browsers.bin");
+static VERSIONS: &[u8] = include_bytes!("../../generated/caniuse_region_versions.bin");
+static PERCENTAGES: &[u8] = include_bytes!("../../generated/caniuse_region_percentages.bin");
 
 pub struct RegionData {
     browser_names_start: u32,

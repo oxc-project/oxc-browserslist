@@ -3,7 +3,7 @@ use super::BrowserName;
 use crate::data::decode_browser_name;
 pub use crate::generated::caniuse_feature_matching::get_feature_stat;
 
-const FEATURES: &[u8; 927319] = include_bytes!("../../generated/caniuse_feature_matching.bin");
+static FEATURES: &[u8] = include_bytes!("../../generated/caniuse_feature_matching.bin");
 
 pub struct FeatureSet {
     yes: Vec</* version */ &'static str>,
