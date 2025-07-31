@@ -34,7 +34,6 @@ anyhow = "1"
 bincode = "2"
 criterion2 = { version = "3", default-features = false }
 indexmap = "2"
-nom = "8.0"
 pico-args = "0.5.0"
 prettyplease = "0.2.36"
 proc-macro2 = "1.0.95"
@@ -60,7 +59,6 @@ harness = false
 
 [dependencies]
 bincode = { workspace = true }
-nom = { workspace = true }
 rustc-hash = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }

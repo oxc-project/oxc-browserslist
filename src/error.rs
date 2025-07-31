@@ -90,11 +90,4 @@ pub enum Error {
     YearOverflow,
 }
 
-impl<'a> From<nom::Err<nom::error::Error<&'a str>>> for Error {
-    fn from(e: nom::Err<nom::error::Error<&'a str>>) -> Self {
-        match e {
-            nom::Err::Error(e) | nom::Err::Failure(e) => Self::Parse(e.input.to_owned()),
-            _ => unreachable!(),
-        }
-    }
-}
+// Removed nom dependency - error conversion handled in parser.rs
