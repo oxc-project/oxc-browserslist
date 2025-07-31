@@ -97,8 +97,16 @@ where
     if queries.len() == 1 {
         _resolve(queries[0].as_ref(), opts)
     } else {
-        let s = &queries.iter().map(|q| q.as_ref()).collect::<Vec<_>>().join(",");
-        _resolve(s, opts)
+        // Avoid intermediate Vec allocation by computing total length first
+        let total_len = queries.iter().map(|q| q.as_ref().len()).sum::<usize>() + queries.len() - 1;
+        let mut result = String::with_capacity(total_len);
+        for (i, query) in queries.iter().enumerate() {
+            if i > 0 {
+                result.push(',');
+            }
+            result.push_str(query.as_ref());
+        }
+        _resolve(&result, opts)
     }
 }
 
@@ -113,9 +121,13 @@ fn _resolve(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
 
         let mut dist = queries::query(current.atom, opts)?;
         if current.negated {
-            distribs.retain(|distrib| !dist.contains(distrib));
+            // Use HashSet for faster O(1) lookups instead of O(n) contains
+            let dist_set: rustc_hash::FxHashSet<_> = dist.into_iter().collect();
+            distribs.retain(|distrib| !dist_set.contains(distrib));
         } else if current.is_and {
-            distribs.retain(|distrib| dist.contains(distrib));
+            // Use HashSet for faster O(1) lookups instead of O(n) contains
+            let dist_set: rustc_hash::FxHashSet<_> = dist.into_iter().collect();
+            distribs.retain(|distrib| dist_set.contains(distrib));
         } else {
             distribs.append(&mut dist);
         }

@@ -58,6 +58,10 @@ name = "browserslist"
 name = "resolve"
 harness = false
 
+[[bench]]
+name = "performance_improvements"
+harness = false
+
 [dependencies]
 bincode = { workspace = true }
 nom = { workspace = true }
