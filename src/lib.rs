@@ -104,9 +104,9 @@ where
 
 // reduce generic monomorphization
 fn _resolve(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
-    let queries = parse_browserslist_query(query)?;
+    let (queries, _remaining) = parse_browserslist_query(query)?;
     let mut distribs = vec![];
-    for (i, current) in queries.1.into_iter().enumerate() {
+    for (i, current) in queries.into_iter().enumerate() {
         if i == 0 && current.negated {
             return Err(Error::NotAtFirst(current.raw.to_string()));
         }
