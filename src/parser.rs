@@ -106,16 +106,33 @@ pub fn parse_browserslist_query(input: &str) -> PResult<Vec<SingleQuery>> {
             queries.push(query);
             remaining = rest.trim_start();
         } else if remaining.starts_with(" and ") || remaining.starts_with(" AND ") {
-            let skip_len = if remaining[1..].starts_with("and ") { 5 } else { 5 };
+            let skip_len = if remaining[1..4].to_lowercase() == "and" { 5 } else { 5 };
             remaining = &remaining[skip_len..].trim_start();
-            let (mut query, rest) = parse_single_query_internal(remaining, false)?;
+            let (mut query, rest) = parse_single_query_internal(remaining, true)?; // Allow not after and
             query.is_and = true;
             queries.push(query);
             remaining = rest.trim_start();
         } else if remaining.starts_with(" or ") || remaining.starts_with(" OR ") {
-            let skip_len = if remaining[1..].starts_with("or ") { 4 } else { 4 };
+            let skip_len = if remaining[1..3].to_lowercase() == "or" { 4 } else { 4 };
             remaining = &remaining[skip_len..].trim_start();
-            let (query, rest) = parse_single_query_internal(remaining, false)?;
+            let (query, rest) = parse_single_query_internal(remaining, true)?; // Allow not after or  
+            queries.push(query);
+            remaining = rest.trim_start();  
+        } else if remaining.trim_start().starts_with("and ") || remaining.trim_start().starts_with("AND ") {
+            // Handle case where " and " doesn't start with space (fallback)
+            let trimmed = remaining.trim_start();
+            let skip_len = if trimmed[..3].to_lowercase() == "and" { 4 } else { 4 };
+            remaining = &trimmed[skip_len..].trim_start();
+            let (mut query, rest) = parse_single_query_internal(remaining, true)?;
+            query.is_and = true;
+            queries.push(query);
+            remaining = rest.trim_start();
+        } else if remaining.trim_start().starts_with("or ") || remaining.trim_start().starts_with("OR ") {
+            // Handle case where " or " doesn't start with space (fallback)
+            let trimmed = remaining.trim_start();
+            let skip_len = if trimmed[..2].to_lowercase() == "or" { 3 } else { 3 };
+            remaining = &trimmed[skip_len..].trim_start();
+            let (query, rest) = parse_single_query_internal(remaining, true)?;
             queries.push(query);
             remaining = rest.trim_start();
         } else {
@@ -133,9 +150,17 @@ fn parse_single_query_internal(input: &str, allow_leading_not: bool) -> PResult<
     let mut negated = false;
     
     // Check for "not" prefix
-    if allow_leading_not && remaining.starts_with("not ") {
-        negated = true;
-        remaining = &remaining[4..].trim_start();
+    if allow_leading_not {
+        if remaining.to_lowercase().starts_with("not ") {
+            negated = true;
+            remaining = &remaining[4..].trim_start();
+        }
+    } else {
+        // For non-leading queries, "not" might be found later in the query chain
+        if remaining.to_lowercase().starts_with("not ") {
+            negated = true;
+            remaining = &remaining[4..].trim_start();
+        }
     }
     
     // Parse the actual query atom
@@ -239,6 +264,18 @@ fn parse_query_atom_internal(input: &str) -> PResult<QueryAtom> {
     // "phantom X"
     if input.to_lowercase().starts_with("phantom ") {
         return parse_phantom(&input[8..]);
+    }
+    
+    // "extends config"
+    if input.to_lowercase().starts_with("extends ") {
+        let config_name = &input[8..].trim_start();
+        let end_pos = config_name.find(|c: char| c.is_whitespace()).unwrap_or(config_name.len());
+        return Ok((QueryAtom::Extends(&config_name[..end_pos]), &config_name[end_pos..]));
+    }
+    
+    // ".browserslistrc"
+    if input.starts_with(".browserslistrc") {
+        return Ok((QueryAtom::BrowserslistConfig, &input[15..]));
     }
     
     // Browser version patterns like "chrome >= 50", "ie 11", "node 12.0.0"
@@ -404,22 +441,48 @@ fn parse_phantom(input: &str) -> PResult<QueryAtom> {
 
 fn try_parse_browser_version(input: &str) -> Result<Option<(QueryAtom, &str)>, ParseError> {
     let input = input.trim_start();
+    let lower_input = input.to_lowercase();
     
-    // Look for known browser names
-    let browser_names = ["chrome", "firefox", "safari", "edge", "ie", "opera"];
+    // Look for known browser names (expand the list)
+    let browser_names = [
+        ("chrome", "chrome"),
+        ("firefox", "firefox"), 
+        ("safari", "safari"),
+        ("edge", "edge"),
+        ("ie", "ie"),
+        ("opera", "opera"),
+        ("samsung", "samsung"),
+        ("android", "android"),
+        ("ios_saf", "ios_saf"),
+        ("op_mob", "op_mob"),
+        ("and_chr", "and_chr"),
+        ("and_ff", "and_ff"),
+        ("kaios", "kaios"),
+        ("baidu", "baidu"),
+        ("and_qq", "and_qq"),
+        ("and_uc", "and_uc"),
+        ("op_mini", "op_mini"),
+    ];
     
-    for &browser in &browser_names {
-        if input.to_lowercase().starts_with(browser) {
-            let rest = &input[browser.len()..].trim_start();
+    for &(browser_lower, browser_canonical) in &browser_names {
+        if lower_input.starts_with(browser_lower) {
+            let rest = &input[browser_lower.len()..].trim_start();
+            
+            // Must be followed by version info or end
+            if rest.is_empty() {
+                // Just browser name without version - treat as unknown for now
+                continue;
+            }
             
             // Check if followed by version info
-            if rest.is_empty() || (!rest.starts_with(">") && !rest.starts_with("<") && !rest.starts_with("=") && !rest.chars().next().unwrap().is_ascii_digit()) {
+            let first_char = rest.chars().next().unwrap();
+            if !first_char.is_ascii_digit() && first_char != '>' && first_char != '<' && first_char != '=' {
                 continue;
             }
             
             // Parse version range
             let (version_range, remaining) = parse_version_range(rest)?;
-            return Ok(Some((QueryAtom::Browser(browser, version_range), remaining)));
+            return Ok(Some((QueryAtom::Browser(browser_canonical, version_range), remaining)));
         }
     }
     
@@ -692,5 +755,50 @@ mod tests {
             },
             _ => panic!("Expected Last atom, got {:?}", queries[0].atom),
         }
+    }
+    
+    #[test]
+    fn test_and_with_not() {
+        let result = parse_browserslist_query("last 2 versions and not > 5%");
+        assert!(result.is_ok());
+        let (queries, remaining) = result.unwrap();
+        assert_eq!(queries.len(), 2);
+        assert_eq!(remaining, "");
+        assert!(!queries[0].negated);
+        assert!(!queries[0].is_and); 
+        assert!(queries[1].negated);
+        assert!(queries[1].is_and);
+    }
+    
+    #[test] 
+    fn test_browser_version() {
+        let result = parse_browserslist_query("chrome >= 50");
+        assert!(result.is_ok());
+        let (queries, remaining) = result.unwrap();
+        assert_eq!(queries.len(), 1);
+        assert_eq!(remaining, "");
+        match &queries[0].atom {
+            QueryAtom::Browser(browser, version_range) => {
+                assert_eq!(*browser, "chrome");
+                match version_range {
+                    VersionRange::Unbounded(comp, version) => {
+                        matches!(comp, Comparator::GreaterOrEqual);
+                        assert_eq!(*version, "50");
+                    },
+                    _ => panic!("Expected Unbounded version range"),
+                }
+            },
+            _ => panic!("Expected Browser atom, got {:?}", queries[0].atom),
+        }
+    }
+    
+    #[test]
+    fn test_api_integration() {
+        // Test that the main resolve function works with our parser
+        let result = crate::resolve(&["defaults"], &crate::Opts::default());
+        assert!(result.is_ok(), "API should work with manual parser");
+        
+        let result2 = crate::resolve(&["last 2 versions"], &crate::Opts::default());
+        assert!(result2.is_ok(), "Last N versions should work");
     }
 }
