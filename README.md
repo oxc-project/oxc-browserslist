@@ -26,6 +26,32 @@ The original crate did not meet the criteria of `oxc`, the following changes are
 
 See [docs.rs/oxc-browserslist](https://docs.rs/oxc-browserslist).
 
+## Binary Size Optimizations
+
+This crate has been optimized to minimize binary size:
+
+- **Data Compression**: All bundled data files are compressed using gzip, reducing size by ~87%
+- **Optional Features**: Regional data can be disabled to save additional space
+
+### Feature Flags
+
+- `regions` (enabled by default): Includes regional browserslist data for queries like `> 1% in US`
+
+To minimize binary size by disabling regional queries:
+
+```toml
+[dependencies]
+oxc-browserslist = { version = "2.0", default-features = false }
+```
+
+### Size Comparison
+
+| Configuration | Library Size | Example Binary | Reduction |
+|---------------|--------------|----------------|-----------|
+| Original      | 4.6MB        | 2.3MB          | -         |
+| Compressed    | 2.3MB        | 1.1MB          | ~50%      |
+| No Regions    | 1.9MB        | 929KB          | ~60%      |
+
 ## Limitation
 
 Only custom usage is not supported: `> 0.5% in my stats` or `cover 99.5% in my stats`.
