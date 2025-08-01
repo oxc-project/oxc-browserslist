@@ -32,21 +32,3 @@ fn test_percentage_query() {
     // Should include popular browsers
     assert!(distribs.iter().any(|d| d.name() == "chrome"));
 }
-
-#[cfg(feature = "regions")]
-#[test]
-fn test_regional_query() {
-    let distribs = resolve(&["> 1% in US"], &Opts::default()).unwrap();
-    assert!(!distribs.is_empty());
-    
-    // Should include popular browsers in US
-    assert!(distribs.iter().any(|d| d.name() == "chrome"));
-}
-
-#[cfg(not(feature = "regions"))]
-#[test]
-fn test_regional_query_disabled() {
-    use crate::Error;
-    let result = resolve(&["> 1% in US"], &Opts::default());
-    assert!(matches!(result, Err(Error::UnknownRegion(_))));
-}

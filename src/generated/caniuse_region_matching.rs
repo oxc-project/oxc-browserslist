@@ -1,6 +1,4 @@
 use crate::data::caniuse::region::RegionData;
-
-#[cfg(feature = "regions")]
 pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
     let ranges = match region {
         "AD" => (0u32, 194u32, 0u32, 904u32, 0u32, 777u32),
@@ -246,9 +244,4 @@ pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
         _ => return None,
     };
     Some(RegionData::new(ranges.0, ranges.1, ranges.2, ranges.3, ranges.4, ranges.5))
-}
-
-#[cfg(not(feature = "regions"))]
-pub fn get_usage_by_region(_region: &str) -> Option<RegionData> {
-    None
 }
