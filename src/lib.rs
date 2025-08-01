@@ -62,8 +62,6 @@ pub use wasm::browserslist;
 
 #[cfg(not(target_arch = "wasm32"))]
 mod config;
-#[cfg(test)]
-mod compression_test;
 mod data;
 mod error;
 mod generated;

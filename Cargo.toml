@@ -61,7 +61,6 @@ harness = false
 
 [dependencies]
 bincode = { workspace = true }
-flate2 = { workspace = true }
 nom = { workspace = true }
 rustc-hash = { workspace = true }
 serde = { workspace = true, features = ["derive"] }

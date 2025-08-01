@@ -9,9 +9,11 @@ pub mod node_versions;
 use std::{fs, path::PathBuf};
 
 use anyhow::Result;
+use flate2::{Compression, write::GzEncoder};
 use indexmap::IndexMap;
 use project_root::get_project_root;
 use serde::Deserialize;
+use std::io::Write;
 
 fn root() -> PathBuf {
     get_project_root().unwrap()
@@ -19,6 +21,19 @@ fn root() -> PathBuf {
 
 fn save_bin(file: &str, bytes: &[u8]) {
     fs::write(root().join("src/generated").join(file), bytes).unwrap();
+}
+
+fn save_bin_compressed(file: &str, bytes: &[u8]) {
+    // Save original data
+    save_bin(file, bytes);
+
+    // Save compressed version for space efficiency in repo
+    let mut encoder = GzEncoder::new(Vec::new(), Compression::best());
+    encoder.write_all(bytes).unwrap();
+    let compressed = encoder.finish().unwrap();
+
+    let compressed_file = format!("{}.gz", file);
+    save_bin(&compressed_file, &compressed);
 }
 
 fn generate_file(file: &str, token_stream: proc_macro2::TokenStream) {

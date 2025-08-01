@@ -1,15 +1,9 @@
-use std::sync::OnceLock;
-
-use crate::data::{BrowserName, compression::decompress_gzip, decode_browser_name};
+use crate::data::{BrowserName, decode_browser_name};
 pub use crate::generated::caniuse_region_matching::get_usage_by_region;
 
-static BROWSER_NAMES_COMPRESSED: &[u8] = include_bytes!("../../generated/caniuse_region_browsers.bin.gz");
-static VERSIONS_COMPRESSED: &[u8] = include_bytes!("../../generated/caniuse_region_versions.bin.gz");
-static PERCENTAGES_COMPRESSED: &[u8] = include_bytes!("../../generated/caniuse_region_percentages.bin.gz");
-
-static BROWSER_NAMES: OnceLock<Vec<u8>> = OnceLock::new();
-static VERSIONS: OnceLock<Vec<u8>> = OnceLock::new();
-static PERCENTAGES: OnceLock<Vec<u8>> = OnceLock::new();
+static BROWSER_NAMES_DATA: &[u8] = include_bytes!("../../generated/caniuse_region_browsers.bin");
+static VERSIONS_DATA: &[u8] = include_bytes!("../../generated/caniuse_region_versions.bin");
+static PERCENTAGES_DATA: &[u8] = include_bytes!("../../generated/caniuse_region_percentages.bin");
 
 pub struct RegionData {
     browser_names_start: u32,
@@ -40,23 +34,21 @@ impl RegionData {
     }
 
     pub fn iter(&self) -> impl Iterator<Item = (BrowserName, &'static str, f32)> {
-        let browser_names_data = BROWSER_NAMES.get_or_init(|| decompress_gzip(BROWSER_NAMES_COMPRESSED));
-        let browser_names = &browser_names_data[self.browser_names_start as usize..self.browser_names_end as usize];
-        
-        let versions_data = VERSIONS.get_or_init(|| decompress_gzip(VERSIONS_COMPRESSED));
+        let browser_names =
+            &BROWSER_NAMES_DATA[self.browser_names_start as usize..self.browser_names_end as usize];
+
         let (versions, _): (Vec<&'static str>, _) = bincode::borrow_decode_from_slice(
-            &versions_data[self.versions_start as usize..self.versions_end as usize],
+            &VERSIONS_DATA[self.versions_start as usize..self.versions_end as usize],
             bincode::config::standard(),
         )
         .unwrap();
-        
-        let percentages_data = PERCENTAGES.get_or_init(|| decompress_gzip(PERCENTAGES_COMPRESSED));
+
         let (percentages, _): (Vec<f32>, _) = bincode::borrow_decode_from_slice(
-            &percentages_data[self.percentages_start as usize..self.percentages_end as usize],
+            &PERCENTAGES_DATA[self.percentages_start as usize..self.percentages_end as usize],
             bincode::config::standard(),
         )
         .unwrap();
-        
+
         browser_names
             .iter()
             .zip(versions)

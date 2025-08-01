@@ -1,12 +1,9 @@
-use std::sync::OnceLock;
-
 use super::BrowserName;
 
-use crate::data::{compression::decompress_gzip, decode_browser_name};
+use crate::data::decode_browser_name;
 pub use crate::generated::caniuse_feature_matching::get_feature_stat;
 
-static FEATURES_COMPRESSED: &[u8] = include_bytes!("../../generated/caniuse_feature_matching.bin.gz");
-static FEATURES_DECOMPRESSED: OnceLock<Vec<u8>> = OnceLock::new();
+static FEATURES_DATA: &[u8] = include_bytes!("../../generated/caniuse_feature_matching.bin");
 
 pub struct FeatureSet {
     yes: Vec</* version */ &'static str>,
@@ -36,10 +33,9 @@ impl Feature {
 
     #[expect(clippy::type_complexity)]
     pub fn create_data(&self) -> Vec<(BrowserName, FeatureSet)> {
-        let decompressed = FEATURES_DECOMPRESSED.get_or_init(|| decompress_gzip(FEATURES_COMPRESSED));
         let (features, _): (Vec<(u8, Vec<&'static str>, Vec<&'static str>)>, _) =
             bincode::borrow_decode_from_slice(
-                &decompressed[self.start as usize..self.end as usize],
+                &FEATURES_DATA[self.start as usize..self.end as usize],
                 bincode::config::standard(),
             )
             .unwrap();
