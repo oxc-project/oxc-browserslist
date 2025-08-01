@@ -21,6 +21,17 @@ impl Version {
     }
 
     pub fn parse(s: &str) -> Result<Self, ParseIntError> {
+        // Optimize common single/double digit versions that don't need splitting
+        let s = s.trim();
+        if s.is_empty() {
+            return Ok(Self(0, 0, 0));
+        }
+        
+        // Fast path for simple integer versions (e.g., "1", "10", "100")
+        if s.chars().all(|c| c.is_ascii_digit()) {
+            return Ok(Self(s.parse()?, 0, 0));
+        }
+        
         let mut segments = s.split('.');
         let major = match segments.next() {
             Some(n) => n.parse()?,
@@ -38,6 +49,21 @@ impl Version {
     }
 
     pub fn loose_compare(&self, b: &str) -> Ordering {
+        // Fast path for empty or simple comparison
+        if b.is_empty() {
+            return if self.0 == 0 && self.1 == 0 && self.2 == 0 {
+                Ordering::Equal
+            } else {
+                Ordering::Greater
+            };
+        }
+        
+        // Fast path for single digit comparison
+        if b.chars().all(|c| c.is_ascii_digit()) {
+            let b_major: u32 = b.parse().unwrap_or_default();
+            return self.0.cmp(&b_major);
+        }
+        
         let mut b = b.split('.');
         let Some(first) = b.next() else {
             return Ordering::Equal;
@@ -50,8 +76,8 @@ impl Version {
         let Some(second) = b.next() else {
             return Ordering::Equal;
         };
-        let first: u32 = second.parse().unwrap_or_default();
-        self.1.cmp(&first)
+        let second: u32 = second.parse().unwrap_or_default();
+        self.1.cmp(&second)
     }
 }
 

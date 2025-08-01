@@ -56,6 +56,7 @@ pub use error::Error;
 pub use opts::Opts;
 use parser::parse_browserslist_query;
 pub use queries::Distrib;
+use rustc_hash::FxHashSet;  
 pub use semver::Version;
 #[cfg(all(feature = "wasm_bindgen", target_arch = "wasm32"))]
 pub use wasm::browserslist;
@@ -97,8 +98,15 @@ where
     if queries.len() == 1 {
         _resolve(queries[0].as_ref(), opts)
     } else {
-        let s = &queries.iter().map(|q| q.as_ref()).collect::<Vec<_>>().join(",");
-        _resolve(s, opts)
+        // Avoid unnecessary Vec allocation by using a more efficient string joining approach
+        let mut query_string = String::new();
+        for (i, query) in queries.iter().enumerate() {
+            if i > 0 {
+                query_string.push(',');
+            }
+            query_string.push_str(query.as_ref());
+        }
+        _resolve(&query_string, opts)
     }
 }
 
@@ -113,9 +121,23 @@ fn _resolve(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
 
         let mut dist = queries::query(current.atom, opts)?;
         if current.negated {
-            distribs.retain(|distrib| !dist.contains(distrib));
+            // Only use HashSet optimization for larger datasets to avoid overhead
+            if dist.len() > 10 {
+                let dist_set: FxHashSet<_> = dist.iter().collect();
+                distribs.retain(|distrib| !dist_set.contains(distrib));
+            } else {
+                distribs.retain(|distrib| !dist.contains(distrib));
+            }
         } else if current.is_and {
-            distribs.retain(|distrib| dist.contains(distrib));
+            // Only use HashSet optimization for larger datasets to avoid overhead
+            if dist.len() > 10 {
+                let dist_set: FxHashSet<_> = dist.iter().collect();
+                distribs.retain(|distrib| dist_set.contains(distrib));
+            } else if !dist.is_empty() {
+                distribs.retain(|distrib| dist.contains(distrib));
+            } else {
+                distribs.clear();
+            }
         } else {
             distribs.append(&mut dist);
         }

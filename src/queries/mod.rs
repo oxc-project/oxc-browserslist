@@ -47,7 +47,7 @@ mod unreleased_electron;
 mod unreleased_x_browsers;
 mod years;
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 /// Representation of browser name (or `node`) and its version.
 ///
 /// When converting it to string, it will be formatted as the output of
