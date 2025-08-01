@@ -6,9 +6,10 @@ pub mod electron_to_chromium;
 pub mod node_release_schedule;
 pub mod node_versions;
 
-use std::{fs, path::PathBuf};
+use std::{fs, io::Write, path::PathBuf};
 
 use anyhow::Result;
+use flate2::{Compression, write::GzEncoder};
 use indexmap::IndexMap;
 use project_root::get_project_root;
 use serde::Deserialize;
@@ -17,8 +18,12 @@ fn root() -> PathBuf {
     get_project_root().unwrap()
 }
 
-fn save_bin(file: &str, bytes: &[u8]) {
-    fs::write(root().join("src/generated").join(file), bytes).unwrap();
+fn save_bin_compressed(file: &str, bytes: &[u8]) {
+    let mut encoder = GzEncoder::new(Vec::new(), Compression::best());
+    encoder.write_all(bytes).unwrap();
+    let compressed = encoder.finish().unwrap();
+    let file = format!("{}.gz", file);
+    fs::write(root().join("src/generated").join(file), compressed).unwrap();
 }
 
 fn generate_file(file: &str, token_stream: proc_macro2::TokenStream) {

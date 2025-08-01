@@ -2,7 +2,7 @@ use anyhow::Result;
 use bincode::encode_to_vec;
 use quote::quote;
 
-use super::{Caniuse, create_ranges, encode_browser_name, generate_file, save_bin};
+use super::{Caniuse, create_ranges, encode_browser_name, generate_file, save_bin_compressed};
 
 pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     let features = data
@@ -43,7 +43,7 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         .map(|v| encode_to_vec(v, bincode::config::standard()).unwrap())
         .collect::<Vec<_>>();
     let data_bytes = data.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
-    save_bin("caniuse_feature_matching.bin", &data_bytes);
+    save_bin_compressed("caniuse_feature_matching.bin", &data_bytes);
     let data_ranges = create_ranges(&data);
     let ranges = data_ranges.iter().map(|(a, b)| quote! {(#a, #b)});
 
