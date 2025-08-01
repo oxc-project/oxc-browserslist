@@ -1,4 +1,5 @@
 pub mod caniuse;
+pub mod compression;
 pub mod electron;
 pub mod node;
 
