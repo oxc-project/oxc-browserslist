@@ -80,7 +80,8 @@ wasm-bindgen = { version = "0.2", optional = true }
 serde-wasm-bindgen = { version = "0.6", optional = true }
 
 [features]
-default = []
+default = ["regions"]
+regions = []
 wasm_bindgen = ["js-sys", "serde-wasm-bindgen", "time/wasm-bindgen", "wasm-bindgen"]
 codspeed = ["criterion2/codspeed"]
 
