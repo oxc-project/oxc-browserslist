@@ -3,7 +3,7 @@ use super::BrowserName;
 use crate::data::decode_browser_name;
 pub use crate::generated::caniuse_feature_matching::get_feature_stat;
 
-static FEATURES: &[u8] = include_bytes!("../../generated/caniuse_feature_matching.bin");
+static FEATURES_DATA: &[u8] = include_bytes!("../../generated/caniuse_feature_matching.bin");
 
 pub struct FeatureSet {
     yes: Vec</* version */ &'static str>,
@@ -35,7 +35,7 @@ impl Feature {
     pub fn create_data(&self) -> Vec<(BrowserName, FeatureSet)> {
         let (features, _): (Vec<(u8, Vec<&'static str>, Vec<&'static str>)>, _) =
             bincode::borrow_decode_from_slice(
-                &FEATURES[self.start as usize..self.end as usize],
+                &FEATURES_DATA[self.start as usize..self.end as usize],
                 bincode::config::standard(),
             )
             .unwrap();

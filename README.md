@@ -26,6 +26,17 @@ The original crate did not meet the criteria of `oxc`, the following changes are
 
 See [docs.rs/oxc-browserslist](https://docs.rs/oxc-browserslist).
 
+## Binary Size Optimizations
+
+This crate has been optimized to minimize binary size through data compression, reducing bundled data by ~87% (from 1.4MB to 188KB).
+
+### Size Comparison
+
+| Configuration | Library Size | Example Binary | Reduction |
+|---------------|--------------|----------------|-----------|
+| Original      | 4.6MB        | 2.3MB          | -         |
+| Compressed    | 2.3MB        | 1.1MB          | ~50%      |
+
 ## Limitation
 
 Only custom usage is not supported: `> 0.5% in my stats` or `cover 99.5% in my stats`.
