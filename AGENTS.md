@@ -43,18 +43,31 @@ oxc-browserslist is a Rust port of [Browserslist](https://github.com/browserslis
 - Focus on edge cases and browser compatibility scenarios
 - Run benchmarks (`cargo bench`) for performance-critical changes
 
+### Prerequisites
+
+The project uses several tools for development:
+
+- **Rust**: Latest stable (MSRV: 1.86.0)
+- **Node.js**: Version specified in `.node-version`
+- **pnpm**: Package manager for Node.js dependencies
+- **just**: Command runner (alternative to make)
+
 ### Build and Development
 
+`just init` has already been run, all tools (`watchexec-cli`, `typos-cli`, `cargo-shear`, `dprint`) are already installed, do not run `just init`.
+
+Rust and `cargo` components `clippy`, `rust-docs` and `rustfmt` has already been installed, do not install them.
+
 - Use `cargo check` for quick feedback during development
-- Run `cargo clippy` for linting
-- Use `cargo fmt` for code formatting
+- Run `just lint` for linting
+- Use `just fmt` for code formatting
 - Generate updated browser data with `cargo codegen` when needed
+- Rust `just ready` after all code changes are complete.
 
 ### Documentation
 
 - Update API documentation for public interfaces
 - Add inline comments for complex algorithms
-- Update README.md if adding major features
 - Follow Rust documentation conventions
 
 ## Browser Query Examples

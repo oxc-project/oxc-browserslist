@@ -1,128 +1,79 @@
 name: Copilot Setup Steps
 
-permissions: {}
+# This workflow defines the setup steps that GitHub Copilot agents will use
+# to prepare the development environment for the oxc project.
+# It preinstalls tools and dependencies needed for Rust and Node.js development.
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - "copilot/**"
-    paths:
-      - "AGENTS.md"
-      - ".github/workflows/copilot-setup-steps.yml"
   pull_request:
     types: [opened, synchronize]
     paths:
-      - "AGENTS.md"
-      - ".github/workflows/copilot-setup-steps.yml"
+      - .github/workflows/copilot-setup-steps.yml
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: ${{ github.ref_name != 'main' }}
-
-defaults:
-  run:
-    shell: bash
+permissions: {}
 
 jobs:
-  validate-agents-documentation:
-    name: Validate AGENTS.md
+  copilot-setup-steps:
+    name: Setup Development Environment for Copilot
     runs-on: ubuntu-latest
     steps:
-      - uses: taiki-e/checkout-action@b13d20b7cda4e2f325ef19895128f7ff735c0b3d # v1.3.1
-      - name: Check AGENTS.md exists
-        run: |
-          if [[ ! -f "AGENTS.md" ]]; then
-            echo "AGENTS.md file is missing"
-            exit 1
-          fi
-          echo "AGENTS.md found and ready for AI agent guidance"
-      
-      - name: Validate markdown structure
-        run: |
-          # Check for required sections
-          if ! grep -q "# AI Agent Guidelines" AGENTS.md; then
-            echo "Missing main heading in AGENTS.md"
-            exit 1
-          fi
-          if ! grep -q "## Project Overview" AGENTS.md; then
-            echo "Missing Project Overview section in AGENTS.md"
-            exit 1
-          fi
-          if ! grep -q "## Code Guidelines" AGENTS.md; then
-            echo "Missing Code Guidelines section in AGENTS.md"
-            exit 1
-          fi
-          echo "AGENTS.md structure validation passed"
+      # Checkout full repo for git history.
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
-  setup-development-environment:
-    name: Setup Development Environment for AI Agents
-    runs-on: ubuntu-latest
-    steps:
-      - uses: taiki-e/checkout-action@b13d20b7cda4e2f325ef19895128f7ff735c0b3d # v1.3.1
       - uses: oxc-project/setup-rust@cd82e1efec7fef815e2c23d296756f31c7cdc03d # v1.0.0
         with:
+          cache-key: warm
           save-cache: false
-          components: rustfmt, clippy
-      - uses: oxc-project/setup-node@f42e3bda950c7454575e78ee4eaac880a077700c # v1.0.0
-      
-      - name: Verify basic build capability
-        run: |
-          echo "Checking if project builds successfully..."
-          cargo check --all-targets
-          echo "Build check completed"
-      
-      - name: Test core functionality
-        run: |
-          echo "Running example to verify basic functionality..."
-          if cargo run --example inspect -- "last 2 versions" > /dev/null 2>&1; then
-            echo "Basic browserslist functionality working"
-          else
-            echo "Warning: Example execution failed - this may be expected in development"
-          fi
-      
-      - name: Verify development tools
-        run: |
-          echo "Checking development tools availability..."
-          cargo clippy --version
-          cargo fmt --version
-          echo "Development environment setup complete"
+          tools: just,watchexec-cli,typos-cli,cargo-shear,dprint
+          components: clippy rust-docs rustfmt
 
-  documentation-check:
-    name: Documentation and Guidelines Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: taiki-e/checkout-action@b13d20b7cda4e2f325ef19895128f7ff735c0b3d # v1.3.1
-      
-      - name: Check documentation consistency
+      - uses: oxc-project/setup-node@f42e3bda950c7454575e78ee4eaac880a077700c # v1.0.0
+
+      - name: Verify installations
         run: |
-          echo "Verifying documentation consistency..."
-          
-          # Check if AGENTS.md references align with actual project structure
-          if [[ -d "src/parser" ]] && grep -q "src/parser" AGENTS.md; then
-            echo "✓ Parser directory reference is accurate"
-          fi
-          
-          if [[ -d "src/queries" ]] && grep -q "src/queries" AGENTS.md; then
-            echo "✓ Queries directory reference is accurate"
-          fi
-          
-          if [[ -f "Cargo.toml" ]] && grep -q "cargo" AGENTS.md; then
-            echo "✓ Cargo references are appropriate"
-          fi
-          
-          echo "Documentation consistency check completed"
-      
-      - name: Validate copilot workflow file
+          echo "=== Rust toolchain ==="
+          rustc --version
+          cargo --version
+
+          echo "=== Node.js and pnpm ==="
+          node --version
+          pnpm --version
+
+          echo "=== Command runner ==="
+          just --version
+
+          echo "=== Development tools ==="
+          watchexec --version
+          cargo insta --version
+          typos --version
+          cargo shear --version
+          dprint --version
+
+          echo "=== Project commands ==="
+          just --list
+
+      - name: Setup complete
         run: |
-          echo "Validating copilot workflow configuration..."
-          
-          # Check that this workflow file has proper YAML syntax
-          if command -v yamllint >/dev/null 2>&1; then
-            yamllint .github/workflows/copilot-setup-steps.yml || echo "yamllint not available, skipping detailed validation"
-          else
-            echo "Basic workflow file validation (syntax should be checked by GitHub)"
-          fi
-          
-          echo "Workflow validation completed"
+          echo "🎉 Development environment setup complete!"
+          echo "The following tools are now available:"
+          echo "  - Rust toolchain (version from rust-toolchain.toml)"
+          echo "  - Node.js and pnpm (versions from .node-version and"
+          echo "    package.json)"
+          echo "  - just command runner"
+          echo "  - Development tools: watchexec, cargo-insta, typos,"
+          echo "    cargo-shear, dprint"
+          echo "  - All Node.js dependencies installed"
+          echo ""
+          echo "You can now use 'just' commands to work with the project:"
+          echo "  - just ready   # Run all checks"
+          echo "  - just fmt     # Format code"
+          echo "  - just test    # Run tests"
+          echo "  - just lint    # Run linting"
