@@ -52,7 +52,6 @@ jobs:
 
           echo "=== Development tools ==="
           watchexec --version
-          cargo insta --version
           typos --version
           cargo shear --version
           dprint --version
@@ -68,8 +67,7 @@ jobs:
           echo "  - Node.js and pnpm (versions from .node-version and"
           echo "    package.json)"
           echo "  - just command runner"
-          echo "  - Development tools: watchexec, cargo-insta, typos,"
-          echo "    cargo-shear, dprint"
+          echo "  - Development tools: watchexec, typos, cargo-shear, dprint"
           echo "  - All Node.js dependencies installed"
           echo ""
           echo "You can now use 'just' commands to work with the project:"
