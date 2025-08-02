@@ -6,7 +6,7 @@ _default:
 alias r := ready
 
 init:
-  cargo binstall watchexec-cli typos-cli dprint -y
+  cargo binstall watchexec-cli typos-cli cargo-shear dprint -y
 
 ready:
   git diff --exit-code --quiet
@@ -19,6 +19,7 @@ ready:
   cargo test
 
 fmt:
+  -cargo shear --fix # remove all unused dependencies
   cargo fmt
   dprint fmt
 
