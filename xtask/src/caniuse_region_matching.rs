@@ -6,7 +6,9 @@ use indexmap::IndexMap;
 use quote::quote;
 use serde::Deserialize;
 
-use super::{Caniuse, create_ranges, encode_browser_name, generate_file, root, save_bin};
+use super::{
+    Caniuse, create_ranges, encode_browser_name, generate_file, root, save_bin_compressed,
+};
 
 #[derive(Deserialize)]
 struct RegionData {
@@ -67,7 +69,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .collect::<Vec<_>>();
     let browsers_ranges = create_ranges(&browsers);
     let browsers_bytes = browsers.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
-    save_bin("caniuse_region_browsers.bin", &browsers_bytes);
+    save_bin_compressed("caniuse_region_browsers.bin", &browsers_bytes);
 
     let versions = data
         .iter()
@@ -78,7 +80,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .collect::<Vec<_>>();
     let version_ranges = create_ranges(&versions);
     let version_bytes = versions.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
-    save_bin("caniuse_region_versions.bin", &version_bytes);
+    save_bin_compressed("caniuse_region_versions.bin", &version_bytes);
 
     let percentages = data
         .iter()
@@ -89,7 +91,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .collect::<Vec<_>>();
     let percent_ranges = create_ranges(&percentages);
     let percent_bytes = percentages.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
-    save_bin("caniuse_region_percentages.bin", &percent_bytes);
+    save_bin_compressed("caniuse_region_percentages.bin", &percent_bytes);
 
     let ranges = browsers_ranges
         .iter()

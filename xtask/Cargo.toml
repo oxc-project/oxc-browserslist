@@ -10,6 +10,7 @@ workspace = true
 [dependencies]
 anyhow = { workspace = true }
 bincode = { workspace = true }
+flate2 = { workspace = true }
 indexmap = { workspace = true, features = ["serde"] }
 prettyplease = { workspace = true }
 proc-macro2 = { workspace = true }
