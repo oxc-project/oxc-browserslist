@@ -8,14 +8,16 @@ pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
         .agents
         .iter()
         .flat_map(|(name, agent)| {
-            agent.usage_global.iter().map(move |(version, usage)| {
-                (
-                    usage,
-                    quote! {
-                        (#name, #version, #usage)
-                    },
-                )
-            })
+            agent.usage_global.iter().filter(|(_, usage)| **usage > 0.0f32).map(
+                move |(version, usage)| {
+                    (
+                        usage,
+                        quote! {
+                            (#name, #version, #usage)
+                        },
+                    )
+                },
+            )
         })
         .collect::<Vec<_>>();
     global_usage.sort_unstable_by(|(a, _), (b, _)| b.partial_cmp(a).unwrap());
@@ -23,6 +25,7 @@ pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
 
     let output = quote! {
         use crate::data::BrowserName;
+        /// only includes browsers with global usage > 0.0%
         pub static CANIUSE_GLOBAL_USAGE: &[(BrowserName, &str, f32)] = &[#(#push_usage),*];
     };
 
