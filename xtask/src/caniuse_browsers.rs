@@ -9,7 +9,8 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
             let ver = &version.version;
             let global_usage = version.global_usage;
             let release_date = if let Some(release_date) = version.release_date {
-                quote! { Some(#release_date) }
+                assert_ne!(release_date, 0); // So that we can use NonZero
+                quote! { Some(NonZero::new(#release_date).unwrap()) }
             } else {
                 quote! { None }
             };
@@ -26,6 +27,7 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
     });
 
     let output = quote! {
+        use std::num::NonZero;
         use std::sync::OnceLock;
         use rustc_hash::FxHashMap;
         use crate::data::caniuse::{BrowserStat, CaniuseData, VersionDetail};

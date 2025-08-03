@@ -1,4 +1,4 @@
-use std::{borrow::Cow, sync::OnceLock};
+use std::{borrow::Cow, num::NonZero, sync::OnceLock};
 
 use rustc_hash::FxHashMap;
 
@@ -21,7 +21,7 @@ pub struct BrowserStat {
 pub struct VersionDetail(
     /* version */ pub &'static str,
     /* global_usage */ pub f32,
-    /* release_date */ pub Option<i64>,
+    /* release_date */ pub Option<NonZero<i64>>,
 );
 
 impl VersionDetail {
@@ -33,7 +33,7 @@ impl VersionDetail {
         self.1
     }
 
-    pub fn release_date(&self) -> Option<i64> {
+    pub fn release_date(&self) -> Option<NonZero<i64>> {
         self.2
     }
 }
