@@ -2,13 +2,14 @@ use anyhow::Result;
 use bincode::encode_to_vec;
 use quote::quote;
 
-use super::{Caniuse, create_ranges, encode_browser_name, generate_file, save_bin_compressed};
+use super::{Caniuse, create_range_vec, encode_browser_name, generate_file, save_bin_compressed};
 
 pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
-    let features = data
-        .data
-        .iter()
-        .map(|(_name, feature)| {
+    let mut sorted_data = data.data.clone();
+    sorted_data.sort_unstable_keys();
+    let features = sorted_data
+        .values()
+        .map(|feature| {
             feature
                 .stats
                 .iter()
@@ -36,7 +37,7 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         })
         .collect::<Vec<_>>();
 
-    let keys = data.data.keys().collect::<Vec<_>>();
+    let keys = sorted_data.keys().cloned().collect::<Vec<_>>();
 
     let data = features
         .iter()
@@ -44,18 +45,24 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         .collect::<Vec<_>>();
     let data_bytes = data.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
     save_bin_compressed("caniuse_feature_matching.bin", &data_bytes);
-    let data_ranges = create_ranges(&data);
-    let ranges = data_ranges.iter().map(|(a, b)| quote! {(#a, #b)});
+
+    let data_range = create_range_vec(&data);
 
     let output = quote! {
         use crate::data::caniuse::features::Feature;
 
+        static KEYS: &[&str] = &[#(#keys),*];
+        static RANGES: &[u32] = &[#(#data_range),*];
+
         pub fn get_feature_stat(name: &str) -> Option<Feature> {
-            let ranges = match name {
-                #( #keys => #ranges, )*
-                _ => return None,
-            };
-            Some(Feature::new(ranges.0, ranges.1))
+            match KEYS.binary_search(&name) {
+                Ok(idx) => {
+                    let start = RANGES[idx];
+                    let end = RANGES[idx + 1];
+                    Some(Feature::new(start, end))
+                },
+                Err(_) => None,
+            }
         }
     };
 
