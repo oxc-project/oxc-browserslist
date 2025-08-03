@@ -9,7 +9,7 @@ pub mod features;
 pub mod region;
 
 pub const ANDROID_EVERGREEN_FIRST: f32 = 37.0;
-pub const OP_MOB_BLINK_FIRST: u32 = 14;
+pub const OP_MOB_BLINK_FIRST: u8 = 14;
 
 #[derive(Clone, Debug)]
 pub struct BrowserStat {
