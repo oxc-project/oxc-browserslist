@@ -7,7 +7,7 @@ use quote::quote;
 use serde::Deserialize;
 
 use super::{
-    Caniuse, create_ranges, encode_browser_name, generate_file, root, save_bin_compressed,
+    Caniuse, create_range_vec, encode_browser_name, generate_file, root, save_bin_compressed,
 };
 
 #[derive(Deserialize)]
@@ -67,7 +67,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .iter()
         .map(|(_region, datums)| datums.iter().map(|x| x.browser).collect::<Vec<_>>())
         .collect::<Vec<_>>();
-    let browsers_ranges = create_ranges(&browsers);
+    let browsers_ranges = create_range_vec(&browsers);
     let browsers_bytes = browsers.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
     save_bin_compressed("caniuse_region_browsers.bin", &browsers_bytes);
 
@@ -78,7 +78,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
             encode_to_vec(versions, STANDARD).unwrap()
         })
         .collect::<Vec<_>>();
-    let version_ranges = create_ranges(&versions);
+    let version_ranges = create_range_vec(&versions);
     let version_bytes = versions.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
     save_bin_compressed("caniuse_region_versions.bin", &version_bytes);
 
@@ -89,25 +89,27 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
             encode_to_vec(percentages, STANDARD).unwrap()
         })
         .collect::<Vec<_>>();
-    let percent_ranges = create_ranges(&percentages);
+    let percent_ranges = create_range_vec(&percentages);
     let percent_bytes = percentages.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
     save_bin_compressed("caniuse_region_percentages.bin", &percent_bytes);
-
-    let ranges = browsers_ranges
-        .iter()
-        .zip(version_ranges.iter())
-        .zip(percent_ranges.iter())
-        .map(|(((a, b), (c, d)), (e, f))| quote! { (#a, #b, #c, #d, #e, #f) });
 
     let output = quote! {
         use crate::data::caniuse::region::RegionData;
 
+        const KEYS: &[&str] = &[#(#keys,)*];
+        const BROWSER_RANGES: &[u32] = &[#(#browsers_ranges,)*];
+        const VERSION_RANGES: &[u32] = &[#(#version_ranges,)*];
+        const PERCENT_RANGES: &[u32] = &[#(#percent_ranges,)*];
+
         pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
-            let ranges = match region {
-                #( #keys => #ranges, )*
-                _ => return None,
-            };
-            Some(RegionData::new(ranges.0, ranges.1, ranges.2, ranges.3, ranges.4, ranges.5))
+            let index = KEYS.binary_search(&region).ok()?;
+            let browser_start = BROWSER_RANGES[index];
+            let browser_end = BROWSER_RANGES[index + 1];
+            let version_start = VERSION_RANGES[index];
+            let version_end = VERSION_RANGES[index + 1];
+            let percent_start = PERCENT_RANGES[index];
+            let percent_end = PERCENT_RANGES[index + 1];
+            Some(RegionData::new(browser_start, browser_end, version_start, version_end, percent_start, percent_end))
         }
     };
     generate_file("caniuse_region_matching.rs", output);
