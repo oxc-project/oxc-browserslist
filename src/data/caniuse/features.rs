@@ -2,14 +2,14 @@ use std::sync::OnceLock;
 
 use super::{
     BrowserName,
-    compression::{decode, decompress_gzip},
+    compression::{decode, decompress_deflate},
 };
 
 use crate::data::decode_browser_name;
 pub use crate::generated::caniuse_feature_matching::get_feature_stat;
 
 static FEATURES_COMPRESSED: &[u8] =
-    include_bytes!("../../generated/caniuse_feature_matching.bin.gz");
+    include_bytes!("../../generated/caniuse_feature_matching.bin.deflate");
 static FEATURES_DECOMPRESSED: OnceLock<Vec<u8>> = OnceLock::new();
 
 pub struct FeatureSet {
@@ -39,7 +39,7 @@ impl Feature {
     }
 
     pub fn create_data(&self) -> Vec<(BrowserName, FeatureSet)> {
-        let data = FEATURES_DECOMPRESSED.get_or_init(|| decompress_gzip(FEATURES_COMPRESSED));
+        let data = FEATURES_DECOMPRESSED.get_or_init(|| decompress_deflate(FEATURES_COMPRESSED));
         let features =
             decode::<(u8, Vec<&'static str>, Vec<&'static str>)>(data, self.start, self.end);
         features

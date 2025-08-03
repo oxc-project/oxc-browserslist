@@ -9,7 +9,7 @@ pub mod node_versions;
 use std::{fs, io::Write, path::PathBuf};
 
 use anyhow::Result;
-use flate2::{Compression, write::GzEncoder};
+use flate2::{Compression, write::DeflateEncoder};
 use indexmap::IndexMap;
 use project_root::get_project_root;
 use serde::Deserialize;
@@ -19,10 +19,10 @@ fn root() -> PathBuf {
 }
 
 fn save_bin_compressed(file: &str, bytes: &[u8]) {
-    let mut encoder = GzEncoder::new(Vec::new(), Compression::best());
+    let mut encoder = DeflateEncoder::new(Vec::new(), Compression::best());
     encoder.write_all(bytes).unwrap();
     let compressed = encoder.finish().unwrap();
-    let file = format!("{}.gz", file);
+    let file = format!("{}.deflate", file);
     fs::write(root().join("src/generated").join(file), compressed).unwrap();
 }
 
