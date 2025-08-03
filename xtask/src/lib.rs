@@ -42,6 +42,18 @@ fn create_ranges(v: &Vec<Vec<u8>>) -> Vec<(u32, u32)> {
     ranges
 }
 
+fn create_range_vec(v: &Vec<Vec<u8>>) -> Vec<u32> {
+    let mut offset = 0;
+    // [start0, start1, ..., startN, endN]
+    let mut ranges = vec![];
+    for values in v {
+        ranges.push(offset as u32);
+        offset += values.len();
+    }
+    ranges.push(offset as u32);
+    ranges
+}
+
 pub fn parse_caniuse_global() -> Result<Caniuse> {
     let path = root().join("node_modules/caniuse-db/fulldata-json/data-2.0.json");
     let json = fs::read_to_string(path)?;
@@ -67,7 +79,7 @@ pub struct VersionDetail {
     pub release_date: Option<i64>, // unix timestamp (seconds)
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct Feature {
     pub stats: IndexMap<String, IndexMap<String, String>>,
 }
