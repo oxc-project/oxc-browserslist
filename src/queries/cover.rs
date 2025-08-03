@@ -1,5 +1,5 @@
 use super::{Distrib, QueryResult};
-use crate::data::caniuse::CANIUSE_GLOBAL_USAGE;
+use crate::data::{caniuse::CANIUSE_GLOBAL_USAGE, decode_browser_name};
 
 pub(super) fn cover(coverage: f32) -> QueryResult {
     let mut distribs = vec![];
@@ -8,7 +8,7 @@ pub(super) fn cover(coverage: f32) -> QueryResult {
         if total >= coverage || *usage == 0.0 {
             break;
         }
-        distribs.push(Distrib::new(name, *version));
+        distribs.push(Distrib::new(decode_browser_name(*name), *version));
         total += usage;
     }
     Ok(distribs)

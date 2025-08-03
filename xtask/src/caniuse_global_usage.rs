@@ -1,19 +1,20 @@
 use anyhow::Result;
 use quote::quote;
 
-use super::{Caniuse, generate_file};
+use super::{Caniuse, encode_browser_name, generate_file};
 
 pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
     let mut global_usage = data
         .agents
         .iter()
         .flat_map(|(name, agent)| {
+            let browser_id = encode_browser_name(name);
             agent.usage_global.iter().filter(|(_, usage)| **usage > 0.0f32).map(
                 move |(version, usage)| {
                     (
                         usage,
                         quote! {
-                            (#name, #version, #usage)
+                            (#browser_id, #version, #usage)
                         },
                     )
                 },
@@ -24,9 +25,10 @@ pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
     let push_usage = global_usage.into_iter().map(|(_, tokens)| tokens);
 
     let output = quote! {
-        use crate::data::BrowserName;
         /// only includes browsers with global usage > 0.0%
-        pub static CANIUSE_GLOBAL_USAGE: &[(BrowserName, &str, f32)] = &[#(#push_usage),*];
+        pub static CANIUSE_GLOBAL_USAGE: &[(u8, &str, f32)] = &[
+            #(#push_usage),*
+        ];
     };
 
     generate_file("caniuse_global_usage.rs", output);
