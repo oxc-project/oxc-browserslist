@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.14](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.13...oxc-browserslist-v2.0.14) - 2025-08-05
+
+### Other
+
+- use deflate instead of gzip
+- use binary_search for region matching
+- use browser id in `CANIUSE_GLOBAL_USAGE`
+- change release_date of VersionDetail to use NonZero
+- remove 0% usage browsers from CANIUSE_GLOBAL_USAGE
+- use binary_search for feature stat search
+- use u8 in semver struct
+
 ## [2.0.13](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.12...oxc-browserslist-v2.0.13) - 2025-08-03
 
 ### Other
