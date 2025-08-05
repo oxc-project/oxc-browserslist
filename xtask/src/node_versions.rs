@@ -18,9 +18,9 @@ pub fn build_node_versions() -> Result<()> {
     let versions = releases.into_iter().map(|release| {
         let version = release.version.split('.').collect::<Vec<_>>();
         assert_eq!(version.len(), 3);
-        let major: u8 = version[0].parse().unwrap();
-        let minor: u8 = version[1].parse().unwrap();
-        let patch: u8 = version[2].parse().unwrap();
+        let major: u16 = version[0].parse().unwrap();
+        let minor: u16 = version[1].parse().unwrap();
+        let patch: u16 = version[2].parse().unwrap();
         quote! {
             Version(#major, #minor, #patch)
         }
