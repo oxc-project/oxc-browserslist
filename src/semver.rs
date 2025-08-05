@@ -2,21 +2,21 @@ use std::{cmp::Ordering, fmt, num::ParseIntError, str::FromStr};
 
 /// Semver
 #[derive(PartialEq, Eq, PartialOrd, Ord, Default, Debug, Copy, Clone)]
-pub struct Version(pub u8, pub u8, pub u8);
+pub struct Version(pub u16, pub u16, pub u16);
 
 impl Version {
     #[inline]
-    pub fn major(&self) -> u8 {
+    pub fn major(&self) -> u16 {
         self.0
     }
 
     #[inline]
-    pub fn minor(&self) -> u8 {
+    pub fn minor(&self) -> u16 {
         self.1
     }
 
     #[inline]
-    pub fn patch(&self) -> u8 {
+    pub fn patch(&self) -> u16 {
         self.2
     }
 
@@ -42,7 +42,7 @@ impl Version {
         let Some(first) = b.next() else {
             return Ordering::Equal;
         };
-        let first: u8 = first.parse().unwrap_or_default();
+        let first: u16 = first.parse().unwrap_or_default();
         let x = self.0.cmp(&first);
         if !x.is_eq() {
             return x;
@@ -50,7 +50,7 @@ impl Version {
         let Some(second) = b.next() else {
             return Ordering::Equal;
         };
-        let second: u8 = second.parse().unwrap_or_default();
+        let second: u16 = second.parse().unwrap_or_default();
         self.1.cmp(&second)
     }
 }

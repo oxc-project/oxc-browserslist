@@ -10,9 +10,9 @@ pub(super) fn node_accurate(version_str: &str, opts: &Opts) -> QueryResult {
     }
 
     let mut s = version_str.split('.');
-    let major = s.next().map(|n| n.parse::<u8>().unwrap_or_default());
-    let minor = s.next().map(|n| n.parse::<u8>().unwrap_or_default());
-    let patch = s.next().map(|n| n.parse::<u8>().unwrap_or_default());
+    let major = s.next().map(|n| n.parse::<u16>().unwrap_or_default());
+    let minor = s.next().map(|n| n.parse::<u16>().unwrap_or_default());
+    let patch = s.next().map(|n| n.parse::<u16>().unwrap_or_default());
 
     let distribs = NODE_VERSIONS
         .iter()

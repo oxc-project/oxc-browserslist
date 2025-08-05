@@ -31,9 +31,9 @@ pub fn build_node_release_schedule() -> Result<()> {
             let version = version.trim_start_matches('v');
             let version = version.split('.').collect::<Vec<_>>();
             assert!(version.len() > 0);
-            let major: u8 = version[0].parse().unwrap();
-            let minor: u8 = version.get(1).map(|v| v.parse().unwrap()).unwrap_or_default();
-            let patch: u8 = version.get(2).map(|v| v.parse().unwrap()).unwrap_or_default();
+            let major: u16 = version[0].parse().unwrap();
+            let minor: u16 = version.get(1).map(|v| v.parse().unwrap()).unwrap_or_default();
+            let patch: u16 = version.get(2).map(|v| v.parse().unwrap()).unwrap_or_default();
             let start_julian_day = parse_date(&start);
             let end_julian_day = parse_date(&end);
             quote! {
