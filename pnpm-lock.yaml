@@ -13,10 +13,10 @@ importers:
         version: 4.25.2
       caniuse-db:
         specifier: 1.x
-        version: 1.0.30001733
+        version: 1.0.30001734
       electron-to-chromium:
         specifier: 1.x
-        version: 1.5.199
+        version: 1.5.200
       node-releases:
         specifier: 2.x
         version: 2.0.19
@@ -51,11 +51,11 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
-  caniuse-db@1.0.30001733:
-    resolution: {integrity: sha512-jzLJlR32mjQc7N1FdG2Vh3gi6QOmD4YA8uJwiD9XAvR4t2WMS7rWXx/DvOG4A9Sjpn4UgGnw9lXwVxRMK9tlWw==}
+  caniuse-db@1.0.30001734:
+    resolution: {integrity: sha512-RMvfptbdOaRwcnNnPsKyKwJJMlIDDcNpaoZwk7yYu8Xgowc9WZ1sC2yj3QebbjDJiaPXtX8sp4934VMCQcIHDQ==}
 
-  caniuse-lite@1.0.30001733:
-    resolution: {integrity: sha512-e4QKw/O2Kavj2VQTKZWrwzkt3IxOmIlU6ajRb6LP64LHpBo1J67k2Hi4Vu/TgJWsNtynurfS0uK3MaUTCPfu5Q==}
+  caniuse-lite@1.0.30001734:
+    resolution: {integrity: sha512-uhE1Ye5vgqju6OI71HTQqcBCZrvHugk0MjLak7Q+HfoBgoq5Bi+5YnwjP4fjDgrtYr/l8MVRBvzz9dPD4KyK0A==}
 
   chalk@5.5.0:
     resolution: {integrity: sha512-1tm8DTaJhPBG3bIkVeZt1iZM9GfSX2lzOeDVZH9R9ffRHpmHvxZ/QhgQH/aDTkswQVt+YHdXAdS/In/30OjCbg==}
@@ -85,8 +85,8 @@ packages:
       supports-color:
         optional: true
 
-  electron-to-chromium@1.5.199:
-    resolution: {integrity: sha512-3gl0S7zQd88kCAZRO/DnxtBKuhMO4h0EaQIN3YgZfV6+pW+5+bf2AdQeHNESCoaQqo/gjGVYEf2YM4O5HJQqpQ==}
+  electron-to-chromium@1.5.200:
+    resolution: {integrity: sha512-rFCxROw7aOe4uPTfIAx+rXv9cEcGx+buAF4npnhtTqCJk5KDFRnh3+KYj7rdVh6lsFt5/aPs+Irj9rZ33WMA7w==}
 
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
@@ -243,14 +243,14 @@ snapshots:
 
   browserslist@4.25.2:
     dependencies:
-      caniuse-lite: 1.0.30001733
-      electron-to-chromium: 1.5.199
+      caniuse-lite: 1.0.30001734
+      electron-to-chromium: 1.5.200
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.25.2)
 
-  caniuse-db@1.0.30001733: {}
+  caniuse-db@1.0.30001734: {}
 
-  caniuse-lite@1.0.30001733: {}
+  caniuse-lite@1.0.30001734: {}
 
   chalk@5.5.0: {}
 
@@ -271,7 +271,7 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  electron-to-chromium@1.5.199: {}
+  electron-to-chromium@1.5.200: {}
 
   emoji-regex@10.4.0: {}
 
