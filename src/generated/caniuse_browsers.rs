@@ -847,7 +847,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                             Some(NonZero::new(1743379200i64).unwrap()),
                         ),
                         VersionDetail(
-                            "18.5",
+                            "18.5-18.6",
                             1.37484f32,
                             Some(NonZero::new(1747008000i64).unwrap()),
                         ),
@@ -1200,7 +1200,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                             Some(NonZero::new(1743379200i64).unwrap()),
                         ),
                         VersionDetail(
-                            "18.5",
+                            "18.5-18.6",
                             9.39442f32,
                             Some(NonZero::new(1747008000i64).unwrap()),
                         ),
