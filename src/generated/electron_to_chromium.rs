@@ -197,6 +197,7 @@ pub static ELECTRON_VERSIONS: &[(ElectronVersion, &str)] = &[
     (ElectronVersion::new(36u16, 5u16), "136"),
     (ElectronVersion::new(36u16, 6u16), "136"),
     (ElectronVersion::new(36u16, 7u16), "136"),
+    (ElectronVersion::new(36u16, 8u16), "136"),
     (ElectronVersion::new(37u16, 0u16), "138"),
     (ElectronVersion::new(37u16, 1u16), "138"),
     (ElectronVersion::new(37u16, 2u16), "138"),
