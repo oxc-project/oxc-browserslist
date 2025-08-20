@@ -1,5 +1,5 @@
 use crate::data::caniuse::features::Feature;
-use crate::data::caniuse::{decompress_deflate};
+use crate::data::caniuse::{decode, decompress_deflate};
 use rustc_hash::FxHashMap;
 use std::sync::OnceLock;
 static LOOKUP_COMPRESSED: &[u8] = include_bytes!("caniuse_feature_lookup.bin.deflate");
