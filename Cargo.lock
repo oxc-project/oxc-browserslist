@@ -823,6 +823,7 @@ dependencies = [
  "proc-macro2",
  "project-root",
  "quote",
+ "rustc-hash",
  "serde",
  "serde_json",
  "syn",
