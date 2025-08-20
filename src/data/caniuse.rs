@@ -5,7 +5,7 @@ use rustc_hash::FxHashMap;
 use crate::data::BrowserName;
 
 mod compression;
-pub use compression::decompress_deflate;
+pub use compression::{decode, decompress_deflate};
 pub mod features;
 pub mod region;
 
