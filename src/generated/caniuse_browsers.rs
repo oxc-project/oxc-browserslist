@@ -192,7 +192,11 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                             Some(NonZero::new(1748476800i64).unwrap()),
                         ),
                         VersionDetail("138", 4.0602f32, Some(NonZero::new(1750896000i64).unwrap())),
-                        VersionDetail("139", 0f32, Some(NonZero::new(1754611200i64).unwrap())),
+                        VersionDetail(
+                            "139",
+                            0.01206f32,
+                            Some(NonZero::new(1754611200i64).unwrap()),
+                        ),
                     ],
                 },
             ),
@@ -1203,7 +1207,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         ),
                         VersionDetail(
                             "18.5-18.6",
-                            9.39442f32,
+                            9.49672f32,
                             Some(NonZero::new(1747008000i64).unwrap()),
                         ),
                         VersionDetail("26.0", 0.0215376f32, None),
@@ -1296,9 +1300,9 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                 BrowserStat {
                     name: "and_ff",
                     version_list: vec![VersionDetail(
-                        "141",
+                        "142",
                         0.3289f32,
-                        Some(NonZero::new(1753142400i64).unwrap()),
+                        Some(NonZero::new(1755648000i64).unwrap()),
                     )],
                 },
             ),
