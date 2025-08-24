@@ -6,7 +6,7 @@
     "browserslist": "browserslist"
   },
   "dependencies": {
-    "browserslist": "4.25.2"
+    "browserslist": "4.25.3"
   },
   "peerDependencies": {
     "caniuse-db": "1.x",
@@ -23,7 +23,7 @@
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.15.0",
   "volta": {
     "node": "22.11.0"
   }
