@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.17](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.16...oxc-browserslist-v2.0.17) - 2025-09-06
+
+### Other
+
+- Update browserslist ([#278](https://github.com/oxc-project/oxc-browserslist/pull/278))
+- Update browserslist ([#277](https://github.com/oxc-project/oxc-browserslist/pull/277))
+- *(deps)* lock file maintenance ([#269](https://github.com/oxc-project/oxc-browserslist/pull/269))
+- Update browserslist ([#266](https://github.com/oxc-project/oxc-browserslist/pull/266))
+- Update browserslist ([#265](https://github.com/oxc-project/oxc-browserslist/pull/265))
+- Update browserslist ([#263](https://github.com/oxc-project/oxc-browserslist/pull/263))
+- *(deps)* lock file maintenance rust crates ([#262](https://github.com/oxc-project/oxc-browserslist/pull/262))
+- Update browserslist ([#259](https://github.com/oxc-project/oxc-browserslist/pull/259))
+- Update browserslist ([#258](https://github.com/oxc-project/oxc-browserslist/pull/258))
+- *(deps)* lock file maintenance rust crates ([#253](https://github.com/oxc-project/oxc-browserslist/pull/253))
+- Update browserslist ([#248](https://github.com/oxc-project/oxc-browserslist/pull/248))
+
 ## [2.0.16](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.0.15...oxc-browserslist-v2.0.16) - 2025-08-16
 
 ### Other
