@@ -4,7 +4,7 @@ use anyhow::Result;
 use indexmap::IndexMap;
 use quote::quote;
 
-use super::{generate_file, root};
+use crate::utils::{generate_file, root};
 
 pub fn build_electron_to_chromium() -> Result<()> {
     let data_path = root().join("node_modules/electron-to-chromium/versions.json");

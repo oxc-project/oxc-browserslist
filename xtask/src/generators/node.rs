@@ -6,12 +6,44 @@ use quote::quote;
 use serde::Deserialize;
 use time::OffsetDateTime;
 
-use super::{generate_file, root};
+use crate::utils::{generate_file, root};
 
+// Node versions structures
 #[derive(Deserialize)]
 struct NodeRelease {
+    version: String,
+}
+
+// Node release schedule structures
+#[derive(Deserialize)]
+struct NodeScheduleRelease {
     start: String,
     end: String,
+}
+
+pub fn build_node_versions() -> Result<()> {
+    let releases_path = root().join("node_modules/node-releases/data/processed/envs.json");
+    let releases: Vec<NodeRelease> = serde_json::from_slice(&fs::read(releases_path)?)?;
+
+    let versions = releases.into_iter().map(|release| {
+        let version = release.version.split('.').collect::<Vec<_>>();
+        assert_eq!(version.len(), 3);
+        let major: u16 = version[0].parse().unwrap();
+        let minor: u16 = version[1].parse().unwrap();
+        let patch: u16 = version[2].parse().unwrap();
+        quote! {
+            Version(#major, #minor, #patch)
+        }
+    });
+    let output = quote! {
+        use crate::semver::Version;
+
+        pub static NODE_VERSIONS: &[Version] = &[#(#versions),*];
+    };
+
+    generate_file("node_versions.rs", output);
+
+    Ok(())
 }
 
 fn parse_date(s: &str) -> i32 {
@@ -23,11 +55,11 @@ fn parse_date(s: &str) -> i32 {
 pub fn build_node_release_schedule() -> Result<()> {
     let schedule_path =
         root().join("node_modules/node-releases/data/release-schedule/release-schedule.json");
-    let schedule: IndexMap<String, NodeRelease> =
+    let schedule: IndexMap<String, NodeScheduleRelease> =
         serde_json::from_slice(&fs::read(schedule_path)?)?;
     let versions = schedule
         .into_iter()
-        .map(|(version, NodeRelease { start, end })| {
+        .map(|(version, NodeScheduleRelease { start, end })| {
             let version = version.trim_start_matches('v');
             let version = version.split('.').collect::<Vec<_>>();
             assert!(version.len() > 0);

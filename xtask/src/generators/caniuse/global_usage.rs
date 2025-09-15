@@ -1,7 +1,8 @@
 use anyhow::Result;
 use quote::quote;
 
-use super::{Caniuse, encode_browser_name, generate_file};
+use crate::data::{Caniuse, encode_browser_name};
+use crate::utils::generate_file;
 
 pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
     let mut global_usage = data

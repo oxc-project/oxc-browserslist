@@ -2,7 +2,8 @@ use anyhow::Result;
 use bincode::encode_to_vec;
 use quote::quote;
 
-use super::{Caniuse, create_range_vec, encode_browser_name, generate_file, save_bin_compressed};
+use crate::data::{Caniuse, encode_browser_name};
+use crate::utils::{create_range_vec, generate_file, save_bin_compressed};
 
 pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     let mut sorted_data = data.data.clone();

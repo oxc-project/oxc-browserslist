@@ -6,9 +6,8 @@ use indexmap::IndexMap;
 use quote::quote;
 use serde::Deserialize;
 
-use super::{
-    Caniuse, create_range_vec, encode_browser_name, generate_file, root, save_bin_compressed,
-};
+use crate::data::{Caniuse, encode_browser_name};
+use crate::utils::{create_range_vec, generate_file, root, save_bin_compressed};
 
 #[derive(Deserialize)]
 struct RegionData {

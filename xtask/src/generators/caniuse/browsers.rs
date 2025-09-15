@@ -1,7 +1,8 @@
 use anyhow::Result;
 use quote::quote;
 
-use super::{Caniuse, generate_file};
+use crate::data::Caniuse;
+use crate::utils::generate_file;
 
 pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
     let browser_stat = data.agents.iter().map(|(name, agent)| {
