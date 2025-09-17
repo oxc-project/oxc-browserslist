@@ -339,4 +339,5 @@ pub static NODE_VERSIONS: &[Version] = &[
     Version(24u16, 5u16, 0u16),
     Version(24u16, 6u16, 0u16),
     Version(24u16, 7u16, 0u16),
+    Version(24u16, 8u16, 0u16),
 ];
