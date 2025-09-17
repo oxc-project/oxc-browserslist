@@ -4,7 +4,7 @@ use rustc_hash::FxHashMap;
 
 use crate::data::BrowserName;
 
-mod compression;
+pub mod compression;
 pub mod features;
 pub mod region;
 
