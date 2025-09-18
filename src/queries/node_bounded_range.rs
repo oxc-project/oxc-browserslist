@@ -4,7 +4,7 @@ use super::{Distrib, QueryResult};
 use crate::data::node::NODE_VERSIONS;
 
 pub(super) fn node_bounded_range(from: &str, to: &str) -> QueryResult {
-    let distribs = NODE_VERSIONS
+    let distribs = NODE_VERSIONS()
         .iter()
         .filter(|version| {
             matches!(version.loose_compare(from), Ordering::Greater | Ordering::Equal)
