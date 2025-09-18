@@ -1,12 +1,13 @@
 use std::fs;
 
 use anyhow::Result;
+use bincode::encode_to_vec;
 use indexmap::IndexMap;
 use quote::quote;
 use serde::Deserialize;
 use time::OffsetDateTime;
 
-use crate::utils::{generate_file, root};
+use crate::utils::{generate_file, root, save_bin_compressed};
 
 // Node versions structures
 #[derive(Deserialize)]
@@ -25,23 +26,22 @@ pub fn build_node_versions() -> Result<()> {
     let releases_path = root().join("node_modules/node-releases/data/processed/envs.json");
     let releases: Vec<NodeRelease> = serde_json::from_slice(&fs::read(releases_path)?)?;
 
-    let versions = releases.into_iter().map(|release| {
-        let version = release.version.split('.').collect::<Vec<_>>();
-        assert_eq!(version.len(), 3);
-        let major: u16 = version[0].parse().unwrap();
-        let minor: u16 = version[1].parse().unwrap();
-        let patch: u16 = version[2].parse().unwrap();
-        quote! {
-            Version(#major, #minor, #patch)
-        }
-    });
-    let output = quote! {
-        use crate::semver::Version;
+    // Prepare data for compression
+    let versions_data: Vec<(u16, u16, u16)> = releases
+        .iter()
+        .map(|release| {
+            let version = release.version.split('.').collect::<Vec<_>>();
+            assert_eq!(version.len(), 3);
+            let major: u16 = version[0].parse().unwrap();
+            let minor: u16 = version[1].parse().unwrap();
+            let patch: u16 = version[2].parse().unwrap();
+            (major, minor, patch)
+        })
+        .collect();
 
-        pub static NODE_VERSIONS: &[Version] = &[#(#versions),*];
-    };
-
-    generate_file("node_versions.rs", output);
+    // Serialize and compress the data
+    let serialized = encode_to_vec(&versions_data, bincode::config::standard())?;
+    save_bin_compressed("node_versions.bin", &serialized);
 
     Ok(())
 }

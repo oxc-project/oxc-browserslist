@@ -14,7 +14,7 @@ pub(super) fn node_accurate(version_str: &str, opts: &Opts) -> QueryResult {
     let minor = s.next().map(|n| n.parse::<u16>().unwrap_or_default());
     let patch = s.next().map(|n| n.parse::<u16>().unwrap_or_default());
 
-    let distribs = NODE_VERSIONS
+    let distribs = NODE_VERSIONS()
         .iter()
         .rev()
         .find(|v| {
