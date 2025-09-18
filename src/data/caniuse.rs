@@ -45,7 +45,7 @@ pub use crate::generated::caniuse_global_usage::CANIUSE_GLOBAL_USAGE;
 pub fn caniuse_browsers() -> &'static CaniuseData {
     static CANIUSE_BROWSERS: OnceLock<CaniuseData> = OnceLock::new();
     CANIUSE_BROWSERS.get_or_init(|| {
-        const COMPRESSED: &[u8] = include_bytes!("../../generated/caniuse_browsers.bin.deflate");
+        const COMPRESSED: &[u8] = include_bytes!("../generated/caniuse_browsers.bin.deflate");
         let decompressed = compression::decompress_deflate(COMPRESSED);
         type BrowserData = Vec<(String, String, Vec<(String, f32, Option<i64>)>)>;
         let data: BrowserData =
