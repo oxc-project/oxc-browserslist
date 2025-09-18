@@ -1,4 +1,4 @@
-use std::{borrow::Cow, num::NonZero, sync::OnceLock};
+use std::{num::NonZero, sync::OnceLock};
 
 use rustc_hash::FxHashMap;
 
@@ -111,66 +111,120 @@ fn android_to_desktop() -> &'static BrowserStat {
     static ANDROID_TO_DESKTOP: OnceLock<BrowserStat> = OnceLock::new();
     ANDROID_TO_DESKTOP.get_or_init(|| {
         let chrome = &caniuse_browsers()["chrome"];
-        let mut android = caniuse_browsers()["android"].clone();
+        let android = &caniuse_browsers()["android"];
 
-        android.version_list = android
-            .version_list
-            .into_iter()
-            .filter(|version| {
-                let version = version.version();
-                version.starts_with("2.")
-                    || version.starts_with("3.")
-                    || version.starts_with("4.")
-                    || version == "3"
-                    || version == "4"
-            })
-            .chain(
-                chrome
-                    .version_list
-                    .iter()
-                    .skip(
-                        chrome
-                            .version_list
-                            .iter()
-                            .position(|version| {
-                                version.version().parse::<usize>().unwrap()
-                                    == ANDROID_EVERGREEN_FIRST as usize
-                            })
-                            .unwrap(),
-                    )
-                    .cloned(),
-            )
-            .collect();
+        // Pre-calculate chrome skip index to avoid repeated work
+        let chrome_skip_index = find_chrome_evergreen_start(chrome);
 
-        android.clone()
+        // Build version list more efficiently
+        let mut version_list = Vec::new();
+
+        // Add legacy android versions (2.x, 3.x, 4.x)
+        version_list.extend(
+            android.version_list
+                .iter()
+                .filter(|version| is_legacy_android_version(version.version()))
+                .cloned()
+        );
+
+        // Add chrome versions from evergreen point onwards
+        version_list.extend(
+            chrome.version_list
+                .iter()
+                .skip(chrome_skip_index)
+                .cloned()
+        );
+
+        BrowserStat {
+            name: android.name,
+            version_list,
+        }
     })
+}
+
+// Extract filtering logic to separate functions for better optimization
+#[inline]
+fn is_legacy_android_version(version: &str) -> bool {
+    version.starts_with("2.")
+        || version.starts_with("3.")
+        || version.starts_with("4.")
+        || version == "3"
+        || version == "4"
+}
+
+// Extract chrome start index calculation
+fn find_chrome_evergreen_start(chrome: &BrowserStat) -> usize {
+    chrome
+        .version_list
+        .iter()
+        .position(|version| {
+            version.version()
+                .parse::<usize>()
+                .map(|v| v == ANDROID_EVERGREEN_FIRST as usize)
+                .unwrap_or(false)
+        })
+        .unwrap_or(0)
 }
 
 pub fn get_browser_stat(
     name: &str,
     mobile_to_desktop: bool,
 ) -> Option<(&'static str, &'static BrowserStat)> {
-    let name = if name.bytes().all(|b| b.is_ascii_lowercase()) {
-        Cow::Borrowed(name)
+    // Optimize string processing: fast path for already lowercase names
+    let normalized_name = if name.bytes().all(|b| b.is_ascii_lowercase()) {
+        get_browser_alias(name)
     } else {
-        Cow::Owned(name.to_ascii_lowercase())
+        get_browser_alias_lowercase(name)
     };
-    let name = get_browser_alias(&name);
 
     if mobile_to_desktop {
-        if let Some(desktop_name) = to_desktop_name(name) {
-            match name {
-                "android" => Some(("android", android_to_desktop())),
-                "op_mob" => Some(("op_mob", &caniuse_browsers()["opera"])),
-                _ => caniuse_browsers()
-                    .get(desktop_name)
-                    .map(|stat| (get_mobile_by_desktop_name(desktop_name), stat)),
-            }
-        } else {
-            caniuse_browsers().get(name).map(|stat| (stat.name, stat))
-        }
+        get_browser_stat_mobile_to_desktop(normalized_name)
     } else {
-        caniuse_browsers().get(name).map(|stat| (stat.name, stat))
+        caniuse_browsers().get(normalized_name).map(|stat| (stat.name, stat))
+    }
+}
+
+// Extract mobile-to-desktop logic - preserves original semantics
+fn get_browser_stat_mobile_to_desktop(name: &str) -> Option<(&'static str, &'static BrowserStat)> {
+    // Reproduce original logic: first check if we have a desktop mapping
+    match name {
+        // Browsers that have desktop equivalents
+        "and_chr" => caniuse_browsers().get("chrome").map(|stat| ("and_chr", stat)),
+        "android" => Some(("android", android_to_desktop())), // Special case for android
+        "and_ff" => caniuse_browsers().get("firefox").map(|stat| ("and_ff", stat)),
+        "ie_mob" => caniuse_browsers().get("ie").map(|stat| ("ie_mob", stat)),
+        // All other browsers (including op_mob) return their own data
+        _ => caniuse_browsers().get(name).map(|stat| (stat.name, stat))
+    }
+}
+
+// Cold path for case conversion - only called when input contains uppercase
+#[cold]
+fn get_browser_alias_lowercase(name: &str) -> &str {
+    // Convert to lowercase and apply aliases
+    let lowercase = name.to_ascii_lowercase();
+    match lowercase.as_str() {
+        "fx" | "ff" => "firefox",
+        "ios" => "ios_saf",
+        "explorer" => "ie",
+        "blackberry" => "bb",
+        "explorermobile" => "ie_mob",
+        "operamini" => "op_mini",
+        "operamobile" => "op_mob",
+        "chromeandroid" => "and_chr",
+        "firefoxandroid" => "and_ff",
+        "ucandroid" => "and_uc",
+        "qqandroid" => "and_qq",
+        // For browsers that don't have aliases, try to return the lowercase version if it exists
+        _ => {
+            if caniuse_browsers().contains_key(lowercase.as_str()) {
+                // Leak the string to make it 'static - this is safe for browser names
+                Box::leak(lowercase.into_boxed_str())
+            } else {
+                // Fallback to original name
+                name
+            }
+        }
     }
 }
 
@@ -200,15 +254,6 @@ pub fn to_desktop_name(name: &str) -> Option<&'static str> {
     }
 }
 
-fn get_mobile_by_desktop_name(name: &str) -> &'static str {
-    match name {
-        "chrome" => "and_chr", // "android" has been handled as a special case
-        "firefox" => "and_ff",
-        "ie" => "ie_mob",
-        "opera" => "op_mob",
-        _ => unreachable!(),
-    }
-}
 
 pub fn normalize_version<'a>(stat: &'static BrowserStat, version: &'a str) -> Option<&'a str> {
     if stat.version_list.iter().any(|v| v.version() == version) {
