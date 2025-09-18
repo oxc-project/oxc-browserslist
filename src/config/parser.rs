@@ -21,7 +21,7 @@ pub fn parse(source: &str, env: &str, throw_on_missing: bool) -> Result<PartialC
 
         if line.starts_with('[') && line.ends_with(']') {
             // Parse section header inline
-            let sections: Vec<&str> = line[1..line.len() - 1].trim().split_whitespace().collect();
+            let sections: Vec<&str> = line[1..line.len() - 1].split_whitespace().collect();
 
             // Check for duplicates and collect into owned strings
             for section in &sections {
