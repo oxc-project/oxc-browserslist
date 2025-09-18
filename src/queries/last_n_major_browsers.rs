@@ -25,7 +25,8 @@ pub(super) fn last_n_major_browsers(count: usize, opts: &Opts) -> QueryResult {
                 }
             }
 
-            let minimum = unique_majors.get(count - 1).and_then(|minimum| minimum.parse().ok()).unwrap_or(0);
+            let minimum =
+                unique_majors.get(count - 1).and_then(|minimum| minimum.parse().ok()).unwrap_or(0);
 
             stat.version_list
                 .iter()

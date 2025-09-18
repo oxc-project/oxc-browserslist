@@ -19,7 +19,8 @@ pub(super) fn last_n_x_major_browsers(count: usize, name: &str, opts: &Opts) -> 
         }
     }
 
-    let minimum = unique_majors.get(count - 1).and_then(|minimum| minimum.parse().ok()).unwrap_or(0);
+    let minimum =
+        unique_majors.get(count - 1).and_then(|minimum| minimum.parse().ok()).unwrap_or(0);
 
     let distribs = stat
         .version_list
