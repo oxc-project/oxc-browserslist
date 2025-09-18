@@ -4,7 +4,7 @@ use rustc_hash::FxHashMap;
 
 use crate::data::BrowserName;
 
-mod compression;
+pub mod compression;
 pub mod features;
 pub mod region;
 
@@ -40,9 +40,34 @@ impl VersionDetail {
 
 pub type CaniuseData = FxHashMap<BrowserName, BrowserStat>;
 
-pub use crate::generated::{
-    caniuse_browsers::caniuse_browsers, caniuse_global_usage::CANIUSE_GLOBAL_USAGE,
-};
+pub use crate::generated::caniuse_global_usage::CANIUSE_GLOBAL_USAGE;
+
+pub fn caniuse_browsers() -> &'static CaniuseData {
+    static CANIUSE_BROWSERS: OnceLock<CaniuseData> = OnceLock::new();
+    CANIUSE_BROWSERS.get_or_init(|| {
+        const COMPRESSED: &[u8] = include_bytes!("../generated/caniuse_browsers.bin.deflate");
+        let decompressed = compression::decompress_deflate(COMPRESSED);
+        type BrowserData = Vec<(String, String, Vec<(String, f32, Option<i64>)>)>;
+        let data: BrowserData =
+            bincode::decode_from_slice(&decompressed, bincode::config::standard()).unwrap().0;
+        data.into_iter()
+            .map(|(_key, name, version_list)| {
+                let name_static = Box::leak(name.into_boxed_str());
+                let stat = BrowserStat {
+                    name: name_static,
+                    version_list: version_list
+                        .into_iter()
+                        .map(|(ver, usage, date)| {
+                            let ver_static = Box::leak(ver.into_boxed_str());
+                            VersionDetail(ver_static, usage, date.and_then(NonZero::new))
+                        })
+                        .collect(),
+                };
+                (name_static as &str, stat)
+            })
+            .collect()
+    })
+}
 
 pub fn browser_version_aliases()
 -> &'static FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>> {

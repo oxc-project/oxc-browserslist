@@ -24,9 +24,9 @@ fn run() -> Result<()> {
     let caniuse = xtask::data::parse_caniuse_global()?;
 
     // Generate caniuse data
+    xtask::generators::caniuse::build_caniuse_browsers(&caniuse)?;
     xtask::generators::caniuse::build_caniuse_feature_matching(&caniuse)?;
     xtask::generators::caniuse::build_caniuse_global_usage(&caniuse)?;
-    xtask::generators::caniuse::build_caniuse_browsers(&caniuse)?;
     xtask::generators::caniuse::build_caniuse_region_matching(&caniuse)?;
 
     // Format the generated code
