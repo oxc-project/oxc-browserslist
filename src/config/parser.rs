@@ -12,11 +12,8 @@ pub fn parse(source: &str, env: &str, throw_on_missing: bool) -> Result<PartialC
     // Process lines efficiently in a single loop
     for line in source.lines() {
         // Remove comments and trim in one step
-        let line = if let Some(index) = line.find('#') {
-            line[..index].trim()
-        } else {
-            line.trim()
-        };
+        let line =
+            if let Some(index) = line.find('#') { line[..index].trim() } else { line.trim() };
 
         if line.is_empty() {
             continue;
@@ -24,10 +21,7 @@ pub fn parse(source: &str, env: &str, throw_on_missing: bool) -> Result<PartialC
 
         if line.starts_with('[') && line.ends_with(']') {
             // Parse section header inline
-            let sections: Vec<&str> = line[1..line.len()-1]
-                .trim()
-                .split_whitespace()
-                .collect();
+            let sections: Vec<&str> = line[1..line.len() - 1].trim().split_whitespace().collect();
 
             // Check for duplicates and collect into owned strings
             for section in &sections {
@@ -59,12 +53,8 @@ pub fn parse(source: &str, env: &str, throw_on_missing: bool) -> Result<PartialC
         return Err(Error::MissingEnv(env.to_string()));
     }
 
-    Ok(PartialConfig {
-        defaults: defaults_queries,
-        env: env_queries,
-    })
+    Ok(PartialConfig { defaults: defaults_queries, env: env_queries })
 }
-
 
 #[cfg(test)]
 mod tests {
