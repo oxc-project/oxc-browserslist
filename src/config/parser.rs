@@ -6,63 +6,65 @@ use crate::error::Error;
 pub fn parse(source: &str, env: &str, throw_on_missing: bool) -> Result<PartialConfig, Error> {
     let mut encountered_sections = FxHashSet::default();
     let mut current_section = Some("defaults");
+    let mut defaults_queries = Vec::new();
+    let mut env_queries: Option<Vec<String>> = None;
 
-    let config = source
-        .lines()
-        .map(|line| if let Some(index) = line.find('#') { &line[..index] } else { line })
-        .map(str::trim)
-        .filter(|line| !line.is_empty())
-        .try_fold(
-            (Vec::new(), Option::<Vec<String>>::None),
-            |(mut defaults_queries, mut env_queries), line| {
-                if line.starts_with('[') && line.ends_with(']') {
-                    let sections = line
-                        .trim()
-                        .trim_start_matches('[')
-                        .trim_end_matches(']')
-                        .split(' ')
-                        .filter(|env| !env.is_empty())
-                        .collect::<Vec<_>>();
-                    current_section = sections.iter().find(|section| **section == env).copied();
-                    for section in sections {
-                        if encountered_sections.contains(section) {
-                            return Err(Error::DuplicatedSection(section.to_string()));
-                        }
-                        encountered_sections.insert(section);
-                    }
-                    Ok((
-                        defaults_queries,
-                        if env_queries.is_some() {
-                            // we've collected queries of current env, so return it as-is
-                            env_queries
-                        } else if encountered_sections.contains(env) {
-                            // get ready for collecting queries of current env
-                            Some(vec![])
-                        } else {
-                            None
-                        },
-                    ))
-                } else {
-                    if current_section.is_some() {
-                        // if env queries are prepared, we should add queries to them, not the "defaults"
-                        if let Some(env_queries) = env_queries.as_mut() {
-                            env_queries.push(line.to_string());
-                        } else {
-                            defaults_queries.push(line.to_string());
-                        }
-                    }
-                    Ok((defaults_queries, env_queries))
+    // Process lines efficiently in a single loop
+    for line in source.lines() {
+        // Remove comments and trim in one step
+        let line = if let Some(index) = line.find('#') {
+            line[..index].trim()
+        } else {
+            line.trim()
+        };
+
+        if line.is_empty() {
+            continue;
+        }
+
+        if line.starts_with('[') && line.ends_with(']') {
+            // Parse section header inline
+            let sections: Vec<&str> = line[1..line.len()-1]
+                .trim()
+                .split_whitespace()
+                .collect();
+
+            // Check for duplicates and collect into owned strings
+            for section in &sections {
+                if encountered_sections.contains(*section) {
+                    return Err(Error::DuplicatedSection(section.to_string()));
                 }
-            },
-        )
-        .map(|(defaults, env)| PartialConfig { defaults, env });
+                encountered_sections.insert(section.to_string());
+            }
 
-    if throw_on_missing && env != "defaults" && !encountered_sections.contains(env) {
-        Err(Error::MissingEnv(env.to_string()))
-    } else {
-        config
+            // Update current section
+            current_section = sections.iter().find(|&&s| s == env).copied();
+
+            // Initialize env queries if needed
+            if env_queries.is_none() && encountered_sections.contains(env) {
+                env_queries = Some(Vec::new());
+            }
+        } else if current_section.is_some() {
+            // Add query to appropriate collection
+            if let Some(ref mut env_queries) = env_queries {
+                env_queries.push(line.to_string());
+            } else {
+                defaults_queries.push(line.to_string());
+            }
+        }
     }
+
+    // Validate environment requirement
+    if throw_on_missing && env != "defaults" && !encountered_sections.contains(env) {
+        return Err(Error::MissingEnv(env.to_string()));
+    }
+
+    Ok(PartialConfig {
+        defaults: defaults_queries,
+        env: env_queries,
+    })
 }
+
 
 #[cfg(test)]
 mod tests {
