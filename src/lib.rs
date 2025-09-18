@@ -94,11 +94,20 @@ pub fn resolve<S>(queries: &[S], opts: &Opts) -> Result<Vec<Distrib>, Error>
 where
     S: AsRef<str>,
 {
-    if queries.len() == 1 {
-        _resolve(queries[0].as_ref(), opts)
-    } else {
-        let s = &queries.iter().map(|q| q.as_ref()).collect::<Vec<_>>().join(",");
-        _resolve(s, opts)
+    match queries.len() {
+        1 => _resolve(queries[0].as_ref(), opts),
+        _ => {
+            // Pre-calculate capacity to avoid reallocations
+            let total_len: usize = queries.iter().map(|q| q.as_ref().len() + 1).sum();
+            let mut s = String::with_capacity(total_len);
+            for (i, q) in queries.iter().enumerate() {
+                if i > 0 {
+                    s.push(',');
+                }
+                s.push_str(q.as_ref());
+            }
+            _resolve(&s, opts)
+        }
     }
 }
 
@@ -108,26 +117,53 @@ fn _resolve(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
     let mut distribs = vec![];
     for (i, current) in queries.1.into_iter().enumerate() {
         if i == 0 && current.negated {
-            return Err(Error::NotAtFirst(current.raw.to_string()));
+            return handle_first_negated_error(current.raw.to_string());
         }
 
-        let mut dist = queries::query(current.atom, opts)?;
-        if current.negated {
-            distribs.retain(|distrib| !dist.contains(distrib));
-        } else if current.is_and {
-            distribs.retain(|distrib| dist.contains(distrib));
-        } else {
-            distribs.append(&mut dist);
-        }
+        let dist = queries::query(current.atom, opts)?;
+        apply_query_operation(&mut distribs, dist, current.negated, current.is_and);
     }
 
+    sort_and_dedup_distribs(&mut distribs);
+    Ok(distribs)
+}
+
+// Separate function to reduce _resolve size and improve inlining decisions
+fn apply_query_operation(
+    distribs: &mut Vec<Distrib>,
+    dist: Vec<Distrib>,
+    negated: bool,
+    is_and: bool,
+) {
+    if negated {
+        distribs.retain(|d| !dist.contains(d));
+    } else if is_and {
+        distribs.retain(|d| dist.contains(d));
+    } else {
+        distribs.extend(dist);
+    }
+}
+
+// Optimized sorting that parses versions only once
+fn sort_and_dedup_distribs(distribs: &mut Vec<Distrib>) {
+    if distribs.is_empty() {
+        return;
+    }
+
+    // Use sort_by_cached_key to parse each version only once
     distribs.sort_by_cached_key(|d| {
         let version = d.version().parse::<semver::Version>().unwrap_or_default();
         (d.name(), std::cmp::Reverse(version))
     });
-    distribs.dedup();
 
-    Ok(distribs)
+    // Dedup in place
+    distribs.dedup();
+}
+
+// Cold path for error handling
+#[cold]
+fn handle_first_negated_error(raw: String) -> Result<Vec<Distrib>, Error> {
+    Err(Error::NotAtFirst(raw))
 }
 
 #[cfg(not(target_arch = "wasm32"))]
