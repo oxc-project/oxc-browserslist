@@ -121,24 +121,17 @@ fn android_to_desktop() -> &'static BrowserStat {
 
         // Add legacy android versions (2.x, 3.x, 4.x)
         version_list.extend(
-            android.version_list
+            android
+                .version_list
                 .iter()
                 .filter(|version| is_legacy_android_version(version.version()))
-                .cloned()
+                .cloned(),
         );
 
         // Add chrome versions from evergreen point onwards
-        version_list.extend(
-            chrome.version_list
-                .iter()
-                .skip(chrome_skip_index)
-                .cloned()
-        );
+        version_list.extend(chrome.version_list.iter().skip(chrome_skip_index).cloned());
 
-        BrowserStat {
-            name: android.name,
-            version_list,
-        }
+        BrowserStat { name: android.name, version_list }
     })
 }
 
@@ -158,7 +151,8 @@ fn find_chrome_evergreen_start(chrome: &BrowserStat) -> usize {
         .version_list
         .iter()
         .position(|version| {
-            version.version()
+            version
+                .version()
                 .parse::<usize>()
                 .map(|v| v == ANDROID_EVERGREEN_FIRST as usize)
                 .unwrap_or(false)
@@ -194,7 +188,7 @@ fn get_browser_stat_mobile_to_desktop(name: &str) -> Option<(&'static str, &'sta
         "and_ff" => caniuse_browsers().get("firefox").map(|stat| ("and_ff", stat)),
         "ie_mob" => caniuse_browsers().get("ie").map(|stat| ("ie_mob", stat)),
         // All other browsers (including op_mob) return their own data
-        _ => caniuse_browsers().get(name).map(|stat| (stat.name, stat))
+        _ => caniuse_browsers().get(name).map(|stat| (stat.name, stat)),
     }
 }
 
@@ -253,7 +247,6 @@ pub fn to_desktop_name(name: &str) -> Option<&'static str> {
         _ => None,
     }
 }
-
 
 pub fn normalize_version<'a>(stat: &'static BrowserStat, version: &'a str) -> Option<&'a str> {
     if stat.version_list.iter().any(|v| v.version() == version) {
