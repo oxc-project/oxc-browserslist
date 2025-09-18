@@ -11,15 +11,21 @@ pub(super) fn last_n_major_browsers(count: usize, opts: &Opts) -> QueryResult {
         .flat_map(|(name, stat)| {
             let count = count_filter_versions(name, opts.mobile_to_desktop, count);
 
-            let mut vec = stat
-                .version_list
-                .iter()
-                .filter(|version| version.release_date().is_some())
-                .rev()
-                .map(|version| version.version().split('.').next().unwrap())
-                .collect::<Vec<_>>();
-            vec.dedup();
-            let minimum = vec.get(count - 1).and_then(|minimum| minimum.parse().ok()).unwrap_or(0);
+            let mut seen = std::collections::HashSet::new();
+            let mut unique_majors = Vec::new();
+
+            for version in stat.version_list.iter().filter(|v| v.release_date().is_some()).rev() {
+                if let Some(major) = version.version().split('.').next() {
+                    if seen.insert(major) {
+                        unique_majors.push(major);
+                        if unique_majors.len() == count {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            let minimum = unique_majors.get(count - 1).and_then(|minimum| minimum.parse().ok()).unwrap_or(0);
 
             stat.version_list
                 .iter()

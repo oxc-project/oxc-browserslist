@@ -2,9 +2,20 @@ use super::{Distrib, QueryResult};
 use crate::data::node::NODE_VERSIONS;
 
 pub(super) fn last_n_node_major(count: usize) -> QueryResult {
-    let mut vec = NODE_VERSIONS().iter().rev().map(|version| version.major()).collect::<Vec<_>>();
-    vec.dedup();
-    let minimum = vec.into_iter().nth(count - 1).unwrap_or_default();
+    let mut seen = std::collections::HashSet::new();
+    let mut unique_majors = 0;
+    let mut minimum = 0;
+
+    for version in NODE_VERSIONS().iter().rev() {
+        let major = version.major();
+        if seen.insert(major) {
+            unique_majors += 1;
+            if unique_majors == count {
+                minimum = major;
+                break;
+            }
+        }
+    }
 
     let distribs = NODE_VERSIONS()
         .iter()
