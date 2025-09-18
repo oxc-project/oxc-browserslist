@@ -2,7 +2,7 @@ use std::{
     borrow::Cow,
     env,
     fs::{self, File},
-    io::{BufReader, Read},
+    io::BufReader,
     path::{Path, PathBuf},
 };
 
@@ -51,52 +51,98 @@ const ERR_DUP_RC: &str = "'.browserslistrc' file";
 const ERR_DUP_PKG: &str = "'package.json' file with `browserslist` field";
 
 pub fn load(opts: &Opts) -> Result<Vec<String>, Error> {
-    if let Ok(query) = env::var("BROWSERSLIST") {
-        Ok(vec![query])
-    } else if let Some(config_path) = opts
-        .config
+    // Fast path: check BROWSERSLIST env var first
+    if let Some(query) = check_browserslist_env() {
+        return Ok(vec![query]);
+    }
+
+    // Check for explicit config path
+    if let Some(config_path) = get_config_path(opts) {
+        return load_from_config_path(Path::new(config_path.as_ref()), opts);
+    }
+
+    // Find config in filesystem
+    let path = opts
+        .path
+        .as_ref()
+        .map(PathBuf::from)
+        .or_else(|| env::current_dir().ok())
+        .ok_or(Error::FailedToAccessCurrentDir)?;
+
+    load_from_found_config(find_config(&path)?, opts)
+}
+
+// Check BROWSERSLIST environment variable
+#[inline(always)]
+fn check_browserslist_env() -> Option<String> {
+    env::var("BROWSERSLIST").ok()
+}
+
+// Get config path from options or environment
+#[inline]
+fn get_config_path(opts: &Opts) -> Option<Cow<'_, str>> {
+    opts.config
         .as_ref()
         .map(Cow::from)
-        .or_else(|| env::var("BROWSERSLIST_CONFIG").ok().map(Cow::from))
-        .as_deref()
-    {
-        let config_path = Path::new(config_path);
-        match config_path.file_name() {
-            Some(file_name) if file_name == "package.json" => {
-                let content = fs::read(config_path)
-                    .map_err(|_| Error::FailedToReadConfig(format!("{}", config_path.display())))?;
-                let pkg: PackageJson = serde_json::from_slice(&content)
-                    .map_err(|_| Error::FailedToReadConfig(format!("{}", config_path.display())))?;
-                pick_queries_by_env(
-                    pkg.browserslist.ok_or_else(|| {
-                        Error::MissingFieldInPkg(format!("{}", config_path.display()))
-                    })?,
-                    &get_env(opts),
-                    opts.throw_on_missing,
-                )
-            }
-            _ => {
-                let content = fs::read_to_string(config_path)
-                    .map_err(|_| Error::FailedToReadConfig(format!("{}", config_path.display())))?;
-                let config = parse(&content, &get_env(opts), opts.throw_on_missing)?;
-                Ok(config.env.unwrap_or(config.defaults))
-            }
-        }
-    } else {
-        let path = match &opts.path {
-            Some(path) => PathBuf::from(path),
-            None => env::current_dir().map_err(|_| Error::FailedToAccessCurrentDir)?,
-        };
-        match find_config(&path)? {
-            FindConfig::String(s) => {
-                let config = parse(&s, &get_env(opts), opts.throw_on_missing)?;
-                Ok(config.env.unwrap_or(config.defaults))
-            }
-            FindConfig::PkgConfig(config) => {
-                pick_queries_by_env(config, &get_env(opts), opts.throw_on_missing)
-            }
-        }
+        .or_else(|| env::var("BROWSERSLIST_CONFIG").ok().map(Cow::Owned))
+}
+
+// Load config from a specific path
+fn load_from_config_path(config_path: &Path, opts: &Opts) -> Result<Vec<String>, Error> {
+    // Check if the file exists first
+    if !config_path.exists() {
+        return Err(create_read_error(config_path));
     }
+
+    let env = get_env(opts);
+
+    if config_path.file_name() == Some(std::ffi::OsStr::new("package.json")) {
+        load_from_package_json(config_path, &env, opts.throw_on_missing)
+    } else {
+        load_from_browserslist_file(config_path, &env, opts.throw_on_missing)
+    }
+}
+
+// Load from package.json file
+fn load_from_package_json(
+    path: &Path,
+    env: &str,
+    throw_on_missing: bool,
+) -> Result<Vec<String>, Error> {
+    let content = fs::read(path).map_err(|_| create_read_error(path))?;
+    let pkg: PackageJson = serde_json::from_slice(&content).map_err(|_| create_read_error(path))?;
+    let config =
+        pkg.browserslist.ok_or_else(|| Error::MissingFieldInPkg(format!("{}", path.display())))?;
+    pick_queries_by_env(config, env, throw_on_missing)
+}
+
+// Load from browserslist or .browserslistrc file
+fn load_from_browserslist_file(
+    path: &Path,
+    env: &str,
+    throw_on_missing: bool,
+) -> Result<Vec<String>, Error> {
+    let content = fs::read_to_string(path).map_err(|_| create_read_error(path))?;
+    let config = parse(&content, env, throw_on_missing)?;
+    Ok(config.env.unwrap_or(config.defaults))
+}
+
+// Load from found config
+fn load_from_found_config(found: FindConfig, opts: &Opts) -> Result<Vec<String>, Error> {
+    let env = get_env(opts);
+    match found {
+        FindConfig::String(s) => {
+            let config = parse(&s, &env, opts.throw_on_missing)?;
+            Ok(config.env.unwrap_or(config.defaults))
+        }
+        FindConfig::PkgConfig(config) => pick_queries_by_env(config, &env, opts.throw_on_missing),
+    }
+}
+
+// Create a read error
+#[cold]
+fn create_read_error(path: &Path) -> Error {
+    Error::FailedToReadConfig(format!("{}", path.display()))
 }
 
 pub fn load_with_config(config: PkgConfig, opts: &Opts) -> Result<Vec<String>, Error> {
@@ -110,73 +156,67 @@ enum FindConfig {
 
 fn find_config(path: &Path) -> Result<FindConfig, Error> {
     for dir in path.ancestors() {
+        // Check file existence without opening them
         let path_plain = dir.join("browserslist");
-        let plain = File::open(&path_plain);
-        let is_plain_existed = match &plain {
-            Ok(file) => file.metadata().is_ok_and(|metadata| metadata.is_file()),
-            _ => false,
-        };
-
         let path_rc = dir.join(".browserslistrc");
-        let rc = File::open(&path_rc);
-        let is_rc_existed = match &rc {
-            Ok(file) => file.metadata().is_ok_and(|metadata| metadata.is_file()),
-            _ => false,
-        };
-
         let path_pkg = dir.join("package.json");
-        let pkg = File::open(&path_pkg)
-            .ok()
-            .and_then(|file| {
-                if file.metadata().ok()?.is_file() {
-                    serde_json::from_reader::<_, PackageJson>(BufReader::new(file)).ok()
-                } else {
-                    None
-                }
-            })
-            .and_then(|json| json.browserslist);
 
-        match (plain, rc, pkg) {
-            (Ok(_), Ok(_), _) if is_plain_existed && is_rc_existed => {
-                return Err(Error::DuplicatedConfig(
-                    format!("{}", dir.display()),
-                    ERR_DUP_PLAIN,
-                    ERR_DUP_RC,
-                ));
-            }
-            (Ok(_), _, Some(_)) if is_plain_existed => {
-                return Err(Error::DuplicatedConfig(
-                    format!("{}", dir.display()),
-                    ERR_DUP_PLAIN,
-                    ERR_DUP_PKG,
-                ));
-            }
-            (Ok(mut plain), _, _) if is_plain_existed => {
-                let mut content = String::new();
-                plain
-                    .read_to_string(&mut content)
-                    .map_err(|_| Error::FailedToReadConfig(format!("{}", path_plain.display())))?;
-                return Ok(FindConfig::String(Cow::Owned(content)));
-            }
-            (_, Ok(_), Some(_)) if is_rc_existed => {
-                return Err(Error::DuplicatedConfig(
-                    format!("{}", dir.display()),
-                    ERR_DUP_RC,
-                    ERR_DUP_PKG,
-                ));
-            }
-            (_, Ok(mut rc), _) if is_rc_existed => {
-                let mut content = String::new();
-                rc.read_to_string(&mut content)
-                    .map_err(|_| Error::FailedToReadConfig(format!("{}", path_rc.display())))?;
-                return Ok(FindConfig::String(Cow::Owned(content)));
-            }
-            (_, _, Some(pkg)) => return Ok(FindConfig::PkgConfig(pkg)),
-            _ => continue,
-        };
+        let has_plain = path_plain.is_file();
+        let has_rc = path_rc.is_file();
+        let pkg_config = if path_pkg.is_file() { try_load_package_json(&path_pkg)? } else { None };
+
+        // Handle all conflicts first (cold paths)
+        if has_plain && has_rc {
+            return create_duplicate_config_error(dir, ERR_DUP_PLAIN, ERR_DUP_RC);
+        }
+        if has_plain && pkg_config.is_some() {
+            return create_duplicate_config_error(dir, ERR_DUP_PLAIN, ERR_DUP_PKG);
+        }
+        if has_rc && pkg_config.is_some() {
+            return create_duplicate_config_error(dir, ERR_DUP_RC, ERR_DUP_PKG);
+        }
+
+        // Load the first config found (hot paths)
+        if has_plain {
+            let content =
+                fs::read_to_string(&path_plain).map_err(|_| create_read_error(&path_plain))?;
+            return Ok(FindConfig::String(Cow::Owned(content)));
+        }
+        if has_rc {
+            let content = fs::read_to_string(&path_rc).map_err(|_| create_read_error(&path_rc))?;
+            return Ok(FindConfig::String(Cow::Owned(content)));
+        }
+        if let Some(config) = pkg_config {
+            return Ok(FindConfig::PkgConfig(config));
+        }
     }
 
     Ok(FindConfig::String(Cow::Borrowed("defaults")))
+}
+
+// Try to load browserslist config from package.json
+fn try_load_package_json(path: &Path) -> Result<Option<PkgConfig>, Error> {
+    let file = File::open(path).ok();
+    match file {
+        Some(f) => {
+            let reader = BufReader::new(f);
+            match serde_json::from_reader::<_, PackageJson>(reader) {
+                Ok(json) => Ok(json.browserslist),
+                Err(_) => Ok(None),
+            }
+        }
+        None => Ok(None),
+    }
+}
+
+// Create duplicate config error
+#[cold]
+fn create_duplicate_config_error(
+    dir: &Path,
+    err1: &'static str,
+    err2: &'static str,
+) -> Result<FindConfig, Error> {
+    Err(Error::DuplicatedConfig(format!("{}", dir.display()), err1, err2))
 }
 
 fn get_env(opts: &Opts) -> Cow<'_, str> {
