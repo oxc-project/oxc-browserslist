@@ -11,7 +11,7 @@ pub(super) fn last_n_electron(count: usize) -> QueryResult {
     Ok(distribs)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

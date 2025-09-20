@@ -4,7 +4,7 @@ pub(super) fn op_mini() -> QueryResult {
     Ok(vec![Distrib::new("op_mini", "all")])
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

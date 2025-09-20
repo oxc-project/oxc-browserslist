@@ -22,7 +22,7 @@ pub(super) fn percentage(comparator: Comparator, popularity: f32) -> QueryResult
     Ok(distribs)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

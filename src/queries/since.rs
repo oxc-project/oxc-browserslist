@@ -29,7 +29,7 @@ pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult
     Ok(distribs)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

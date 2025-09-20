@@ -26,7 +26,7 @@ pub(super) fn percentage_by_region(
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

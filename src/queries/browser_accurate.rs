@@ -41,7 +41,7 @@ pub(super) fn browser_accurate(name: &str, version: &str, opts: &Opts) -> QueryR
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

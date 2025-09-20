@@ -25,7 +25,7 @@ pub(super) fn electron_bounded_range(from: &str, to: &str) -> QueryResult {
     Ok(distribs)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

@@ -5,7 +5,7 @@ pub(super) fn phantom(is_later_version: bool) -> QueryResult {
     Ok(vec![Distrib::new("safari", version)])
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

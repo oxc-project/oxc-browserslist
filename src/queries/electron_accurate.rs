@@ -16,7 +16,7 @@ pub(super) fn electron_accurate(version: &str) -> QueryResult {
     Ok(distribs)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

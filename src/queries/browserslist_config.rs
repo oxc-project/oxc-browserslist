@@ -13,7 +13,7 @@ pub(super) fn browserslist_config(opts: &Opts) -> QueryResult {
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 
