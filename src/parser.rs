@@ -412,7 +412,7 @@ pub fn parse_browserslist_query(input: &str) -> PResult<'_, Vec<SingleQuery<'_>>
     .parse(input)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 
