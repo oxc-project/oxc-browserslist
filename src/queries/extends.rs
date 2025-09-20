@@ -60,7 +60,7 @@ fn check_extend_name(pkg: &str) -> Result<(), Error> {
     Ok(())
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use std::fs;
 
@@ -130,7 +130,7 @@ mod tests {
             &Opts { env: Some("someEnv".into()), ..Default::default() },
             Some(base_test_dir()),
         );
-        clean("pkg");
+        clean("browserslist-config-with-env-b");
     }
 
     #[test_case("browserslist-config-wrong", json!(null), "extends browserslist-config-wrong"; "empty export")]
