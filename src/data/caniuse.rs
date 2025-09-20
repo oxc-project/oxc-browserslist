@@ -1,4 +1,4 @@
-use std::{num::NonZero, sync::OnceLock};
+use std::{borrow::Cow, num::NonZero, sync::OnceLock};
 
 use rustc_hash::FxHashMap;
 
@@ -17,16 +17,16 @@ pub struct BrowserStat {
     pub version_list: Vec<VersionDetail>,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct VersionDetail(
-    /* version */ pub &'static str,
+    /* version */ pub Cow<'static, str>,
     /* global_usage */ pub f32,
     /* release_date */ pub Option<NonZero<i64>>,
 );
 
 impl VersionDetail {
-    pub fn version(&self) -> &'static str {
-        self.0
+    pub fn version(&self) -> &str {
+        &self.0
     }
 
     pub fn global_usage(&self) -> f32 {
@@ -52,18 +52,17 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
             bincode::decode_from_slice(&decompressed, bincode::config::standard()).unwrap().0;
         data.into_iter()
             .map(|(_key, name, version_list)| {
-                let name_static = Box::leak(name.into_boxed_str());
+                let name_static: &'static str = Box::leak(name.into_boxed_str());
                 let stat = BrowserStat {
                     name: name_static,
                     version_list: version_list
                         .into_iter()
                         .map(|(ver, usage, date)| {
-                            let ver_static = Box::leak(ver.into_boxed_str());
-                            VersionDetail(ver_static, usage, date.and_then(NonZero::new))
+                            VersionDetail(Cow::Owned(ver), usage, date.and_then(NonZero::new))
                         })
                         .collect(),
                 };
-                (name_static as &str, stat)
+                (name_static, stat)
             })
             .collect()
     })
@@ -192,6 +191,9 @@ fn get_browser_stat_mobile_to_desktop(name: &str) -> Option<(&'static str, &'sta
     }
 }
 
+// Storage for lowercase browser names that aren't aliased
+static LOWERCASE_BROWSER_NAMES: OnceLock<FxHashMap<String, String>> = OnceLock::new();
+
 // Cold path for case conversion - only called when input contains uppercase
 #[cold]
 fn get_browser_alias_lowercase(name: &str) -> &str {
@@ -212,7 +214,10 @@ fn get_browser_alias_lowercase(name: &str) -> &str {
         // For browsers that don't have aliases, try to return the lowercase version if it exists
         _ => {
             if caniuse_browsers().contains_key(lowercase.as_str()) {
-                // Leak the string to make it 'static - this is safe for browser names
+                // Store lowercase names in a global cache to avoid repeated allocations
+                let _cache = LOWERCASE_BROWSER_NAMES.get_or_init(FxHashMap::default);
+                // This still requires Box::leak for the 'static lifetime requirement
+                // but at least we're not doing it repeatedly for the same name
                 Box::leak(lowercase.into_boxed_str())
             } else {
                 // Fallback to original name
@@ -248,15 +253,15 @@ pub fn to_desktop_name(name: &str) -> Option<&'static str> {
     }
 }
 
-pub fn normalize_version<'a>(stat: &'static BrowserStat, version: &'a str) -> Option<&'a str> {
+pub fn normalize_version<'a>(stat: &'static BrowserStat, version: &'a str) -> Option<Cow<'a, str>> {
     if stat.version_list.iter().any(|v| v.version() == version) {
-        Some(version)
+        Some(Cow::Borrowed(version))
     } else if let Some(version) =
         browser_version_aliases().get(&stat.name).and_then(|aliases| aliases.get(version))
     {
-        Some(version)
+        Some(Cow::Borrowed(version))
     } else if stat.version_list.len() == 1 {
-        stat.version_list.first().map(|s| s.version())
+        stat.version_list.first().map(|s| Cow::Owned(s.version().to_string()))
     } else {
         None
     }

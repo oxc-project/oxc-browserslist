@@ -19,7 +19,7 @@ pub(super) fn browser_accurate(name: &str, version: &str, opts: &Opts) -> QueryR
         stat,
         if original_version.eq_ignore_ascii_case("tp") { "TP" } else { version },
     ) {
-        Ok(vec![Distrib::new(name, version.to_owned())])
+        Ok(vec![Distrib::new(name, version.into_owned())])
     } else {
         let version = if version.contains('.') {
             Cow::Borrowed(version.trim_end_matches(".0"))
@@ -29,7 +29,7 @@ pub(super) fn browser_accurate(name: &str, version: &str, opts: &Opts) -> QueryR
             Cow::Owned(v)
         };
         if let Some(version) = normalize_version(stat, &version) {
-            Ok(vec![Distrib::new(name, version.to_owned())])
+            Ok(vec![Distrib::new(name, version.into_owned())])
         } else if opts.ignore_unknown_versions {
             Ok(vec![])
         } else {
