@@ -31,7 +31,7 @@ pub(super) fn browser_bounded_range(name: &str, from: &str, to: &str, opts: &Opt
     Ok(distribs)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

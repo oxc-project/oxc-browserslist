@@ -4,7 +4,7 @@ pub(super) fn firefox_esr() -> QueryResult {
     Ok(vec![Distrib::new("firefox", "128"), Distrib::new("firefox", "140")])
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

@@ -17,7 +17,7 @@ pub(super) fn maintained_node() -> QueryResult {
     Ok(versions)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

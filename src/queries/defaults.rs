@@ -5,7 +5,7 @@ pub(super) fn defaults(opts: &Opts) -> QueryResult {
     resolve(&["> 0.5%", "last 2 versions", "Firefox ESR", "not dead"], opts)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

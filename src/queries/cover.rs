@@ -14,7 +14,7 @@ pub(super) fn cover(coverage: f32) -> QueryResult {
     Ok(distribs)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

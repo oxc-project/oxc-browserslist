@@ -39,7 +39,7 @@ pub(super) fn node_accurate(version_str: &str, opts: &Opts) -> QueryResult {
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

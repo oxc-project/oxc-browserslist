@@ -21,7 +21,7 @@ pub(super) fn node_unbounded_range(comparator: Comparator, version: &str) -> Que
     Ok(distribs)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

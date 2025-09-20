@@ -28,7 +28,7 @@ pub(super) fn cover_by_region(coverage: f32, region: &str) -> QueryResult {
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

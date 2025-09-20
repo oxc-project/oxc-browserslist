@@ -41,7 +41,7 @@ pub(super) fn browser_unbounded_range(
     Ok(distribs)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

@@ -13,7 +13,7 @@ pub(super) fn unreleased_x_browsers(name: &str, opts: &Opts) -> QueryResult {
     Ok(distribs)
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 

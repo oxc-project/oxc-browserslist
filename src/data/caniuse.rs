@@ -178,9 +178,7 @@ pub fn get_browser_stat(
 }
 
 // Extract mobile-to-desktop logic - preserves original semantics
-fn get_browser_stat_mobile_to_desktop(
-    name: &str,
-) -> Option<(&'static str, &'static BrowserStat)> {
+fn get_browser_stat_mobile_to_desktop(name: &str) -> Option<(&'static str, &'static BrowserStat)> {
     // Reproduce original logic: first check if we have a desktop mapping
     match name {
         // Browsers that have desktop equivalents

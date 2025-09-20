@@ -4,7 +4,7 @@ pub(super) fn unreleased_electron() -> QueryResult {
     Ok(vec![])
 }
 
-#[cfg(test)]
+#[cfg(all(test, not(miri)))]
 mod tests {
     use test_case::test_case;
 
