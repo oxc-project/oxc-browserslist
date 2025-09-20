@@ -12,7 +12,7 @@ pub(super) fn unreleased_browsers(opts: &Opts) -> QueryResult {
             stat.version_list
                 .iter()
                 .filter(|version| version.release_date().is_none())
-                .map(|version| Distrib::new(name, version.version()))
+                .map(move |version| Distrib::new(name, version.version().to_string()))
         })
         .collect();
     Ok(distribs)

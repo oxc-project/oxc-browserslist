@@ -57,7 +57,7 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         }
                         None
                     })
-                    .map(|version| Distrib::new(name, version))
+                    .map(move |version| Distrib::new(name, version.to_string()))
             })
             .collect();
         Ok(distribs)

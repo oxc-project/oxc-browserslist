@@ -23,7 +23,7 @@ pub(super) fn years(count: f64, opts: &Opts) -> QueryResult {
                 .filter(
                     |version| matches!(version.release_date(), Some(date) if date.get() >= time),
                 )
-                .map(|version| Distrib::new(name, version.version()))
+                .map(move |version| Distrib::new(name, version.version().to_string()))
         })
         .collect();
     Ok(distribs)

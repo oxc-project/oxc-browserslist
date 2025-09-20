@@ -13,7 +13,7 @@ pub const OP_MOB_BLINK_FIRST: u16 = 14;
 
 #[derive(Clone, Debug)]
 pub struct BrowserStat {
-    pub name: BrowserName,
+    pub name: Cow<'static, str>,
     pub version_list: Vec<VersionDetail>,
 }
 
@@ -52,9 +52,9 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
             bincode::decode_from_slice(&decompressed, bincode::config::standard()).unwrap().0;
         data.into_iter()
             .map(|(_key, name, version_list)| {
-                let name_static: &'static str = Box::leak(name.into_boxed_str());
+                let name_cow = Cow::Owned(name.clone());
                 let stat = BrowserStat {
-                    name: name_static,
+                    name: Cow::Owned(name),
                     version_list: version_list
                         .into_iter()
                         .map(|(ver, usage, date)| {
@@ -62,16 +62,16 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
                         })
                         .collect(),
                 };
-                (name_static, stat)
+                (name_cow, stat)
             })
             .collect()
     })
 }
 
 pub fn browser_version_aliases()
--> &'static FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>> {
+-> &'static FxHashMap<Cow<'static, str>, FxHashMap<&'static str, &'static str>> {
     static BROWSER_VERSION_ALIASES: OnceLock<
-        FxHashMap<BrowserName, FxHashMap<&'static str, &'static str>>,
+        FxHashMap<Cow<'static, str>, FxHashMap<&'static str, &'static str>>,
     > = OnceLock::new();
     BROWSER_VERSION_ALIASES.get_or_init(|| {
         let mut aliases = caniuse_browsers()
@@ -94,10 +94,10 @@ pub fn browser_version_aliases()
                             aliases
                         },
                     );
-                if aliases.is_empty() { None } else { Some((*name, aliases)) }
+                if aliases.is_empty() { None } else { Some((name.clone(), aliases)) }
             })
-            .collect::<FxHashMap<BrowserName, _>>();
-        let _ = aliases.insert("op_mob", {
+            .collect::<FxHashMap<Cow<'static, str>, _>>();
+        let _ = aliases.insert(Cow::Borrowed("op_mob"), {
             let mut aliases = FxHashMap::default();
             let _ = aliases.insert("59", "58");
             aliases
@@ -130,7 +130,7 @@ fn android_to_desktop() -> &'static BrowserStat {
         // Add chrome versions from evergreen point onwards
         version_list.extend(chrome.version_list.iter().skip(chrome_skip_index).cloned());
 
-        BrowserStat { name: android.name, version_list }
+        BrowserStat { name: android.name.clone(), version_list }
     })
 }
 
@@ -171,76 +171,71 @@ pub fn get_browser_stat(
     };
 
     if mobile_to_desktop {
-        get_browser_stat_mobile_to_desktop(normalized_name)
+        get_browser_stat_mobile_to_desktop(normalized_name.as_ref())
     } else {
-        caniuse_browsers().get(normalized_name).map(|stat| (stat.name, stat))
+        caniuse_browsers().get(&normalized_name).map(|stat| (stat.name.as_ref(), stat))
     }
 }
 
 // Extract mobile-to-desktop logic - preserves original semantics
-fn get_browser_stat_mobile_to_desktop(name: &str) -> Option<(&'static str, &'static BrowserStat)> {
+fn get_browser_stat_mobile_to_desktop(
+    name: &str,
+) -> Option<(&'static str, &'static BrowserStat)> {
     // Reproduce original logic: first check if we have a desktop mapping
     match name {
         // Browsers that have desktop equivalents
-        "and_chr" => caniuse_browsers().get("chrome").map(|stat| ("and_chr", stat)),
+        "and_chr" => caniuse_browsers().get(&Cow::Borrowed("chrome")).map(|stat| ("and_chr", stat)),
         "android" => Some(("android", android_to_desktop())), // Special case for android
-        "and_ff" => caniuse_browsers().get("firefox").map(|stat| ("and_ff", stat)),
-        "ie_mob" => caniuse_browsers().get("ie").map(|stat| ("ie_mob", stat)),
+        "and_ff" => caniuse_browsers().get(&Cow::Borrowed("firefox")).map(|stat| ("and_ff", stat)),
+        "ie_mob" => caniuse_browsers().get(&Cow::Borrowed("ie")).map(|stat| ("ie_mob", stat)),
         // All other browsers (including op_mob) return their own data
-        _ => caniuse_browsers().get(name).map(|stat| (stat.name, stat)),
+        _ => caniuse_browsers().get(name).map(|stat| (stat.name.as_ref(), stat)),
     }
 }
 
-// Storage for lowercase browser names that aren't aliased
-static LOWERCASE_BROWSER_NAMES: OnceLock<FxHashMap<String, String>> = OnceLock::new();
-
 // Cold path for case conversion - only called when input contains uppercase
 #[cold]
-fn get_browser_alias_lowercase(name: &str) -> &str {
+fn get_browser_alias_lowercase(name: &str) -> Cow<'static, str> {
     // Convert to lowercase and apply aliases
     let lowercase = name.to_ascii_lowercase();
     match lowercase.as_str() {
-        "fx" | "ff" => "firefox",
-        "ios" => "ios_saf",
-        "explorer" => "ie",
-        "blackberry" => "bb",
-        "explorermobile" => "ie_mob",
-        "operamini" => "op_mini",
-        "operamobile" => "op_mob",
-        "chromeandroid" => "and_chr",
-        "firefoxandroid" => "and_ff",
-        "ucandroid" => "and_uc",
-        "qqandroid" => "and_qq",
-        // For browsers that don't have aliases, try to return the lowercase version if it exists
+        "fx" | "ff" => Cow::Borrowed("firefox"),
+        "ios" => Cow::Borrowed("ios_saf"),
+        "explorer" => Cow::Borrowed("ie"),
+        "blackberry" => Cow::Borrowed("bb"),
+        "explorermobile" => Cow::Borrowed("ie_mob"),
+        "operamini" => Cow::Borrowed("op_mini"),
+        "operamobile" => Cow::Borrowed("op_mob"),
+        "chromeandroid" => Cow::Borrowed("and_chr"),
+        "firefoxandroid" => Cow::Borrowed("and_ff"),
+        "ucandroid" => Cow::Borrowed("and_uc"),
+        "qqandroid" => Cow::Borrowed("and_qq"),
+        // For browsers that don't have aliases, return the lowercase version if it exists
         _ => {
-            if caniuse_browsers().contains_key(lowercase.as_str()) {
-                // Store lowercase names in a global cache to avoid repeated allocations
-                let _cache = LOWERCASE_BROWSER_NAMES.get_or_init(FxHashMap::default);
-                // This still requires Box::leak for the 'static lifetime requirement
-                // but at least we're not doing it repeatedly for the same name
-                Box::leak(lowercase.into_boxed_str())
+            if caniuse_browsers().contains_key(&Cow::Owned(lowercase.clone())) {
+                Cow::Owned(lowercase)
             } else {
-                // Fallback to original name
-                name
+                // Fallback to original name as owned
+                Cow::Owned(name.to_string())
             }
         }
     }
 }
 
-fn get_browser_alias(name: &str) -> &str {
+fn get_browser_alias(name: &str) -> Cow<'static, str> {
     match name {
-        "fx" | "ff" => "firefox",
-        "ios" => "ios_saf",
-        "explorer" => "ie",
-        "blackberry" => "bb",
-        "explorermobile" => "ie_mob",
-        "operamini" => "op_mini",
-        "operamobile" => "op_mob",
-        "chromeandroid" => "and_chr",
-        "firefoxandroid" => "and_ff",
-        "ucandroid" => "and_uc",
-        "qqandroid" => "and_qq",
-        _ => name,
+        "fx" | "ff" => Cow::Borrowed("firefox"),
+        "ios" => Cow::Borrowed("ios_saf"),
+        "explorer" => Cow::Borrowed("ie"),
+        "blackberry" => Cow::Borrowed("bb"),
+        "explorermobile" => Cow::Borrowed("ie_mob"),
+        "operamini" => Cow::Borrowed("op_mini"),
+        "operamobile" => Cow::Borrowed("op_mob"),
+        "chromeandroid" => Cow::Borrowed("and_chr"),
+        "firefoxandroid" => Cow::Borrowed("and_ff"),
+        "ucandroid" => Cow::Borrowed("and_uc"),
+        "qqandroid" => Cow::Borrowed("and_qq"),
+        _ => Cow::Owned(name.to_string()),
     }
 }
 

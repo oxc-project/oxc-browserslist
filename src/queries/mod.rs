@@ -61,12 +61,12 @@ mod years;
 /// assert_eq!(distrib.version(), "93");
 /// ```
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Distrib(&'static str, Cow<'static, str>);
+pub struct Distrib(Cow<'static, str>, Cow<'static, str>);
 
 impl Distrib {
     #[inline]
-    fn new<S: Into<Cow<'static, str>>>(name: &'static str, version: S) -> Self {
-        Self(name, version.into())
+    fn new<N: Into<Cow<'static, str>>, S: Into<Cow<'static, str>>>(name: N, version: S) -> Self {
+        Self(name.into(), version.into())
     }
 
     #[inline]
@@ -80,8 +80,8 @@ impl Distrib {
     /// assert_eq!(distrib.name(), "firefox");
     /// ```
     #[must_use]
-    pub fn name(&self) -> &'static str {
-        self.0
+    pub fn name(&self) -> &str {
+        &self.0
     }
 
     #[inline]

@@ -153,7 +153,7 @@ fn sort_and_dedup_distribs(distribs: &mut Vec<Distrib>) {
     // Use sort_by_cached_key to parse each version only once
     distribs.sort_by_cached_key(|d| {
         let version = d.version().parse::<semver::Version>().unwrap_or_default();
-        (d.name(), std::cmp::Reverse(version))
+        (d.name().to_string(), std::cmp::Reverse(version))
     });
 
     // Dedup in place
