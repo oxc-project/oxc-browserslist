@@ -14,7 +14,7 @@ pub(super) fn cover_by_region(coverage: f32, region: &str) -> QueryResult {
                 if total >= coverage || usage == 0.0 {
                     ControlFlow::Break((distribs, total))
                 } else {
-                    distribs.push(Distrib::new(name.to_string(), version.to_string()));
+                    distribs.push(Distrib::new(name, version));
                     ControlFlow::Continue((distribs, total + usage))
                 }
             },

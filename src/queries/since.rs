@@ -23,7 +23,7 @@ pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult
                 .filter(
                     |version| matches!(version.release_date(), Some(date) if date.get() >= time),
                 )
-                .map(move |version| Distrib::new(name, version.version().to_string()))
+                .map(move |version| Distrib::new(name, version.version()))
         })
         .collect();
     Ok(distribs)
