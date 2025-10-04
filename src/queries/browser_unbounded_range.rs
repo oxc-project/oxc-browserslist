@@ -36,7 +36,7 @@ pub(super) fn browser_unbounded_range(
                 Comparator::LessOrEqual => v <= version,
             }
         })
-        .map(|version| Distrib::new(name, version.to_string()))
+        .map(|version| Distrib::new(name, version))
         .collect();
     Ok(distribs)
 }

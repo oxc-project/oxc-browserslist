@@ -18,7 +18,7 @@ pub(super) fn percentage_by_region(
                 Comparator::GreaterOrEqual => *usage >= popularity,
                 Comparator::LessOrEqual => *usage <= popularity,
             })
-            .map(|(name, version, _)| Distrib::new(name.to_string(), version.to_string()))
+            .map(|(name, version, _)| Distrib::new(name, version))
             .collect();
         Ok(distribs)
     } else {

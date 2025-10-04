@@ -8,7 +8,7 @@ pub(super) fn cover(coverage: f32) -> QueryResult {
         if total >= coverage || *usage == 0.0 {
             break;
         }
-        distribs.push(Distrib::new(decode_browser_name(*name), version.to_string()));
+        distribs.push(Distrib::new(decode_browser_name(*name), *version));
         total += usage;
     }
     Ok(distribs)
