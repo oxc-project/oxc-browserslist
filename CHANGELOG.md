@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.3](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.1.2...oxc-browserslist-v2.1.3) - 2025-10-17
+
+### Other
+
+- Update browserslist ([#348](https://github.com/oxc-project/oxc-browserslist/pull/348))
+- Update browserslist ([#347](https://github.com/oxc-project/oxc-browserslist/pull/347))
+- *(deps)* lock file maintenance rust crates ([#345](https://github.com/oxc-project/oxc-browserslist/pull/345))
+- Update browserslist ([#338](https://github.com/oxc-project/oxc-browserslist/pull/338))
+- *(deps)* lock file maintenance ([#333](https://github.com/oxc-project/oxc-browserslist/pull/333))
+- Remove unnecessary string allocations in query functions ([#329](https://github.com/oxc-project/oxc-browserslist/pull/329))
+- Update browserslist ([#328](https://github.com/oxc-project/oxc-browserslist/pull/328))
+- Update browserslist ([#321](https://github.com/oxc-project/oxc-browserslist/pull/321))
+- Update browserslist ([#316](https://github.com/oxc-project/oxc-browserslist/pull/316))
+
 ## [2.1.2](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.1.1...oxc-browserslist-v2.1.2) - 2025-09-26
 
 ### Other
