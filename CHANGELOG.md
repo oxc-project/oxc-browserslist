@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.3](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.1.2...oxc-browserslist-v2.1.3) - 2025-11-10
+
+### Other
+
+- *(deps)* update rust crates ([#379](https://github.com/oxc-project/oxc-browserslist/pull/379))
+- Update browserslist ([#377](https://github.com/oxc-project/oxc-browserslist/pull/377))
+- Update browserslist ([#376](https://github.com/oxc-project/oxc-browserslist/pull/376))
+- Update browserslist ([#375](https://github.com/oxc-project/oxc-browserslist/pull/375))
+- Update browserslist ([#374](https://github.com/oxc-project/oxc-browserslist/pull/374))
+- Update browserslist ([#372](https://github.com/oxc-project/oxc-browserslist/pull/372))
+- *(deps)* lock file maintenance rust crates ([#371](https://github.com/oxc-project/oxc-browserslist/pull/371))
+- Update browserslist ([#367](https://github.com/oxc-project/oxc-browserslist/pull/367))
+- Update browserslist ([#365](https://github.com/oxc-project/oxc-browserslist/pull/365))
+- Update browserslist ([#363](https://github.com/oxc-project/oxc-browserslist/pull/363))
+- *(deps)* lock file maintenance rust crates ([#361](https://github.com/oxc-project/oxc-browserslist/pull/361))
+- Update browserslist ([#356](https://github.com/oxc-project/oxc-browserslist/pull/356))
+- Update browserslist ([#355](https://github.com/oxc-project/oxc-browserslist/pull/355))
+- *(deps)* lock file maintenance rust crates ([#354](https://github.com/oxc-project/oxc-browserslist/pull/354))
+- Update browserslist ([#348](https://github.com/oxc-project/oxc-browserslist/pull/348))
+- Update browserslist ([#347](https://github.com/oxc-project/oxc-browserslist/pull/347))
+- *(deps)* lock file maintenance rust crates ([#345](https://github.com/oxc-project/oxc-browserslist/pull/345))
+- Update browserslist ([#338](https://github.com/oxc-project/oxc-browserslist/pull/338))
+- *(deps)* lock file maintenance ([#333](https://github.com/oxc-project/oxc-browserslist/pull/333))
+- Remove unnecessary string allocations in query functions ([#329](https://github.com/oxc-project/oxc-browserslist/pull/329))
+- Update browserslist ([#328](https://github.com/oxc-project/oxc-browserslist/pull/328))
+- Update browserslist ([#321](https://github.com/oxc-project/oxc-browserslist/pull/321))
+- Update browserslist ([#316](https://github.com/oxc-project/oxc-browserslist/pull/316))
+
 ## [2.1.2](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.1.1...oxc-browserslist-v2.1.2) - 2025-09-26
 
 ### Other
