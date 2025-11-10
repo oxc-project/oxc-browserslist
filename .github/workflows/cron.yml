@@ -21,7 +21,15 @@ jobs:
 
       - uses: oxc-project/setup-node@fdbf0dfd334c4e6d56ceeb77d91c76339c2a0885 # v1.0.4
 
+      - name: Get old browserslist version
+        id: old-version
+        run: echo "version=$(jq -r '.version' node_modules/browserslist/package.json)" >> $GITHUB_OUTPUT
+
       - run: pnpm update --prod
+
+      - name: Get new browserslist version
+        id: new-version
+        run: echo "version=$(jq -r '.version' node_modules/browserslist/package.json)" >> $GITHUB_OUTPUT
 
       - run: cargo codegen
 
@@ -34,7 +42,7 @@ jobs:
           commit-message: Update browserslist
           branch: update
           branch-suffix: timestamp
-          title: Update browserslist
+          title: Update browserslist from ${{ steps.old-version.outputs.version }} to ${{ steps.new-version.outputs.version }}
           assignees: Boshen
           base: main
 
