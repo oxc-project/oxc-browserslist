@@ -6,7 +6,7 @@
     "browserslist": "browserslist"
   },
   "dependencies": {
-    "browserslist": "4.27.0"
+    "browserslist": "4.28.0"
   },
   "peerDependencies": {
     "caniuse-db": "1.x",
@@ -23,5 +23,5 @@
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
-  "packageManager": "pnpm@10.21.0"
+  "packageManager": "pnpm@10.22.0"
 }
