@@ -30,6 +30,8 @@ jobs:
   benchmark:
     name: Benchmark
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write # required for OIDC authentication with CodSpeed
     steps:
       - uses: taiki-e/checkout-action@b13d20b7cda4e2f325ef19895128f7ff735c0b3d # v1.3.1
 
@@ -46,6 +48,5 @@ jobs:
         uses: CodSpeedHQ/action@bb005fe1c1eea036d3894f02c049cb6b154a1c27 # v4.3.3
         timeout-minutes: 15
         with:
-          token: ${{ secrets.CODSPEED_TOKEN }}
           mode: instrumentation
           run: cargo codspeed run
