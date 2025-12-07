@@ -6,7 +6,7 @@
     "browserslist": "browserslist"
   },
   "dependencies": {
-    "browserslist": "4.28.0"
+    "browserslist": "4.28.1"
   },
   "peerDependencies": {
     "caniuse-db": "1.x",
