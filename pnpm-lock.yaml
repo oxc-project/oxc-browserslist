@@ -13,7 +13,7 @@ importers:
         version: 4.28.1
       caniuse-db:
         specifier: 1.x
-        version: 1.0.30001759
+        version: 1.0.30001760
       electron-to-chromium:
         specifier: 1.x
         version: 1.5.267
@@ -55,11 +55,11 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
-  caniuse-db@1.0.30001759:
-    resolution: {integrity: sha512-I+88ISrcmYUtCZl6SHxjPWs4ynZyt0LpR2+22DedMFwL5ZXedLruZA7ztaizWEepMo4Gk/Wokc3jALpUYHjq3g==}
+  caniuse-db@1.0.30001760:
+    resolution: {integrity: sha512-pMTtXP7Yb1RXqO9ddJwLOYQ5Mb1R4/vRx7j9v6MlSCf8anENKZHr9SLxS7FqqroeAkmfgMAmtEwt1kh8men/vg==}
 
-  caniuse-lite@1.0.30001759:
-    resolution: {integrity: sha512-Pzfx9fOKoKvevQf8oCXoyNRQ5QyxJj+3O0Rqx2V5oxT61KGx8+n6hV/IUyJeifUci2clnmmKVpvtiqRzgiWjSw==}
+  caniuse-lite@1.0.30001760:
+    resolution: {integrity: sha512-7AAMPcueWELt1p3mi13HR/LHH0TJLT11cnwDJEs3xA4+CK/PLKeO9Kl1oru24htkyUKtkGCvAx4ohB0Ttry8Dw==}
 
   cli-cursor@5.0.0:
     resolution: {integrity: sha512-aCj4O5wKyszjMmDT4tZj93kxyydN/K5zPWSCe6/0AV/AA1pqe5ZBIw0a2ZfPQV7lL5/yb5HsUreJ6UFAF1tEQw==}
@@ -226,14 +226,14 @@ snapshots:
   browserslist@4.28.1:
     dependencies:
       baseline-browser-mapping: 2.9.5
-      caniuse-lite: 1.0.30001759
+      caniuse-lite: 1.0.30001760
       electron-to-chromium: 1.5.267
       node-releases: 2.0.27
       update-browserslist-db: 1.2.2(browserslist@4.28.1)
 
-  caniuse-db@1.0.30001759: {}
+  caniuse-db@1.0.30001760: {}
 
-  caniuse-lite@1.0.30001759: {}
+  caniuse-lite@1.0.30001760: {}
 
   cli-cursor@5.0.0:
     dependencies:
