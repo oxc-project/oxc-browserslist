@@ -25,11 +25,10 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         .version_list
                         .iter()
                         .filter(|version| version.release_date().is_some())
-                        .filter(|latest_version| {
+                        .rfind(|latest_version| {
                             versions
                                 .supports(latest_version.version(), /* include_partial */ true)
                         })
-                        .next_back()
                         .is_some_and(|latest_version| {
                             versions.supports(latest_version.version(), include_partial)
                         });
