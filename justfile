@@ -6,7 +6,7 @@ _default:
 alias r := ready
 
 init:
-  cargo binstall watchexec-cli typos-cli cargo-shear dprint -y
+  cargo binstall watchexec-cli typos-cli cargo-shear -y
 
 ready:
   git diff --exit-code --quiet
@@ -21,7 +21,7 @@ ready:
 fmt:
   -cargo shear --fix # remove all unused dependencies
   cargo fmt
-  dprint fmt
+  node --run fmt
 
 lint:
   cargo clippy --all-targets --all-features -- -D warnings
