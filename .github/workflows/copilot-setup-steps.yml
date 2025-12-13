@@ -32,7 +32,7 @@ jobs:
         with:
           cache-key: warm
           save-cache: false
-          tools: just,watchexec-cli,typos-cli,cargo-shear,dprint
+          tools: just,watchexec-cli,typos-cli,cargo-shear
           components: clippy rust-docs rustfmt
 
       - uses: oxc-project/setup-node@141eb77546de6702f92d320926403fe3f9f6a6f2 # v1.0.5
@@ -54,7 +54,6 @@ jobs:
           watchexec --version
           typos --version
           cargo shear --version
-          dprint --version
 
           echo "=== Project commands ==="
           just --list

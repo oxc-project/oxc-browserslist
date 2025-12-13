@@ -3,7 +3,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "browserslist": "browserslist"
+    "browserslist": "browserslist",
+    "fmt": "oxfmt"
   },
   "dependencies": {
     "browserslist": "4.28.1"
@@ -15,10 +16,12 @@
   },
   "devDependencies": {
     "lint-staged": "^16.1.6",
+    "oxfmt": "^0.17.0",
     "simple-git-hooks": "^2.13.1"
   },
   "lint-staged": {
-    "pnpm-lock.yaml": "cargo codegen"
+    "pnpm-lock.yaml": "cargo codegen",
+    "*": "oxfmt --no-error-on-unmatched-pattern"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
