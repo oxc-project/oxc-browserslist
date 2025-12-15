@@ -6,25 +6,25 @@
     "browserslist": "browserslist",
     "fmt": "oxfmt"
   },
-  "dependencies": {
-    "browserslist": "4.28.1"
-  },
-  "peerDependencies": {
-    "caniuse-db": "1.x",
-    "electron-to-chromium": "1.x",
-    "node-releases": "2.x"
-  },
-  "devDependencies": {
-    "lint-staged": "^16.1.6",
-    "oxfmt": "^0.17.0",
-    "simple-git-hooks": "^2.13.1"
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
     "pnpm-lock.yaml": "cargo codegen",
     "*": "oxfmt --no-error-on-unmatched-pattern"
   },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
+  "dependencies": {
+    "browserslist": "4.28.1"
+  },
+  "devDependencies": {
+    "lint-staged": "^16.1.6",
+    "oxfmt": "^0.18.0",
+    "simple-git-hooks": "^2.13.1"
+  },
+  "peerDependencies": {
+    "caniuse-db": "1.x",
+    "electron-to-chromium": "1.x",
+    "node-releases": "2.x"
   },
   "packageManager": "pnpm@10.25.0"
 }
