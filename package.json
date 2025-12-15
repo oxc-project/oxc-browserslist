@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "lint-staged": "^16.1.6",
-    "oxfmt": "^0.17.0",
+    "oxfmt": "^0.18.0",
     "simple-git-hooks": "^2.13.1"
   },
   "lint-staged": {
