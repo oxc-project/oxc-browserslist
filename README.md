@@ -51,9 +51,9 @@ cargo run --example inspect -- --mobile-to-desktop 'last 2 versions, not dead'
 - improve test coverage
 - [improve compilation speed and reduce compiled binary size](https://github.com/oxc-project/oxc-browserslist/issues/23)
 - improve runtime performance
-  - all semver versions with their string representation can be precomputed and code generated, current code is calling `parse` and `to_string` on semver versions
-  - add more benchmarks
-  - see [codspeed][codspeed-url] for current run performance
+    - all semver versions with their string representation can be precomputed and code generated, current code is calling `parse` and `to_string` on semver versions
+    - add more benchmarks
+    - see [codspeed][codspeed-url] for current run performance
 
 ## [Sponsored By](https://github.com/sponsors/Boshen)
 

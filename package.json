@@ -6,13 +6,6 @@
     "browserslist": "browserslist",
     "fmt": "oxfmt"
   },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
-  },
-  "lint-staged": {
-    "pnpm-lock.yaml": "cargo codegen",
-    "*": "oxfmt --no-error-on-unmatched-pattern"
-  },
   "dependencies": {
     "browserslist": "4.28.1"
   },
@@ -25,6 +18,13 @@
     "caniuse-db": "1.x",
     "electron-to-chromium": "1.x",
     "node-releases": "2.x"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "pnpm-lock.yaml": "cargo codegen",
+    "*": "oxfmt --no-error-on-unmatched-pattern"
   },
   "packageManager": "pnpm@10.25.0"
 }
