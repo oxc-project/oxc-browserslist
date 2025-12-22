@@ -25,8 +25,8 @@ all = { level = "warn", priority = -1 }
 dbg_macro = "warn"
 todo = "warn"
 unimplemented = "warn"
-print_stdout = "warn" # Must be opt-in
-print_stderr = "warn" # Must be opt-in
+print_stdout = "warn"                     # Must be opt-in
+print_stderr = "warn"                     # Must be opt-in
 cargo = { level = "warn", priority = -1 }
 
 [workspace.dependencies]
@@ -89,4 +89,4 @@ opt-level = 3
 lto = "fat"
 codegen-units = 1
 strip = "symbols" # Set to `false` for debug information
-debug = false # Set to `true` for debug information
+debug = false     # Set to `true` for debug information
