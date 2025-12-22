@@ -31,7 +31,7 @@ cargo = { level = "warn", priority = -1 }
 
 [workspace.dependencies]
 anyhow = "1"
-bincode = "2"
+bincode = "3"
 criterion2 = { version = "3", default-features = false }
 flate2 = "1"
 indexmap = "2"
