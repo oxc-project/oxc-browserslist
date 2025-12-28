@@ -20,7 +20,7 @@ jobs:
           restore-cache: true
           tools: just,cargo-shear@1
           components: rustfmt
-      - uses: oxc-project/setup-node@141eb77546de6702f92d320926403fe3f9f6a6f2 # v1.0.5
+      - uses: oxc-project/setup-node@8958a8e040102244b619c4a94fccb657a44b1c21 # v1.0.6
       - run: cargo codegen
       - run: just fmt
       - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27 # v1.3.2
