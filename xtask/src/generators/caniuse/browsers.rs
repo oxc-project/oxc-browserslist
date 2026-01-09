@@ -1,10 +1,10 @@
 use anyhow::Result;
-use bincode::encode_to_vec;
+use postcard::to_allocvec;
 
 use crate::{data::caniuse::Caniuse, utils::save_bin_compressed};
 
 pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
-    // Prepare data for serialization - convert IndexMap to Vec for bincode compatibility
+    // Prepare data for serialization - convert IndexMap to Vec for compatibility
     let browser_data: Vec<(String, String, Vec<(String, f32, Option<i64>)>)> = data
         .agents
         .iter()
@@ -21,7 +21,7 @@ pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
         .collect();
 
     // Serialize and compress the data
-    let serialized = encode_to_vec(&browser_data, bincode::config::standard())?;
+    let serialized = to_allocvec(&browser_data)?;
     save_bin_compressed("caniuse_browsers.bin", &serialized);
 
     Ok(())

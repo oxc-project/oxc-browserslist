@@ -10,8 +10,7 @@ pub fn NODE_VERSIONS() -> &'static [Version] {
     NODE_VERSIONS.get_or_init(|| {
         const COMPRESSED: &[u8] = include_bytes!("../generated/node_versions.bin.deflate");
         let decompressed = super::caniuse::compression::decompress_deflate(COMPRESSED);
-        let versions: Vec<(u16, u16, u16)> =
-            bincode::decode_from_slice(&decompressed, bincode::config::standard()).unwrap().0;
+        let versions: Vec<(u16, u16, u16)> = postcard::from_bytes(&decompressed).unwrap();
         versions.into_iter().map(|(major, minor, patch)| Version(major, minor, patch)).collect()
     })
 }

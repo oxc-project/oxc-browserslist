@@ -1,8 +1,8 @@
 use std::fs;
 
 use anyhow::Result;
-use bincode::encode_to_vec;
 use indexmap::IndexMap;
+use postcard::to_allocvec;
 use quote::quote;
 use serde::Deserialize;
 use time::OffsetDateTime;
@@ -40,7 +40,7 @@ pub fn build_node_versions() -> Result<()> {
         .collect();
 
     // Serialize and compress the data
-    let serialized = encode_to_vec(&versions, bincode::config::standard())?;
+    let serialized = to_allocvec(&versions)?;
     save_bin_compressed("node_versions.bin", &serialized);
 
     Ok(())

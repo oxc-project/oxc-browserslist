@@ -1,7 +1,6 @@
-use std::io::Read;
-
-use bincode::BorrowDecode;
 use flate2::read::DeflateDecoder;
+use serde::Deserialize;
+use std::io::Read;
 
 /// Decompress gzip-compressed data
 pub fn decompress_deflate(compressed_data: &[u8]) -> Vec<u8> {
@@ -11,11 +10,6 @@ pub fn decompress_deflate(compressed_data: &[u8]) -> Vec<u8> {
     decompressed
 }
 
-pub fn decode<'a, T: BorrowDecode<'a, ()>>(data: &'a [u8], start: u32, end: u32) -> Vec<T> {
-    bincode::borrow_decode_from_slice(
-        &data[start as usize..end as usize],
-        bincode::config::standard(),
-    )
-    .unwrap()
-    .0
+pub fn decode<'a, T: Deserialize<'a>>(data: &'a [u8], start: u32, end: u32) -> Vec<T> {
+    postcard::from_bytes(&data[start as usize..end as usize]).unwrap()
 }

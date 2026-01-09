@@ -48,8 +48,7 @@ pub fn caniuse_browsers() -> &'static CaniuseData {
         const COMPRESSED: &[u8] = include_bytes!("../generated/caniuse_browsers.bin.deflate");
         let decompressed = compression::decompress_deflate(COMPRESSED);
         type BrowserData = Vec<(String, String, Vec<(String, f32, Option<i64>)>)>;
-        let data: BrowserData =
-            bincode::decode_from_slice(&decompressed, bincode::config::standard()).unwrap().0;
+        let data: BrowserData = postcard::from_bytes(&decompressed).unwrap();
         data.into_iter()
             .map(|(_key, name, version_list)| {
                 let name_cow = Cow::Owned(name.clone());

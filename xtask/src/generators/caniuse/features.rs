@@ -1,5 +1,5 @@
 use anyhow::Result;
-use bincode::encode_to_vec;
+use postcard::to_allocvec;
 use quote::quote;
 
 use crate::data::{Caniuse, encode_browser_name};
@@ -40,10 +40,7 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
 
     let keys = sorted_data.keys().cloned().collect::<Vec<_>>();
 
-    let data = features
-        .iter()
-        .map(|v| encode_to_vec(v, bincode::config::standard()).unwrap())
-        .collect::<Vec<_>>();
+    let data = features.iter().map(|v| to_allocvec(v).unwrap()).collect::<Vec<_>>();
     let data_bytes = data.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
     save_bin_compressed("caniuse_feature_matching.bin", &data_bytes);
 
