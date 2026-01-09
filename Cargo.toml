@@ -1,6 +1,6 @@
 [package]
 name = "oxc-browserslist"
-version = "2.1.5"
+version = "2.2.0"
 authors = ["Boshen <boshenc@gmail.com>", "Pig Fang <g-plane@hotmail.com>"]
 categories = ["config", "web-programming"]
 edition = "2024"
