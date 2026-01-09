@@ -1,8 +1,8 @@
 use std::fs;
 
 use anyhow::Result;
-use bincode::{config::Configuration, encode_to_vec};
 use indexmap::IndexMap;
+use postcard::to_allocvec;
 use quote::quote;
 use serde::Deserialize;
 
@@ -19,8 +19,6 @@ struct RegionDatum {
     version: String,
     usage: f32,
 }
-
-const STANDARD: Configuration = bincode::config::standard();
 
 pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     let agents = &data.agents;
@@ -74,7 +72,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .iter()
         .map(|(_, datums)| {
             let versions = datums.iter().map(|x| x.version.clone()).collect::<Vec<_>>();
-            encode_to_vec(versions, STANDARD).unwrap()
+            to_allocvec(&versions).unwrap()
         })
         .collect::<Vec<_>>();
     let version_ranges = create_range_vec(&versions);
@@ -85,7 +83,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .iter()
         .map(|(_region, datums)| {
             let percentages = datums.iter().map(|x| x.usage).collect::<Vec<_>>();
-            encode_to_vec(percentages, STANDARD).unwrap()
+            to_allocvec(&percentages).unwrap()
         })
         .collect::<Vec<_>>();
     let percent_ranges = create_range_vec(&percentages);
