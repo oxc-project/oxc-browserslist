@@ -26,5 +26,5 @@
     "pnpm-lock.yaml": "cargo codegen",
     "*": "oxfmt --no-error-on-unmatched-pattern"
   },
-  "packageManager": "pnpm@10.27.0"
+  "packageManager": "pnpm@10.28.0"
 }
