@@ -14,7 +14,7 @@ fn valid(query: &str) {
     "unknown version"
 )]
 #[test_case(
-    "electron 8.a", Error::Parse(String::from("a"));
+    "electron 8.a", Error::Parse(String::from(".a"));
     "malformed version 1"
 )]
 #[test_case(
