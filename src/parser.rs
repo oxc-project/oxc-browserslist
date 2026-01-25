@@ -2026,14 +2026,20 @@ mod tests {
         fn parse_fully_supports_feature_terminated() {
             let mut parser = Parser::new("fully supports flexbox,");
             let result = parser.parse_query_atom();
-            assert!(matches!(result, Some(QueryAtom::Supports("flexbox", Some(SupportKind::Fully)))));
+            assert!(matches!(
+                result,
+                Some(QueryAtom::Supports("flexbox", Some(SupportKind::Fully)))
+            ));
         }
 
         #[test]
         fn parse_partially_supports_feature_terminated() {
             let mut parser = Parser::new("partially supports flexbox,");
             let result = parser.parse_query_atom();
-            assert!(matches!(result, Some(QueryAtom::Supports("flexbox", Some(SupportKind::Partially)))));
+            assert!(matches!(
+                result,
+                Some(QueryAtom::Supports("flexbox", Some(SupportKind::Partially)))
+            ));
         }
 
         // Test since_or_supports fallback when second char doesn't match
