@@ -265,12 +265,20 @@ impl<'a> Parser<'a> {
     #[inline]
     fn parse_version(&mut self) -> Option<&'a str> {
         let start = self.pos;
+        // Version must start with a digit (reject leading dot like ".7")
+        if self.pos >= self.bytes.len() || !self.peek().is_ascii_digit() {
+            return None;
+        }
         while self.pos < self.bytes.len() {
             let b = self.peek();
             if !b.is_ascii_digit() && b != b'.' {
                 break;
             }
             self.pos += 1;
+        }
+        // Don't accept trailing dot (e.g., "2." is invalid)
+        if self.pos > start && self.bytes[self.pos - 1] == b'.' {
+            self.pos -= 1;
         }
         if self.pos > start { Some(self.slice(start, self.pos)) } else { None }
     }
@@ -1003,6 +1011,20 @@ mod tests {
     #[test]
     fn parse_version_empty() {
         let mut parser = Parser::new("abc");
+        let result = parser.parse_version();
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn parse_version_trailing_dot() {
+        let mut parser = Parser::new("2.");
+        let result = parser.parse_version();
+        assert_eq!(result, Some("2"));
+    }
+
+    #[test]
+    fn parse_version_leading_dot() {
+        let mut parser = Parser::new(".7");
         let result = parser.parse_version();
         assert_eq!(result, None);
     }
