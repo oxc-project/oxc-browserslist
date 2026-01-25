@@ -18,6 +18,10 @@ fn valid(query: &str) {
     "node < 8.a", Error::Parse(String::from(".a"));
     "malformed version"
 )]
+#[test_case(
+    "node > 99999999999999999999", Error::UnknownNodejsVersion(String::from("99999999999999999999"));
+    "version overflow"
+)]
 fn invalid(query: &str, error: Error) {
     assert_eq!(should_failed(query, &Opts::default()), error);
 }
