@@ -76,14 +76,12 @@ impl<'a> Parser<'a> {
 
     #[inline]
     fn peek(&self) -> u8 {
-        // SAFETY: Callers check is_eof() or bounds
-        unsafe { *self.bytes.get_unchecked(self.pos) }
+        self.bytes[self.pos]
     }
 
     #[inline]
     fn slice(&self, start: usize, end: usize) -> &'a str {
-        // SAFETY: We only work with ASCII
-        unsafe { self.input.get_unchecked(start..end) }
+        &self.input[start..end]
     }
 
     #[inline]
@@ -119,14 +117,13 @@ impl<'a> Parser<'a> {
         if end > self.bytes.len() {
             return false;
         }
-        // SAFETY: We checked bounds
-        let slice = unsafe { self.bytes.get_unchecked(self.pos..end) };
+        let slice = &self.bytes[self.pos..end];
         if !slice.eq_ignore_ascii_case(kw) {
             return false;
         }
         // Word boundary check
         if end < self.bytes.len() {
-            let next = unsafe { *self.bytes.get_unchecked(end) };
+            let next = self.bytes[end];
             if next.is_ascii_alphanumeric() || next == b'_' {
                 return false;
             }
@@ -139,7 +136,7 @@ impl<'a> Parser<'a> {
     fn match_bytes(&mut self, s: &[u8]) -> bool {
         let end = self.pos + s.len();
         if end <= self.bytes.len() {
-            let slice = unsafe { self.bytes.get_unchecked(self.pos..end) };
+            let slice = &self.bytes[self.pos..end];
             if slice == s {
                 self.pos = end;
                 return true;
@@ -154,7 +151,7 @@ impl<'a> Parser<'a> {
         if end > self.bytes.len() {
             return false;
         }
-        let slice = unsafe { self.bytes.get_unchecked(self.pos..end) };
+        let slice = &self.bytes[self.pos..end];
         if !slice.eq_ignore_ascii_case(b"version") {
             return false;
         }
@@ -176,7 +173,7 @@ impl<'a> Parser<'a> {
         if end > self.bytes.len() {
             return false;
         }
-        let slice = unsafe { self.bytes.get_unchecked(self.pos..end) };
+        let slice = &self.bytes[self.pos..end];
         if !slice.eq_ignore_ascii_case(b"year") {
             return false;
         }
@@ -314,15 +311,15 @@ impl<'a> Parser<'a> {
         let start = self.pos;
         // Optional "alt-" prefix
         if self.pos + 4 <= self.bytes.len() {
-            let slice = unsafe { self.bytes.get_unchecked(self.pos..self.pos + 4) };
+            let slice = &self.bytes[self.pos..self.pos + 4];
             if slice.eq_ignore_ascii_case(b"alt-") {
                 self.pos += 4;
             }
         }
         // Exactly 2 alphabetic
         if self.pos + 2 <= self.bytes.len() {
-            let b1 = unsafe { *self.bytes.get_unchecked(self.pos) };
-            let b2 = unsafe { *self.bytes.get_unchecked(self.pos + 1) };
+            let b1 = self.bytes[self.pos];
+            let b2 = self.bytes[self.pos + 1];
             if b1.is_ascii_alphabetic() && b2.is_ascii_alphabetic() {
                 self.pos += 2;
                 return Some(self.slice(start, self.pos));
@@ -473,7 +470,7 @@ impl<'a> Parser<'a> {
         }
         // Peek second char to disambiguate
         if self.pos + 1 < self.bytes.len() {
-            match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
+            match self.bytes[self.pos + 1] {
                 b'i' | b'I' => return self.parse_since(),
                 b'u' | b'U' => return self.parse_supports_only(),
                 _ => return self.parse_since().or_else(|| self.parse_supports_only()),
@@ -530,7 +527,7 @@ impl<'a> Parser<'a> {
         if self.pos + 1 >= self.bytes.len() {
             return None;
         }
-        match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
+        match self.bytes[self.pos + 1] {
             b'o' | b'O' => self.parse_cover(),
             b'u' | b'U' => self.parse_current_node(),
             _ => self.parse_cover().or_else(|| self.parse_current_node()),
@@ -603,7 +600,7 @@ impl<'a> Parser<'a> {
         if self.pos + 1 >= self.bytes.len() {
             return None;
         }
-        match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
+        match self.bytes[self.pos + 1] {
             b'l' | b'L' => self.parse_electron(),
             b'x' | b'X' => self.parse_extends(),
             _ => self.parse_electron().or_else(|| self.parse_extends()),
@@ -655,7 +652,7 @@ impl<'a> Parser<'a> {
         if self.pos + 1 >= self.bytes.len() {
             return None;
         }
-        match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
+        match self.bytes[self.pos + 1] {
             b'i' | b'I' | b'x' | b'X' | b'f' | b'F' => self.parse_firefox_esr(),
             b'u' | b'U' => self.parse_fully_supports(),
             _ => self.parse_firefox_esr().or_else(|| self.parse_fully_supports()),
@@ -744,7 +741,7 @@ impl<'a> Parser<'a> {
         if self.pos + 1 >= self.bytes.len() {
             return None;
         }
-        match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
+        match self.bytes[self.pos + 1] {
             b'h' | b'H' => self.parse_phantom(),
             b'a' | b'A' => self.parse_partially_supports(),
             _ => self.parse_phantom().or_else(|| self.parse_partially_supports()),
@@ -808,7 +805,7 @@ impl<'a> Parser<'a> {
         if self.pos + 2 >= self.bytes.len() {
             return None;
         }
-        match unsafe { *self.bytes.get_unchecked(self.pos + 2) } {
+        match self.bytes[self.pos + 2] {
             b'f' | b'F' => {
                 if self.match_keyword(b"defaults") {
                     Some(QueryAtom::Defaults)
