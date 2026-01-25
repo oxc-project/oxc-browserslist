@@ -976,7 +976,7 @@ pub fn parse_browserslist_query(input: &str) -> Result<(&str, Vec<SingleQuery<'_
 mod tests {
     use test_case::test_case;
 
-    use crate::{opts::Opts, test::run_compare};
+    use crate::{opts::Opts, resolve, test::run_compare};
 
     #[test_case(""; "empty")]
     #[test_case("ie >= 6, ie <= 7"; "comma")]
@@ -988,5 +988,393 @@ mod tests {
     #[test_case("last 2 versions and > 1%"; "swc issue 4871")]
     fn valid(query: &str) {
         run_compare(query, &Opts::default(), None);
+    }
+
+    // Tests for edge cases and improved coverage
+    #[test_case("> .5%"; "float with leading dot")]
+    #[test_case(">= 0.1%"; "percentage with zero")]
+    #[test_case("< 1%"; "less than percentage")]
+    #[test_case("<= 5%"; "less or equal percentage")]
+    #[test_case("> 1% in US"; "percentage in region")]
+    #[test_case("> 1% in alt-AS"; "percentage in alt region")]
+    #[test_case("cover 0.5% in US"; "cover in region")]
+    #[test_case("cover 0.1% in alt-EU"; "cover in alt region")]
+    fn percentage_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("since 2020"; "since year only")]
+    #[test_case("since 2020-06"; "since year month")]
+    #[test_case("since 2020-06-15"; "since year month day")]
+    fn since_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("last 1 year"; "singular year")]
+    #[test_case("last 2 years"; "plural years")]
+    #[test_case("last 1.5 years"; "fractional years")]
+    fn years_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("last 1 version"; "singular version")]
+    #[test_case("last 2 versions"; "plural versions")]
+    #[test_case("last 1 major version"; "singular major version")]
+    #[test_case("last 2 major versions"; "plural major versions")]
+    #[test_case("last 1 Chrome version"; "browser singular")]
+    #[test_case("last 2 Chrome versions"; "browser plural")]
+    #[test_case("last 1 Chrome major version"; "browser major singular")]
+    #[test_case("last 2 Chrome major versions"; "browser major plural")]
+    fn last_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("unreleased versions"; "unreleased all")]
+    #[test_case("unreleased Chrome versions"; "unreleased browser")]
+    #[test_case("unreleased electron versions"; "unreleased electron")]
+    fn unreleased_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("supports es6-module"; "supports")]
+    #[test_case("fully supports es6-module"; "fully supports")]
+    #[test_case("partially supports es6-module"; "partially supports")]
+    fn supports_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("firefox esr"; "firefox esr")]
+    #[test_case("ff esr"; "ff esr")]
+    #[test_case("fx esr"; "fx esr")]
+    #[test_case("Firefox ESR"; "firefox esr uppercase")]
+    fn firefox_esr_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("operamini all"; "operamini all")]
+    #[test_case("op_mini all"; "op mini all")]
+    fn operamini_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("phantomjs 2.1"; "phantom 2.1")]
+    #[test_case("phantomjs 1.9"; "phantom 1.9")]
+    fn phantom_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("maintained node versions"; "maintained node")]
+    fn maintained_node_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("node >= 10"; "node unbounded")]
+    #[test_case("node 10 - 14"; "node bounded")]
+    #[test_case("node 18"; "node accurate")]
+    fn node_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("electron >= 1.0"; "electron unbounded")]
+    #[test_case("electron 0.36 - 1.2"; "electron bounded")]
+    #[test_case("electron 1.1"; "electron accurate")]
+    fn electron_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("defaults"; "defaults")]
+    #[test_case("dead"; "dead")]
+    #[test_case("Defaults"; "defaults uppercase")]
+    #[test_case("Dead"; "dead uppercase")]
+    fn defaults_dead_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("safari tp"; "safari tp")]
+    #[test_case("Safari TP"; "safari tp uppercase")]
+    fn browser_tp_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    #[test_case("ie 8 - 10"; "ie range")]
+    #[test_case("chrome >= 50"; "chrome unbounded")]
+    #[test_case("chrome 90"; "chrome accurate")]
+    fn browser_range_edge_cases(query: &str) {
+        run_compare(query, &Opts::default(), None);
+    }
+
+    // Tests for parser error paths
+    #[test]
+    fn invalid_queries_return_unknown() {
+        // Queries that don't match any pattern should return Unknown error
+        let result = resolve(&["unknown_query_xyz"], &Opts::default());
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn parse_composition_with_extra_spaces() {
+        run_compare("ie >= 6   and   ie <= 7", &Opts::default(), None);
+        run_compare("ie >= 6  ,  ie <= 7", &Opts::default(), None);
+        run_compare("ie >= 6   or   ie <= 7", &Opts::default(), None);
+    }
+
+    #[test]
+    fn case_insensitive_keywords() {
+        // Test that uppercase keywords are parsed correctly
+        // We just verify they don't error, not exact results (bundled data may differ)
+        assert!(resolve(&["LAST 2 VERSIONS"], &Opts::default()).is_ok());
+        assert!(resolve(&["DEFAULTS"], &Opts::default()).is_ok());
+        assert!(resolve(&["DEAD"], &Opts::default()).is_ok());
+        assert!(resolve(&["SUPPORTS es6-module"], &Opts::default()).is_ok());
+        assert!(resolve(&["COVER 0.1%"], &Opts::default()).is_ok());
+        assert!(resolve(&["SINCE 2020"], &Opts::default()).is_ok());
+    }
+
+    // Unit tests for parser internals to improve coverage
+    mod parser_internals {
+        use super::super::*;
+
+        #[test]
+        fn parse_browserslist_query_empty() {
+            let result = parse_browserslist_query("");
+            assert!(result.is_ok());
+            assert!(result.unwrap().1.is_empty());
+        }
+
+        #[test]
+        fn parse_browserslist_query_whitespace_only() {
+            let result = parse_browserslist_query("   ");
+            assert!(result.is_ok());
+            assert!(result.unwrap().1.is_empty());
+        }
+
+        #[test]
+        fn parse_float_leading_dot() {
+            let mut parser = Parser::new(".5");
+            let result = parser.parse_float();
+            assert!(result.is_some());
+            assert_eq!(result.unwrap(), 0.5);
+        }
+
+        #[test]
+        fn parse_double_leading_dot() {
+            let mut parser = Parser::new(".25");
+            let result = parser.parse_double();
+            assert!(result.is_some());
+            assert!((result.unwrap() - 0.25).abs() < 0.001);
+        }
+
+        #[test]
+        fn parse_version_basic() {
+            let mut parser = Parser::new("1.2.3");
+            let result = parser.parse_version();
+            assert_eq!(result, Some("1.2.3"));
+        }
+
+        #[test]
+        fn parse_version_empty() {
+            let mut parser = Parser::new("abc");
+            let result = parser.parse_version();
+            assert_eq!(result, None);
+        }
+
+        #[test]
+        fn parse_identifier_basic() {
+            let mut parser = Parser::new("chrome");
+            let result = parser.parse_identifier();
+            assert_eq!(result, Some("chrome"));
+        }
+
+        #[test]
+        fn parse_identifier_with_underscore() {
+            let mut parser = Parser::new("op_mini");
+            let result = parser.parse_identifier();
+            assert_eq!(result, Some("op_mini"));
+        }
+
+        #[test]
+        fn parse_comparator_all_types() {
+            let mut p1 = Parser::new("<");
+            assert!(matches!(p1.parse_comparator(), Some(Comparator::Less)));
+
+            let mut p2 = Parser::new("<=");
+            assert!(matches!(p2.parse_comparator(), Some(Comparator::LessOrEqual)));
+
+            let mut p3 = Parser::new(">");
+            assert!(matches!(p3.parse_comparator(), Some(Comparator::Greater)));
+
+            let mut p4 = Parser::new(">=");
+            assert!(matches!(p4.parse_comparator(), Some(Comparator::GreaterOrEqual)));
+
+            let mut p5 = Parser::new("x");
+            assert!(p5.parse_comparator().is_none());
+        }
+
+        #[test]
+        fn parse_region_basic() {
+            let mut parser = Parser::new("US");
+            let result = parser.parse_region();
+            assert_eq!(result, Some("US"));
+        }
+
+        #[test]
+        fn parse_region_alt_prefix() {
+            let mut parser = Parser::new("alt-AS");
+            let result = parser.parse_region();
+            assert_eq!(result, Some("alt-AS"));
+        }
+
+        #[test]
+        fn parse_region_invalid() {
+            let mut parser = Parser::new("1X");
+            let result = parser.parse_region();
+            assert_eq!(result, None);
+        }
+
+        #[test]
+        fn parse_i32_negative() {
+            let mut parser = Parser::new("-2020");
+            let result = parser.parse_i32();
+            assert_eq!(result, Some(-2020));
+        }
+
+        #[test]
+        fn parse_i32_positive_with_sign() {
+            let mut parser = Parser::new("+2020");
+            let result = parser.parse_i32();
+            assert_eq!(result, Some(2020));
+        }
+
+        #[test]
+        fn match_keyword_word_boundary() {
+            let mut parser = Parser::new("lastX");
+            assert!(!parser.match_keyword(b"last"));
+        }
+
+        #[test]
+        fn match_keyword_too_short() {
+            let mut parser = Parser::new("la");
+            assert!(!parser.match_keyword(b"last"));
+        }
+
+        #[test]
+        fn match_version_keyword_singular() {
+            let mut parser = Parser::new("version");
+            assert!(parser.match_version_keyword());
+        }
+
+        #[test]
+        fn match_version_keyword_plural() {
+            let mut parser = Parser::new("versions");
+            assert!(parser.match_version_keyword());
+        }
+
+        #[test]
+        fn match_year_keyword_singular() {
+            let mut parser = Parser::new("year");
+            assert!(parser.match_year_keyword());
+        }
+
+        #[test]
+        fn match_year_keyword_plural() {
+            let mut parser = Parser::new("years");
+            assert!(parser.match_year_keyword());
+        }
+
+        #[test]
+        fn match_year_keyword_invalid() {
+            let mut parser = Parser::new("yearly");
+            assert!(!parser.match_year_keyword());
+        }
+
+        #[test]
+        fn parse_version_range_bounded() {
+            let mut parser = Parser::new(" 1.0 - 2.0");
+            let result = parser.parse_version_range();
+            assert!(matches!(result, Some(VersionRange::Bounded("1.0", "2.0"))));
+        }
+
+        #[test]
+        fn parse_version_range_unbounded() {
+            let mut parser = Parser::new(" >= 1.0");
+            let result = parser.parse_version_range();
+            assert!(matches!(result, Some(VersionRange::Unbounded(Comparator::GreaterOrEqual, "1.0"))));
+        }
+
+        #[test]
+        fn parse_version_range_accurate() {
+            let mut parser = Parser::new(" 1.0");
+            let result = parser.parse_version_range();
+            assert!(matches!(result, Some(VersionRange::Accurate("1.0"))));
+        }
+
+        #[test]
+        fn parse_version_range_no_space() {
+            let mut parser = Parser::new("1.0");
+            let result = parser.parse_version_range();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_query_atom_defaults() {
+            let mut parser = Parser::new("defaults");
+            let result = parser.parse_query_atom();
+            assert!(matches!(result, Some(QueryAtom::Defaults)));
+        }
+
+        #[test]
+        fn parse_query_atom_dead() {
+            let mut parser = Parser::new("dead");
+            let result = parser.parse_query_atom();
+            assert!(matches!(result, Some(QueryAtom::Dead)));
+        }
+
+        #[test]
+        fn parse_query_atom_percentage() {
+            let mut parser = Parser::new("> 1%");
+            let result = parser.parse_query_atom();
+            assert!(matches!(result, Some(QueryAtom::Percentage { .. })));
+        }
+
+        #[test]
+        fn parse_query_atom_browser() {
+            let mut parser = Parser::new("chrome 90");
+            let result = parser.parse_query_atom();
+            assert!(matches!(result, Some(QueryAtom::Browser(_, _))));
+        }
+
+        #[test]
+        fn parse_unknown_query() {
+            let mut parser = Parser::new("###invalid###");
+            let result = parser.parse_unknown();
+            assert!(matches!(result, Some(QueryAtom::Unknown("###invalid###"))));
+        }
+
+        #[test]
+        fn parse_browserslist_with_or() {
+            let result = parse_browserslist_query("ie 10 or ie 11");
+            assert!(result.is_ok());
+            let (_, queries) = result.unwrap();
+            assert_eq!(queries.len(), 2);
+            assert!(!queries[1].is_and);
+        }
+
+        #[test]
+        fn parse_browserslist_with_and() {
+            let result = parse_browserslist_query("ie >= 10 and ie <= 11");
+            assert!(result.is_ok());
+            let (_, queries) = result.unwrap();
+            assert_eq!(queries.len(), 2);
+            assert!(queries[1].is_and);
+        }
+
+        #[test]
+        fn parse_browserslist_with_not() {
+            let result = parse_browserslist_query("ie >= 10, not ie 11");
+            assert!(result.is_ok());
+            let (_, queries) = result.unwrap();
+            assert_eq!(queries.len(), 2);
+            assert!(queries[1].negated);
+        }
     }
 }
