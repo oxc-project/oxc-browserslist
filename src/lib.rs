@@ -63,6 +63,7 @@ pub use wasm::browserslist;
 #[cfg(not(target_arch = "wasm32"))]
 mod config;
 mod data;
+mod date;
 mod error;
 mod generated;
 mod opts;

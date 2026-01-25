@@ -1,10 +1,9 @@
-use time::OffsetDateTime;
-
 use super::{Distrib, QueryResult};
 use crate::data::node::{NODE_VERSIONS, RELEASE_SCHEDULE};
+use crate::date::now_julian_day;
 
 pub(super) fn maintained_node() -> QueryResult {
-    let now = OffsetDateTime::now_utc().to_julian_day();
+    let now = now_julian_day();
 
     let versions = RELEASE_SCHEDULE
         .iter()
