@@ -272,6 +272,10 @@ impl<'a> Parser<'a> {
             }
             self.pos += 1;
         }
+        // Don't accept trailing dot (e.g., "2." is invalid)
+        if self.pos > start && self.bytes[self.pos - 1] == b'.' {
+            self.pos -= 1;
+        }
         if self.pos > start { Some(self.slice(start, self.pos)) } else { None }
     }
 
@@ -1005,6 +1009,13 @@ mod tests {
         let mut parser = Parser::new("abc");
         let result = parser.parse_version();
         assert_eq!(result, None);
+    }
+
+    #[test]
+    fn parse_version_trailing_dot() {
+        let mut parser = Parser::new("2.");
+        let result = parser.parse_version();
+        assert_eq!(result, Some("2"));
     }
 
     #[test]
