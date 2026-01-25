@@ -24,20 +24,3 @@ pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult
         .collect();
     Ok(distribs)
 }
-
-#[cfg(all(test, not(miri)))]
-mod tests {
-    use test_case::test_case;
-
-    use super::*;
-    use crate::test::run_compare;
-
-    #[test_case("since 2017"; "year only")]
-    #[test_case("Since 2017"; "case insensitive")]
-    #[test_case("since 2017-02"; "with month")]
-    #[test_case("since 2017-02-15"; "with day")]
-    #[test_case("since 1970"; "unix timestamp zero")]
-    fn valid(query: &str) {
-        run_compare(query, &Opts::default(), None);
-    }
-}

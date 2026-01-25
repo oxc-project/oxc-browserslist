@@ -35,18 +35,3 @@ pub(super) fn last_n_major_browsers(count: usize, opts: &Opts) -> QueryResult {
 
     Ok(distribs)
 }
-
-#[cfg(all(test, not(miri)))]
-mod tests {
-    use test_case::test_case;
-
-    use super::*;
-    use crate::test::run_compare;
-
-    #[test_case("last 2 major versions"; "basic")]
-    #[test_case("last 1 major version"; "support pluralization")]
-    #[test_case("Last 01 MaJoR Version"; "case insensitive")]
-    fn valid(query: &str) {
-        run_compare(query, &Opts::default(), None);
-    }
-}

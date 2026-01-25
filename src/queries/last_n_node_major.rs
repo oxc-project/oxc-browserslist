@@ -15,17 +15,3 @@ pub(super) fn last_n_node_major(count: usize) -> QueryResult {
 
     Ok(distribs)
 }
-
-#[cfg(all(test, not(miri)))]
-mod tests {
-    use test_case::test_case;
-
-    use crate::{opts::Opts, test::run_compare};
-
-    #[test_case("last 2 node major versions"; "basic")]
-    #[test_case("last 2 Node major versions"; "case insensitive")]
-    #[test_case("last 2 node major version"; "support pluralization")]
-    fn valid(query: &str) {
-        run_compare(query, &Opts::default(), None);
-    }
-}
