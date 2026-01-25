@@ -1,8 +1,7 @@
-use time::{Duration, OffsetDateTime};
-
 use super::{Distrib, QueryResult};
 use crate::{
     data::caniuse::{caniuse_browsers, get_browser_stat},
+    date::now_unix_timestamp,
     error::Error,
     opts::Opts,
 };
@@ -10,9 +9,11 @@ use crate::{
 const ONE_YEAR_IN_SECONDS: f64 = 365.259_641 * 24.0 * 60.0 * 60.0;
 
 pub(super) fn years(count: f64, opts: &Opts) -> QueryResult {
-    let duration =
-        Duration::checked_seconds_f64(count * ONE_YEAR_IN_SECONDS).ok_or(Error::YearOverflow)?;
-    let time = (OffsetDateTime::now_utc() - duration).unix_timestamp();
+    let duration_secs = count * ONE_YEAR_IN_SECONDS;
+    if !duration_secs.is_finite() || duration_secs < 0.0 || duration_secs > i64::MAX as f64 {
+        return Err(Error::YearOverflow);
+    }
+    let time = now_unix_timestamp() - duration_secs as i64;
 
     let distribs = caniuse_browsers()
         .keys()

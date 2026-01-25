@@ -1,18 +1,14 @@
-use time::{Date, Month, OffsetDateTime, Time};
-
 use super::{Distrib, QueryResult};
 use crate::{
     data::caniuse::{caniuse_browsers, get_browser_stat},
+    date::date_to_unix_timestamp,
     error::Error,
     opts::Opts,
 };
 
 pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult {
-    let month = Month::try_from(month as u8)
-        .map_err(|_| Error::InvalidDate(format!("{year}-{month}-{day}")))?;
-    let date = Date::from_calendar_date(year, month, day as u8)
-        .map_err(|_| Error::InvalidDate(format!("{year}-{month}-{day}")))?;
-    let time = OffsetDateTime::new_utc(date, Time::MIDNIGHT).unix_timestamp();
+    let time = date_to_unix_timestamp(year, month, day)
+        .ok_or_else(|| Error::InvalidDate(format!("{year}-{month}-{day}")))?;
 
     let distribs = caniuse_browsers()
         .keys()
