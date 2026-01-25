@@ -1,16 +1,3 @@
-use nom::{
-    IResult, Parser,
-    branch::alt,
-    bytes::complete::{tag, tag_no_case, take_while_m_n, take_while1},
-    character::complete::{anychar, char, i32, one_of, space0, space1, u16, u32},
-    combinator::{all_consuming, consumed, map, opt, recognize, value, verify},
-    multi::{many_till, many0},
-    number::complete::{double, float},
-    sequence::{delimited, pair, preceded, separated_pair, terminated},
-};
-
-type PResult<'a, Output> = IResult<&'a str, Output>;
-
 #[derive(Debug, Clone)]
 pub enum QueryAtom<'a> {
     Last { count: u16, major: bool, name: Option<&'a str> },
@@ -32,7 +19,7 @@ pub enum QueryAtom<'a> {
     Defaults,
     Dead,
     Extends(&'a str),
-    Unknown(&'a str), // unnecessary, but for better error report
+    Unknown(&'a str),
 }
 
 #[derive(Debug, Clone)]
@@ -47,78 +34,6 @@ pub enum SupportKind {
     Partially,
 }
 
-fn parse_version_keyword(input: &str) -> PResult<'_, &str> {
-    terminated(tag_no_case("version"), opt(char('s'))).parse(input)
-}
-
-fn parse_last(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(
-        (
-            terminated(tag_no_case("last"), space1),
-            terminated(u16, space1),
-            opt(terminated(
-                verify(take_while1(|c: char| c.is_ascii_alphabetic() || c == '_'), |s: &str| {
-                    !s.eq_ignore_ascii_case("version")
-                        && !s.eq_ignore_ascii_case("versions")
-                        && !s.eq_ignore_ascii_case("major")
-                }),
-                space1,
-            )),
-            opt(terminated(tag_no_case("major"), space1)),
-            parse_version_keyword,
-        ),
-        |(_, count, name, major, _)| {
-            if matches!(name, Some(name) if name.eq_ignore_ascii_case("major")) && major.is_none() {
-                QueryAtom::Last { count, major: true, name: None }
-            } else {
-                QueryAtom::Last { count, major: major.is_some(), name }
-            }
-        },
-    )
-    .parse(input)
-}
-
-fn parse_unreleased(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(
-        delimited(
-            terminated(tag_no_case("unreleased"), space1),
-            opt(terminated(take_while1(|c: char| c.is_ascii_alphabetic() || c == '_'), space1)),
-            parse_version_keyword,
-        ),
-        QueryAtom::Unreleased,
-    )
-    .parse(input)
-}
-
-fn parse_years(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(
-        delimited(
-            terminated(tag_no_case("last"), space1),
-            terminated(double, space1),
-            terminated(tag_no_case("year"), opt(char('s'))),
-        ),
-        QueryAtom::Years,
-    )
-    .parse(input)
-}
-
-fn parse_since(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(
-        (
-            terminated(tag_no_case("since"), one_of(" \t")),
-            i32,
-            opt(preceded(char('-'), u32)),
-            opt(preceded(char('-'), u32)),
-        ),
-        |(_, year, month, day)| QueryAtom::Since {
-            year,
-            month: month.unwrap_or(1),
-            day: day.unwrap_or(1),
-        },
-    )
-    .parse(input)
-}
-
 #[derive(Debug, Clone)]
 pub enum Comparator {
     Less,
@@ -127,217 +42,11 @@ pub enum Comparator {
     GreaterOrEqual,
 }
 
-fn parse_compare_operator(input: &str) -> PResult<'_, Comparator> {
-    map((alt((char('<'), char('>'))), opt(char('='))), |(relation, equals)| match relation {
-        '<' if equals.is_some() => Comparator::LessOrEqual,
-        '<' => Comparator::Less,
-        '>' if equals.is_some() => Comparator::GreaterOrEqual,
-        _ => Comparator::Greater,
-    })
-    .parse(input)
-}
-
-fn parse_region(input: &str) -> PResult<'_, Stats<'_>> {
-    map(
-        recognize(preceded(opt(tag_no_case("alt-")), take_while_m_n(2, 2, char::is_alphabetic))),
-        Stats::Region,
-    )
-    .parse(input)
-}
-
-fn parse_percentage(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(
-        (
-            terminated(parse_compare_operator, space0),
-            terminated(float, char('%')),
-            opt(preceded((space1, tag_no_case("in"), space1), parse_region)),
-        ),
-        |(comparator, value, stats)| QueryAtom::Percentage {
-            comparator,
-            popularity: value,
-            stats: stats.unwrap_or(Stats::Global),
-        },
-    )
-    .parse(input)
-}
-
-fn parse_cover(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(
-        (
-            preceded(terminated(tag_no_case("cover"), space1), terminated(float, char('%'))),
-            opt(preceded((space1, tag_no_case("in"), space1), parse_region)),
-        ),
-        |(value, stats)| QueryAtom::Cover {
-            coverage: value,
-            stats: stats.unwrap_or(Stats::Global),
-        },
-    )
-    .parse(input)
-}
-
-fn parse_supports(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(
-        separated_pair(
-            opt(terminated(
-                alt((
-                    value(SupportKind::Fully, tag_no_case("fully")),
-                    value(SupportKind::Partially, tag_no_case("partially")),
-                )),
-                space1,
-            )),
-            terminated(tag_no_case("supports"), space1),
-            take_while1(|c: char| c.is_alphanumeric() || c == '-'),
-        ),
-        |(kind, name)| QueryAtom::Supports(name, kind),
-    )
-    .parse(input)
-}
-
 #[derive(Debug, Clone)]
 pub enum VersionRange<'a> {
     Bounded(&'a str, &'a str),
     Unbounded(Comparator, &'a str),
     Accurate(&'a str),
-}
-
-fn parse_version(input: &str) -> PResult<'_, &str> {
-    take_while1(|c: char| c.is_ascii_digit() || c == '.')(input)
-}
-
-fn parse_version_range(input: &str) -> PResult<'_, VersionRange<'_>> {
-    alt((
-        map(
-            preceded(
-                space1,
-                separated_pair(parse_version, delimited(space0, char('-'), space0), parse_version),
-            ),
-            |(from, to)| VersionRange::Bounded(from, to),
-        ),
-        map(
-            preceded(space0, separated_pair(parse_compare_operator, space0, parse_version)),
-            |(comparator, version)| VersionRange::Unbounded(comparator, version),
-        ),
-        map(preceded(space1, parse_version), VersionRange::Accurate),
-    ))
-    .parse(input)
-}
-
-fn parse_electron(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(preceded(tag_no_case("electron"), parse_version_range), QueryAtom::Electron).parse(input)
-}
-
-fn parse_node(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(preceded(tag_no_case("node"), parse_version_range), QueryAtom::Node).parse(input)
-}
-
-fn parse_browser(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(
-        pair(
-            take_while1(|c: char| c.is_ascii_alphabetic() || c == '_'),
-            alt((
-                parse_version_range,
-                map(preceded(space1, tag_no_case("tp")), VersionRange::Accurate),
-            )),
-        ),
-        |(name, version)| QueryAtom::Browser(name, version),
-    )
-    .parse(input)
-}
-
-fn parse_firefox_esr(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    value(
-        QueryAtom::FirefoxESR,
-        (
-            alt((tag_no_case("firefox"), tag_no_case("fx"), tag_no_case("ff"))),
-            space1,
-            tag_no_case("esr"),
-        ),
-    )
-    .parse(input)
-}
-
-fn parse_opera_mini(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    value(
-        QueryAtom::OperaMini,
-        (alt((tag_no_case("operamini"), tag_no_case("op_mini"))), space1, tag_no_case("all")),
-    )
-    .parse(input)
-}
-
-fn parse_current_node(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    value(QueryAtom::CurrentNode, (tag_no_case("current"), space1, tag_no_case("node")))
-        .parse(input)
-}
-
-fn parse_maintained_node(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    value(
-        QueryAtom::MaintainedNode,
-        (tag_no_case("maintained"), space1, tag_no_case("node"), space1, tag_no_case("versions")),
-    )
-    .parse(input)
-}
-
-fn parse_phantom(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(
-        preceded(terminated(tag_no_case("phantomjs"), space1), alt((tag("1.9"), tag("2.1")))),
-        |version| QueryAtom::Phantom(version == "2.1"),
-    )
-    .parse(input)
-}
-
-fn parse_browserslist_config(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    value(QueryAtom::BrowserslistConfig, tag_no_case("browserslist config")).parse(input)
-}
-
-fn parse_defaults(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    value(QueryAtom::Defaults, tag_no_case("defaults")).parse(input)
-}
-
-fn parse_dead(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    value(QueryAtom::Dead, tag_no_case("dead")).parse(input)
-}
-
-fn parse_extends(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(
-        preceded(
-            terminated(tag_no_case("extends"), space1),
-            take_while1(|c: char| {
-                c.is_alphanumeric() || c == '-' || c == '_' || c == '@' || c == '/' || c == '.'
-            }),
-        ),
-        QueryAtom::Extends,
-    )
-    .parse(input)
-}
-
-fn parse_unknown(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    map(recognize(many_till(anychar, parse_composition_operator)), QueryAtom::Unknown).parse(input)
-}
-
-fn parse_query_atom(input: &str) -> PResult<'_, QueryAtom<'_>> {
-    alt((
-        parse_last,
-        parse_unreleased,
-        parse_years,
-        parse_since,
-        parse_percentage,
-        parse_cover,
-        parse_supports,
-        parse_electron,
-        parse_node,
-        parse_firefox_esr,
-        parse_opera_mini,
-        parse_current_node,
-        parse_maintained_node,
-        parse_phantom,
-        parse_browser,
-        parse_browserslist_config,
-        parse_defaults,
-        parse_dead,
-        parse_extends,
-        parse_unknown,
-    ))
-    .parse(input)
 }
 
 #[derive(Debug)]
@@ -348,68 +57,919 @@ pub struct SingleQuery<'a> {
     pub(crate) is_and: bool,
 }
 
-fn parse_and(input: &str) -> PResult<'_, bool> {
-    value(true, delimited(space1, tag_no_case("and"), space1)).parse(input)
+struct Parser<'a> {
+    input: &'a str,
+    bytes: &'a [u8],
+    pos: usize,
 }
 
-fn parse_or(input: &str) -> PResult<'_, bool> {
-    alt((
-        value(false, delimited(space0, char(','), space0)),
-        value(false, delimited(space1, tag_no_case("or"), space1)),
-    ))
-    .parse(input)
+impl<'a> Parser<'a> {
+    #[inline]
+    fn new(input: &'a str) -> Self {
+        Self { input, bytes: input.as_bytes(), pos: 0 }
+    }
+
+    #[inline]
+    fn is_eof(&self) -> bool {
+        self.pos >= self.bytes.len()
+    }
+
+    #[inline]
+    fn peek(&self) -> u8 {
+        // SAFETY: Callers check is_eof() or bounds
+        unsafe { *self.bytes.get_unchecked(self.pos) }
+    }
+
+    #[inline]
+    fn slice(&self, start: usize, end: usize) -> &'a str {
+        // SAFETY: We only work with ASCII
+        unsafe { self.input.get_unchecked(start..end) }
+    }
+
+    #[inline]
+    fn skip_whitespace(&mut self) {
+        while self.pos < self.bytes.len() {
+            match self.peek() {
+                b' ' | b'\t' => self.pos += 1,
+                _ => break,
+            }
+        }
+    }
+
+    #[inline]
+    fn skip_whitespace1(&mut self) -> bool {
+        let start = self.pos;
+        self.skip_whitespace();
+        self.pos > start
+    }
+
+    #[inline]
+    fn eat(&mut self, b: u8) -> bool {
+        if self.pos < self.bytes.len() && self.peek() == b {
+            self.pos += 1;
+            true
+        } else {
+            false
+        }
+    }
+
+    #[inline]
+    fn match_keyword(&mut self, kw: &[u8]) -> bool {
+        let end = self.pos + kw.len();
+        if end > self.bytes.len() {
+            return false;
+        }
+        // SAFETY: We checked bounds
+        let slice = unsafe { self.bytes.get_unchecked(self.pos..end) };
+        if !slice.eq_ignore_ascii_case(kw) {
+            return false;
+        }
+        // Word boundary check
+        if end < self.bytes.len() {
+            let next = unsafe { *self.bytes.get_unchecked(end) };
+            if next.is_ascii_alphanumeric() || next == b'_' {
+                return false;
+            }
+        }
+        self.pos = end;
+        true
+    }
+
+    #[inline]
+    fn match_bytes(&mut self, s: &[u8]) -> bool {
+        let end = self.pos + s.len();
+        if end <= self.bytes.len() {
+            let slice = unsafe { self.bytes.get_unchecked(self.pos..end) };
+            if slice == s {
+                self.pos = end;
+                return true;
+            }
+        }
+        false
+    }
+
+    #[inline]
+    fn match_version_keyword(&mut self) -> bool {
+        let end = self.pos + 7;
+        if end > self.bytes.len() {
+            return false;
+        }
+        let slice = unsafe { self.bytes.get_unchecked(self.pos..end) };
+        if !slice.eq_ignore_ascii_case(b"version") {
+            return false;
+        }
+        self.pos = end;
+        // Optional 's'
+        if self.pos < self.bytes.len() && matches!(self.peek(), b's' | b'S') {
+            self.pos += 1;
+        }
+        // Word boundary
+        self.pos >= self.bytes.len() || {
+            let b = self.peek();
+            !b.is_ascii_alphanumeric() && b != b'_'
+        }
+    }
+
+    #[inline]
+    fn match_year_keyword(&mut self) -> bool {
+        let end = self.pos + 4;
+        if end > self.bytes.len() {
+            return false;
+        }
+        let slice = unsafe { self.bytes.get_unchecked(self.pos..end) };
+        if !slice.eq_ignore_ascii_case(b"year") {
+            return false;
+        }
+        self.pos = end;
+        if self.pos < self.bytes.len() && matches!(self.peek(), b's' | b'S') {
+            self.pos += 1;
+        }
+        self.pos >= self.bytes.len() || {
+            let b = self.peek();
+            !b.is_ascii_alphanumeric() && b != b'_'
+        }
+    }
+
+    /// Parse unsigned integer directly from bytes
+    #[inline]
+    fn parse_u16(&mut self) -> Option<u16> {
+        if self.pos >= self.bytes.len() || !self.peek().is_ascii_digit() {
+            return None;
+        }
+        let mut n: u16 = 0;
+        while self.pos < self.bytes.len() {
+            let b = self.peek();
+            if !b.is_ascii_digit() {
+                break;
+            }
+            n = n.wrapping_mul(10).wrapping_add((b - b'0') as u16);
+            self.pos += 1;
+        }
+        Some(n)
+    }
+
+    #[inline]
+    fn parse_u32(&mut self) -> Option<u32> {
+        if self.pos >= self.bytes.len() || !self.peek().is_ascii_digit() {
+            return None;
+        }
+        let mut n: u32 = 0;
+        while self.pos < self.bytes.len() {
+            let b = self.peek();
+            if !b.is_ascii_digit() {
+                break;
+            }
+            n = n.wrapping_mul(10).wrapping_add((b - b'0') as u32);
+            self.pos += 1;
+        }
+        Some(n)
+    }
+
+    #[inline]
+    fn parse_i32(&mut self) -> Option<i32> {
+        let neg = self.eat(b'-');
+        if !neg {
+            self.eat(b'+');
+        }
+        let n = self.parse_u32()? as i32;
+        Some(if neg { -n } else { n })
+    }
+
+    #[inline]
+    fn parse_float(&mut self) -> Option<f32> {
+        let start = self.pos;
+        let _ = self.eat(b'-') || self.eat(b'+');
+        while self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
+            self.pos += 1;
+        }
+        if self.eat(b'.') {
+            while self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
+                self.pos += 1;
+            }
+        }
+        if self.pos > start { self.slice(start, self.pos).parse().ok() } else { None }
+    }
+
+    #[inline]
+    fn parse_double(&mut self) -> Option<f64> {
+        let start = self.pos;
+        let _ = self.eat(b'-') || self.eat(b'+');
+        while self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
+            self.pos += 1;
+        }
+        if self.eat(b'.') {
+            while self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
+                self.pos += 1;
+            }
+        }
+        if self.pos > start { self.slice(start, self.pos).parse().ok() } else { None }
+    }
+
+    #[inline]
+    fn parse_version(&mut self) -> Option<&'a str> {
+        let start = self.pos;
+        while self.pos < self.bytes.len() {
+            let b = self.peek();
+            if !b.is_ascii_digit() && b != b'.' {
+                break;
+            }
+            self.pos += 1;
+        }
+        if self.pos > start { Some(self.slice(start, self.pos)) } else { None }
+    }
+
+    #[inline]
+    fn parse_identifier(&mut self) -> Option<&'a str> {
+        let start = self.pos;
+        while self.pos < self.bytes.len() {
+            let b = self.peek();
+            if !b.is_ascii_alphabetic() && b != b'_' {
+                break;
+            }
+            self.pos += 1;
+        }
+        if self.pos > start { Some(self.slice(start, self.pos)) } else { None }
+    }
+
+    #[inline]
+    fn parse_comparator(&mut self) -> Option<Comparator> {
+        if self.pos >= self.bytes.len() {
+            return None;
+        }
+        match self.peek() {
+            b'<' => {
+                self.pos += 1;
+                Some(if self.eat(b'=') { Comparator::LessOrEqual } else { Comparator::Less })
+            }
+            b'>' => {
+                self.pos += 1;
+                Some(if self.eat(b'=') { Comparator::GreaterOrEqual } else { Comparator::Greater })
+            }
+            _ => None,
+        }
+    }
+
+    #[inline]
+    fn parse_region(&mut self) -> Option<&'a str> {
+        let start = self.pos;
+        // Optional "alt-" prefix
+        if self.pos + 4 <= self.bytes.len() {
+            let slice = unsafe { self.bytes.get_unchecked(self.pos..self.pos + 4) };
+            if slice.eq_ignore_ascii_case(b"alt-") {
+                self.pos += 4;
+            }
+        }
+        // Exactly 2 alphabetic
+        if self.pos + 2 <= self.bytes.len() {
+            let b1 = unsafe { *self.bytes.get_unchecked(self.pos) };
+            let b2 = unsafe { *self.bytes.get_unchecked(self.pos + 1) };
+            if b1.is_ascii_alphabetic() && b2.is_ascii_alphabetic() {
+                self.pos += 2;
+                return Some(self.slice(start, self.pos));
+            }
+        }
+        self.pos = start;
+        None
+    }
+
+    #[inline]
+    fn parse_version_range(&mut self) -> Option<VersionRange<'a>> {
+        let start = self.pos;
+
+        // Try bounded: " 1.0 - 2.0"
+        if self.skip_whitespace1() {
+            if let Some(from) = self.parse_version() {
+                self.skip_whitespace();
+                if self.eat(b'-') {
+                    self.skip_whitespace();
+                    if let Some(to) = self.parse_version() {
+                        return Some(VersionRange::Bounded(from, to));
+                    }
+                }
+            }
+        }
+        self.pos = start;
+
+        // Try unbounded: ">= 1.0"
+        self.skip_whitespace();
+        if let Some(cmp) = self.parse_comparator() {
+            self.skip_whitespace();
+            if let Some(ver) = self.parse_version() {
+                return Some(VersionRange::Unbounded(cmp, ver));
+            }
+        }
+        self.pos = start;
+
+        // Try accurate: " 1.0"
+        if self.skip_whitespace1() {
+            if let Some(ver) = self.parse_version() {
+                return Some(VersionRange::Accurate(ver));
+            }
+        }
+        self.pos = start;
+        None
+    }
+
+    // =========================================================================
+    // Query atom parsers - organized for first-byte dispatch
+    // =========================================================================
+
+    fn parse_last_or_years(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"last") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+
+        // Could be "last N versions" or "last N years"
+        let before_num = self.pos;
+
+        // Try years first (has fractional)
+        if let Some(years) = self.parse_double() {
+            if self.skip_whitespace1() && self.match_year_keyword() {
+                return Some(QueryAtom::Years(years));
+            }
+        }
+        self.pos = before_num;
+
+        // Try last N versions
+        let Some(count) = self.parse_u16() else {
+            self.pos = start;
+            return None;
+        };
+        if !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+
+        // Optional browser name
+        let before_name = self.pos;
+        let name = self.parse_identifier().filter(|s| {
+            !s.eq_ignore_ascii_case("version")
+                && !s.eq_ignore_ascii_case("versions")
+                && !s.eq_ignore_ascii_case("major")
+                && !s.eq_ignore_ascii_case("year")
+                && !s.eq_ignore_ascii_case("years")
+        });
+
+        if name.is_some() {
+            if !self.skip_whitespace1() {
+                self.pos = start;
+                return None;
+            }
+        } else {
+            self.pos = before_name;
+        }
+
+        let major = if self.match_keyword(b"major") {
+            if !self.skip_whitespace1() {
+                self.pos = start;
+                return None;
+            }
+            true
+        } else {
+            false
+        };
+
+        if !self.match_version_keyword() {
+            self.pos = start;
+            return None;
+        }
+
+        if matches!(name, Some(n) if n.eq_ignore_ascii_case("major")) && !major {
+            Some(QueryAtom::Last { count, major: true, name: None })
+        } else {
+            Some(QueryAtom::Last { count, major, name })
+        }
+    }
+
+    fn parse_unreleased(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"unreleased") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+
+        let before_name = self.pos;
+        let name = self
+            .parse_identifier()
+            .filter(|s| !s.eq_ignore_ascii_case("version") && !s.eq_ignore_ascii_case("versions"));
+
+        if name.is_some() {
+            if !self.skip_whitespace1() {
+                self.pos = start;
+                return None;
+            }
+        } else {
+            self.pos = before_name;
+        }
+
+        if !self.match_version_keyword() {
+            self.pos = start;
+            return None;
+        }
+        Some(QueryAtom::Unreleased(name))
+    }
+
+    fn parse_since_or_supports(&mut self) -> Option<QueryAtom<'a>> {
+        if self.pos >= self.bytes.len() {
+            return None;
+        }
+        // Peek second char to disambiguate
+        if self.pos + 1 < self.bytes.len() {
+            match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
+                b'i' | b'I' => return self.parse_since(),
+                b'u' | b'U' => return self.parse_supports_only(),
+                _ => {}
+            }
+        }
+        self.parse_since().or_else(|| self.parse_supports_only())
+    }
+
+    fn parse_since(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"since") {
+            self.pos = start;
+            return None;
+        }
+        if self.pos >= self.bytes.len() || !matches!(self.peek(), b' ' | b'\t') {
+            self.pos = start;
+            return None;
+        }
+        self.pos += 1;
+
+        let Some(year) = self.parse_i32() else {
+            self.pos = start;
+            return None;
+        };
+        let month = if self.eat(b'-') { self.parse_u32() } else { None };
+        let day = if self.eat(b'-') { self.parse_u32() } else { None };
+
+        Some(QueryAtom::Since { year, month: month.unwrap_or(1), day: day.unwrap_or(1) })
+    }
+
+    fn parse_supports_only(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"supports") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+
+        let feat_start = self.pos;
+        while self.pos < self.bytes.len() {
+            let b = self.peek();
+            if !b.is_ascii_alphanumeric() && b != b'-' {
+                break;
+            }
+            self.pos += 1;
+        }
+        if self.pos == feat_start {
+            self.pos = start;
+            return None;
+        }
+        Some(QueryAtom::Supports(self.slice(feat_start, self.pos), None))
+    }
+
+    fn parse_cover_or_current(&mut self) -> Option<QueryAtom<'a>> {
+        if self.pos + 1 >= self.bytes.len() {
+            return None;
+        }
+        match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
+            b'o' | b'O' => self.parse_cover(),
+            b'u' | b'U' => self.parse_current_node(),
+            _ => self.parse_cover().or_else(|| self.parse_current_node()),
+        }
+    }
+
+    fn parse_cover(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"cover") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+        let Some(coverage) = self.parse_float() else {
+            self.pos = start;
+            return None;
+        };
+        if !self.eat(b'%') {
+            self.pos = start;
+            return None;
+        }
+
+        let stats = if self.skip_whitespace1() && self.match_keyword(b"in") {
+            if !self.skip_whitespace1() {
+                self.pos = start;
+                return None;
+            }
+            let Some(region) = self.parse_region() else {
+                self.pos = start;
+                return None;
+            };
+            Stats::Region(region)
+        } else {
+            Stats::Global
+        };
+
+        Some(QueryAtom::Cover { coverage, stats })
+    }
+
+    fn parse_percentage(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        let comparator = self.parse_comparator()?;
+        self.skip_whitespace();
+        let Some(popularity) = self.parse_float() else {
+            self.pos = start;
+            return None;
+        };
+        if !self.eat(b'%') {
+            self.pos = start;
+            return None;
+        }
+
+        let stats = if self.skip_whitespace1() && self.match_keyword(b"in") {
+            if !self.skip_whitespace1() {
+                self.pos = start;
+                return None;
+            }
+            let Some(region) = self.parse_region() else {
+                self.pos = start;
+                return None;
+            };
+            Stats::Region(region)
+        } else {
+            Stats::Global
+        };
+
+        Some(QueryAtom::Percentage { comparator, popularity, stats })
+    }
+
+    fn parse_electron_or_extends(&mut self) -> Option<QueryAtom<'a>> {
+        if self.pos + 1 >= self.bytes.len() {
+            return None;
+        }
+        match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
+            b'l' | b'L' => self.parse_electron(),
+            b'x' | b'X' => self.parse_extends(),
+            _ => self.parse_electron().or_else(|| self.parse_extends()),
+        }
+    }
+
+    fn parse_electron(&mut self) -> Option<QueryAtom<'a>> {
+        if !self.match_keyword(b"electron") {
+            return None;
+        }
+        self.parse_version_range().map(QueryAtom::Electron)
+    }
+
+    fn parse_extends(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"extends") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+
+        let name_start = self.pos;
+        while self.pos < self.bytes.len() {
+            let b = self.peek();
+            if !b.is_ascii_alphanumeric() && !matches!(b, b'-' | b'_' | b'@' | b'/' | b'.') {
+                break;
+            }
+            self.pos += 1;
+        }
+        if self.pos == name_start {
+            self.pos = start;
+            return None;
+        }
+        Some(QueryAtom::Extends(self.slice(name_start, self.pos)))
+    }
+
+    fn parse_node(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"node") {
+            return None;
+        }
+        if let Some(range) = self.parse_version_range() {
+            return Some(QueryAtom::Node(range));
+        }
+        self.pos = start;
+        None
+    }
+
+    fn parse_firefox_or_fully(&mut self) -> Option<QueryAtom<'a>> {
+        if self.pos + 1 >= self.bytes.len() {
+            return None;
+        }
+        match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
+            b'i' | b'I' | b'x' | b'X' | b'f' | b'F' => self.parse_firefox_esr(),
+            b'u' | b'U' => self.parse_fully_supports(),
+            _ => self.parse_firefox_esr().or_else(|| self.parse_fully_supports()),
+        }
+    }
+
+    fn parse_firefox_esr(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"firefox")
+            && !self.match_keyword(b"ff")
+            && !self.match_keyword(b"fx")
+        {
+            return None;
+        }
+        if !self.skip_whitespace1() || !self.match_keyword(b"esr") {
+            self.pos = start;
+            return None;
+        }
+        Some(QueryAtom::FirefoxESR)
+    }
+
+    fn parse_fully_supports(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"fully") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+        if !self.match_keyword(b"supports") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+        let feat_start = self.pos;
+        while self.pos < self.bytes.len() {
+            let b = self.peek();
+            if !b.is_ascii_alphanumeric() && b != b'-' {
+                break;
+            }
+            self.pos += 1;
+        }
+        if self.pos == feat_start {
+            self.pos = start;
+            return None;
+        }
+        Some(QueryAtom::Supports(self.slice(feat_start, self.pos), Some(SupportKind::Fully)))
+    }
+
+    fn parse_operamini(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"operamini") && !self.match_keyword(b"op_mini") {
+            return None;
+        }
+        if !self.skip_whitespace1() || !self.match_keyword(b"all") {
+            self.pos = start;
+            return None;
+        }
+        Some(QueryAtom::OperaMini)
+    }
+
+    fn parse_current_node(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"current")
+            || !self.skip_whitespace1()
+            || !self.match_keyword(b"node")
+        {
+            self.pos = start;
+            return None;
+        }
+        Some(QueryAtom::CurrentNode)
+    }
+
+    fn parse_maintained_node(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"maintained")
+            || !self.skip_whitespace1()
+            || !self.match_keyword(b"node")
+            || !self.skip_whitespace1()
+            || !self.match_keyword(b"versions")
+        {
+            self.pos = start;
+            return None;
+        }
+        Some(QueryAtom::MaintainedNode)
+    }
+
+    fn parse_phantom_or_partially(&mut self) -> Option<QueryAtom<'a>> {
+        if self.pos + 1 >= self.bytes.len() {
+            return None;
+        }
+        match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
+            b'h' | b'H' => self.parse_phantom(),
+            b'a' | b'A' => self.parse_partially_supports(),
+            _ => self.parse_phantom().or_else(|| self.parse_partially_supports()),
+        }
+    }
+
+    fn parse_phantom(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"phantomjs") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+        if self.match_bytes(b"2.1") {
+            Some(QueryAtom::Phantom(true))
+        } else if self.match_bytes(b"1.9") {
+            Some(QueryAtom::Phantom(false))
+        } else {
+            self.pos = start;
+            None
+        }
+    }
+
+    fn parse_partially_supports(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"partially") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+        if !self.match_keyword(b"supports") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+        let feat_start = self.pos;
+        while self.pos < self.bytes.len() {
+            let b = self.peek();
+            if !b.is_ascii_alphanumeric() && b != b'-' {
+                break;
+            }
+            self.pos += 1;
+        }
+        if self.pos == feat_start {
+            self.pos = start;
+            return None;
+        }
+        Some(QueryAtom::Supports(self.slice(feat_start, self.pos), Some(SupportKind::Partially)))
+    }
+
+    fn parse_browserslist_config(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"browserslist")
+            || !self.skip_whitespace1()
+            || !self.match_keyword(b"config")
+        {
+            self.pos = start;
+            return None;
+        }
+        Some(QueryAtom::BrowserslistConfig)
+    }
+
+    fn parse_defaults_or_dead(&mut self) -> Option<QueryAtom<'a>> {
+        if self.pos + 2 >= self.bytes.len() {
+            return None;
+        }
+        match unsafe { *self.bytes.get_unchecked(self.pos + 2) } {
+            b'f' | b'F' => {
+                if self.match_keyword(b"defaults") {
+                    Some(QueryAtom::Defaults)
+                } else {
+                    None
+                }
+            }
+            b'a' | b'A' => {
+                if self.match_keyword(b"dead") {
+                    Some(QueryAtom::Dead)
+                } else {
+                    None
+                }
+            }
+            _ => {
+                if self.match_keyword(b"defaults") {
+                    Some(QueryAtom::Defaults)
+                } else if self.match_keyword(b"dead") {
+                    Some(QueryAtom::Dead)
+                } else {
+                    None
+                }
+            }
+        }
+    }
+
+    fn parse_browser(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        let name = self.parse_identifier()?;
+
+        if let Some(range) = self.parse_version_range() {
+            return Some(QueryAtom::Browser(name, range));
+        }
+
+        if self.skip_whitespace1() && self.match_keyword(b"tp") {
+            return Some(QueryAtom::Browser(name, VersionRange::Accurate("tp")));
+        }
+
+        self.pos = start;
+        None
+    }
+
+    /// Dispatch to the appropriate parser based on first character
+    #[inline]
+    fn parse_query_atom(&mut self) -> Option<QueryAtom<'a>> {
+        if self.pos >= self.bytes.len() {
+            return None;
+        }
+
+        match self.peek() | 0x20 {
+            // ASCII lowercase
+            b'<' | b'>' => self.parse_percentage(),
+            b'l' => self.parse_last_or_years().or_else(|| self.parse_browser()),
+            b'u' => self.parse_unreleased().or_else(|| self.parse_browser()),
+            b's' => self.parse_since_or_supports().or_else(|| self.parse_browser()),
+            b'c' => self.parse_cover_or_current().or_else(|| self.parse_browser()),
+            b'e' => self.parse_electron_or_extends().or_else(|| self.parse_browser()),
+            b'n' => self.parse_node().or_else(|| self.parse_browser()),
+            b'f' => self.parse_firefox_or_fully().or_else(|| self.parse_browser()),
+            b'o' => self.parse_operamini().or_else(|| self.parse_browser()),
+            b'm' => self.parse_maintained_node().or_else(|| self.parse_browser()),
+            b'p' => self.parse_phantom_or_partially().or_else(|| self.parse_browser()),
+            b'b' => self.parse_browserslist_config().or_else(|| self.parse_browser()),
+            b'd' => self.parse_defaults_or_dead().or_else(|| self.parse_browser()),
+            b'a'..=b'z' => self.parse_browser(),
+            _ => None,
+        }
+    }
+
+    #[inline]
+    fn at_composition_operator(&self) -> bool {
+        if self.pos >= self.bytes.len() {
+            return false;
+        }
+        if self.peek() == b',' {
+            return true;
+        }
+        if !matches!(self.peek(), b' ' | b'\t') {
+            return false;
+        }
+        // Skip whitespace to check for "and"/"or"
+        let mut i = self.pos;
+        while i < self.bytes.len() && matches!(self.bytes[i], b' ' | b'\t') {
+            i += 1;
+        }
+        let rest = &self.bytes[i..];
+        (rest.len() >= 4
+            && rest[..3].eq_ignore_ascii_case(b"and")
+            && matches!(rest[3], b' ' | b'\t'))
+            || (rest.len() >= 3
+                && rest[..2].eq_ignore_ascii_case(b"or")
+                && matches!(rest[2], b' ' | b'\t'))
+    }
+
+    #[inline]
+    fn parse_composition_operator(&mut self) -> Option<bool> {
+        self.skip_whitespace();
+
+        if self.eat(b',') {
+            self.skip_whitespace();
+            return Some(false);
+        }
+
+        if self.match_keyword(b"and") && self.skip_whitespace1() {
+            return Some(true);
+        } else if self.match_keyword(b"or") && self.skip_whitespace1() {
+            return Some(false);
+        }
+        None
+    }
+
+    fn parse_unknown(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        while !self.is_eof() && !self.at_composition_operator() {
+            self.pos += 1;
+        }
+        if self.pos > start { Some(QueryAtom::Unknown(self.slice(start, self.pos))) } else { None }
+    }
+
+    fn parse_single_query_atom(&mut self) -> Option<(bool, QueryAtom<'a>, &'a str)> {
+        let start = self.pos;
+
+        let negated = if self.match_keyword(b"not") && self.skip_whitespace1() {
+            true
+        } else {
+            self.pos = start;
+            false
+        };
+
+        let atom = self.parse_query_atom().or_else(|| self.parse_unknown())?;
+        Some((negated, atom, self.slice(start, self.pos)))
+    }
 }
 
-fn parse_composition_operator(input: &str) -> PResult<'_, bool> {
-    alt((parse_and, parse_or)).parse(input)
-}
-
-fn parse_single_query(input: &str) -> PResult<'_, SingleQuery<'_>> {
-    map(
-        (
-            parse_composition_operator,
-            consumed(pair(opt(terminated(tag_no_case("not"), space1)), parse_query_atom)),
-        ),
-        |(is_and, (raw, (negated, atom)))| SingleQuery {
-            raw,
-            atom,
-            negated: negated.is_some(),
-            is_and,
-        },
-    )
-    .parse(input)
-}
-
-pub fn parse_browserslist_query(input: &str) -> PResult<'_, Vec<SingleQuery<'_>>> {
+pub fn parse_browserslist_query(input: &str) -> Result<(&str, Vec<SingleQuery<'_>>), &str> {
     let input = input.trim();
-    // `many0` doesn't allow empty input, so we detect it here
     if input.is_empty() {
         return Ok(("", vec![]));
     }
 
-    map(
-        all_consuming((
-            consumed(pair(
-                // this isn't allowed, but for better error report
-                opt(terminated(tag_no_case("not"), space1)),
-                parse_query_atom,
-            )),
-            many0(parse_single_query),
-        )),
-        |((first_raw, (negated, first)), mut queries)| {
-            queries.insert(
-                0,
-                SingleQuery {
-                    raw: first_raw,
-                    atom: first,
-                    negated: negated.is_some(),
-                    is_and: false,
-                },
-            );
-            queries
-        },
-    )
-    .parse(input)
+    let mut parser = Parser::new(input);
+    let mut queries = Vec::with_capacity(4);
+
+    let (negated, atom, raw) = parser.parse_single_query_atom().ok_or(input)?;
+    queries.push(SingleQuery { raw, atom, negated, is_and: false });
+
+    while !parser.is_eof() {
+        let Some(is_and) = parser.parse_composition_operator() else {
+            return Err(parser.slice(parser.pos, parser.bytes.len()));
+        };
+
+        let (negated, atom, raw) =
+            parser.parse_single_query_atom().ok_or(parser.slice(parser.pos, parser.bytes.len()))?;
+        queries.push(SingleQuery { raw, atom, negated, is_and });
+    }
+
+    Ok(("", queries))
 }
 
 #[cfg(all(test, not(miri)))]
