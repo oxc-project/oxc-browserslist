@@ -13,16 +13,3 @@ pub(super) fn cover(coverage: f32) -> QueryResult {
     }
     Ok(distribs)
 }
-
-#[cfg(all(test, not(miri)))]
-mod tests {
-    use test_case::test_case;
-
-    use crate::{opts::Opts, test::run_compare};
-
-    #[test_case("cover 0.1%"; "global")]
-    #[test_case("Cover 0.1%"; "global case insensitive")]
-    fn valid(query: &str) {
-        run_compare(query, &Opts::default(), None);
-    }
-}

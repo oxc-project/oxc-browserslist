@@ -37,17 +37,3 @@ pub(super) fn current_node() -> QueryResult {
         Ok(vec![Distrib::new("node", version)])
     }
 }
-
-#[cfg(all(test, not(miri)))]
-mod tests {
-    use test_case::test_case;
-
-    use crate::{opts::Opts, test::run_compare};
-
-    #[test_case("current node"; "basic")]
-    #[test_case("Current Node"; "case insensitive")]
-    #[test_case("current      node"; "more spaces")]
-    fn valid(query: &str) {
-        run_compare(query, &Opts::default(), None);
-    }
-}

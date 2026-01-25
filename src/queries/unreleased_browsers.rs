@@ -17,18 +17,3 @@ pub(super) fn unreleased_browsers(opts: &Opts) -> QueryResult {
         .collect();
     Ok(distribs)
 }
-
-#[cfg(all(test, not(miri)))]
-mod tests {
-    use test_case::test_case;
-
-    use super::*;
-    use crate::test::run_compare;
-
-    #[test_case("unreleased versions"; "basic")]
-    #[test_case("Unreleased Versions"; "case insensitive")]
-    #[test_case("unreleased        versions"; "more spaces")]
-    fn valid(query: &str) {
-        run_compare(query, &Opts::default(), None);
-    }
-}

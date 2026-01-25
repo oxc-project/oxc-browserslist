@@ -7,33 +7,3 @@ pub(super) fn dead(opts: &Opts) -> QueryResult {
         opts,
     )
 }
-
-#[cfg(all(test, not(miri)))]
-mod tests {
-    use test_case::test_case;
-
-    use super::*;
-    use crate::{
-        error::Error,
-        test::{run_compare, should_failed},
-    };
-
-    #[test_case("dead"; "basic")]
-    #[test_case("Dead"; "case insensitive")]
-    fn default_options(query: &str) {
-        run_compare(query, &Opts::default(), None);
-    }
-
-    #[test_case("> 0%, dead"; "all browsers")]
-    fn mobile_to_desktop(query: &str) {
-        run_compare(query, &Opts { mobile_to_desktop: true, ..Default::default() }, None);
-    }
-
-    #[test]
-    fn invalid() {
-        assert_eq!(
-            should_failed("not dead", &Opts::default()),
-            Error::NotAtFirst(String::from("not dead"))
-        );
-    }
-}

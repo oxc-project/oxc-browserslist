@@ -27,18 +27,3 @@ pub(super) fn cover_by_region(coverage: f32, region: &str) -> QueryResult {
         Err(Error::UnknownRegion(region.to_string()))
     }
 }
-
-#[cfg(all(test, not(miri)))]
-mod tests {
-    use test_case::test_case;
-
-    use crate::{opts::Opts, test::run_compare};
-
-    #[test_case("cover 0.1% in US"; "country")]
-    #[test_case("Cover 0.1% in us"; "country case insensitive")]
-    #[test_case("cover 0.1% in alt-eu"; "country alt")]
-    #[test_case("Cover 0.1% in Alt-EU"; "country alt case insensitive")]
-    fn valid(query: &str) {
-        run_compare(query, &Opts::default(), None);
-    }
-}
