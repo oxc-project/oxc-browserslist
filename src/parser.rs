@@ -436,11 +436,7 @@ impl<'a> Parser<'a> {
             return None;
         }
 
-        if matches!(name, Some(n) if n.eq_ignore_ascii_case("major")) && !major {
-            Some(QueryAtom::Last { count, major: true, name: None })
-        } else {
-            Some(QueryAtom::Last { count, major, name })
-        }
+        Some(QueryAtom::Last { count, major, name })
     }
 
     fn parse_unreleased(&mut self) -> Option<QueryAtom<'a>> {
@@ -480,7 +476,7 @@ impl<'a> Parser<'a> {
             match unsafe { *self.bytes.get_unchecked(self.pos + 1) } {
                 b'i' | b'I' => return self.parse_since(),
                 b'u' | b'U' => return self.parse_supports_only(),
-                _ => {}
+                _ => return self.parse_since().or_else(|| self.parse_supports_only()),
             }
         }
         self.parse_since().or_else(|| self.parse_supports_only())
@@ -827,15 +823,9 @@ impl<'a> Parser<'a> {
                     None
                 }
             }
-            _ => {
-                if self.match_keyword(b"defaults") {
-                    Some(QueryAtom::Defaults)
-                } else if self.match_keyword(b"dead") {
-                    Some(QueryAtom::Dead)
-                } else {
-                    None
-                }
-            }
+            // "defaults" has 'f' as third char, "dead" has 'a' as third char
+            // So this fallback can never match either keyword
+            _ => None,
         }
     }
 
@@ -1378,6 +1368,698 @@ mod tests {
             let (_, queries) = result.unwrap();
             assert_eq!(queries.len(), 2);
             assert!(queries[1].negated);
+        }
+
+        // ================================================================
+        // Tests for uncovered error paths
+        // ================================================================
+
+        #[test]
+        fn match_bytes_no_match() {
+            let mut parser = Parser::new("abc");
+            assert!(!parser.match_bytes(b"xyz"));
+        }
+
+        #[test]
+        fn match_bytes_too_short() {
+            let mut parser = Parser::new("a");
+            assert!(!parser.match_bytes(b"abc"));
+        }
+
+        #[test]
+        fn match_version_keyword_too_short() {
+            let mut parser = Parser::new("ver");
+            assert!(!parser.match_version_keyword());
+        }
+
+        #[test]
+        fn match_version_keyword_wrong_word() {
+            let mut parser = Parser::new("verbose");
+            assert!(!parser.match_version_keyword());
+        }
+
+        #[test]
+        fn match_year_keyword_too_short() {
+            let mut parser = Parser::new("ye");
+            assert!(!parser.match_year_keyword());
+        }
+
+        #[test]
+        fn parse_u16_non_digit() {
+            let mut parser = Parser::new("abc");
+            assert!(parser.parse_u16().is_none());
+        }
+
+        #[test]
+        fn parse_u16_empty() {
+            let mut parser = Parser::new("");
+            assert!(parser.parse_u16().is_none());
+        }
+
+        #[test]
+        fn parse_u32_non_digit() {
+            let mut parser = Parser::new("xyz");
+            assert!(parser.parse_u32().is_none());
+        }
+
+        #[test]
+        fn parse_u32_empty() {
+            let mut parser = Parser::new("");
+            assert!(parser.parse_u32().is_none());
+        }
+
+        #[test]
+        fn parse_region_single_char() {
+            let mut parser = Parser::new("U");
+            assert!(parser.parse_region().is_none());
+        }
+
+        #[test]
+        fn parse_region_non_alpha() {
+            let mut parser = Parser::new("12");
+            assert!(parser.parse_region().is_none());
+        }
+
+        #[test]
+        fn parse_version_range_bounded_incomplete() {
+            // Has "from" version but missing "to" version after dash
+            let mut parser = Parser::new(" 1.0 - ");
+            let result = parser.parse_version_range();
+            // Falls back to accurate version
+            assert!(matches!(result, Some(VersionRange::Accurate("1.0"))));
+        }
+
+        #[test]
+        fn parse_version_range_unbounded_no_version() {
+            let mut parser = Parser::new(" >= ");
+            let result = parser.parse_version_range();
+            assert!(result.is_none());
+        }
+
+        // Test parse_last_or_years failure paths
+        #[test]
+        fn parse_last_no_whitespace_after() {
+            let mut parser = Parser::new("last");
+            let result = parser.parse_last_or_years();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_last_no_number() {
+            let mut parser = Parser::new("last abc");
+            let result = parser.parse_last_or_years();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_last_number_no_whitespace() {
+            let mut parser = Parser::new("last 2");
+            let result = parser.parse_last_or_years();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_last_browser_no_whitespace() {
+            let mut parser = Parser::new("last 2 chrome");
+            let result = parser.parse_last_or_years();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_last_major_no_whitespace() {
+            let mut parser = Parser::new("last 2 major");
+            let result = parser.parse_last_or_years();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_last_no_version_keyword() {
+            let mut parser = Parser::new("last 2 xyz");
+            let result = parser.parse_last_or_years();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_last_major_versions_special() {
+            // Test "last 2 major versions" where name is "major"
+            let mut parser = Parser::new("last 2 major versions");
+            let result = parser.parse_last_or_years();
+            assert!(matches!(result, Some(QueryAtom::Last { count: 2, major: true, name: None })));
+        }
+
+        // Test parse_unreleased failure paths
+        #[test]
+        fn parse_unreleased_no_whitespace() {
+            let mut parser = Parser::new("unreleased");
+            let result = parser.parse_unreleased();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_unreleased_browser_no_whitespace() {
+            let mut parser = Parser::new("unreleased chrome");
+            let result = parser.parse_unreleased();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_unreleased_no_version_keyword() {
+            let mut parser = Parser::new("unreleased xyz abc");
+            let result = parser.parse_unreleased();
+            assert!(result.is_none());
+        }
+
+        // Test parse_since failure paths
+        #[test]
+        fn parse_since_no_whitespace() {
+            let mut parser = Parser::new("since");
+            let result = parser.parse_since();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_since_no_year() {
+            let mut parser = Parser::new("since abc");
+            let result = parser.parse_since();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_since_or_supports_empty() {
+            let mut parser = Parser::new("");
+            let result = parser.parse_since_or_supports();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_since_or_supports_fallback() {
+            // Starts with 's' but second char is neither 'i' nor 'u'
+            let mut parser = Parser::new("safari 10");
+            let result = parser.parse_since_or_supports();
+            assert!(result.is_none()); // Falls through to browser parsing later
+        }
+
+        // Test parse_supports failure paths
+        #[test]
+        fn parse_supports_no_whitespace() {
+            let mut parser = Parser::new("supports");
+            let result = parser.parse_supports_only();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_supports_no_feature() {
+            let mut parser = Parser::new("supports ");
+            let result = parser.parse_supports_only();
+            assert!(result.is_none());
+        }
+
+        // Test parse_cover failure paths
+        #[test]
+        fn parse_cover_no_whitespace() {
+            let mut parser = Parser::new("cover");
+            let result = parser.parse_cover();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_cover_no_number() {
+            let mut parser = Parser::new("cover abc");
+            let result = parser.parse_cover();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_cover_no_percent() {
+            let mut parser = Parser::new("cover 50");
+            let result = parser.parse_cover();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_cover_in_no_whitespace() {
+            let mut parser = Parser::new("cover 50% in");
+            let result = parser.parse_cover();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_cover_in_no_region() {
+            let mut parser = Parser::new("cover 50% in 12");
+            let result = parser.parse_cover();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_cover_or_current_short() {
+            let mut parser = Parser::new("c");
+            let result = parser.parse_cover_or_current();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_cover_or_current_fallback() {
+            // Second char is neither 'o' nor 'u'
+            let mut parser = Parser::new("chrome 90");
+            let result = parser.parse_cover_or_current();
+            assert!(result.is_none()); // Falls to browser parsing
+        }
+
+        // Test parse_percentage failure paths
+        #[test]
+        fn parse_percentage_no_number() {
+            let mut parser = Parser::new("> abc");
+            let result = parser.parse_percentage();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_percentage_no_percent() {
+            let mut parser = Parser::new("> 50");
+            let result = parser.parse_percentage();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_percentage_in_no_whitespace() {
+            let mut parser = Parser::new("> 50% in");
+            let result = parser.parse_percentage();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_percentage_in_no_region() {
+            let mut parser = Parser::new("> 50% in 12");
+            let result = parser.parse_percentage();
+            assert!(result.is_none());
+        }
+
+        // Test parse_electron_or_extends failure paths
+        #[test]
+        fn parse_electron_or_extends_short() {
+            let mut parser = Parser::new("e");
+            let result = parser.parse_electron_or_extends();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_electron_or_extends_fallback() {
+            // Second char is neither 'l' nor 'x'
+            let mut parser = Parser::new("edge 90");
+            let result = parser.parse_electron_or_extends();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_electron_no_keyword() {
+            let mut parser = Parser::new("electronics");
+            let result = parser.parse_electron();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_extends_no_whitespace() {
+            let mut parser = Parser::new("extends");
+            let result = parser.parse_extends();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_extends_no_package() {
+            let mut parser = Parser::new("extends ");
+            let result = parser.parse_extends();
+            assert!(result.is_none());
+        }
+
+        // Test parse_node failure paths
+        #[test]
+        fn parse_node_no_keyword() {
+            let mut parser = Parser::new("nodejs");
+            let result = parser.parse_node();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_node_no_version() {
+            let mut parser = Parser::new("node");
+            let result = parser.parse_node();
+            assert!(result.is_none());
+        }
+
+        // Test parse_firefox_or_fully failure paths
+        #[test]
+        fn parse_firefox_or_fully_short() {
+            let mut parser = Parser::new("f");
+            let result = parser.parse_firefox_or_fully();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_firefox_or_fully_fallback() {
+            // Second char is not 'i', 'x', 'f', or 'u'
+            let mut parser = Parser::new("fa");
+            let result = parser.parse_firefox_or_fully();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_firefox_esr_no_keyword() {
+            let mut parser = Parser::new("fire");
+            let result = parser.parse_firefox_esr();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_firefox_esr_no_whitespace() {
+            let mut parser = Parser::new("firefox");
+            let result = parser.parse_firefox_esr();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_firefox_esr_no_esr() {
+            let mut parser = Parser::new("firefox xyz");
+            let result = parser.parse_firefox_esr();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_fully_supports_no_whitespace() {
+            let mut parser = Parser::new("fully");
+            let result = parser.parse_fully_supports();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_fully_supports_no_supports() {
+            let mut parser = Parser::new("fully abc");
+            let result = parser.parse_fully_supports();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_fully_supports_supports_no_whitespace() {
+            let mut parser = Parser::new("fully supports");
+            let result = parser.parse_fully_supports();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_fully_supports_no_feature() {
+            let mut parser = Parser::new("fully supports ");
+            let result = parser.parse_fully_supports();
+            assert!(result.is_none());
+        }
+
+        // Test parse_operamini failure paths
+        #[test]
+        fn parse_operamini_no_whitespace() {
+            let mut parser = Parser::new("operamini");
+            let result = parser.parse_operamini();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_operamini_no_all() {
+            let mut parser = Parser::new("operamini xyz");
+            let result = parser.parse_operamini();
+            assert!(result.is_none());
+        }
+
+        // Test parse_current_node failure paths
+        #[test]
+        fn parse_current_node_partial() {
+            let mut parser = Parser::new("current");
+            let result = parser.parse_current_node();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_current_node_no_node() {
+            let mut parser = Parser::new("current xyz");
+            let result = parser.parse_current_node();
+            assert!(result.is_none());
+        }
+
+        // Test parse_maintained_node failure paths
+        #[test]
+        fn parse_maintained_node_partial() {
+            let mut parser = Parser::new("maintained");
+            let result = parser.parse_maintained_node();
+            assert!(result.is_none());
+        }
+
+        // Test parse_phantom_or_partially failure paths
+        #[test]
+        fn parse_phantom_or_partially_short() {
+            let mut parser = Parser::new("p");
+            let result = parser.parse_phantom_or_partially();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_phantom_or_partially_fallback() {
+            // Second char is neither 'h' nor 'a'
+            let mut parser = Parser::new("px");
+            let result = parser.parse_phantom_or_partially();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_phantom_no_whitespace() {
+            let mut parser = Parser::new("phantomjs");
+            let result = parser.parse_phantom();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_phantom_wrong_version() {
+            let mut parser = Parser::new("phantomjs 3.0");
+            let result = parser.parse_phantom();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_partially_supports_no_whitespace() {
+            let mut parser = Parser::new("partially");
+            let result = parser.parse_partially_supports();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_partially_supports_no_supports() {
+            let mut parser = Parser::new("partially abc");
+            let result = parser.parse_partially_supports();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_partially_supports_supports_no_whitespace() {
+            let mut parser = Parser::new("partially supports");
+            let result = parser.parse_partially_supports();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_partially_supports_no_feature() {
+            let mut parser = Parser::new("partially supports ");
+            let result = parser.parse_partially_supports();
+            assert!(result.is_none());
+        }
+
+        // Test parse_browserslist_config failure paths
+        #[test]
+        fn parse_browserslist_config_partial() {
+            let mut parser = Parser::new("browserslist");
+            let result = parser.parse_browserslist_config();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_browserslist_config_no_config() {
+            let mut parser = Parser::new("browserslist xyz");
+            let result = parser.parse_browserslist_config();
+            assert!(result.is_none());
+        }
+
+        // Test parse_defaults_or_dead failure paths
+        #[test]
+        fn parse_defaults_or_dead_short() {
+            let mut parser = Parser::new("de");
+            let result = parser.parse_defaults_or_dead();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_defaults_or_dead_fallback() {
+            // Third char is neither 'f' nor 'a' - test the fallback branch
+            let mut parser = Parser::new("dex");
+            let result = parser.parse_defaults_or_dead();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_defaults_or_dead_def_but_not_defaults() {
+            let mut parser = Parser::new("default"); // Missing 's'
+            let result = parser.parse_defaults_or_dead();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_defaults_or_dead_dea_but_not_dead() {
+            let mut parser = Parser::new("dealer");
+            let result = parser.parse_defaults_or_dead();
+            assert!(result.is_none());
+        }
+
+        // Test parse_browser failure paths
+        #[test]
+        fn parse_browser_no_version() {
+            let mut parser = Parser::new("chrome");
+            let result = parser.parse_browser();
+            assert!(result.is_none());
+        }
+
+        // Test parse_query_atom edge cases
+        #[test]
+        fn parse_query_atom_empty() {
+            let mut parser = Parser::new("");
+            let result = parser.parse_query_atom();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_query_atom_non_letter() {
+            let mut parser = Parser::new("123");
+            let result = parser.parse_query_atom();
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_query_atom_special_char() {
+            let mut parser = Parser::new("@#$");
+            let result = parser.parse_query_atom();
+            assert!(result.is_none());
+        }
+
+        // Test at_composition_operator paths
+        #[test]
+        fn at_composition_operator_empty() {
+            let parser = Parser::new("");
+            assert!(!parser.at_composition_operator());
+        }
+
+        #[test]
+        fn at_composition_operator_comma() {
+            let parser = Parser::new(",");
+            assert!(parser.at_composition_operator());
+        }
+
+        #[test]
+        fn at_composition_operator_no_space() {
+            let parser = Parser::new("x");
+            assert!(!parser.at_composition_operator());
+        }
+
+        #[test]
+        fn at_composition_operator_space_then_and() {
+            let parser = Parser::new(" and ");
+            assert!(parser.at_composition_operator());
+        }
+
+        #[test]
+        fn at_composition_operator_space_then_or() {
+            let parser = Parser::new(" or ");
+            assert!(parser.at_composition_operator());
+        }
+
+        #[test]
+        fn at_composition_operator_space_then_other() {
+            let parser = Parser::new(" xyz");
+            assert!(!parser.at_composition_operator());
+        }
+
+        // Test parse_unknown with composition operator
+        #[test]
+        fn parse_unknown_stops_at_comma() {
+            let mut parser = Parser::new("abc,def");
+            let result = parser.parse_unknown();
+            assert!(matches!(result, Some(QueryAtom::Unknown("abc"))));
+        }
+
+        #[test]
+        fn parse_unknown_stops_at_and() {
+            let mut parser = Parser::new("abc and def");
+            let result = parser.parse_unknown();
+            assert!(matches!(result, Some(QueryAtom::Unknown("abc"))));
+        }
+
+        #[test]
+        fn parse_unknown_stops_at_or() {
+            let mut parser = Parser::new("abc or def");
+            let result = parser.parse_unknown();
+            assert!(matches!(result, Some(QueryAtom::Unknown("abc"))));
+        }
+
+        // ================================================================
+        // Tests for remaining edge cases
+        // ================================================================
+
+        // Test feature name parsing with terminating special characters
+        #[test]
+        fn parse_supports_feature_with_comma() {
+            // Feature name should stop at comma
+            let mut parser = Parser::new("supports flexbox,");
+            let result = parser.parse_query_atom();
+            assert!(matches!(result, Some(QueryAtom::Supports("flexbox", None))));
+        }
+
+        #[test]
+        fn parse_supports_feature_with_space() {
+            // Feature name stops at space before "and"
+            let mut parser = Parser::new("supports flexbox and");
+            let result = parser.parse_query_atom();
+            assert!(matches!(result, Some(QueryAtom::Supports("flexbox", None))));
+        }
+
+        #[test]
+        fn parse_fully_supports_feature_terminated() {
+            let mut parser = Parser::new("fully supports flexbox,");
+            let result = parser.parse_query_atom();
+            assert!(matches!(result, Some(QueryAtom::Supports("flexbox", Some(SupportKind::Fully)))));
+        }
+
+        #[test]
+        fn parse_partially_supports_feature_terminated() {
+            let mut parser = Parser::new("partially supports flexbox,");
+            let result = parser.parse_query_atom();
+            assert!(matches!(result, Some(QueryAtom::Supports("flexbox", Some(SupportKind::Partially)))));
+        }
+
+        // Test since_or_supports fallback when second char doesn't match
+        #[test]
+        fn parse_since_or_supports_with_s_third_char() {
+            // Starts with 's', second char is 'a' (not 'i' or 'u'), falls to fallback
+            let mut parser = Parser::new("sa");
+            let result = parser.parse_since_or_supports();
+            assert!(result.is_none());
+        }
+
+        // Test that "last N chromex" fails when chromex is followed by invalid keyword
+        #[test]
+        fn parse_last_browser_invalid_suffix() {
+            let mut parser = Parser::new("last 2 chromex abc");
+            let result = parser.parse_last_or_years();
+            // Should fail because "abc" is not "version(s)" or "major version(s)"
+            assert!(result.is_none());
+        }
+
+        #[test]
+        fn parse_since_or_supports_single_char() {
+            // Input is just "s" - only 1 char, so we skip the if block
+            let mut parser = Parser::new("s");
+            let result = parser.parse_since_or_supports();
+            assert!(result.is_none());
         }
     }
 }
