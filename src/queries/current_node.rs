@@ -1,4 +1,6 @@
-use super::{Distrib, QueryResult};
+use super::QueryResult;
+#[cfg(any(not(target_arch = "wasm32"), feature = "wasm_bindgen"))]
+use super::Distrib;
 use crate::error::Error;
 
 pub(super) fn current_node() -> QueryResult {
