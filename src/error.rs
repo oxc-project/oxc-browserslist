@@ -90,11 +90,8 @@ pub enum Error {
     YearOverflow,
 }
 
-impl<'a> From<nom::Err<nom::error::Error<&'a str>>> for Error {
-    fn from(e: nom::Err<nom::error::Error<&'a str>>) -> Self {
-        match e {
-            nom::Err::Error(e) | nom::Err::Failure(e) => Self::Parse(e.input.to_owned()),
-            _ => unreachable!(),
-        }
+impl<'a> From<&'a str> for Error {
+    fn from(input: &'a str) -> Self {
+        Self::Parse(input.to_owned())
     }
 }
