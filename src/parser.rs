@@ -1298,7 +1298,10 @@ mod tests {
         fn parse_version_range_unbounded() {
             let mut parser = Parser::new(" >= 1.0");
             let result = parser.parse_version_range();
-            assert!(matches!(result, Some(VersionRange::Unbounded(Comparator::GreaterOrEqual, "1.0"))));
+            assert!(matches!(
+                result,
+                Some(VersionRange::Unbounded(Comparator::GreaterOrEqual, "1.0"))
+            ));
         }
 
         #[test]
