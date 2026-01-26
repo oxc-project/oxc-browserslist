@@ -204,8 +204,10 @@ fn supports_strategy() -> impl Strategy<Value = String> {
 fn node_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
         version_strategy().prop_map(|v| format!("node {}", v)),
-        (comparator_strategy(), version_strategy()).prop_map(|(cmp, v)| format!("node {} {}", cmp, v)),
-        (version_strategy(), version_strategy()).prop_map(|(from, to)| format!("node {} - {}", from, to)),
+        (comparator_strategy(), version_strategy())
+            .prop_map(|(cmp, v)| format!("node {} {}", cmp, v)),
+        (version_strategy(), version_strategy())
+            .prop_map(|(from, to)| format!("node {} - {}", from, to)),
         Just("maintained node versions".to_string()),
         Just("current node".to_string()),
     ]
@@ -280,10 +282,12 @@ fn maybe_negated_query_strategy() -> impl Strategy<Value = String> {
 fn composed_query_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
         single_query_strategy(),
-        (single_query_strategy(), single_query_strategy()).prop_map(|(a, b)| format!("{}, {}", a, b)),
+        (single_query_strategy(), single_query_strategy())
+            .prop_map(|(a, b)| format!("{}, {}", a, b)),
         (single_query_strategy(), maybe_negated_query_strategy())
             .prop_map(|(a, b)| format!("{} and {}", a, b)),
-        (single_query_strategy(), single_query_strategy()).prop_map(|(a, b)| format!("{} or {}", a, b)),
+        (single_query_strategy(), single_query_strategy())
+            .prop_map(|(a, b)| format!("{} or {}", a, b)),
     ]
 }
 
