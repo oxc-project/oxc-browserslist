@@ -20,8 +20,8 @@ The original crate did not meet the criteria of `oxc`, the following changes are
 
 - reduced compilation speed from one minute to a few seconds
 - improved some runtime performance, e.g. [improve sort method](https://github.com/oxc-project/oxc-browserslist/pull/28), [precompute versions](https://github.com/oxc-project/oxc-browserslist/pull/10)
-- removed all unnecessary, heavy or slow dependencies: `ahash`, `chrono`, `either`, `indexmap`, `itertools`, `once_cell`, `string_cache`
-- reduced binary size through data compression. 911K (this crate) vs 3.2M (original crate).
+- removed all unnecessary, heavy or slow dependencies: `nom`, `time`, `ahash`, `chrono`, `either`, `indexmap`, `itertools`, `once_cell`, `string_cache`
+- reduced binary size through data compression. 863K (this crate) vs 3.2M (original crate).
 
 ## Usage
 
