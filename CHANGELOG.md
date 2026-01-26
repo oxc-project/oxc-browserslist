@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.2.0...oxc-browserslist-v2.3.0) - 2026-01-26
+
+### Added
+
+- add property-based testing with proptest ([#489](https://github.com/oxc-project/oxc-browserslist/pull/489))
+
+### Fixed
+
+- handle year overflow in date conversion
+- handle version overflow in node unbounded range query ([#485](https://github.com/oxc-project/oxc-browserslist/pull/485))
+- reject trailing dot in version strings to prevent crash ([#483](https://github.com/oxc-project/oxc-browserslist/pull/483))
+
+### Other
+
+- remove future work from README.md
+- add testing section to README ([#490](https://github.com/oxc-project/oxc-browserslist/pull/490))
+- *(deps)* update rust crates ([#487](https://github.com/oxc-project/oxc-browserslist/pull/487))
+- move tests to integration tests ([#480](https://github.com/oxc-project/oxc-browserslist/pull/480))
+- remove `nom` dependency with hand-written parser ([#479](https://github.com/oxc-project/oxc-browserslist/pull/479))
+- remove `time` crate dependency ([#478](https://github.com/oxc-project/oxc-browserslist/pull/478))
+- Update browserslist from 4.28.1 to 4.28.1 ([#476](https://github.com/oxc-project/oxc-browserslist/pull/476))
+- Update browserslist from 4.28.1 to 4.28.1 ([#475](https://github.com/oxc-project/oxc-browserslist/pull/475))
+- Update browserslist from 4.28.1 to 4.28.1 ([#468](https://github.com/oxc-project/oxc-browserslist/pull/468))
+- *(deps)* update rust crates ([#465](https://github.com/oxc-project/oxc-browserslist/pull/465))
+- Update browserslist from 4.28.1 to 4.28.1 ([#461](https://github.com/oxc-project/oxc-browserslist/pull/461))
+
 ## [2.2.0](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.1.5...oxc-browserslist-v2.2.0) - 2026-01-09
 
 ### Added
