@@ -45,6 +45,39 @@ You can also specify additional options, for example:
 cargo run --example inspect -- --mobile-to-desktop 'last 2 versions, not dead'
 ```
 
+## Testing
+
+### Unit and Integration Tests
+
+```sh
+cargo test
+```
+
+### Property-Based Testing
+
+Property-based tests generate random queries and compare results with the npm browserslist CLI.
+
+```sh
+# Install npm browserslist first
+pnpm install
+
+# Run property-based tests
+cargo test --test proptest
+```
+
+### Fuzzing
+
+Fuzzing tests use libFuzzer to find edge cases.
+
+```sh
+# Install cargo-fuzz
+cargo install cargo-fuzz
+
+# Run the fuzzer
+cd fuzz
+cargo +nightly fuzz run fuzz_resolve
+```
+
 ## Future Work (Pull Request Welcome)
 
 - `nom` can be replaced by a hand written parser to improve runtime and compilation speed
