@@ -3,9 +3,13 @@ use crate::{error::Error, opts::Opts};
 
 #[cfg(test)]
 fn base_test_dir() -> &'static std::path::Path {
-    use std::{env::temp_dir, path::PathBuf, sync::OnceLock};
+    use std::{env::temp_dir, fs, path::PathBuf, sync::OnceLock};
     static BASE_TEST_DIR: OnceLock<PathBuf> = OnceLock::new();
-    BASE_TEST_DIR.get_or_init(|| temp_dir().join("browserslist-test-pkgs"))
+    BASE_TEST_DIR.get_or_init(|| {
+        let dir = temp_dir().join("browserslist-test-pkgs");
+        let _ = fs::create_dir_all(&dir);
+        dir
+    })
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -62,7 +66,7 @@ fn check_extend_name(pkg: &str) -> Result<(), Error> {
 
 #[cfg(all(test, not(miri)))]
 mod tests {
-    use std::fs;
+    use std::{fs, sync::Mutex};
 
     use serde_json::json;
     use test_case::test_case;
@@ -72,6 +76,9 @@ mod tests {
         opts::Opts,
         test::{run_compare, should_failed},
     };
+
+    /// Mutex to serialize tests that use the shared temp directory.
+    static TEST_MUTEX: Mutex<()> = Mutex::new(());
 
     fn mock(name: &str, value: serde_json::Value) {
         let dir = base_test_dir().join("node_modules").join(name);
@@ -97,6 +104,7 @@ mod tests {
     #[test_case("browserslist-config-with-env-a", json!({ "someEnv": ["ie 10"] }), "extends browserslist-config-with-env-a"; "no default env")]
     #[test_case("browserslist-config-with-defaults", json!({ "defaults": ["ie 10"] }), "extends browserslist-config-with-defaults"; "default env")]
     fn valid(pkg: &str, value: serde_json::Value, query: &str) {
+        let _lock = TEST_MUTEX.lock().unwrap();
         mock(pkg, value);
         run_compare(query, &Default::default(), Some(base_test_dir()));
         clean(pkg);
@@ -104,6 +112,7 @@ mod tests {
 
     #[test]
     fn dangerous_extend() {
+        let _lock = TEST_MUTEX.lock().unwrap();
         mock("pkg", json!(["ie 11"]));
         run_compare(
             "extends pkg",
@@ -115,6 +124,7 @@ mod tests {
 
     #[test]
     fn recursively_import() {
+        let _lock = TEST_MUTEX.lock().unwrap();
         mock("browserslist-config-a", json!(["extends browserslist-config-b", "ie 9"]));
         mock("browserslist-config-b", json!(["ie 10"]));
         run_compare("extends browserslist-config-a", &Default::default(), Some(base_test_dir()));
@@ -124,6 +134,7 @@ mod tests {
 
     #[test]
     fn specific_env() {
+        let _lock = TEST_MUTEX.lock().unwrap();
         mock("browserslist-config-with-env-b", json!(["ie 11"]));
         run_compare(
             "extends browserslist-config-with-env-b",
@@ -135,6 +146,7 @@ mod tests {
 
     #[test_case("browserslist-config-wrong", json!(null), "extends browserslist-config-wrong"; "empty export")]
     fn invalid(pkg: &str, value: serde_json::Value, query: &str) {
+        let _lock = TEST_MUTEX.lock().unwrap();
         mock(pkg, value);
         assert!(matches!(
             should_failed(query, &Default::default()),
