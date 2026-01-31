@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.1](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.3.0...oxc-browserslist-v2.3.1) - 2026-01-31
+
+### Other
+
+- Update browserslist from 4.28.1 to 4.28.1 ([#500](https://github.com/oxc-project/oxc-browserslist/pull/500))
+- serialize extends tests to prevent race conditions ([#498](https://github.com/oxc-project/oxc-browserslist/pull/498))
+- update README.md regarding compare to original crate
+
 ## [2.3.0](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.2.0...oxc-browserslist-v2.3.0) - 2026-01-26
 
 ### Added
