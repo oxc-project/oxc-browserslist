@@ -70,8 +70,6 @@ mod opts;
 mod parser;
 mod queries;
 mod semver;
-#[cfg(test)]
-mod test;
 #[cfg(all(feature = "wasm_bindgen", target_arch = "wasm32"))]
 mod wasm;
 

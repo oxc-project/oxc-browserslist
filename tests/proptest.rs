@@ -5,7 +5,7 @@
 
 #![cfg(not(miri))]
 
-use std::{collections::HashSet, path::Path, process::Command};
+use std::{collections::HashSet, process::Command};
 
 use browserslist::{Opts, resolve};
 use proptest::prelude::*;
@@ -18,10 +18,13 @@ use proptest::prelude::*;
 #[track_caller]
 fn run_compare(query: &str, opts: &Opts) {
     #[cfg(target_os = "windows")]
-    let path = "./node_modules/.bin/browserslist.exe";
+    let bin = "browserslist.exe";
     #[cfg(not(target_os = "windows"))]
-    let path = "./node_modules/.bin/browserslist";
-    let mut command = Command::new(Path::new(path).canonicalize().unwrap());
+    let bin = "browserslist";
+    // Use absolute path without canonicalize() to avoid flaky failures on macOS
+    // where symlinks created by pnpm may not be immediately visible.
+    let path = std::env::current_dir().unwrap().join("node_modules/.bin").join(bin);
+    let mut command = Command::new(&path);
     if opts.mobile_to_desktop {
         command.arg("--mobile-to-desktop");
     }
