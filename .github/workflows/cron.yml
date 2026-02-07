@@ -19,17 +19,9 @@ jobs:
           save-cache: true
           components: rustfmt # for `cargo codegen`
 
-      - name: Get old browserslist version
-        id: old-version
-        run: echo "version=$(grep -A1 'browserslist@' pnpm-lock.yaml | head -1 | sed 's/.*@//'| tr -d ':')" >> $GITHUB_OUTPUT
-
       - uses: oxc-project/setup-node@8958a8e040102244b619c4a94fccb657a44b1c21 # v1.0.6
 
       - run: pnpm update --prod
-
-      - name: Get new browserslist version
-        id: new-version
-        run: echo "version=$(jq -r '.version' node_modules/browserslist/package.json)" >> $GITHUB_OUTPUT
 
       - run: cargo codegen
 
@@ -42,7 +34,7 @@ jobs:
           commit-message: Update browserslist
           branch: update
           branch-suffix: timestamp
-          title: Update browserslist from ${{ steps.old-version.outputs.version }} to ${{ steps.new-version.outputs.version }}
+          title: Update browserslist
           assignees: Boshen
           base: main
 
