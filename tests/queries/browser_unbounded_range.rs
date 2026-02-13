@@ -9,6 +9,7 @@ use test_case::test_case;
 #[test_case("Explorer > 10"; "case insensitive")]
 #[test_case("android >= 4.2"; "android 1")]
 #[test_case("android >= 4.3"; "android 2")]
+#[test_case("samsung > 5.0"; "uses range upper bound for greater-than comparisons")]
 #[test_case("ie<=9"; "no spaces")]
 #[test_case("and_qq > 0"; "browser with one version")]
 fn default_options(query: &str) {
