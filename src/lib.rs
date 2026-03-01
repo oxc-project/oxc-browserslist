@@ -157,4 +157,3 @@ fn sort_and_dedup_distribs(distribs: &mut Vec<Distrib>) {
 fn handle_first_negated_error(raw: String) -> Result<Vec<Distrib>, Error> {
     Err(Error::NotAtFirst(raw))
 }
-
