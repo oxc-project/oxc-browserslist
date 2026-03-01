@@ -1,3 +1,4 @@
+use std::collections::{BTreeSet, HashMap};
 use std::fs;
 
 use anyhow::Result;
@@ -68,11 +69,34 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     let browsers_bytes = browsers.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
     save_bin_compressed("caniuse_region_browsers.bin", &browsers_bytes);
 
+    // Build version string intern table (deduplicated, sorted)
+    let mut all_versions = BTreeSet::new();
+    for (_, datums) in &data {
+        for datum in datums {
+            all_versions.insert(datum.version.clone());
+        }
+    }
+    let version_table: Vec<String> = all_versions.into_iter().collect();
+    let version_to_index: HashMap<&str, u16> =
+        version_table.iter().enumerate().map(|(i, v)| (v.as_str(), i as u16)).collect();
+
+    // Serialize and compress the string table
+    let table_bytes = to_allocvec(&version_table).unwrap();
+    save_bin_compressed("caniuse_region_version_table.bin", &table_bytes);
+
+    // For each region, store u16 indices instead of strings
     let versions = data
         .iter()
         .map(|(_, datums)| {
-            let versions = datums.iter().map(|x| x.version.clone()).collect::<Vec<_>>();
-            to_allocvec(&versions).unwrap()
+            let indices: Vec<u16> = datums
+                .iter()
+                .map(|x| {
+                    *version_to_index
+                        .get(x.version.as_str())
+                        .expect("version not found in intern table")
+                })
+                .collect();
+            to_allocvec(&indices).unwrap()
         })
         .collect::<Vec<_>>();
     let version_ranges = create_range_vec(&versions);
