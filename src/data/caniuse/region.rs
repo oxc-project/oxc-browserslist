@@ -71,12 +71,12 @@ impl RegionData {
         let percentages_data =
             PERCENTAGES.get_or_init(|| decompress_deflate(PERCENTAGES_COMPRESSED));
         let percentages =
-            decode::<f32>(percentages_data, self.percentages_start, self.percentages_end);
+            decode::<u32>(percentages_data, self.percentages_start, self.percentages_end);
 
         browser_names
             .iter()
             .zip(version_indices)
             .zip(percentages)
-            .map(move |((b, idx), p)| (decode_browser_name(*b), table[idx as usize], p))
+            .map(move |((b, idx), p)| (decode_browser_name(*b), table[idx as usize], p as f32 / 100_000.0))
     }
 }
