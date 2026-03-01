@@ -15,10 +15,8 @@ pub enum QueryAtom<'a> {
     CurrentNode,
     MaintainedNode,
     Phantom(bool),
-    BrowserslistConfig,
     Defaults,
     Dead,
-    Extends(&'a str),
     Unknown(&'a str),
 }
 
@@ -604,44 +602,11 @@ impl<'a> Parser<'a> {
         Some(QueryAtom::Percentage { comparator, popularity, stats })
     }
 
-    fn parse_electron_or_extends(&mut self) -> Option<QueryAtom<'a>> {
-        if self.pos + 1 >= self.bytes.len() {
-            return None;
-        }
-        match self.bytes[self.pos + 1] {
-            b'l' | b'L' => self.parse_electron(),
-            b'x' | b'X' => self.parse_extends(),
-            _ => self.parse_electron().or_else(|| self.parse_extends()),
-        }
-    }
-
     fn parse_electron(&mut self) -> Option<QueryAtom<'a>> {
         if !self.match_keyword(b"electron") {
             return None;
         }
         self.parse_version_range().map(QueryAtom::Electron)
-    }
-
-    fn parse_extends(&mut self) -> Option<QueryAtom<'a>> {
-        let start = self.pos;
-        if !self.match_keyword(b"extends") || !self.skip_whitespace1() {
-            self.pos = start;
-            return None;
-        }
-
-        let name_start = self.pos;
-        while self.pos < self.bytes.len() {
-            let b = self.peek();
-            if !b.is_ascii_alphanumeric() && !matches!(b, b'-' | b'_' | b'@' | b'/' | b'.') {
-                break;
-            }
-            self.pos += 1;
-        }
-        if self.pos == name_start {
-            self.pos = start;
-            return None;
-        }
-        Some(QueryAtom::Extends(self.slice(name_start, self.pos)))
     }
 
     fn parse_node(&mut self) -> Option<QueryAtom<'a>> {
@@ -797,18 +762,6 @@ impl<'a> Parser<'a> {
         Some(QueryAtom::Supports(self.slice(feat_start, self.pos), Some(SupportKind::Partially)))
     }
 
-    fn parse_browserslist_config(&mut self) -> Option<QueryAtom<'a>> {
-        let start = self.pos;
-        if !self.match_keyword(b"browserslist")
-            || !self.skip_whitespace1()
-            || !self.match_keyword(b"config")
-        {
-            self.pos = start;
-            return None;
-        }
-        Some(QueryAtom::BrowserslistConfig)
-    }
-
     fn parse_defaults_or_dead(&mut self) -> Option<QueryAtom<'a>> {
         if self.pos + 2 >= self.bytes.len() {
             return None;
@@ -864,13 +817,13 @@ impl<'a> Parser<'a> {
             b'u' => self.parse_unreleased().or_else(|| self.parse_browser()),
             b's' => self.parse_since_or_supports().or_else(|| self.parse_browser()),
             b'c' => self.parse_cover_or_current().or_else(|| self.parse_browser()),
-            b'e' => self.parse_electron_or_extends().or_else(|| self.parse_browser()),
+            b'e' => self.parse_electron().or_else(|| self.parse_browser()),
             b'n' => self.parse_node().or_else(|| self.parse_browser()),
             b'f' => self.parse_firefox_or_fully().or_else(|| self.parse_browser()),
             b'o' => self.parse_operamini().or_else(|| self.parse_browser()),
             b'm' => self.parse_maintained_node().or_else(|| self.parse_browser()),
             b'p' => self.parse_phantom_or_partially().or_else(|| self.parse_browser()),
-            b'b' => self.parse_browserslist_config().or_else(|| self.parse_browser()),
+            b'b' => self.parse_browser(),
             b'd' => self.parse_defaults_or_dead().or_else(|| self.parse_browser()),
             b'a'..=b'z' => self.parse_browser(),
             _ => None,
@@ -1512,40 +1465,10 @@ mod tests {
         assert!(result.is_none());
     }
 
-    // Test parse_electron_or_extends failure paths
-    #[test]
-    fn parse_electron_or_extends_short() {
-        let mut parser = Parser::new("e");
-        let result = parser.parse_electron_or_extends();
-        assert!(result.is_none());
-    }
-
-    #[test]
-    fn parse_electron_or_extends_fallback() {
-        // Second char is neither 'l' nor 'x'
-        let mut parser = Parser::new("edge 90");
-        let result = parser.parse_electron_or_extends();
-        assert!(result.is_none());
-    }
-
     #[test]
     fn parse_electron_no_keyword() {
         let mut parser = Parser::new("electronics");
         let result = parser.parse_electron();
-        assert!(result.is_none());
-    }
-
-    #[test]
-    fn parse_extends_no_whitespace() {
-        let mut parser = Parser::new("extends");
-        let result = parser.parse_extends();
-        assert!(result.is_none());
-    }
-
-    #[test]
-    fn parse_extends_no_package() {
-        let mut parser = Parser::new("extends ");
-        let result = parser.parse_extends();
         assert!(result.is_none());
     }
 
@@ -1722,21 +1645,6 @@ mod tests {
     fn parse_partially_supports_no_feature() {
         let mut parser = Parser::new("partially supports ");
         let result = parser.parse_partially_supports();
-        assert!(result.is_none());
-    }
-
-    // Test parse_browserslist_config failure paths
-    #[test]
-    fn parse_browserslist_config_partial() {
-        let mut parser = Parser::new("browserslist");
-        let result = parser.parse_browserslist_config();
-        assert!(result.is_none());
-    }
-
-    #[test]
-    fn parse_browserslist_config_no_config() {
-        let mut parser = Parser::new("browserslist xyz");
-        let result = parser.parse_browserslist_config();
         assert!(result.is_none());
     }
 

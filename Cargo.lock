@@ -395,7 +395,6 @@ dependencies = [
  "rustc-hash",
  "serde",
  "serde-wasm-bindgen",
- "serde_json",
  "test-case",
  "thiserror",
  "wasm-bindgen",

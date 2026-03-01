@@ -23,12 +23,6 @@ pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
     if opts.ignore_unknown_versions {
         command.arg("--ignore-unknown-versions");
     }
-    if let Some(env) = &opts.env {
-        command.env("BROWSERSLIST_ENV", env);
-    }
-    if opts.dangerous_extend {
-        command.env("BROWSERSLIST_DANGEROUS_EXTEND", "1");
-    }
     command.arg(query);
     if let Some(cwd) = cwd {
         command.current_dir(cwd);

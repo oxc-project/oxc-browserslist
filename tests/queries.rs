@@ -20,8 +20,6 @@ mod browser_accurate;
 mod browser_bounded_range;
 #[path = "queries/browser_unbounded_range.rs"]
 mod browser_unbounded_range;
-#[path = "queries/browserslist_config.rs"]
-mod browserslist_config;
 #[path = "queries/cover.rs"]
 mod cover;
 #[path = "queries/cover_by_region.rs"]

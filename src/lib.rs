@@ -60,8 +60,6 @@ pub use semver::Version;
 #[cfg(all(feature = "wasm_bindgen", target_arch = "wasm32"))]
 pub use wasm::browserslist;
 
-#[cfg(not(target_arch = "wasm32"))]
-mod config;
 mod data;
 mod date;
 mod error;
@@ -74,11 +72,6 @@ mod semver;
 mod wasm;
 
 /// Resolve browserslist queries.
-///
-/// This is a low-level API.
-/// If you want to load queries from configuration file and
-/// resolve them automatically,
-/// use the higher-level API [`execute`] instead.
 ///
 /// ```
 /// use browserslist::{Distrib, Opts, resolve};
@@ -163,21 +156,4 @@ fn sort_and_dedup_distribs(distribs: &mut Vec<Distrib>) {
 #[cold]
 fn handle_first_negated_error(raw: String) -> Result<Vec<Distrib>, Error> {
     Err(Error::NotAtFirst(raw))
-}
-
-#[cfg(not(target_arch = "wasm32"))]
-/// Load queries from configuration with environment information,
-/// then resolve those queries.
-///
-/// If you want to resolve custom queries (not from configuration file),
-/// use the lower-level API [`resolve`] instead.
-///
-/// ```
-/// use browserslist::{Opts, execute};
-///
-/// // when no config found, it use `defaults` query
-/// assert!(!execute(&Opts::default()).unwrap().is_empty());
-/// ```
-pub fn execute(opts: &Opts) -> Result<Vec<Distrib>, Error> {
-    resolve(&config::load(opts)?, opts)
 }

@@ -13,10 +13,7 @@ fn main() {
         .filter_map(|s| s.to_str().map(ToString::to_string))
         .collect::<Vec<_>>();
 
-    match resolve(
-        &queries,
-        &Opts { mobile_to_desktop, ignore_unknown_versions, ..Default::default() },
-    ) {
+    match resolve(&queries, &Opts { mobile_to_desktop, ignore_unknown_versions }) {
         Ok(versions) => {
             for version in versions {
                 println!("{version}");
