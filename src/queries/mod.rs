@@ -1,7 +1,5 @@
 use std::{borrow::Cow, fmt::Display};
 
-use serde::{Deserialize, Serialize};
-
 use crate::{
     data::caniuse,
     error::Error,
@@ -60,7 +58,7 @@ mod years;
 /// assert_eq!(distrib.name(), "firefox");
 /// assert_eq!(distrib.version(), "93");
 /// ```
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Distrib(Cow<'static, str>, Cow<'static, str>);
 
 impl Distrib {
