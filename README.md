@@ -20,8 +20,8 @@ The original crate did not meet the criteria of `oxc`, the following changes are
 
 - reduced compilation speed from one minute to a few seconds
 - improved some runtime performance, e.g. [improve sort method](https://github.com/oxc-project/oxc-browserslist/pull/28), [precompute versions](https://github.com/oxc-project/oxc-browserslist/pull/10)
-- removed all unnecessary, heavy or slow dependencies: `nom`, `time`, `ahash`, `chrono`, `either`, `indexmap`, `itertools`, `once_cell`, `string_cache`
-- reduced binary size through data compression. 863K (this crate) vs 3.2M (original crate).
+- removed all unnecessary, heavy or slow dependencies: `nom`, `time`, `ahash`, `chrono`, `either`, `indexmap`, `itertools`, `once_cell`, `string_cache`, `serde_json`
+- reduced binary size through data compression and removal of config file support
 
 ## Usage
 
@@ -29,7 +29,12 @@ See [docs.rs/oxc-browserslist](https://docs.rs/oxc-browserslist).
 
 ## Limitation
 
-Only custom usage is not supported: `> 0.5% in my stats` or `cover 99.5% in my stats`.
+The following features are not supported, to align with [Vite](https://github.com/nicolo-ribaudo/vite/pull/2):
+
+- Config file loading (`.browserslistrc`, `package.json` `browserslist` field)
+- Environment variables (`BROWSERSLIST`, `BROWSERSLIST_CONFIG`, `BROWSERSLIST_ENV`)
+- `extends` query (e.g. `extends browserslist-config-google`)
+- Custom usage (`> 0.5% in my stats` or `cover 99.5% in my stats`)
 
 ## Example
 
