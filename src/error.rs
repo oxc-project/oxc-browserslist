@@ -37,10 +37,6 @@ pub enum Error {
     /// no Node.js installed.
     UnsupportedCurrentNode,
 
-    #[error("current environment for querying `extends ...` is not supported")]
-    /// Current environment doesn't support querying `extends`.
-    UnsupportedExtends,
-
     #[error("unknown browser feature: '{0}'")]
     /// Unknown browser feature.
     UnknownBrowserFeature(String),
@@ -52,38 +48,6 @@ pub enum Error {
     #[error("unknown browser query: '{0}'")]
     /// Query can't be recognized.
     UnknownQuery(String),
-
-    #[error("duplicated section '{0}' in config")]
-    /// Duplicated section in configuration.
-    DuplicatedSection(String),
-
-    #[error("failed to read config file: {0}")]
-    /// Failed to read config.
-    FailedToReadConfig(String),
-
-    #[error("missing 'browserslist' field in '{0}' file")]
-    /// Missing `browserslist` field in `package.json` file.
-    MissingFieldInPkg(String),
-
-    #[error("duplicated: '{0}' directory contains both {1} and {2}.")]
-    /// Duplicated configuration found.
-    DuplicatedConfig(String, &'static str, &'static str),
-
-    #[error("failed to access current working directory")]
-    /// Failed to access the current working directory.
-    FailedToAccessCurrentDir,
-
-    #[error("missing config for Browserslist environment '{0}'")]
-    /// Missing config corresponding to specific environment.
-    MissingEnv(String),
-
-    #[error("invalid extend name: {0}")]
-    /// Invalid extend name
-    InvalidExtendName(&'static str),
-
-    #[error("failed to resolve '{0}' package in `extends` query")]
-    /// Failed to resolve package in `extends` query.
-    FailedToResolveExtend(String),
 
     #[error("year overflow")]
     /// Year overflow.

@@ -13,7 +13,6 @@ use crate::{
 mod browser_accurate;
 mod browser_bounded_range;
 mod browser_unbounded_range;
-mod browserslist_config;
 mod cover;
 mod cover_by_region;
 mod current_node;
@@ -22,7 +21,6 @@ mod defaults;
 mod electron_accurate;
 mod electron_bounded_range;
 mod electron_unbounded_range;
-mod extends;
 mod firefox_esr;
 mod last_n_browsers;
 mod last_n_electron;
@@ -196,10 +194,8 @@ pub fn query(atom: QueryAtom, opts: &Opts) -> QueryResult {
         QueryAtom::CurrentNode => current_node::current_node(),
         QueryAtom::MaintainedNode => maintained_node::maintained_node(),
         QueryAtom::Phantom(is_later_version) => phantom::phantom(is_later_version),
-        QueryAtom::BrowserslistConfig => browserslist_config::browserslist_config(opts),
         QueryAtom::Defaults => defaults::defaults(opts),
         QueryAtom::Dead => dead::dead(opts),
-        QueryAtom::Extends(pkg) => extends::extends(pkg, opts),
         QueryAtom::Unknown(query) => Err(Error::UnknownQuery(query.into())),
     }
 }
