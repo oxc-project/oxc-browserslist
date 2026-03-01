@@ -12,11 +12,15 @@ static BROWSER_NAMES_COMPRESSED: &[u8] =
     include_bytes!("../../generated/caniuse_region_browsers.bin.deflate");
 static VERSIONS_COMPRESSED: &[u8] =
     include_bytes!("../../generated/caniuse_region_versions.bin.deflate");
+static VERSION_TABLE_COMPRESSED: &[u8] =
+    include_bytes!("../../generated/caniuse_region_version_table.bin.deflate");
 static PERCENTAGES_COMPRESSED: &[u8] =
     include_bytes!("../../generated/caniuse_region_percentages.bin.deflate");
 
 static BROWSER_NAMES: OnceLock<Vec<u8>> = OnceLock::new();
 static VERSIONS: OnceLock<Vec<u8>> = OnceLock::new();
+static VERSION_TABLE_DATA: OnceLock<Vec<u8>> = OnceLock::new();
+static VERSION_TABLE: OnceLock<Vec<&'static str>> = OnceLock::new();
 static PERCENTAGES: OnceLock<Vec<u8>> = OnceLock::new();
 
 pub struct RegionData {
@@ -26,6 +30,13 @@ pub struct RegionData {
     versions_end: u32,
     percentages_start: u32,
     percentages_end: u32,
+}
+
+fn version_table() -> &'static [&'static str] {
+    VERSION_TABLE.get_or_init(|| {
+        let data = VERSION_TABLE_DATA.get_or_init(|| decompress_deflate(VERSION_TABLE_COMPRESSED));
+        postcard::from_bytes(data).unwrap()
+    })
 }
 
 impl RegionData {
@@ -54,8 +65,8 @@ impl RegionData {
             &browser_names[self.browser_names_start as usize..self.browser_names_end as usize];
 
         let versions_data = VERSIONS.get_or_init(|| decompress_deflate(VERSIONS_COMPRESSED));
-        let versions =
-            decode::<&'static str>(versions_data, self.versions_start, self.versions_end);
+        let version_indices = decode::<u16>(versions_data, self.versions_start, self.versions_end);
+        let table = version_table();
 
         let percentages_data =
             PERCENTAGES.get_or_init(|| decompress_deflate(PERCENTAGES_COMPRESSED));
@@ -64,8 +75,8 @@ impl RegionData {
 
         browser_names
             .iter()
-            .zip(versions)
+            .zip(version_indices)
             .zip(percentages)
-            .map(|((b, v), p)| (decode_browser_name(*b), v, p))
+            .map(move |((b, idx), p)| (decode_browser_name(*b), table[idx as usize], p))
     }
 }
