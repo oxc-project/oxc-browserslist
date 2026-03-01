@@ -29,7 +29,7 @@ See [docs.rs/oxc-browserslist](https://docs.rs/oxc-browserslist).
 
 ## Limitation
 
-The following features are not supported, to align with [Vite](https://github.com/nicolo-ribaudo/vite/pull/2):
+The following features are not supported, to align with Vite:
 
 - Config file loading (`.browserslistrc`, `package.json` `browserslist` field)
 - Environment variables (`BROWSERSLIST`, `BROWSERSLIST_CONFIG`, `BROWSERSLIST_ENV`)
