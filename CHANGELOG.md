@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.3.1...oxc-browserslist-v3.0.0) - 2026-03-01
+
+### Added
+
+- remove config support to reduce binary size ([#542](https://github.com/oxc-project/oxc-browserslist/pull/542))
+
+### Other
+
+- *(deps)* update rust crates ([#548](https://github.com/oxc-project/oxc-browserslist/pull/548))
+- intern version strings and quantize percentages in region data ([#547](https://github.com/oxc-project/oxc-browserslist/pull/547))
+- intern version strings in region data to reduce binary size ([#546](https://github.com/oxc-project/oxc-browserslist/pull/546))
+- remove unused Serialize derive from Opts ([#545](https://github.com/oxc-project/oxc-browserslist/pull/545))
+- update README limitations for removed config, env and extends support ([#544](https://github.com/oxc-project/oxc-browserslist/pull/544))
+- remove unused Serialize/Deserialize derives from Distrib ([#543](https://github.com/oxc-project/oxc-browserslist/pull/543))
+- Update browserslist ([#540](https://github.com/oxc-project/oxc-browserslist/pull/540))
+
 ## [2.3.1](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.3.0...oxc-browserslist-v2.3.1) - 2026-02-24
 
 ### Fixed
