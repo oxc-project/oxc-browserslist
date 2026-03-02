@@ -40,6 +40,17 @@ pub enum Comparator {
     GreaterOrEqual,
 }
 
+impl Comparator {
+    pub fn compare_f32(&self, value: f32, target: f32) -> bool {
+        match self {
+            Self::Greater => value > target,
+            Self::GreaterOrEqual => value >= target,
+            Self::Less => value < target,
+            Self::LessOrEqual => value <= target,
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub enum VersionRange<'a> {
     Bounded(&'a str, &'a str),
