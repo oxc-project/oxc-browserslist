@@ -232,3 +232,22 @@ pub fn count_filter_versions(name: &str, mobile_to_desktop: bool, count: usize) 
     };
     if count <= jump { 1 } else { count + 1 - jump }
 }
+
+/// Find the minimum major version that covers `count` distinct major versions
+/// by iterating in reverse. Returns `0` if fewer than `count` majors exist.
+pub fn find_minimum_major(stat: &caniuse::BrowserStat, count: usize) -> usize {
+    let mut seen = 0usize;
+    let mut last_major = None;
+    for version in stat.version_list.iter().rev().filter(|v| v.release_date().is_some()) {
+        let major = version.version().split('.').next().unwrap();
+        if last_major != Some(major) {
+            seen += 1;
+            if seen > count {
+                break;
+            }
+            // SAFETY: major borrows from version which borrows from stat (lives long enough within this scope)
+            last_major = Some(major);
+        }
+    }
+    last_major.and_then(|m| m.parse().ok()).unwrap_or(0)
+}
