@@ -74,7 +74,7 @@ impl RegionData {
             decode::<u32>(percentages_data, self.percentages_start, self.percentages_end);
 
         browser_names.iter().zip(version_indices).zip(percentages).map(move |((b, idx), p)| {
-            (decode_browser_name(*b), table[idx as usize], p as f32 / 100_000.0)
+            (decode_browser_name(*b), table[idx as usize], p as f32 / 1000.0)
         })
     }
 }

@@ -107,7 +107,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         .iter()
         .map(|(_region, datums)| {
             let percentages: Vec<u32> =
-                datums.iter().map(|x| (x.usage * 100_000.0).round() as u32).collect();
+                datums.iter().map(|x| (x.usage * 1000.0).round() as u32).collect();
             to_allocvec(&percentages).unwrap()
         })
         .collect::<Vec<_>>();
