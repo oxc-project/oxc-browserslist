@@ -136,19 +136,19 @@ fn apply_query_operation(
     }
 }
 
-// Optimized sorting that parses versions only once
 fn sort_and_dedup_distribs(distribs: &mut Vec<Distrib>) {
     if distribs.is_empty() {
         return;
     }
 
-    // Use sort_by_cached_key to parse each version only once
-    distribs.sort_by_cached_key(|d| {
-        let version = d.version().parse::<semver::Version>().unwrap_or_default();
-        (d.name().to_string(), std::cmp::Reverse(version))
+    distribs.sort_by(|a, b| {
+        a.name().cmp(b.name()).then_with(|| {
+            let va = a.version().parse::<semver::Version>().unwrap_or_default();
+            let vb = b.version().parse::<semver::Version>().unwrap_or_default();
+            vb.cmp(&va)
+        })
     });
 
-    // Dedup in place
     distribs.dedup();
 }
 
