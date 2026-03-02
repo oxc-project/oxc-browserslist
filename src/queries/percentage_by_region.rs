@@ -12,12 +12,7 @@ pub(super) fn percentage_by_region(
     if let Some(region_data) = get_usage_by_region(&normalized_region) {
         let distribs = region_data
             .iter()
-            .filter(|(_, _, usage)| match comparator {
-                Comparator::Greater => *usage > popularity,
-                Comparator::Less => *usage < popularity,
-                Comparator::GreaterOrEqual => *usage >= popularity,
-                Comparator::LessOrEqual => *usage <= popularity,
-            })
+            .filter(|(_, _, usage)| comparator.compare_f32(*usage, popularity))
             .map(|(name, version, _)| Distrib::new(name, version))
             .collect();
         Ok(distribs)

@@ -9,12 +9,7 @@ pub(super) fn percentage(comparator: Comparator, popularity: f32) -> QueryResult
                 .iter()
                 .filter(|version| {
                     let usage = version.global_usage();
-                    match comparator {
-                        Comparator::Greater => usage > popularity,
-                        Comparator::GreaterOrEqual => usage >= popularity,
-                        Comparator::Less => usage < popularity,
-                        Comparator::LessOrEqual => usage <= popularity,
-                    }
+                    comparator.compare_f32(usage, popularity)
                 })
                 .map(move |version| Distrib::new(name.as_ref(), version.version()))
         })
