@@ -190,50 +190,42 @@ fn get_browser_stat_mobile_to_desktop(name: &str) -> Option<(&'static str, &'sta
     }
 }
 
+fn resolve_alias(name: &str) -> Option<&'static str> {
+    match name {
+        "fx" | "ff" => Some("firefox"),
+        "ios" => Some("ios_saf"),
+        "explorer" => Some("ie"),
+        "blackberry" => Some("bb"),
+        "explorermobile" => Some("ie_mob"),
+        "operamini" => Some("op_mini"),
+        "operamobile" => Some("op_mob"),
+        "chromeandroid" => Some("and_chr"),
+        "firefoxandroid" => Some("and_ff"),
+        "ucandroid" => Some("and_uc"),
+        "qqandroid" => Some("and_qq"),
+        _ => None,
+    }
+}
+
 // Cold path for case conversion - only called when input contains uppercase
 #[cold]
 fn get_browser_alias_lowercase(name: &str) -> Cow<'static, str> {
-    // Convert to lowercase and apply aliases
     let lowercase = name.to_ascii_lowercase();
-    match lowercase.as_str() {
-        "fx" | "ff" => Cow::Borrowed("firefox"),
-        "ios" => Cow::Borrowed("ios_saf"),
-        "explorer" => Cow::Borrowed("ie"),
-        "blackberry" => Cow::Borrowed("bb"),
-        "explorermobile" => Cow::Borrowed("ie_mob"),
-        "operamini" => Cow::Borrowed("op_mini"),
-        "operamobile" => Cow::Borrowed("op_mob"),
-        "chromeandroid" => Cow::Borrowed("and_chr"),
-        "firefoxandroid" => Cow::Borrowed("and_ff"),
-        "ucandroid" => Cow::Borrowed("and_uc"),
-        "qqandroid" => Cow::Borrowed("and_qq"),
-        // For browsers that don't have aliases, return the lowercase version if it exists
-        _ => {
-            if caniuse_browsers().contains_key(&Cow::Owned(lowercase.clone())) {
-                Cow::Owned(lowercase)
-            } else {
-                // Fallback to original name as owned
-                Cow::Owned(name.to_string())
-            }
-        }
+    if let Some(alias) = resolve_alias(&lowercase) {
+        return Cow::Borrowed(alias);
+    }
+    if caniuse_browsers().contains_key(&Cow::Owned(lowercase.clone())) {
+        Cow::Owned(lowercase)
+    } else {
+        Cow::Owned(name.to_string())
     }
 }
 
 fn get_browser_alias(name: &str) -> Cow<'static, str> {
-    match name {
-        "fx" | "ff" => Cow::Borrowed("firefox"),
-        "ios" => Cow::Borrowed("ios_saf"),
-        "explorer" => Cow::Borrowed("ie"),
-        "blackberry" => Cow::Borrowed("bb"),
-        "explorermobile" => Cow::Borrowed("ie_mob"),
-        "operamini" => Cow::Borrowed("op_mini"),
-        "operamobile" => Cow::Borrowed("op_mob"),
-        "chromeandroid" => Cow::Borrowed("and_chr"),
-        "firefoxandroid" => Cow::Borrowed("and_ff"),
-        "ucandroid" => Cow::Borrowed("and_uc"),
-        "qqandroid" => Cow::Borrowed("and_qq"),
-        _ => Cow::Owned(name.to_string()),
+    if let Some(alias) = resolve_alias(name) {
+        return Cow::Borrowed(alias);
     }
+    Cow::Owned(name.to_string())
 }
 
 pub fn to_desktop_name(name: &str) -> Option<&'static str> {
