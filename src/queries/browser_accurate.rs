@@ -15,10 +15,7 @@ pub(super) fn browser_accurate(name: &str, version: &str, opts: &Opts) -> QueryR
     let (name, stat) = get_browser_stat(name, opts.mobile_to_desktop)
         .ok_or_else(|| Error::BrowserNotFound(name.to_string()))?;
 
-    if let Some(version) = normalize_version(
-        stat,
-        if original_version.eq_ignore_ascii_case("tp") { "TP" } else { version },
-    ) {
+    if let Some(version) = normalize_version(stat, version) {
         Ok(vec![Distrib::new(name, version.into_owned())])
     } else {
         let version = if version.contains('.') {
