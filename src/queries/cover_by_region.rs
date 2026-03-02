@@ -1,5 +1,3 @@
-use std::ops::ControlFlow;
-
 use super::{Distrib, QueryResult};
 use crate::{data::caniuse::region::get_usage_by_region, error::Error};
 
@@ -8,21 +6,16 @@ pub(super) fn cover_by_region(coverage: f32, region: &str) -> QueryResult {
         if region.len() == 2 { region.to_uppercase() } else { region.to_lowercase() };
 
     if let Some(region_data) = get_usage_by_region(&normalized_region) {
-        let result = region_data.iter().try_fold(
-            (vec![], 0.0),
-            |(mut distribs, total), (name, version, usage)| {
-                if total >= coverage || usage == 0.0 {
-                    ControlFlow::Break((distribs, total))
-                } else {
-                    distribs.push(Distrib::new(name, version));
-                    ControlFlow::Continue((distribs, total + usage))
-                }
-            },
-        );
-        match result {
-            ControlFlow::Break((distribs, _)) => Ok(distribs),
-            _ => unreachable!(),
+        let mut distribs = vec![];
+        let mut total = 0.0;
+        for (name, version, usage) in region_data.iter() {
+            if total >= coverage || usage == 0.0 {
+                break;
+            }
+            distribs.push(Distrib::new(name, version));
+            total += usage;
         }
+        Ok(distribs)
     } else {
         Err(Error::UnknownRegion(region.to_string()))
     }
