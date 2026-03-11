@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.1](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.0...oxc-browserslist-v3.0.1) - 2026-03-11
+
+### Other
+
+- *(deps)* update rust crate quote to v1.0.45 ([#566](https://github.com/oxc-project/oxc-browserslist/pull/566))
+- Update browserslist ([#564](https://github.com/oxc-project/oxc-browserslist/pull/564))
+- Update browserslist ([#562](https://github.com/oxc-project/oxc-browserslist/pull/562))
+- Update browserslist ([#560](https://github.com/oxc-project/oxc-browserslist/pull/560))
+
 ## [3.0.0](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v2.3.1...oxc-browserslist-v3.0.0) - 2026-03-02
 
 ### Added
