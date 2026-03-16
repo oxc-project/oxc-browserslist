@@ -19,3 +19,7 @@ quote = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true, features = ["preserve_order"] }
 syn = { workspace = true }
+
+[lib]
+test = false
+doctest = false
