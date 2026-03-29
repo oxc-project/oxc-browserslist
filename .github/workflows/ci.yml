@@ -46,7 +46,7 @@ jobs:
         with:
           save-cache: ${{ github.ref_name == 'main' }}
           components: rustfmt # for `cargo codegen`
-      - uses: oxc-project/setup-node@b8d296d30eafd1ae2968fab67aead472a1dbf6d4 # v1.0.7
+      - uses: oxc-project/setup-node@4c26e7cb3605b6bdef5450dacd02c434b10fd8ba # v1.2.0
       - run: cargo check --all-targets --all-features
       - run: cargo test
 
