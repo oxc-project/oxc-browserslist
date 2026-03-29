@@ -34,7 +34,7 @@ jobs:
           tools: cargo-llvm-cov
           components: llvm-tools-preview
 
-      - uses: oxc-project/setup-node@b8d296d30eafd1ae2968fab67aead472a1dbf6d4 # v1.0.7
+      - uses: oxc-project/setup-node@4c26e7cb3605b6bdef5450dacd02c434b10fd8ba # v1.2.0
 
       - run: cargo llvm-cov --lcov --output-path lcov.info
 
@@ -60,7 +60,7 @@ jobs:
         with:
           name: codecov
 
-      - uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5.5.3
+      - uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe # v5.5.4
         if: env.CODECOV_TOKEN
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
