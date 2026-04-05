@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       browserslist:
-        specifier: 4.28.1
-        version: 4.28.1
+        specifier: 4.28.2
+        version: 4.28.2
       caniuse-db:
         specifier: 1.x
         version: 1.0.30001785
@@ -172,8 +172,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  browserslist@4.28.1:
-    resolution: {integrity: sha512-ZC5Bd0LgJXgwGqUknZY/vkUQ04r8NXnJZ3yYi4vDmSiZmC/pdSN0NbNRPxZpbtO4uAfDUAFffO8IZoM3Gj8IkA==}
+  browserslist@4.28.2:
+    resolution: {integrity: sha512-48xSriZYYg+8qXna9kwqjIVzuQxi+KYWp2+5nCYnYKPTr0LvD89Jqk2Or5ogxz0NUMfIjhh2lIUX/LyX9B4oIg==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
@@ -390,13 +390,13 @@ snapshots:
 
   baseline-browser-mapping@2.10.14: {}
 
-  browserslist@4.28.1:
+  browserslist@4.28.2:
     dependencies:
       baseline-browser-mapping: 2.10.14
       caniuse-lite: 1.0.30001785
       electron-to-chromium: 1.5.331
       node-releases: 2.0.37
-      update-browserslist-db: 1.2.3(browserslist@4.28.1)
+      update-browserslist-db: 1.2.3(browserslist@4.28.2)
 
   caniuse-db@1.0.30001785: {}
 
@@ -535,9 +535,9 @@ snapshots:
 
   tinypool@2.1.0: {}
 
-  update-browserslist-db@1.2.3(browserslist@4.28.1):
+  update-browserslist-db@1.2.3(browserslist@4.28.2):
     dependencies:
-      browserslist: 4.28.1
+      browserslist: 4.28.2
       escalade: 3.2.0
       picocolors: 1.1.1
 

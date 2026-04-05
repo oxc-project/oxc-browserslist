@@ -7,7 +7,7 @@
     "fmt": "oxfmt"
   },
   "dependencies": {
-    "browserslist": "4.28.1"
+    "browserslist": "4.28.2"
   },
   "devDependencies": {
     "lint-staged": "^16.1.6",
