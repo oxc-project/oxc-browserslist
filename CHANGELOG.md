@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.3](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.2...oxc-browserslist-v3.0.3) - 2026-05-04
+
+### Other
+
+- Update rust crates ([#650](https://github.com/oxc-project/oxc-browserslist/pull/650))
+- Update browserslist ([#649](https://github.com/oxc-project/oxc-browserslist/pull/649))
+- Update browserslist ([#648](https://github.com/oxc-project/oxc-browserslist/pull/648))
+- Update browserslist ([#642](https://github.com/oxc-project/oxc-browserslist/pull/642))
+- Update browserslist ([#639](https://github.com/oxc-project/oxc-browserslist/pull/639))
+- Update browserslist ([#638](https://github.com/oxc-project/oxc-browserslist/pull/638))
+- Update browserslist ([#627](https://github.com/oxc-project/oxc-browserslist/pull/627))
+- Update rust crates ([#622](https://github.com/oxc-project/oxc-browserslist/pull/622))
+- Update browserslist ([#617](https://github.com/oxc-project/oxc-browserslist/pull/617))
+- Update browserslist ([#613](https://github.com/oxc-project/oxc-browserslist/pull/613))
+
 ## [3.0.2](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.1...oxc-browserslist-v3.0.2) - 2026-04-05
 
 ### Other
