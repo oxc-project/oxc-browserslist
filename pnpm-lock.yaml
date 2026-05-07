@@ -13,10 +13,10 @@ importers:
         version: 4.28.2
       caniuse-db:
         specifier: 1.x
-        version: 1.0.30001791
+        version: 1.0.30001792
       electron-to-chromium:
         specifier: 1.x
-        version: 1.5.350
+        version: 1.5.352
       node-releases:
         specifier: 2.x
         version: 2.0.38
@@ -177,11 +177,11 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
-  caniuse-db@1.0.30001791:
-    resolution: {integrity: sha512-/Fx3nty4WM3wpkrnhr/uS7ag6hkiYHP3y8JUm7fM2z3AB0o93C5/Vl4nsk4/i4JaLr1YJhbQkMbbLrRTv9AZxA==}
+  caniuse-db@1.0.30001792:
+    resolution: {integrity: sha512-t0PpJe/0l4GzxtgUCExLrulrFNF3aCnX9ygi7//74qKdPBYmRLpfRPTAyo5vma090h9DPWCCAmowtvuG/Or1+w==}
 
-  caniuse-lite@1.0.30001791:
-    resolution: {integrity: sha512-yk0l/YSrOnFZk3UROpDLQD9+kC1l4meK/wed583AXrzoarMGJcbRi2Q4RaUYbKxYAsZ8sWmaSa/DsLmdBeI1vQ==}
+  caniuse-lite@1.0.30001792:
+    resolution: {integrity: sha512-hVLMUZFgR4JJ6ACt1uEESvQN1/dBVqPAKY0hgrV70eN3391K6juAfTjKZLKvOMsx8PxA7gsY1/tLMMTcfFLLpw==}
 
   cli-cursor@5.0.0:
     resolution: {integrity: sha512-aCj4O5wKyszjMmDT4tZj93kxyydN/K5zPWSCe6/0AV/AA1pqe5ZBIw0a2ZfPQV7lL5/yb5HsUreJ6UFAF1tEQw==}
@@ -198,8 +198,8 @@ packages:
     resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
     engines: {node: '>=20'}
 
-  electron-to-chromium@1.5.350:
-    resolution: {integrity: sha512-/KWD4qK8nMqIoJh35Rpc37fiVyOe80mcUQKpfje0Dp9uot2ROuipsh+EriCdfInxjleD5v1S4OlIn41I0LXP0g==}
+  electron-to-chromium@1.5.352:
+    resolution: {integrity: sha512-9wHk8x6dyuimoe18EdiDPWKExNdxYqo4fn4FwOVVper6RxT3cmpBwBkWWfSOCYJjQdIco/nPhJhNLmn4Ufg1Yg==}
 
   emoji-regex@10.6.0:
     resolution: {integrity: sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A==}
@@ -393,14 +393,14 @@ snapshots:
   browserslist@4.28.2:
     dependencies:
       baseline-browser-mapping: 2.10.27
-      caniuse-lite: 1.0.30001791
-      electron-to-chromium: 1.5.350
+      caniuse-lite: 1.0.30001792
+      electron-to-chromium: 1.5.352
       node-releases: 2.0.38
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
 
-  caniuse-db@1.0.30001791: {}
+  caniuse-db@1.0.30001792: {}
 
-  caniuse-lite@1.0.30001791: {}
+  caniuse-lite@1.0.30001792: {}
 
   cli-cursor@5.0.0:
     dependencies:
@@ -415,7 +415,7 @@ snapshots:
 
   commander@14.0.3: {}
 
-  electron-to-chromium@1.5.350: {}
+  electron-to-chromium@1.5.352: {}
 
   emoji-regex@10.6.0: {}
 
