@@ -19,7 +19,7 @@ importers:
         version: 1.5.360
       node-releases:
         specifier: 2.x
-        version: 2.0.44
+        version: 2.0.45
     devDependencies:
       lint-staged:
         specifier: ^17.0.0
@@ -233,8 +233,9 @@ packages:
     resolution: {integrity: sha512-VP79XUPxV2CigYP3jWwAUFSku2aKqBH7uTAapFWCBqutsbmDo96KY5o8uh6U+/YSIn5OxJnXp73beVkpqMIGhA==}
     engines: {node: '>=18'}
 
-  node-releases@2.0.44:
-    resolution: {integrity: sha512-5WUyunoPMsvvEhS8AxHtRzP+oA8UCkJ7YRxatWKjngndhDGLiqEVAQKWjFAiAiuL8zMRGzGSJxFnLetoa43qGQ==}
+  node-releases@2.0.45:
+    resolution: {integrity: sha512-iIbHXV9eBB2nB0wa7oTsrrXq+qQt+9SIlx9AX3T96YgobtEQfis5n6TJ6vV+3QP8DwdriEAcGhARaFCu37peBg==}
+    engines: {node: '>=18'}
 
   onetime@7.0.0:
     resolution: {integrity: sha512-VXJjc87FScF88uafS3JllDgvAm+c/Slfz06lorj2uAY34rlUu0Nt+v8wreiImcrgAjjIHp1rXpTDlLOGw29WwQ==}
@@ -397,7 +398,7 @@ snapshots:
       baseline-browser-mapping: 2.10.31
       caniuse-lite: 1.0.30001793
       electron-to-chromium: 1.5.360
-      node-releases: 2.0.44
+      node-releases: 2.0.45
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
 
   caniuse-db@1.0.30001793: {}
@@ -456,7 +457,7 @@ snapshots:
 
   mimic-function@5.0.1: {}
 
-  node-releases@2.0.44: {}
+  node-releases@2.0.45: {}
 
   onetime@7.0.0:
     dependencies:
