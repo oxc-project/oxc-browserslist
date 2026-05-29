@@ -64,16 +64,63 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     let table_bytes = to_allocvec(&version_table).unwrap();
     save_bin_compressed("caniuse_feature_version_table.bin", &table_bytes);
 
-    // Store absolute indices (not gaps): the same index runs recur across features, and deflate
-    // exploits that cross-feature repetition far better than it does delta-encoded gaps.
-    let intern = |versions: &[String]| -> Vec<u16> {
-        versions.iter().map(|v| version_to_index[v.as_str()]).collect()
+    // A feature's per-browser `y`/`a` list is the set of versions that support it, and browser
+    // support is almost always "from version N onward" — so in per-browser version order the list
+    // is one contiguous run. Build a per-browser version order (each browser's feature-versions
+    // sorted by version number) and store every list as ascending `(start, length)` runs of local
+    // indices into that order, instead of one index per version. This collapses ~245k indices into
+    // ~16k run endpoints (~9 KB smaller after deflate). Losslessness only needs the order to match
+    // between this table and the run indices — the runtime re-sorts the resolved version strings
+    // before binary-searching them — so the exact sort key does not matter for correctness.
+    let max_browser = features.iter().flat_map(|f| f.iter().map(|(b, _, _)| *b)).max().unwrap_or(0);
+    let mut version_sets: Vec<BTreeSet<u16>> = vec![BTreeSet::new(); max_browser as usize + 1];
+    for feature in &features {
+        for (b, y, a) in feature {
+            let set = &mut version_sets[*b as usize];
+            set.extend(y.iter().chain(a).map(|v| version_to_index[v.as_str()]));
+        }
+    }
+    let browser_versions: Vec<Vec<u16>> = version_sets
+        .into_iter()
+        .map(|set| {
+            let mut order: Vec<u16> = set.into_iter().collect();
+            order.sort_by_cached_key(|&g| {
+                let v = &version_table[g as usize];
+                let nums: Vec<i64> = v.split(['.', '-']).map(|p| p.parse().unwrap_or(-1)).collect();
+                (nums, v.clone())
+            });
+            order
+        })
+        .collect();
+    save_bin_compressed(
+        "caniuse_feature_browser_versions.bin",
+        &to_allocvec(&browser_versions).unwrap(),
+    );
+
+    let local_index: Vec<HashMap<u16, u16>> = browser_versions
+        .iter()
+        .map(|order| order.iter().enumerate().map(|(i, &g)| (g, i as u16)).collect())
+        .collect();
+    let to_runs = |versions: &[String], b: u8| -> Vec<(u16, u16)> {
+        let mut locals: Vec<u16> = versions
+            .iter()
+            .map(|v| local_index[b as usize][&version_to_index[v.as_str()]])
+            .collect();
+        locals.sort_unstable();
+        let mut runs: Vec<(u16, u16)> = Vec::new();
+        for &local in &locals {
+            match runs.last_mut() {
+                Some((start, len)) if *start + *len == local => *len += 1,
+                _ => runs.push((local, 1)),
+            }
+        }
+        runs
     };
     let data = features
         .iter()
         .map(|feature| {
-            let remapped: Vec<(u8, Vec<u16>, Vec<u16>)> =
-                feature.iter().map(|(b, y, a)| (*b, intern(y), intern(a))).collect();
+            let remapped: Vec<(u8, Vec<(u16, u16)>, Vec<(u16, u16)>)> =
+                feature.iter().map(|(b, y, a)| (*b, to_runs(y, *b), to_runs(a, *b))).collect();
             to_allocvec(&remapped).unwrap()
         })
         .collect::<Vec<_>>();
