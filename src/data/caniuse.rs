@@ -40,7 +40,7 @@ impl VersionDetail {
 
 pub type CaniuseData = FxHashMap<BrowserName, BrowserStat>;
 
-pub use crate::generated::caniuse_global_usage::CANIUSE_GLOBAL_USAGE;
+pub use crate::generated::caniuse_global_usage::{CANIUSE_GLOBAL_USAGE, GLOBAL_USAGE_VERSIONS};
 
 pub fn caniuse_browsers() -> &'static CaniuseData {
     static CANIUSE_BROWSERS: OnceLock<CaniuseData> = OnceLock::new();

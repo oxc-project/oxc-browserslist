@@ -1,6 +1,9 @@
 use super::{Distrib, QueryResult};
 use crate::{
-    data::electron::{ELECTRON_VERSIONS, parse_version},
+    data::{
+        electron::{ELECTRON_CHROMIUM_VERSIONS, ELECTRON_VERSIONS, parse_version},
+        unpack_str,
+    },
     error::Error,
 };
 
@@ -20,7 +23,9 @@ pub(super) fn electron_bounded_range(from: &str, to: &str) -> QueryResult {
     let distribs = ELECTRON_VERSIONS
         .iter()
         .filter(|(version, _)| from <= *version && *version <= to)
-        .map(|(_, version)| Distrib::new("chrome", *version))
+        .map(|(_, version)| {
+            Distrib::new("chrome", unpack_str(ELECTRON_CHROMIUM_VERSIONS, *version))
+        })
         .collect();
     Ok(distribs)
 }

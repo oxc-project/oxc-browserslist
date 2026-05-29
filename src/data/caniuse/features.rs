@@ -11,6 +11,17 @@ pub use crate::generated::caniuse_feature_matching::get_feature_stat;
 static FEATURES_COMPRESSED: &[u8] =
     include_bytes!("../../generated/caniuse_feature_matching.bin.deflate");
 static FEATURES_DECOMPRESSED: OnceLock<Vec<u8>> = OnceLock::new();
+static VERSION_TABLE_COMPRESSED: &[u8] =
+    include_bytes!("../../generated/caniuse_feature_version_table.bin.deflate");
+static VERSION_TABLE_DATA: OnceLock<Vec<u8>> = OnceLock::new();
+static VERSION_TABLE: OnceLock<Vec<&'static str>> = OnceLock::new();
+
+fn version_table() -> &'static [&'static str] {
+    VERSION_TABLE.get_or_init(|| {
+        let data = VERSION_TABLE_DATA.get_or_init(|| decompress_deflate(VERSION_TABLE_COMPRESSED));
+        postcard::from_bytes(data).unwrap()
+    })
+}
 
 pub struct FeatureSet {
     yes: Vec</* version */ &'static str>,
@@ -40,11 +51,16 @@ impl Feature {
 
     pub fn create_data(&self) -> Vec<(BrowserName, FeatureSet)> {
         let data = FEATURES_DECOMPRESSED.get_or_init(|| decompress_deflate(FEATURES_COMPRESSED));
-        let features =
-            decode::<(u8, Vec<&'static str>, Vec<&'static str>)>(data, self.start, self.end);
+        let features = decode::<(u8, Vec<u16>, Vec<u16>)>(data, self.start, self.end);
+        let table = version_table();
+        let resolve = |indices: Vec<u16>| -> Vec<&'static str> {
+            indices.into_iter().map(|i| table[i as usize]).collect()
+        };
         features
             .into_iter()
-            .map(|(b, yes, partial)| (decode_browser_name(b), FeatureSet::new(yes, partial)))
+            .map(|(b, yes, partial)| {
+                (decode_browser_name(b), FeatureSet::new(resolve(yes), resolve(partial)))
+            })
             .collect::<Vec<_>>()
     }
 }

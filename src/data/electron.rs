@@ -1,5 +1,5 @@
 use crate::error::Error;
-pub use crate::generated::electron_to_chromium::ELECTRON_VERSIONS;
+pub use crate::generated::electron_to_chromium::{ELECTRON_CHROMIUM_VERSIONS, ELECTRON_VERSIONS};
 
 #[derive(Debug, Default, Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
 pub struct ElectronVersion {

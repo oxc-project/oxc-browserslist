@@ -6,6 +6,17 @@ use std::borrow::Cow;
 
 pub(crate) type BrowserName = Cow<'static, str>;
 
+/// Resolve a version string from a concatenated pool using a packed `offset << 8 | len` index.
+///
+/// Storing version strings this way keeps the generated tables free of `&str` fat pointers,
+/// each of which would otherwise cost 16 bytes plus a load-time relocation entry in the binary.
+#[inline]
+pub(crate) fn unpack_str(pool: &'static str, packed: u32) -> &'static str {
+    let offset = (packed >> 8) as usize;
+    let len = (packed & 0xff) as usize;
+    &pool[offset..offset + len]
+}
+
 pub(crate) fn decode_browser_name(id: u8) -> BrowserName {
     match id {
         1 => Cow::Borrowed("ie"),

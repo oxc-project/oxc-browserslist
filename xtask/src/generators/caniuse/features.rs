@@ -1,3 +1,5 @@
+use std::collections::{BTreeSet, HashMap};
+
 use anyhow::Result;
 use postcard::to_allocvec;
 use quote::quote;
@@ -38,22 +40,67 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         })
         .collect::<Vec<_>>();
 
-    let keys = sorted_data.keys().cloned().collect::<Vec<_>>();
+    // Store the feature-name lookup keys as a compressed blob rather than an inline
+    // `&[&str]`: the slice would cost 16 bytes of (relocated) fat pointer per entry plus the
+    // raw string bytes, all uncompressed in the binary. The blob is decoded once on first use.
+    let keys = sorted_data.keys().cloned().collect::<Vec<String>>();
+    save_bin_compressed("caniuse_feature_keys.bin", &to_allocvec(&keys).unwrap());
 
-    let data = features.iter().map(|v| to_allocvec(v).unwrap()).collect::<Vec<_>>();
+    // The `y`/`a` lists hold version strings drawn from a small shared vocabulary that repeats
+    // across every feature. Intern them into one lexicographically-sorted table and store u16
+    // indices instead. Because the table is sorted, each (already lexicographically-sorted) list
+    // becomes a strictly ascending index sequence — compact for deflate and still correctly
+    // ordered for the runtime's binary searches.
+    let mut all_versions = BTreeSet::new();
+    for feature in &features {
+        for (_, y, a) in feature {
+            all_versions.extend(y.iter().cloned());
+            all_versions.extend(a.iter().cloned());
+        }
+    }
+    let version_table: Vec<String> = all_versions.into_iter().collect();
+    let version_to_index: HashMap<&str, u16> =
+        version_table.iter().enumerate().map(|(i, v)| (v.as_str(), i as u16)).collect();
+    let table_bytes = to_allocvec(&version_table).unwrap();
+    save_bin_compressed("caniuse_feature_version_table.bin", &table_bytes);
+
+    // Store absolute indices (not gaps): the same index runs recur across features, and deflate
+    // exploits that cross-feature repetition far better than it does delta-encoded gaps.
+    let intern = |versions: &[String]| -> Vec<u16> {
+        versions.iter().map(|v| version_to_index[v.as_str()]).collect()
+    };
+    let data = features
+        .iter()
+        .map(|feature| {
+            let remapped: Vec<(u8, Vec<u16>, Vec<u16>)> =
+                feature.iter().map(|(b, y, a)| (*b, intern(y), intern(a))).collect();
+            to_allocvec(&remapped).unwrap()
+        })
+        .collect::<Vec<_>>();
     let data_bytes = data.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
     save_bin_compressed("caniuse_feature_matching.bin", &data_bytes);
 
     let data_range = create_range_vec(&data);
 
     let output = quote! {
-        use crate::data::caniuse::features::Feature;
+        use std::sync::OnceLock;
 
-        static KEYS: &[&str] = &[#(#keys),*];
+        use crate::data::caniuse::{compression::decompress_deflate, features::Feature};
+
+        static KEYS_COMPRESSED: &[u8] = include_bytes!("caniuse_feature_keys.bin.deflate");
+        static KEYS_DATA: OnceLock<Vec<u8>> = OnceLock::new();
+        static KEYS: OnceLock<Vec<&'static str>> = OnceLock::new();
         static RANGES: &[u32] = &[#(#data_range),*];
 
+        fn keys() -> &'static [&'static str] {
+            KEYS.get_or_init(|| {
+                let data = KEYS_DATA.get_or_init(|| decompress_deflate(KEYS_COMPRESSED));
+                postcard::from_bytes(data).unwrap()
+            })
+        }
+
         pub fn get_feature_stat(name: &str) -> Option<Feature> {
-            match KEYS.binary_search(&name) {
+            match keys().binary_search(&name) {
                 Ok(idx) => {
                     let start = RANGES[idx];
                     let end = RANGES[idx + 1];
