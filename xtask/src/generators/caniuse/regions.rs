@@ -5,7 +5,7 @@ use postcard::to_allocvec;
 use quote::quote;
 
 use crate::data::{Caniuse, encode_browser_name};
-use crate::utils::{create_range_vec, generate_file, save_bin_compressed};
+use crate::utils::{generate_file, save_bin_compressed};
 
 struct RegionDatum {
     browser: u8,
@@ -115,29 +115,31 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     pair_bytes.append(&mut pair_hi);
     save_bin_compressed("caniuse_region_pair_indices.bin", &pair_bytes);
 
-    let percentages = data
-        .iter()
-        .map(|(_region, datums)| {
-            // `datums` is sorted by usage descending, so the rounded percentages form a
-            // non-increasing sequence. Store them delta-encoded (`prev - curr`, always >= 0):
-            // the deltas are small and contain long runs of zeros (many equal usages),
-            // which deflate compresses far better than the raw values.
-            let mut prev = 0u32;
-            let deltas: Vec<u32> = datums
-                .iter()
-                .enumerate()
-                .map(|(i, x)| {
-                    let curr = (x.usage * 100_000.0).round() as u32;
-                    let delta = if i == 0 { curr } else { prev - curr };
-                    prev = curr;
-                    delta
-                })
-                .collect();
-            to_allocvec(&deltas).unwrap()
-        })
-        .collect::<Vec<_>>();
-    let percent_ranges = create_range_vec(&percentages);
-    let percent_bytes = percentages.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
+    // Percentages mirror the pair indices one-for-one (same per-region datum count and order), so
+    // they reuse PAIR_RANGES instead of a separate offset table. `datums` is sorted by usage
+    // descending, so the rounded percentages form a non-increasing sequence; store each as the
+    // delta `prev - curr` (always >= 0). Split those deltas into three fixed-width byte planes
+    // (low, then middle, then high) before deflating — the same stream-split scheme as the pair
+    // indices. The max delta is ~8.5M, which fits in three bytes; the middle and high planes are
+    // almost entirely zero (deltas are tiny except the first value of each region) so they all but
+    // vanish under deflate, while keeping every datum at a fixed offset addressable by PAIR_RANGES.
+    let mut percent_lo = Vec::new();
+    let mut percent_mid = Vec::new();
+    let mut percent_hi = Vec::new();
+    for (_, datums) in &data {
+        let mut prev = 0u32;
+        for (i, x) in datums.iter().enumerate() {
+            let curr = (x.usage * 100_000.0).round() as u32;
+            let delta = if i == 0 { curr } else { prev - curr };
+            prev = curr;
+            percent_lo.push((delta & 0xff) as u8);
+            percent_mid.push(((delta >> 8) & 0xff) as u8);
+            percent_hi.push(((delta >> 16) & 0xff) as u8);
+        }
+    }
+    let mut percent_bytes = percent_lo;
+    percent_bytes.append(&mut percent_mid);
+    percent_bytes.append(&mut percent_hi);
     save_bin_compressed("caniuse_region_percentages.bin", &percent_bytes);
 
     let output = quote! {
@@ -146,8 +148,9 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
         use crate::data::caniuse::{compression::decompress_deflate, region::RegionData};
 
         static KEYS: OnceLock<Vec<String>> = OnceLock::new();
-        const PAIR_RANGES: &[u32] = &[#(#pair_ranges,)*];
-        const PERCENT_RANGES: &[u32] = &[#(#percent_ranges,)*];
+        // One element offset per region into both the pair-index and percentage byte planes
+        // (the two share the same per-region datum count, so a single range table serves both).
+        const RANGES: &[u32] = &[#(#pair_ranges,)*];
 
         pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
             let keys = KEYS.get_or_init(|| {
@@ -155,12 +158,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
                     .unwrap()
             });
             let index = keys.binary_search_by(|key| key.as_str().cmp(region)).ok()?;
-            Some(RegionData::new(
-                PAIR_RANGES[index],
-                PAIR_RANGES[index + 1],
-                PERCENT_RANGES[index],
-                PERCENT_RANGES[index + 1],
-            ))
+            Some(RegionData::new(RANGES[index], RANGES[index + 1]))
         }
     };
     generate_file("caniuse_region_matching.rs", output);

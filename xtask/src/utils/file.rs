@@ -1,13 +1,16 @@
-use std::{fs, io::Write};
+use std::fs;
 
-use flate2::{Compression, write::DeflateEncoder};
+use zopfli::{Format, Options};
 
 use super::paths::root;
 
 pub fn save_bin_compressed(file: &str, bytes: &[u8]) {
-    let mut encoder = DeflateEncoder::new(Vec::new(), Compression::best());
-    encoder.write_all(bytes).unwrap();
-    let compressed = encoder.finish().unwrap();
+    // Compress with Zopfli, a (deliberately slow, build-time-only) deflate-compatible encoder that
+    // squeezes a few percent more out of every blob than a normal deflate encoder. The output is a
+    // standard raw-deflate stream, so the runtime decoder (`flate2::read::DeflateDecoder`) reads it
+    // unchanged and no consumer-facing dependency changes.
+    let mut compressed = Vec::new();
+    zopfli::compress(Options::default(), Format::Deflate, bytes, &mut compressed).unwrap();
     let file = format!("{}.deflate", file);
     fs::write(root().join("src/generated").join(file), compressed).unwrap();
 }
