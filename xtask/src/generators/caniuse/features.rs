@@ -69,9 +69,11 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     // is one contiguous run. Build a per-browser version order (each browser's feature-versions
     // sorted by version number) and store every list as ascending `(start, length)` runs of local
     // indices into that order, instead of one index per version. This collapses ~245k indices into
-    // ~16k run endpoints (~9 KB smaller after deflate). Losslessness only needs the order to match
-    // between this table and the run indices — the runtime re-sorts the resolved version strings
-    // before binary-searching them — so the exact sort key does not matter for correctness.
+    // ~16k run endpoints (~9 KB smaller after deflate). Ordering by version number is what makes
+    // each list contiguous, so it is load-bearing for the blob size (a plain lexicographic order
+    // would fragment "9, 90, ..., 99, 9.1" and defeat the encoding). Correctness, though, only
+    // needs the order to be deterministic and to match between this table and the run indices: the
+    // runtime re-sorts the resolved version strings before binary-searching them.
     let max_browser = features.iter().flat_map(|f| f.iter().map(|(b, _, _)| *b)).max().unwrap_or(0);
     let mut version_sets: Vec<BTreeSet<u16>> = vec![BTreeSet::new(); max_browser as usize + 1];
     for feature in &features {
@@ -84,10 +86,13 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         .into_iter()
         .map(|set| {
             let mut order: Vec<u16> = set.into_iter().collect();
+            // `set` already yields indices in ascending (lexicographic) order, and the sort is
+            // stable, so ties keep that order deterministically — no explicit tie-break needed.
             order.sort_by_cached_key(|&g| {
-                let v = &version_table[g as usize];
-                let nums: Vec<i64> = v.split(['.', '-']).map(|p| p.parse().unwrap_or(-1)).collect();
-                (nums, v.clone())
+                version_table[g as usize]
+                    .split(['.', '-'])
+                    .map(|p| p.parse::<i64>().unwrap_or(-1))
+                    .collect::<Vec<_>>()
             });
             order
         })
@@ -116,10 +121,15 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         }
         runs
     };
+    // Per feature: one `(browser, yes-runs, partial-runs)` entry per browser. This postcard layout
+    // is hand-decoded (not `postcard::from_bytes`) by `caniuse::features::{read_varint,
+    // read_versions}` at runtime to keep the decoder small, so it must stay a postcard-LEB128
+    // stream: browser `u8`, then each run list as a varint length followed by `(start, length)`
+    // varint pairs.
     let data = features
         .iter()
         .map(|feature| {
-            let remapped: Vec<(u8, Vec<(u16, u16)>, Vec<(u16, u16)>)> =
+            let remapped: Vec<_> =
                 feature.iter().map(|(b, y, a)| (*b, to_runs(y, *b), to_runs(a, *b))).collect();
             to_allocvec(&remapped).unwrap()
         })
