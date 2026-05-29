@@ -139,21 +139,16 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
 
         use crate::data::caniuse::{compression::decompress_deflate, region::RegionData};
 
-        static KEYS_COMPRESSED: &[u8] = include_bytes!("caniuse_region_keys.bin.deflate");
-        static KEYS_DATA: OnceLock<Vec<u8>> = OnceLock::new();
-        static KEYS: OnceLock<Vec<&'static str>> = OnceLock::new();
+        static KEYS: OnceLock<Vec<String>> = OnceLock::new();
         const PAIR_RANGES: &[u32] = &[#(#pair_ranges,)*];
         const PERCENT_RANGES: &[u32] = &[#(#percent_ranges,)*];
 
-        fn keys() -> &'static [&'static str] {
-            KEYS.get_or_init(|| {
-                let data = KEYS_DATA.get_or_init(|| decompress_deflate(KEYS_COMPRESSED));
-                postcard::from_bytes(data).unwrap()
-            })
-        }
-
         pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
-            let index = keys().binary_search(&region).ok()?;
+            let keys = KEYS.get_or_init(|| {
+                postcard::from_bytes(&decompress_deflate(include_bytes!("caniuse_region_keys.bin.deflate")))
+                    .unwrap()
+            });
+            let index = keys.binary_search_by(|key| key.as_str().cmp(region)).ok()?;
             Some(RegionData::new(
                 PAIR_RANGES[index],
                 PAIR_RANGES[index + 1],

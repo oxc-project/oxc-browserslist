@@ -9,9 +9,9 @@ use crate::utils::{generate_file, root};
 pub fn build_electron_to_chromium() -> Result<()> {
     let data_path = root().join("node_modules/electron-to-chromium/versions.json");
 
-    // Pack the Chromium version strings into one deduplicated pool referenced by a u32 that
-    // bitpacks `offset << 8 | len`, instead of an inline `&[(_, &str)]` whose every `&str`
-    // would cost 16 bytes plus a load-time relocation entry in the binary.
+    // Concatenate the (deduplicated) Chromium version strings into one pool referenced by a u32
+    // bitpacking `offset << 8 | len`, instead of an inline `&[(_, &str)]` whose every `&str`
+    // costs 16 bytes plus a load-time relocation entry in the binary.
     let mut pool = String::new();
     let mut seen: HashMap<String, u32> = HashMap::new();
     let data = serde_json::from_slice::<IndexMap<String, String>>(&fs::read(data_path)?)?

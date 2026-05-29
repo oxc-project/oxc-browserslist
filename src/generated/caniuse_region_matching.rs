@@ -1,8 +1,6 @@
 use crate::data::caniuse::{compression::decompress_deflate, region::RegionData};
 use std::sync::OnceLock;
-static KEYS_COMPRESSED: &[u8] = include_bytes!("caniuse_region_keys.bin.deflate");
-static KEYS_DATA: OnceLock<Vec<u8>> = OnceLock::new();
-static KEYS: OnceLock<Vec<&'static str>> = OnceLock::new();
+static KEYS: OnceLock<Vec<String>> = OnceLock::new();
 const PAIR_RANGES: &[u32] = &[
     0u32, 244u32, 566u32, 957u32, 1189u32, 1395u32, 1719u32, 2024u32, 2428u32, 2725u32, 2889u32,
     3296u32, 3654u32, 3879u32, 4071u32, 4367u32, 4682u32, 4959u32, 5277u32, 5645u32, 5988u32,
@@ -61,14 +59,12 @@ const PERCENT_RANGES: &[u32] = &[
     61645u32, 61919u32, 62222u32, 62503u32, 62661u32, 62967u32, 63283u32, 63601u32, 63888u32,
     64148u32, 64470u32,
 ];
-fn keys() -> &'static [&'static str] {
-    KEYS.get_or_init(|| {
-        let data = KEYS_DATA.get_or_init(|| decompress_deflate(KEYS_COMPRESSED));
-        postcard::from_bytes(data).unwrap()
-    })
-}
 pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
-    let index = keys().binary_search(&region).ok()?;
+    let keys = KEYS.get_or_init(|| {
+        postcard::from_bytes(&decompress_deflate(include_bytes!("caniuse_region_keys.bin.deflate")))
+            .unwrap()
+    });
+    let index = keys.binary_search_by(|key| key.as_str().cmp(region)).ok()?;
     Some(RegionData::new(
         PAIR_RANGES[index],
         PAIR_RANGES[index + 1],

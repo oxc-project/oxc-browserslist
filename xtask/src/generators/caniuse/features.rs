@@ -87,20 +87,15 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
 
         use crate::data::caniuse::{compression::decompress_deflate, features::Feature};
 
-        static KEYS_COMPRESSED: &[u8] = include_bytes!("caniuse_feature_keys.bin.deflate");
-        static KEYS_DATA: OnceLock<Vec<u8>> = OnceLock::new();
-        static KEYS: OnceLock<Vec<&'static str>> = OnceLock::new();
+        static KEYS: OnceLock<Vec<String>> = OnceLock::new();
         static RANGES: &[u32] = &[#(#data_range),*];
 
-        fn keys() -> &'static [&'static str] {
-            KEYS.get_or_init(|| {
-                let data = KEYS_DATA.get_or_init(|| decompress_deflate(KEYS_COMPRESSED));
-                postcard::from_bytes(data).unwrap()
-            })
-        }
-
         pub fn get_feature_stat(name: &str) -> Option<Feature> {
-            match keys().binary_search(&name) {
+            let keys = KEYS.get_or_init(|| {
+                postcard::from_bytes(&decompress_deflate(include_bytes!("caniuse_feature_keys.bin.deflate")))
+                    .unwrap()
+            });
+            match keys.binary_search_by(|key| key.as_str().cmp(name)) {
                 Ok(idx) => {
                     let start = RANGES[idx];
                     let end = RANGES[idx + 1];

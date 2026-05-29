@@ -21,22 +21,20 @@ pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
         .collect::<Vec<(u8, String, f32)>>();
     global_usage.sort_unstable_by(|(_, _, a), (_, _, b)| b.partial_cmp(a).unwrap());
 
-    // Pack the version strings into one deduplicated pool and reference each by a u32 that
-    // bitpacks `offset << 8 | len`. This keeps the table free of `&str` fat pointers, which
-    // would otherwise each cost 16 bytes plus a load-time relocation entry in the binary.
+    // Concatenate the (deduplicated) version strings into one pool and reference each by a u32
+    // bitpacking `offset << 8 | len`. This keeps the table free of `&str` fat pointers, which
+    // each cost 16 bytes plus a load-time relocation entry in the binary.
     let mut pool = String::new();
     let mut seen: HashMap<String, u32> = HashMap::new();
     let entries = global_usage
         .iter()
-        .map(|(browser, version, usage)| {
+        .map(|&(browser, ref version, usage)| {
             let packed = *seen.entry(version.clone()).or_insert_with(|| {
                 let offset = pool.len();
                 assert!(version.len() < 256 && offset < (1 << 24), "version pool overflow");
                 pool.push_str(version);
                 ((offset as u32) << 8) | version.len() as u32
             });
-            let browser = *browser;
-            let usage = *usage;
             quote! { (#browser, #packed, #usage) }
         })
         .collect::<Vec<_>>();

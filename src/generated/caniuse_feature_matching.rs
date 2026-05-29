@@ -1,8 +1,6 @@
 use crate::data::caniuse::{compression::decompress_deflate, features::Feature};
 use std::sync::OnceLock;
-static KEYS_COMPRESSED: &[u8] = include_bytes!("caniuse_feature_keys.bin.deflate");
-static KEYS_DATA: OnceLock<Vec<u8>> = OnceLock::new();
-static KEYS: OnceLock<Vec<&'static str>> = OnceLock::new();
+static KEYS: OnceLock<Vec<String>> = OnceLock::new();
 static RANGES: &[u32] = &[
     0u32, 979u32, 1627u32, 1702u32, 2059u32, 3121u32, 3400u32, 3498u32, 4318u32, 5149u32, 5983u32,
     6604u32, 7383u32, 8207u32, 8988u32, 9612u32, 10325u32, 11378u32, 12427u32, 13359u32, 13507u32,
@@ -76,14 +74,14 @@ static RANGES: &[u32] = &[
     414337u32, 415165u32, 416181u32, 417006u32, 418027u32, 419088u32, 420145u32, 421123u32,
     422137u32, 423199u32, 423209u32, 424273u32, 424433u32,
 ];
-fn keys() -> &'static [&'static str] {
-    KEYS.get_or_init(|| {
-        let data = KEYS_DATA.get_or_init(|| decompress_deflate(KEYS_COMPRESSED));
-        postcard::from_bytes(data).unwrap()
-    })
-}
 pub fn get_feature_stat(name: &str) -> Option<Feature> {
-    match keys().binary_search(&name) {
+    let keys = KEYS.get_or_init(|| {
+        postcard::from_bytes(&decompress_deflate(include_bytes!(
+            "caniuse_feature_keys.bin.deflate"
+        )))
+        .unwrap()
+    });
+    match keys.binary_search_by(|key| key.as_str().cmp(name)) {
         Ok(idx) => {
             let start = RANGES[idx];
             let end = RANGES[idx + 1];
