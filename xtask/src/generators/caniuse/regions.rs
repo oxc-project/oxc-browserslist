@@ -143,21 +143,16 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     save_bin_compressed("caniuse_region_percentages.bin", &percent_bytes);
 
     let output = quote! {
-        use std::sync::OnceLock;
+        use crate::data::caniuse::{compression::LazyData, region::RegionData};
 
-        use crate::data::caniuse::{compression::decompress_deflate, region::RegionData};
-
-        static KEYS: OnceLock<Vec<String>> = OnceLock::new();
+        static KEYS: LazyData<Vec<String>> =
+            LazyData::new(include_bytes!("caniuse_region_keys.bin.deflate"));
         // One element offset per region into both the pair-index and percentage byte planes
         // (the two share the same per-region datum count, so a single range table serves both).
         const RANGES: &[u32] = &[#(#pair_ranges,)*];
 
         pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
-            let keys = KEYS.get_or_init(|| {
-                postcard::from_bytes(&decompress_deflate(include_bytes!("caniuse_region_keys.bin.deflate")))
-                    .unwrap()
-            });
-            let index = keys.binary_search_by(|key| key.as_str().cmp(region)).ok()?;
+            let index = KEYS.get().binary_search_by(|key| key.as_str().cmp(region)).ok()?;
             Some(RegionData::new(RANGES[index], RANGES[index + 1]))
         }
     };

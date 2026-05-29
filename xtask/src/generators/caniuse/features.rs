@@ -140,19 +140,14 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     let data_range = create_range_vec(&data);
 
     let output = quote! {
-        use std::sync::OnceLock;
+        use crate::data::caniuse::{compression::LazyData, features::Feature};
 
-        use crate::data::caniuse::{compression::decompress_deflate, features::Feature};
-
-        static KEYS: OnceLock<Vec<String>> = OnceLock::new();
+        static KEYS: LazyData<Vec<String>> =
+            LazyData::new(include_bytes!("caniuse_feature_keys.bin.deflate"));
         static RANGES: &[u32] = &[#(#data_range),*];
 
         pub fn get_feature_stat(name: &str) -> Option<Feature> {
-            let keys = KEYS.get_or_init(|| {
-                postcard::from_bytes(&decompress_deflate(include_bytes!("caniuse_feature_keys.bin.deflate")))
-                    .unwrap()
-            });
-            match keys.binary_search_by(|key| key.as_str().cmp(name)) {
+            match KEYS.get().binary_search_by(|key| key.as_str().cmp(name)) {
                 Ok(idx) => {
                     let start = RANGES[idx];
                     let end = RANGES[idx + 1];

@@ -45,10 +45,9 @@ pub use crate::generated::caniuse_global_usage::{CANIUSE_GLOBAL_USAGE, GLOBAL_US
 pub fn caniuse_browsers() -> &'static CaniuseData {
     static CANIUSE_BROWSERS: OnceLock<CaniuseData> = OnceLock::new();
     CANIUSE_BROWSERS.get_or_init(|| {
-        const COMPRESSED: &[u8] = include_bytes!("../generated/caniuse_browsers.bin.deflate");
-        let decompressed = compression::decompress_deflate(COMPRESSED);
         type BrowserData = Vec<(String, String, Vec<(String, f32, Option<i64>)>)>;
-        let data: BrowserData = postcard::from_bytes(&decompressed).unwrap();
+        let data: BrowserData =
+            compression::load(include_bytes!("../generated/caniuse_browsers.bin.deflate"));
         data.into_iter()
             .map(|(_key, name, version_list)| {
                 let name_cow = Cow::Owned(name.clone());

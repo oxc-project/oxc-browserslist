@@ -1,6 +1,6 @@
-use crate::data::caniuse::{compression::decompress_deflate, region::RegionData};
-use std::sync::OnceLock;
-static KEYS: OnceLock<Vec<String>> = OnceLock::new();
+use crate::data::caniuse::{compression::LazyData, region::RegionData};
+static KEYS: LazyData<Vec<String>> =
+    LazyData::new(include_bytes!("caniuse_region_keys.bin.deflate"));
 const RANGES: &[u32] = &[
     0u32, 174u32, 396u32, 651u32, 821u32, 970u32, 1193u32, 1404u32, 1665u32, 1874u32, 1994u32,
     2259u32, 2498u32, 2661u32, 2802u32, 3009u32, 3227u32, 3418u32, 3635u32, 3880u32, 4103u32,
@@ -31,10 +31,6 @@ const RANGES: &[u32] = &[
     47345u32,
 ];
 pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
-    let keys = KEYS.get_or_init(|| {
-        postcard::from_bytes(&decompress_deflate(include_bytes!("caniuse_region_keys.bin.deflate")))
-            .unwrap()
-    });
-    let index = keys.binary_search_by(|key| key.as_str().cmp(region)).ok()?;
+    let index = KEYS.get().binary_search_by(|key| key.as_str().cmp(region)).ok()?;
     Some(RegionData::new(RANGES[index], RANGES[index + 1]))
 }
