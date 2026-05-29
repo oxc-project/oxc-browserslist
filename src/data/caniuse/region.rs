@@ -1,9 +1,6 @@
 use std::sync::OnceLock;
 
-use super::{
-    BrowserName,
-    compression::{decode, decompress_deflate},
-};
+use super::{BrowserName, compression::decompress_deflate};
 
 use crate::data::decode_browser_name;
 pub use crate::generated::caniuse_region_matching::get_usage_by_region;
@@ -15,10 +12,10 @@ static PERCENTAGES: OnceLock<Vec<u8>> = OnceLock::new();
 static PAIR_TABLE: OnceLock<(Vec<u8>, Vec<String>)> = OnceLock::new();
 
 pub struct RegionData {
-    pair_indices_start: u32,
-    pair_indices_end: u32,
-    percentages_start: u32,
-    percentages_end: u32,
+    /// Element offsets shared by the pair-index and percentage byte planes (both have one slot
+    /// per datum in the same per-region order).
+    start: u32,
+    end: u32,
 }
 
 fn pair_table() -> &'static (Vec<u8>, Vec<String>) {
@@ -37,17 +34,13 @@ fn pair_table() -> &'static (Vec<u8>, Vec<String>) {
 }
 
 impl RegionData {
-    pub fn new(
-        pair_indices_start: u32,
-        pair_indices_end: u32,
-        percentages_start: u32,
-        percentages_end: u32,
-    ) -> Self {
-        Self { pair_indices_start, pair_indices_end, percentages_start, percentages_end }
+    pub fn new(start: u32, end: u32) -> Self {
+        Self { start, end }
     }
 
     pub fn iter(&self) -> impl Iterator<Item = (BrowserName, &'static str, f32)> {
         let (pair_browsers, pair_versions) = pair_table();
+        let (start, end) = (self.start as usize, self.end as usize);
 
         // The blob is two byte planes — every low byte, then every high byte — so its length is
         // twice the datum count; split there and recombine `lo | hi << 8`. The range bounds
@@ -57,19 +50,28 @@ impl RegionData {
                 "../../generated/caniuse_region_pair_indices.bin.deflate"
             ))
         });
-        let count = pair_data.len() / 2;
-        let (pair_lo, pair_hi) = pair_data.split_at(count);
-        let pair_indices = (self.pair_indices_start as usize..self.pair_indices_end as usize)
-            .map(move |i| (pair_lo[i] as usize) | ((pair_hi[i] as usize) << 8));
+        let pair_count = pair_data.len() / 2;
+        let (pair_lo, pair_hi) = pair_data.split_at(pair_count);
+        let pair_indices =
+            (start..end).map(move |i| (pair_lo[i] as usize) | ((pair_hi[i] as usize) << 8));
 
+        // The percentages are stored the same way as the pair indices — fixed-width byte planes
+        // addressed by the same element offsets — but split three ways (low, middle, high) to hold
+        // the per-datum deltas. Recombine each delta, then undo the delta in place (the values are
+        // a non-increasing sequence stored as `prev - curr`).
         let percentages_data = PERCENTAGES.get_or_init(|| {
             decompress_deflate(include_bytes!(
                 "../../generated/caniuse_region_percentages.bin.deflate"
             ))
         });
-        // Stored delta-encoded (non-increasing sequence as `prev - curr`); undo it in place.
-        let mut percentages =
-            decode::<u32>(percentages_data, self.percentages_start, self.percentages_end);
+        let pct_count = percentages_data.len() / 3;
+        let (pct_lo, rest) = percentages_data.split_at(pct_count);
+        let (pct_mid, pct_hi) = rest.split_at(pct_count);
+        let mut percentages = (start..end)
+            .map(|i| {
+                u32::from(pct_lo[i]) | (u32::from(pct_mid[i]) << 8) | (u32::from(pct_hi[i]) << 16)
+            })
+            .collect::<Vec<_>>();
         for i in 1..percentages.len() {
             percentages[i] = percentages[i - 1] - percentages[i];
         }
