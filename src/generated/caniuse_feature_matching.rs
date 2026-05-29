@@ -68,12 +68,6 @@ static RANGES: &[u32] = &[
     44786u32,
 ];
 pub fn get_feature_stat(name: &str) -> Option<Feature> {
-    match KEYS.get().binary_search_by(|key| key.as_str().cmp(name)) {
-        Ok(idx) => {
-            let start = RANGES[idx];
-            let end = RANGES[idx + 1];
-            Some(Feature::new(start, end))
-        }
-        Err(_) => None,
-    }
+    let index = KEYS.get().binary_search_by(|key| key.as_str().cmp(name)).ok()?;
+    Some(Feature::new(RANGES[index], RANGES[index + 1]))
 }
