@@ -15,7 +15,7 @@
     "simple-git-hooks": "^2.13.1"
   },
   "peerDependencies": {
-    "caniuse-db": "1.x",
+    "caniuse-lite": "1.x",
     "electron-to-chromium": "1.x",
     "node-releases": "2.x"
   },
