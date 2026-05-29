@@ -2,10 +2,9 @@ use std::collections::{BTreeSet, HashMap};
 
 use anyhow::Result;
 use postcard::to_allocvec;
-use quote::quote;
 
 use crate::data::{Caniuse, encode_browser_name};
-use crate::utils::{create_range_vec, generate_file, save_bin_compressed};
+use crate::utils::{create_range_vec, generate_keyed_lookup, intern_table, save_bin_compressed};
 
 pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     let mut sorted_data = data.data.clone();
@@ -40,29 +39,19 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         })
         .collect::<Vec<_>>();
 
-    // Store the feature-name lookup keys as a compressed blob rather than an inline
-    // `&[&str]`: the slice would cost 16 bytes of (relocated) fat pointer per entry plus the
-    // raw string bytes, all uncompressed in the binary. The blob is decoded once on first use.
+    // The feature-name lookup keys and the per-feature data are written together at the end by
+    // `generate_keyed_lookup`; collect the (already sorted) keys here.
     let keys = sorted_data.keys().cloned().collect::<Vec<String>>();
-    save_bin_compressed("caniuse_feature_keys.bin", &to_allocvec(&keys).unwrap());
 
     // The `y`/`a` lists hold version strings drawn from a small shared vocabulary that repeats
     // across every feature. Intern them into one lexicographically-sorted table and store u16
     // indices instead. Because the table is sorted, each (already lexicographically-sorted) list
     // becomes a strictly ascending index sequence — compact for deflate and still correctly
     // ordered for the runtime's binary searches.
-    let mut all_versions = BTreeSet::new();
-    for feature in &features {
-        for (_, y, a) in feature {
-            all_versions.extend(y.iter().cloned());
-            all_versions.extend(a.iter().cloned());
-        }
-    }
-    let version_table: Vec<String> = all_versions.into_iter().collect();
-    let version_to_index: HashMap<&str, u16> =
-        version_table.iter().enumerate().map(|(i, v)| (v.as_str(), i as u16)).collect();
-    let table_bytes = to_allocvec(&version_table).unwrap();
-    save_bin_compressed("caniuse_feature_version_table.bin", &table_bytes);
+    let (version_table, version_to_index) = intern_table(
+        "caniuse_feature_version_table.bin",
+        features.iter().flat_map(|f| f.iter().flat_map(|(_, y, a)| y.iter().chain(a).cloned())),
+    );
 
     // A feature's per-browser `y`/`a` list is the set of versions that support it, and browser
     // support is almost always "from version N onward" — so in per-browser version order the list
@@ -138,27 +127,15 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     save_bin_compressed("caniuse_feature_matching.bin", &data_bytes);
 
     let data_range = create_range_vec(&data);
-
-    let output = quote! {
-        use crate::data::caniuse::{compression::LazyData, features::Feature};
-
-        static KEYS: LazyData<Vec<String>> =
-            LazyData::new(include_bytes!("caniuse_feature_keys.bin.deflate"));
-        static RANGES: &[u32] = &[#(#data_range),*];
-
-        pub fn get_feature_stat(name: &str) -> Option<Feature> {
-            match KEYS.get().binary_search_by(|key| key.as_str().cmp(name)) {
-                Ok(idx) => {
-                    let start = RANGES[idx];
-                    let end = RANGES[idx + 1];
-                    Some(Feature::new(start, end))
-                },
-                Err(_) => None,
-            }
-        }
-    };
-
-    generate_file("caniuse_feature_matching.rs", output);
+    generate_keyed_lookup(
+        "caniuse_feature_matching.rs",
+        "caniuse_feature_keys.bin",
+        &keys,
+        &data_range,
+        "features",
+        "Feature",
+        "get_feature_stat",
+    );
 
     Ok(())
 }

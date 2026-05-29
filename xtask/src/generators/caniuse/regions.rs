@@ -1,11 +1,10 @@
-use std::collections::{BTreeSet, HashMap};
+use std::collections::HashMap;
 
 use anyhow::Result;
 use postcard::to_allocvec;
-use quote::quote;
 
 use crate::data::{Caniuse, encode_browser_name};
-use crate::utils::{generate_file, save_bin_compressed};
+use crate::utils::{generate_keyed_lookup, intern_table, save_bin_compressed};
 
 struct RegionDatum {
     browser: u8,
@@ -46,25 +45,15 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
 
     data.sort_unstable_by(|a, b| a.0.cmp(&b.0));
 
-    // Store region-code lookup keys as a compressed blob instead of an inline `&[&str]`
-    // (16-byte fat pointer + raw bytes per entry, uncompressed). Decoded once on first use.
+    // The region-code lookup keys are written together with the per-region data at the end by
+    // `generate_keyed_lookup`; collect the (already sorted) keys here.
     let keys = data.iter().map(|(key, _)| key.clone()).collect::<Vec<String>>();
-    save_bin_compressed("caniuse_region_keys.bin", &to_allocvec(&keys).unwrap());
 
-    // Build version string intern table (deduplicated, sorted)
-    let mut all_versions = BTreeSet::new();
-    for (_, datums) in &data {
-        for datum in datums {
-            all_versions.insert(datum.version.clone());
-        }
-    }
-    let version_table: Vec<String> = all_versions.into_iter().collect();
-    let version_to_index: HashMap<&str, u16> =
-        version_table.iter().enumerate().map(|(i, v)| (v.as_str(), i as u16)).collect();
-
-    // Serialize and compress the string table
-    let table_bytes = to_allocvec(&version_table).unwrap();
-    save_bin_compressed("caniuse_region_version_table.bin", &table_bytes);
+    // Intern the version strings into one deduplicated, sorted table and remap to u16 indices.
+    let (_, version_to_index) = intern_table(
+        "caniuse_region_version_table.bin",
+        data.iter().flat_map(|(_, datums)| datums.iter().map(|datum| datum.version.clone())),
+    );
 
     // Only a few hundred distinct (browser, version) pairs exist, yet they recur ~47k times
     // across all regions. Intern them into one global table and store a single u16 pair-index
@@ -142,21 +131,18 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     percent_bytes.append(&mut percent_hi);
     save_bin_compressed("caniuse_region_percentages.bin", &percent_bytes);
 
-    let output = quote! {
-        use crate::data::caniuse::{compression::LazyData, region::RegionData};
-
-        static KEYS: LazyData<Vec<String>> =
-            LazyData::new(include_bytes!("caniuse_region_keys.bin.deflate"));
-        // One element offset per region into both the pair-index and percentage byte planes
-        // (the two share the same per-region datum count, so a single range table serves both).
-        const RANGES: &[u32] = &[#(#pair_ranges,)*];
-
-        pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
-            let index = KEYS.get().binary_search_by(|key| key.as_str().cmp(region)).ok()?;
-            Some(RegionData::new(RANGES[index], RANGES[index + 1]))
-        }
-    };
-    generate_file("caniuse_region_matching.rs", output);
+    // The generated `RANGES` holds one element offset per region into both the pair-index and
+    // percentage byte planes (the two share the same per-region datum count, so one table serves
+    // both).
+    generate_keyed_lookup(
+        "caniuse_region_matching.rs",
+        "caniuse_region_keys.bin",
+        &keys,
+        &pair_ranges,
+        "region",
+        "RegionData",
+        "get_usage_by_region",
+    );
 
     Ok(())
 }

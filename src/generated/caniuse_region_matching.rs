@@ -1,7 +1,7 @@
 use crate::data::caniuse::{compression::LazyData, region::RegionData};
 static KEYS: LazyData<Vec<String>> =
     LazyData::new(include_bytes!("caniuse_region_keys.bin.deflate"));
-const RANGES: &[u32] = &[
+static RANGES: &[u32] = &[
     0u32, 174u32, 396u32, 651u32, 821u32, 970u32, 1193u32, 1404u32, 1665u32, 1874u32, 1994u32,
     2259u32, 2498u32, 2661u32, 2802u32, 3009u32, 3227u32, 3418u32, 3635u32, 3880u32, 4103u32,
     4341u32, 4553u32, 4775u32, 5009u32, 5122u32, 5327u32, 5523u32, 5742u32, 5891u32, 6095u32,
@@ -30,7 +30,7 @@ const RANGES: &[u32] = &[
     45474u32, 45717u32, 45926u32, 46024u32, 46250u32, 46480u32, 46712u32, 46919u32, 47112u32,
     47345u32,
 ];
-pub fn get_usage_by_region(region: &str) -> Option<RegionData> {
-    let index = KEYS.get().binary_search_by(|key| key.as_str().cmp(region)).ok()?;
+pub fn get_usage_by_region(name: &str) -> Option<RegionData> {
+    let index = KEYS.get().binary_search_by(|key| key.as_str().cmp(name)).ok()?;
     Some(RegionData::new(RANGES[index], RANGES[index + 1]))
 }
