@@ -91,22 +91,28 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     let pair_table_bytes = to_allocvec(&(pair_browsers, pair_versions)).unwrap();
     save_bin_compressed("caniuse_region_pairs.bin", &pair_table_bytes);
 
-    // For each region, store u16 pair indices (replaces the per-region browser + version arrays).
-    let pair_indices = data
-        .iter()
-        .map(|(_, datums)| {
-            let indices: Vec<u16> = datums
-                .iter()
-                .map(|x| {
-                    let vi = version_to_index[x.version.as_str()];
-                    pair_to_index[&(x.browser, vi)]
-                })
-                .collect();
-            to_allocvec(&indices).unwrap()
-        })
-        .collect::<Vec<_>>();
-    let pair_ranges = create_range_vec(&pair_indices);
-    let pair_bytes = pair_indices.iter().flat_map(|x| x.iter()).copied().collect::<Vec<_>>();
+    // For each region, store one u16 pair index per datum. Split the indices into two byte
+    // planes — every low byte first, then every high byte — before deflating. There are only
+    // ~557 distinct pairs, so the high byte is almost always 0; that plane collapses to near
+    // nothing, and isolating it from the high-entropy low byte lets deflate model each stream
+    // far better than the interleaved varint stream did (~3 KB smaller). The ranges are element
+    // offsets (one slot per datum), and the percentage list has the same per-region length.
+    let mut pair_ranges = Vec::with_capacity(data.len() + 1);
+    let mut pair_lo = Vec::new();
+    let mut pair_hi = Vec::new();
+    let mut offset = 0u32;
+    for (_, datums) in &data {
+        pair_ranges.push(offset);
+        offset += datums.len() as u32;
+        for x in datums {
+            let index = pair_to_index[&(x.browser, version_to_index[x.version.as_str()])];
+            pair_lo.push((index & 0xff) as u8);
+            pair_hi.push((index >> 8) as u8);
+        }
+    }
+    pair_ranges.push(offset);
+    let mut pair_bytes = pair_lo;
+    pair_bytes.append(&mut pair_hi);
     save_bin_compressed("caniuse_region_pair_indices.bin", &pair_bytes);
 
     let percentages = data
