@@ -2,7 +2,7 @@ use flate2::read::DeflateDecoder;
 use serde::Deserialize;
 use std::io::Read;
 
-/// Decompress gzip-compressed data
+/// Decompress deflate-compressed data.
 pub fn decompress_deflate(compressed_data: &[u8]) -> Vec<u8> {
     let mut decoder = DeflateDecoder::new(compressed_data);
     let mut decompressed = Vec::new();
