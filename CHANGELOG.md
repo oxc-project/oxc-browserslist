@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.4](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.3...oxc-browserslist-v3.0.4) - 2026-05-29
+
+### Other
+
+- DRY up feature/region codegen with shared table + lookup helpers ([#694](https://github.com/oxc-project/oxc-browserslist/pull/694))
+- Consolidate bundled-data loading behind compression helpers ([#693](https://github.com/oxc-project/oxc-browserslist/pull/693))
+- Reduce binary size: run-length encode feature support versions ([#692](https://github.com/oxc-project/oxc-browserslist/pull/692))
+- Reduce binary size: Zopfli codegen compression + percentage byte-plane ([#691](https://github.com/oxc-project/oxc-browserslist/pull/691))
+- Reduce binary size: byte-plane (stream-split) compression for region pair indices ([#690](https://github.com/oxc-project/oxc-browserslist/pull/690))
+- Update README binary size to 621K ([#689](https://github.com/oxc-project/oxc-browserslist/pull/689))
+- Reduce binary size of bundled caniuse/electron data ([#688](https://github.com/oxc-project/oxc-browserslist/pull/688))
+- Switch codegen data source from caniuse-db to caniuse-lite ([#687](https://github.com/oxc-project/oxc-browserslist/pull/687))
+- Update browserslist ([#685](https://github.com/oxc-project/oxc-browserslist/pull/685))
+- Update rust crates ([#682](https://github.com/oxc-project/oxc-browserslist/pull/682))
+- Update browserslist ([#679](https://github.com/oxc-project/oxc-browserslist/pull/679))
+- Update browserslist ([#678](https://github.com/oxc-project/oxc-browserslist/pull/678))
+- Update browserslist ([#677](https://github.com/oxc-project/oxc-browserslist/pull/677))
+- Update browserslist ([#673](https://github.com/oxc-project/oxc-browserslist/pull/673))
+- Update browserslist ([#671](https://github.com/oxc-project/oxc-browserslist/pull/671))
+
 ## [3.0.3](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.2...oxc-browserslist-v3.0.3) - 2026-05-17
 
 ### Other
