@@ -1,12 +1,17 @@
 use std::sync::OnceLock;
 
-use super::{BrowserName, compression::decompress_deflate};
+use super::{
+    BrowserName,
+    compression::{LazyBlob, load},
+};
 
 use crate::data::decode_browser_name;
 pub use crate::generated::caniuse_region_matching::get_usage_by_region;
 
-static PAIR_INDICES: OnceLock<Vec<u8>> = OnceLock::new();
-static PERCENTAGES: OnceLock<Vec<u8>> = OnceLock::new();
+static PAIR_INDICES: LazyBlob =
+    LazyBlob::new(include_bytes!("../../generated/caniuse_region_pair_indices.bin.deflate"));
+static PERCENTAGES: LazyBlob =
+    LazyBlob::new(include_bytes!("../../generated/caniuse_region_percentages.bin.deflate"));
 /// Global (browser, version) intern table shared by every region: the browser id and resolved
 /// version string at each pair index.
 static PAIR_TABLE: OnceLock<(Vec<u8>, Vec<String>)> = OnceLock::new();
@@ -20,14 +25,10 @@ pub struct RegionData {
 
 fn pair_table() -> &'static (Vec<u8>, Vec<String>) {
     PAIR_TABLE.get_or_init(|| {
-        let pairs =
-            decompress_deflate(include_bytes!("../../generated/caniuse_region_pairs.bin.deflate"));
         let (browsers, version_indices): (Vec<u8>, Vec<u16>) =
-            postcard::from_bytes(&pairs).unwrap();
-        let table: Vec<String> = postcard::from_bytes(&decompress_deflate(include_bytes!(
-            "../../generated/caniuse_region_version_table.bin.deflate"
-        )))
-        .unwrap();
+            load(include_bytes!("../../generated/caniuse_region_pairs.bin.deflate"));
+        let table: Vec<String> =
+            load(include_bytes!("../../generated/caniuse_region_version_table.bin.deflate"));
         let versions = version_indices.into_iter().map(|i| table[i as usize].clone()).collect();
         (browsers, versions)
     })
@@ -45,11 +46,7 @@ impl RegionData {
         // The blob is two byte planes — every low byte, then every high byte — so its length is
         // twice the datum count; split there and recombine `lo | hi << 8`. The range bounds
         // address the planes directly (one slot per datum).
-        let pair_data = PAIR_INDICES.get_or_init(|| {
-            decompress_deflate(include_bytes!(
-                "../../generated/caniuse_region_pair_indices.bin.deflate"
-            ))
-        });
+        let pair_data = PAIR_INDICES.get();
         let pair_count = pair_data.len() / 2;
         let (pair_lo, pair_hi) = pair_data.split_at(pair_count);
         let pair_indices =
@@ -59,11 +56,7 @@ impl RegionData {
         // addressed by the same element offsets — but split three ways (low, middle, high) to hold
         // the per-datum deltas. Recombine each delta, then undo the delta in place (the values are
         // a non-increasing sequence stored as `prev - curr`).
-        let percentages_data = PERCENTAGES.get_or_init(|| {
-            decompress_deflate(include_bytes!(
-                "../../generated/caniuse_region_percentages.bin.deflate"
-            ))
-        });
+        let percentages_data = PERCENTAGES.get();
         let pct_count = percentages_data.len() / 3;
         let (pct_lo, rest) = percentages_data.split_at(pct_count);
         let (pct_mid, pct_hi) = rest.split_at(pct_count);

@@ -1,6 +1,6 @@
-use crate::data::caniuse::{compression::decompress_deflate, features::Feature};
-use std::sync::OnceLock;
-static KEYS: OnceLock<Vec<String>> = OnceLock::new();
+use crate::data::caniuse::{compression::LazyData, features::Feature};
+static KEYS: LazyData<Vec<String>> =
+    LazyData::new(include_bytes!("caniuse_feature_keys.bin.deflate"));
 static RANGES: &[u32] = &[
     0u32, 95u32, 173u32, 194u32, 240u32, 338u32, 360u32, 381u32, 462u32, 541u32, 620u32, 698u32,
     776u32, 855u32, 924u32, 1006u32, 1084u32, 1182u32, 1279u32, 1359u32, 1387u32, 1477u32, 1550u32,
@@ -68,13 +68,7 @@ static RANGES: &[u32] = &[
     44786u32,
 ];
 pub fn get_feature_stat(name: &str) -> Option<Feature> {
-    let keys = KEYS.get_or_init(|| {
-        postcard::from_bytes(&decompress_deflate(include_bytes!(
-            "caniuse_feature_keys.bin.deflate"
-        )))
-        .unwrap()
-    });
-    match keys.binary_search_by(|key| key.as_str().cmp(name)) {
+    match KEYS.get().binary_search_by(|key| key.as_str().cmp(name)) {
         Ok(idx) => {
             let start = RANGES[idx];
             let end = RANGES[idx + 1];

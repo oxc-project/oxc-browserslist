@@ -1,33 +1,19 @@
-use std::sync::OnceLock;
-
-use super::{BrowserName, compression::decompress_deflate};
+use super::{
+    BrowserName,
+    compression::{LazyBlob, LazyData},
+};
 
 use crate::data::decode_browser_name;
 pub use crate::generated::caniuse_feature_matching::get_feature_stat;
 
-static FEATURES: OnceLock<Vec<u8>> = OnceLock::new();
-static VERSION_TABLE: OnceLock<Vec<String>> = OnceLock::new();
+static FEATURES: LazyBlob =
+    LazyBlob::new(include_bytes!("../../generated/caniuse_feature_matching.bin.deflate"));
+static VERSION_TABLE: LazyData<Vec<String>> =
+    LazyData::new(include_bytes!("../../generated/caniuse_feature_version_table.bin.deflate"));
 /// Per-browser version order (browser id -> version-table indices, in version order). Feature
 /// support lists are stored as runs of local indices into this order; see `create_data`.
-static BROWSER_VERSIONS: OnceLock<Vec<Vec<u16>>> = OnceLock::new();
-
-fn version_table() -> &'static [String] {
-    VERSION_TABLE.get_or_init(|| {
-        postcard::from_bytes(&decompress_deflate(include_bytes!(
-            "../../generated/caniuse_feature_version_table.bin.deflate"
-        )))
-        .unwrap()
-    })
-}
-
-fn browser_versions() -> &'static [Vec<u16>] {
-    BROWSER_VERSIONS.get_or_init(|| {
-        postcard::from_bytes(&decompress_deflate(include_bytes!(
-            "../../generated/caniuse_feature_browser_versions.bin.deflate"
-        )))
-        .unwrap()
-    })
-}
+static BROWSER_VERSIONS: LazyData<Vec<Vec<u16>>> =
+    LazyData::new(include_bytes!("../../generated/caniuse_feature_browser_versions.bin.deflate"));
 
 pub struct FeatureSet {
     yes: Vec</* version */ &'static str>,
@@ -56,20 +42,15 @@ impl Feature {
     }
 
     pub fn create_data(&self) -> Vec<(BrowserName, FeatureSet)> {
-        let features_data = FEATURES.get_or_init(|| {
-            decompress_deflate(include_bytes!(
-                "../../generated/caniuse_feature_matching.bin.deflate"
-            ))
-        });
-        let table = version_table();
-        let browser_versions = browser_versions();
+        let table: &'static [String] = VERSION_TABLE.get();
+        let browser_versions = BROWSER_VERSIONS.get();
         // The slice is hand-decoded rather than handed to `postcard::from_bytes`: a generic
         // deserializer for this nested type monomorphizes into several KB of code that would dwarf
         // the data it saves. The layout (postcard-compatible) is, per browser entry: one browser
         // byte, then the `yes` list, then the `partial` list. Each list is a varint run count
         // followed by `(start, length)` varint runs of local indices into the browser's version
         // order.
-        let bytes = &features_data[self.start as usize..self.end as usize];
+        let bytes = &FEATURES.get()[self.start as usize..self.end as usize];
         let mut pos = 0;
         let entry_count = read_varint(bytes, &mut pos);
         let mut data = Vec::with_capacity(entry_count);
