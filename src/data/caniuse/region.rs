@@ -49,12 +49,18 @@ impl RegionData {
     pub fn iter(&self) -> impl Iterator<Item = (BrowserName, &'static str, f32)> {
         let (pair_browsers, pair_versions) = pair_table();
 
+        // The blob is two byte planes — every low byte, then every high byte — so its length is
+        // twice the datum count; split there and recombine `lo | hi << 8`. The range bounds
+        // address the planes directly (one slot per datum).
         let pair_data = PAIR_INDICES.get_or_init(|| {
             decompress_deflate(include_bytes!(
                 "../../generated/caniuse_region_pair_indices.bin.deflate"
             ))
         });
-        let pair_indices = decode::<u16>(pair_data, self.pair_indices_start, self.pair_indices_end);
+        let count = pair_data.len() / 2;
+        let (pair_lo, pair_hi) = pair_data.split_at(count);
+        let pair_indices = (self.pair_indices_start as usize..self.pair_indices_end as usize)
+            .map(move |i| (pair_lo[i] as usize) | ((pair_hi[i] as usize) << 8));
 
         let percentages_data = PERCENTAGES.get_or_init(|| {
             decompress_deflate(include_bytes!(
@@ -68,8 +74,7 @@ impl RegionData {
             percentages[i] = percentages[i - 1] - percentages[i];
         }
 
-        pair_indices.into_iter().zip(percentages).map(move |(pair_index, p)| {
-            let pair_index = pair_index as usize;
+        pair_indices.zip(percentages).map(move |(pair_index, p)| {
             (
                 decode_browser_name(pair_browsers[pair_index]),
                 pair_versions[pair_index].as_str(),
