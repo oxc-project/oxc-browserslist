@@ -11,6 +11,7 @@ workspace = true
 anyhow = { workspace = true }
 flate2 = { workspace = true }
 indexmap = { workspace = true, features = ["serde"] }
+json5 = { workspace = true }
 postcard = { workspace = true }
 prettyplease = { workspace = true }
 proc-macro2 = { workspace = true }

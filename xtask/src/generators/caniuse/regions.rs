@@ -1,19 +1,11 @@
 use std::collections::{BTreeSet, HashMap};
-use std::fs;
 
 use anyhow::Result;
-use indexmap::IndexMap;
 use postcard::to_allocvec;
 use quote::quote;
-use serde::Deserialize;
 
 use crate::data::{Caniuse, encode_browser_name};
-use crate::utils::{create_range_vec, generate_file, root, save_bin_compressed};
-
-#[derive(Deserialize)]
-struct RegionData {
-    data: IndexMap<String, IndexMap<String, Option<f32>>>,
-}
+use crate::utils::{create_range_vec, generate_file, save_bin_compressed};
 
 struct RegionDatum {
     browser: u8,
@@ -23,28 +15,24 @@ struct RegionDatum {
 
 pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     let agents = &data.agents;
-    let files_path = root().join("node_modules/caniuse-db/region-usage-json");
-    let files = fs::read_dir(files_path)?
-        .map(|entry| entry.map_err(anyhow::Error::from))
-        .collect::<Result<Vec<_>>>()?;
 
-    let mut data = files
+    let mut data = data
+        .regions
         .iter()
-        .map(|file| {
-            let RegionData { data } =
-                serde_json::from_slice(&fs::read(file.path()).unwrap()).unwrap();
-            let mut usage = data
-                .into_iter()
+        .map(|(key, region)| {
+            let mut usage = region
+                .data
+                .iter()
                 .flat_map(|(name, stat)| {
-                    let agent = agents.get(&name).unwrap();
-                    stat.into_iter().filter_map(move |(version, usage)| {
-                        let version = if version.as_str() == "0" {
+                    let agent = agents.get(name).unwrap();
+                    stat.iter().filter_map(move |(version, usage)| {
+                        let version = if version == "0" {
                             agent.version_list.last().unwrap().version.clone()
                         } else {
-                            version
+                            version.clone()
                         };
                         usage.map(|usage| RegionDatum {
-                            browser: encode_browser_name(&name),
+                            browser: encode_browser_name(name),
                             version,
                             usage,
                         })
@@ -52,8 +40,7 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
                 })
                 .collect::<Vec<_>>();
             usage.sort_unstable_by(|a, b| b.usage.partial_cmp(&a.usage).unwrap());
-            let key = file.path().file_stem().unwrap().to_str().map(|s| s.to_owned()).unwrap();
-            (key, usage)
+            (key.clone(), usage)
         })
         .collect::<Vec<_>>();
 
