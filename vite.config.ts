@@ -7,6 +7,6 @@ export default defineConfig({
     options: { typeAware: true, typeCheck: true },
   },
   fmt: {
-    ignorePatterns: ["CHANGELOG.md", "pnpm-lock.yaml"],
+    ignorePatterns: ["CHANGELOG.md", "pnpm-lock.yaml", "pnpm-workspace.yaml"],
   },
 });
