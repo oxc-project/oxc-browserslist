@@ -13,5 +13,3 @@ peerDependencyRules:
   allowedVersions:
     vite: "*"
     vitest: "*"
-allowBuilds:
-  simple-git-hooks: true

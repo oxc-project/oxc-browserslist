@@ -9,4 +9,8 @@ export default defineConfig({
   fmt: {
     ignorePatterns: ["CHANGELOG.md", "pnpm-lock.yaml", "pnpm-workspace.yaml"],
   },
+  staged: {
+    "pnpm-lock.yaml": "cargo codegen",
+    "*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,json,jsonc,md,yml,toml}": "vp fmt",
+  },
 });

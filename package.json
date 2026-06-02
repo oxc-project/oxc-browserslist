@@ -4,27 +4,19 @@
   "license": "MIT",
   "scripts": {
     "browserslist": "browserslist",
-    "fmt": "vp fmt"
+    "fmt": "vp fmt",
+    "prepare": "vp config"
   },
   "dependencies": {
     "browserslist": "4.28.2"
   },
   "devDependencies": {
-    "lint-staged": "^17.0.0",
-    "simple-git-hooks": "^2.13.1",
     "vite-plus": "catalog:"
   },
   "peerDependencies": {
     "caniuse-lite": "1.x",
     "electron-to-chromium": "1.x",
     "node-releases": "2.x"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
-  },
-  "lint-staged": {
-    "pnpm-lock.yaml": "cargo codegen",
-    "*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,json,jsonc,md,yml,toml}": "vp fmt"
   },
   "packageManager": "pnpm@11.4.0"
 }
