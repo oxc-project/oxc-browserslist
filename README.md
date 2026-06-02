@@ -64,7 +64,7 @@ Property-based tests generate random queries and compare results with the npm br
 
 ```sh
 # Install npm browserslist first
-pnpm install
+vp install
 
 # Run property-based tests
 cargo test --test proptest
