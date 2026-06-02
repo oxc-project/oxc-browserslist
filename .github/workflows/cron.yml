@@ -19,9 +19,11 @@ jobs:
           save-cache: true
           components: rustfmt # for `cargo codegen`
 
-      - uses: oxc-project/setup-node@ab97f03642370d79a7e96dd286bd02a1be40e0ba # v1.3.0
+      - uses: voidzero-dev/setup-vp@2dec1e33f4ab2c6d5bce1b0c4607961bb1a3f7a1 # v1.12.0
+        with:
+          cache: true
 
-      - run: pnpm update --prod
+      - run: vp update --prod
 
       - run: cargo codegen
 

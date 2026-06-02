@@ -11,7 +11,7 @@ init:
 ready:
   git diff --exit-code --quiet
   typos
-  pnpm install
+  vp install
   cargo codegen
   just fmt
   cargo check
@@ -21,7 +21,7 @@ ready:
 fmt:
   -cargo shear --fix # remove all unused dependencies
   cargo fmt
-  node --run fmt
+  vp fmt
 
 lint:
   cargo clippy --all-targets --all-features -- -D warnings

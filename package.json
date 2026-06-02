@@ -4,15 +4,15 @@
   "license": "MIT",
   "scripts": {
     "browserslist": "browserslist",
-    "fmt": "oxfmt"
+    "fmt": "vp fmt"
   },
   "dependencies": {
     "browserslist": "4.28.2"
   },
   "devDependencies": {
     "lint-staged": "^17.0.0",
-    "oxfmt": "^0.52.0",
-    "simple-git-hooks": "^2.13.1"
+    "simple-git-hooks": "^2.13.1",
+    "vite-plus": "catalog:"
   },
   "peerDependencies": {
     "caniuse-lite": "1.x",
@@ -24,7 +24,7 @@
   },
   "lint-staged": {
     "pnpm-lock.yaml": "cargo codegen",
-    "*": "oxfmt --no-error-on-unmatched-pattern"
+    "*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,json,jsonc,md,yml,toml}": "vp fmt"
   },
   "packageManager": "pnpm@11.4.0"
 }

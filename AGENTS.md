@@ -49,7 +49,7 @@ The project uses several tools for development:
 
 - **Rust**: Latest stable (MSRV: 1.86.0)
 - **Node.js**: Version specified in `.node-version`
-- **pnpm**: Package manager for Node.js dependencies
+- **Vite+ (`vp`)**: Manages Node.js, dependencies, and formatting (`vp install`, `vp fmt`)
 - **just**: Command runner (alternative to make)
 
 ### Build and Development

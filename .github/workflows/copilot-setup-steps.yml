@@ -35,7 +35,9 @@ jobs:
           tools: just,watchexec-cli,typos-cli,cargo-shear
           components: clippy rust-docs rustfmt
 
-      - uses: oxc-project/setup-node@ab97f03642370d79a7e96dd286bd02a1be40e0ba # v1.3.0
+      - uses: voidzero-dev/setup-vp@2dec1e33f4ab2c6d5bce1b0c4607961bb1a3f7a1 # v1.12.0
+        with:
+          cache: true
 
       - name: Verify installations
         run: |
@@ -43,9 +45,9 @@ jobs:
           rustc --version
           cargo --version
 
-          echo "=== Node.js and pnpm ==="
+          echo "=== Node.js and Vite+ ==="
           node --version
-          pnpm --version
+          vp --version
 
           echo "=== Command runner ==="
           just --version
@@ -63,8 +65,7 @@ jobs:
           echo "🎉 Development environment setup complete!"
           echo "The following tools are now available:"
           echo "  - Rust toolchain (version from rust-toolchain.toml)"
-          echo "  - Node.js and pnpm (versions from .node-version and"
-          echo "    package.json)"
+          echo "  - Node.js and Vite+ (vp)"
           echo "  - just command runner"
           echo "  - Development tools: watchexec, typos, cargo-shear, dprint"
           echo "  - All Node.js dependencies installed"
