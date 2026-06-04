@@ -26,4 +26,5 @@ pub static RELEASE_SCHEDULE: &[(Version, i32, i32)] = &[
     (Version(24u16, 0u16, 0u16), 2460802i32, 2461892i32),
     (Version(25u16, 0u16, 0u16), 2460964i32, 2461193i32),
     (Version(26u16, 0u16, 0u16), 2461166i32, 2462257i32),
+    (Version(27u16, 0u16, 0u16), 2461518i32, 2462622i32),
 ];
