@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.5](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.4...oxc-browserslist-v3.0.5) - 2026-06-14
+
+### Other
+
+- Update browserslist ([#716](https://github.com/oxc-project/oxc-browserslist/pull/716))
+- Update browserslist ([#714](https://github.com/oxc-project/oxc-browserslist/pull/714))
+- Update browserslist ([#713](https://github.com/oxc-project/oxc-browserslist/pull/713))
+- Update browserslist ([#706](https://github.com/oxc-project/oxc-browserslist/pull/706))
+- migrate to Vite+ (vp) ([#704](https://github.com/oxc-project/oxc-browserslist/pull/704))
+- Update Rust crate json5 to v1 ([#699](https://github.com/oxc-project/oxc-browserslist/pull/699))
+
 ## [3.0.4](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.3...oxc-browserslist-v3.0.4) - 2026-05-29
 
 ### Other
