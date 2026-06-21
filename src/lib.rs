@@ -136,19 +136,24 @@ fn apply_query_operation(
     }
 }
 
-// Optimized sorting that parses versions only once
+// Sort by (name ascending, version descending), then dedup.
+//
+// Each version is parsed exactly once (decorating each distrib with its parsed
+// `Copy` version), then the name is compared as borrowed `&str`. This keeps the
+// original "parse once" property while removing its `to_string()` sort key, which
+// allocated one `String` per distrib on every call.
 fn sort_and_dedup_distribs(distribs: &mut Vec<Distrib>) {
-    if distribs.is_empty() {
-        return;
+    if distribs.len() < 2 {
+        return; // 0 or 1 element is already sorted and unique
     }
 
-    // Use sort_by_cached_key to parse each version only once
-    distribs.sort_by_cached_key(|d| {
-        let version = d.version().parse::<semver::Version>().unwrap_or_default();
-        (d.name().to_string(), std::cmp::Reverse(version))
-    });
+    let mut keyed: Vec<(semver::Version, Distrib)> = std::mem::take(distribs)
+        .into_iter()
+        .map(|d| (d.version().parse::<semver::Version>().unwrap_or_default(), d))
+        .collect();
+    keyed.sort_by(|(va, a), (vb, b)| a.name().cmp(b.name()).then_with(|| vb.cmp(va)));
+    distribs.extend(keyed.into_iter().map(|(_, d)| d));
 
-    // Dedup in place
     distribs.dedup();
 }
 
