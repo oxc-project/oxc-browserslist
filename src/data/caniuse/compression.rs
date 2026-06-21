@@ -1,15 +1,10 @@
-use std::io::Read;
 use std::sync::OnceLock;
 
-use flate2::read::DeflateDecoder;
 use serde::de::DeserializeOwned;
 
-/// Decompress deflate-compressed data.
+/// Decompress raw-deflate-compressed data.
 pub fn decompress_deflate(compressed_data: &[u8]) -> Vec<u8> {
-    let mut decoder = DeflateDecoder::new(compressed_data);
-    let mut decompressed = Vec::new();
-    decoder.read_to_end(&mut decompressed).expect("Failed to decompress data");
-    decompressed
+    miniz_oxide::inflate::decompress_to_vec(compressed_data).expect("Failed to decompress data")
 }
 
 /// Decompress a bundled blob and postcard-deserialize it in one step. Used directly by the few
