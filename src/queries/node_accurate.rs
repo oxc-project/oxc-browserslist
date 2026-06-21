@@ -17,7 +17,7 @@ pub(super) fn node_accurate(version_str: &str, opts: &Opts) -> QueryResult {
     let distribs = NODE_VERSIONS()
         .iter()
         .rev()
-        .find(|v| {
+        .find(|(v, _)| {
             if let Some(major) = major {
                 let major_eq = major == v.0;
                 if let Some(minor) = minor {
@@ -31,7 +31,7 @@ pub(super) fn node_accurate(version_str: &str, opts: &Opts) -> QueryResult {
             }
             false
         })
-        .map(|version| vec![Distrib::new("node", version.to_string())]);
+        .map(|(_, text)| vec![Distrib::new("node", text.as_ref())]);
     if opts.ignore_unknown_versions {
         Ok(distribs.unwrap_or_default())
     } else {

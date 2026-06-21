@@ -8,8 +8,8 @@ pub(super) fn node_unbounded_range(comparator: Comparator, version: &str) -> Que
         Version::from_str(version).map_err(|_| Error::UnknownNodejsVersion(version.to_string()))?;
     let distribs = NODE_VERSIONS()
         .iter()
-        .filter(|v| {
-            let ord = (*v).cmp(&version);
+        .filter(|(v, _)| {
+            let ord = v.cmp(&version);
             match comparator {
                 Comparator::Greater => matches!(ord, Ordering::Greater),
                 Comparator::Less => matches!(ord, Ordering::Less),
@@ -17,7 +17,7 @@ pub(super) fn node_unbounded_range(comparator: Comparator, version: &str) -> Que
                 Comparator::LessOrEqual => matches!(ord, Ordering::Less | Ordering::Equal),
             }
         })
-        .map(|version| Distrib::new("node", version.to_string()))
+        .map(|(_, text)| Distrib::new("node", text.as_ref()))
         .collect();
     Ok(distribs)
 }

@@ -6,7 +6,7 @@ pub(super) fn last_n_node(count: usize) -> QueryResult {
         .iter()
         .rev()
         .take(count)
-        .map(|version| Distrib::new("node", version.to_string()))
+        .map(|(_, text)| Distrib::new("node", text.as_ref()))
         .collect();
     Ok(distribs)
 }
