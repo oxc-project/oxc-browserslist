@@ -10,8 +10,8 @@ use super::paths::root;
 pub fn save_bin_compressed(file: &str, bytes: &[u8]) {
     // Compress with Zopfli, a (deliberately slow, build-time-only) deflate-compatible encoder that
     // squeezes a few percent more out of every blob than a normal deflate encoder. The output is a
-    // standard raw-deflate stream, so the runtime decoder (`flate2::read::DeflateDecoder`) reads it
-    // unchanged and no consumer-facing dependency changes.
+    // standard raw-deflate stream, so the runtime decoder (`miniz_oxide::inflate::decompress_to_vec`)
+    // reads it unchanged and no consumer-facing dependency changes.
     let mut compressed = Vec::new();
     zopfli::compress(Options::default(), Format::Deflate, bytes, &mut compressed).unwrap();
     let file = format!("{}.deflate", file);
