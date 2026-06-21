@@ -1,2 +1,6 @@
 [files]
 extend-exclude = ["src/generated"]
+
+[default.extend-identifiers]
+# `flate2` is a crate name (referenced in CHANGELOG), not a typo of "flat"
+flate2 = "flate2"
