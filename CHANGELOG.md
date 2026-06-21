@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.7](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.6...oxc-browserslist-v3.0.7) - 2026-06-21
+
+### Other
+
+- use ASCII case conversion for region codes to drop Unicode tables ([#730](https://github.com/oxc-project/oxc-browserslist/pull/730))
+- cache formatted node version strings to avoid per-result allocation ([#729](https://github.com/oxc-project/oxc-browserslist/pull/729))
+- decode bundled data with miniz_oxide directly, drop flate2 ([#728](https://github.com/oxc-project/oxc-browserslist/pull/728))
+- avoid per-distrib String allocation when sorting resolve results ([#726](https://github.com/oxc-project/oxc-browserslist/pull/726))
+
 ## [3.0.6](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.5...oxc-browserslist-v3.0.6) - 2026-06-21
 
 ### Other
