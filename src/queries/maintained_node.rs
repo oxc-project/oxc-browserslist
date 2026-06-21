@@ -9,9 +9,9 @@ pub(super) fn maintained_node() -> QueryResult {
         .iter()
         .filter(|(_, start, end)| *start < now && now < *end)
         .filter_map(|(version, _, _)| {
-            NODE_VERSIONS().iter().rfind(|v| v.major() == version.major())
+            NODE_VERSIONS().iter().rfind(|(v, _)| v.major() == version.major())
         })
-        .map(|version| Distrib::new("node", version.to_string()))
+        .map(|(_, text)| Distrib::new("node", text.as_ref()))
         .collect();
     Ok(versions)
 }
