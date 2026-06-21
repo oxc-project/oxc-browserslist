@@ -60,7 +60,6 @@ name = "resolve"
 harness = false
 
 [dependencies]
-miniz_oxide = { workspace = true }
 postcard = { workspace = true }
 rustc-hash = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
@@ -68,6 +67,7 @@ thiserror = { workspace = true }
 
 [dev-dependencies]
 criterion2 = { workspace = true }
+miniz_oxide = { workspace = true }
 pico-args = { workspace = true }
 proptest = { workspace = true }
 test-case = { workspace = true }
