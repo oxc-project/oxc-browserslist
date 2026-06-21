@@ -32,7 +32,7 @@ cargo = { level = "warn", priority = -1 }
 [workspace.dependencies]
 anyhow = "1"
 criterion2 = { version = "3", default-features = false }
-miniz_oxide = "0.8"
+miniz_oxide = "0.9"
 indexmap = "2"
 json5 = "1.0"
 pico-args = "0.5.0"
