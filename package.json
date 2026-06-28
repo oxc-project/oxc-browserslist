@@ -8,7 +8,7 @@
     "prepare": "vp config"
   },
   "dependencies": {
-    "browserslist": "4.28.2"
+    "browserslist": "4.28.4"
   },
   "devDependencies": {
     "vite-plus": "catalog:"
