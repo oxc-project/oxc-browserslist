@@ -1,2 +1,6 @@
 [files]
 extend-exclude = ["src/generated"]
+
+[default.extend-words]
+# the crate name `flate2` in CHANGELOG.md; typos suggests "flat"
+flate = "flate"
