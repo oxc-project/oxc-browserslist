@@ -4,7 +4,7 @@
 //! single-letter browser/version codes into full strings — matching what the JS
 //! `browserslist` CLI sees at runtime, so the codegen and the reference
 //! implementation share one source of truth.
-use std::{fs, path::PathBuf};
+use std::{collections::HashMap, fs, path::PathBuf};
 
 use anyhow::{Context, Result, bail};
 use indexmap::IndexMap;
@@ -43,6 +43,19 @@ fn load_browsers() -> Result<IndexMap<String, String>> {
 
 fn load_browser_versions() -> Result<IndexMap<String, String>> {
     parse_module(&read_data_file("browserVersions.js")?)
+}
+
+fn load_version_groups() -> Result<IndexMap<String, String>> {
+    // `versionGroups.js` is a newer caniuse-lite addition: feature files pack
+    // frequently-repeated version-code sequences as `_`-prefixed references into
+    // this table. Older releases pack the versions inline with no references, so
+    // treat a missing file as "no groups" rather than an error.
+    let path = caniuse_lite_dir().join("data/versionGroups.js");
+    if path.exists() {
+        parse_module(&read_data_file("versionGroups.js")?)
+    } else {
+        Ok(IndexMap::new())
+    }
 }
 
 #[derive(Deserialize)]
@@ -123,9 +136,38 @@ fn unpack_support(cipher: u32) -> String {
     parts.join(" ")
 }
 
+/// Expand a packed feature version string, resolving caniuse-lite's `_`-prefixed
+/// references into `versionGroups` (recursively), matching the JS `expandGroups`
+/// unpacker in `dist/unpacker/feature.js`. Plain (non-`_`) tokens pass through
+/// unchanged, so this is a no-op for pre-`versionGroups` data. `cache` memoizes
+/// each group's fully expanded codes — shared across features like the JS
+/// `groupCache`, so nested references expand at most once.
+fn expand_groups(
+    value: &str,
+    groups: &IndexMap<String, String>,
+    cache: &mut HashMap<String, Vec<String>>,
+) -> Result<Vec<String>> {
+    let mut out = Vec::new();
+    for token in value.split(' ').filter(|s| !s.is_empty()) {
+        match token.strip_prefix('_') {
+            Some(key) => {
+                if !cache.contains_key(key) {
+                    let expanded =
+                        expand_groups(lookup(groups, key, "version group")?, groups, cache)?;
+                    cache.insert(key.to_string(), expanded);
+                }
+                out.extend_from_slice(&cache[key]);
+            }
+            None => out.push(token.to_string()),
+        }
+    }
+    Ok(out)
+}
+
 fn load_features(
     browsers: &IndexMap<String, String>,
     versions: &IndexMap<String, String>,
+    version_groups: &IndexMap<String, String>,
 ) -> Result<IndexMap<String, Feature>> {
     let dir = caniuse_lite_dir().join("data/features");
     let mut entries: Vec<PathBuf> = fs::read_dir(&dir)?
@@ -135,6 +177,7 @@ fn load_features(
     entries.sort();
 
     let mut out = IndexMap::with_capacity(entries.len());
+    let mut group_cache: HashMap<String, Vec<String>> = HashMap::new();
     for path in entries {
         let name = path
             .file_stem()
@@ -154,7 +197,8 @@ fn load_features(
                     .parse()
                     .with_context(|| format!("non-numeric support cipher: {cipher_str}"))?;
                 let support = unpack_support(cipher);
-                for code in packed_versions.split(' ').filter(|s| !s.is_empty()) {
+                let codes = expand_groups(packed_versions, version_groups, &mut group_cache)?;
+                for code in &codes {
                     let version = lookup(versions, code, "version")?.to_string();
                     by_version.insert(version, support.clone());
                 }
@@ -226,8 +270,9 @@ fn load_regions(browsers: &IndexMap<String, String>) -> Result<IndexMap<String, 
 pub fn load() -> Result<Caniuse> {
     let browsers = load_browsers()?;
     let versions = load_browser_versions()?;
+    let version_groups = load_version_groups()?;
     let agents = load_agents(&browsers, &versions)?;
-    let data = load_features(&browsers, &versions)?;
+    let data = load_features(&browsers, &versions, &version_groups)?;
     let regions = load_regions(&browsers)?;
     Ok(Caniuse { agents, data, regions })
 }
