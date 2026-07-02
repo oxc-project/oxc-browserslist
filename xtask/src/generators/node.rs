@@ -74,7 +74,7 @@ pub fn build_node_release_schedule() -> Result<()> {
         .map(|(version, NodeScheduleRelease { start, end })| {
             let version = version.trim_start_matches('v');
             let version = version.split('.').collect::<Vec<_>>();
-            assert!(version.len() > 0);
+            assert!(!version.is_empty());
             let major: u16 = version[0].parse().unwrap();
             let minor: u16 = version.get(1).map(|v| v.parse().unwrap()).unwrap_or_default();
             let patch: u16 = version.get(2).map(|v| v.parse().unwrap()).unwrap_or_default();

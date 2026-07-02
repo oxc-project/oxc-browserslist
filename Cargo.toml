@@ -28,6 +28,7 @@ unimplemented = "warn"
 print_stdout = "warn" # Must be opt-in
 print_stderr = "warn" # Must be opt-in
 cargo = { level = "warn", priority = -1 }
+multiple_crate_versions = "allow"
 
 [workspace.dependencies]
 anyhow = "1"

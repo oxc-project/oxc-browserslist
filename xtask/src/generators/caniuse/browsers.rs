@@ -3,9 +3,12 @@ use postcard::to_allocvec;
 
 use crate::{data::caniuse::Caniuse, utils::save_bin_compressed};
 
+type BrowserVersionData = (String, f32, Option<i64>);
+type BrowserData = (String, String, Vec<BrowserVersionData>);
+
 pub fn build_caniuse_browsers(data: &Caniuse) -> Result<()> {
     // Prepare data for serialization - convert IndexMap to Vec for compatibility
-    let browser_data: Vec<(String, String, Vec<(String, f32, Option<i64>)>)> = data
+    let browser_data: Vec<BrowserData> = data
         .agents
         .iter()
         .map(|(name, agent)| {
