@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.8](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.7...oxc-browserslist-v3.0.8) - 2026-07-02
+
+### Other
+
+- decompress bundled blobs in a single pass into exact-size buffers ([#754](https://github.com/oxc-project/oxc-browserslist/pull/754))
+
 ## [3.0.7](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.6...oxc-browserslist-v3.0.7) - 2026-07-02
 
 ### Other
