@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.9](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.8...oxc-browserslist-v3.0.9) - 2026-07-02
+
+### Other
+
+- pack bundled data tighter — run sentinel, bitpacked tables ([#756](https://github.com/oxc-project/oxc-browserslist/pull/756))
+
 ## [3.0.8](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.7...oxc-browserslist-v3.0.8) - 2026-07-02
 
 ### Other
