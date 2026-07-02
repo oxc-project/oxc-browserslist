@@ -11,7 +11,7 @@ pub fn save_bin_compressed(file: &str, bytes: &[u8]) {
     // Compress with Zopfli, a (deliberately slow, build-time-only) deflate-compatible encoder that
     // squeezes a few percent more out of every blob than a normal deflate encoder. The output is a
     // standard raw-deflate stream prefixed with the decompressed length as a little-endian u32, so
-    // the runtime decoder (`decompress_deflate`) can allocate an exact-size buffer and inflate in
+    // the runtime decoder (`decompress_blob`) can allocate an exact-size buffer and inflate in
     // a single pass instead of pulling in miniz_oxide's buffer-growing `decompress_to_vec`.
     let mut compressed = u32::try_from(bytes.len()).unwrap().to_le_bytes().to_vec();
     zopfli::compress(Options::default(), Format::Deflate, bytes, &mut compressed).unwrap();
