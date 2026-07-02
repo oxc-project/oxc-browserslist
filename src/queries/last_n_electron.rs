@@ -1,17 +1,12 @@
 use super::{Distrib, QueryResult};
-use crate::data::{
-    electron::{ELECTRON_CHROMIUM_VERSIONS, ELECTRON_VERSIONS},
-    unpack_str,
-};
+use crate::data::electron::{ELECTRON_VERSIONS, packed_chromium};
 
 pub(super) fn last_n_electron(count: usize) -> QueryResult {
     let distribs = ELECTRON_VERSIONS
         .iter()
         .rev()
         .take(count)
-        .map(|(_, version)| {
-            Distrib::new("chrome", unpack_str(ELECTRON_CHROMIUM_VERSIONS, *version))
-        })
+        .map(|&packed| Distrib::new("chrome", packed_chromium(packed)))
         .collect();
     Ok(distribs)
 }

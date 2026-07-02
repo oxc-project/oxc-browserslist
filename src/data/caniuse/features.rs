@@ -95,7 +95,10 @@ fn read_versions(
     for _ in 0..run_count {
         let start = read_varint(bytes, pos);
         let len = read_varint(bytes, pos);
-        indices.extend(order[start..start + len].iter().copied());
+        // Length 0 is the "run reaches the end of the browser's version order" sentinel (a real
+        // run is never empty); see `to_runs` in xtask.
+        let end = if len == 0 { order.len() } else { start + len };
+        indices.extend(order[start..end].iter().copied());
     }
     // Insertion sort: these lists hold only a few dozen entries, so this stays cheaper in code
     // size than instantiating the generic `sort_unstable` machinery (which measurably bloated

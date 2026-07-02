@@ -1,5 +1,22 @@
 use crate::error::Error;
-pub use crate::generated::electron_to_chromium::{ELECTRON_CHROMIUM_VERSIONS, ELECTRON_VERSIONS};
+pub use crate::generated::electron_to_chromium::ELECTRON_VERSIONS;
+
+use crate::generated::electron_to_chromium::ELECTRON_CHROMIUM_VERSIONS;
+
+/// Unpack the Electron version from an [`ELECTRON_VERSIONS`] entry
+/// (`major << 24 | minor << 16 | pool_offset << 4 | pool_len`).
+pub fn packed_version(packed: u32) -> ElectronVersion {
+    ElectronVersion::new((packed >> 24) as u16, ((packed >> 16) & 0xff) as u16)
+}
+
+/// Unpack the Chromium version string from an [`ELECTRON_VERSIONS`] entry: rebuild the low
+/// 16 bits (`pool_offset << 4 | pool_len`) into the `offset << 8 | len` form `unpack_str` takes.
+pub fn packed_chromium(packed: u32) -> &'static str {
+    crate::data::unpack_str(
+        ELECTRON_CHROMIUM_VERSIONS,
+        ((packed >> 4) & 0xfff) << 8 | (packed & 0xf),
+    )
+}
 
 #[derive(Debug, Default, Clone, Copy, Eq, PartialEq, Ord, PartialOrd)]
 pub struct ElectronVersion {
