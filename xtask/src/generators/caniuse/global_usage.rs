@@ -22,10 +22,10 @@ pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
     global_usage.sort_unstable_by(|(_, _, a), (_, _, b)| b.partial_cmp(a).unwrap());
 
     // Concatenate the (deduplicated) version strings into one pool and reference each by a u32
-    // bitpacking `browser << 24 | offset << 8 | len` — the low 24 bits stay `unpack_str`
-    // compatible, and folding the browser id into the spare high byte makes each entry
-    // `(u32, f32)` instead of a padded 12-byte `(u8, u32, f32)`. This keeps the table free of
-    // `&str` fat pointers, which each cost 16 bytes plus a load-time relocation entry.
+    // bitpacking `browser << 24 | offset << 8 | len` (unpacked by `caniuse::unpack_usage`) —
+    // folding the browser id into the spare high byte makes each entry `(u32, f32)` instead of
+    // a padded 12-byte `(u8, u32, f32)`. This keeps the table free of `&str` fat pointers,
+    // which each cost 16 bytes plus a load-time relocation entry.
     let mut pool = String::new();
     let mut seen: HashMap<String, u32> = HashMap::new();
     let entries = global_usage
@@ -46,8 +46,8 @@ pub fn build_caniuse_global_usage(data: &Caniuse) -> Result<()> {
         /// Concatenated version-string pool indexed by the packed u32 in [`CANIUSE_GLOBAL_USAGE`].
         pub static GLOBAL_USAGE_VERSIONS: &str = #pool;
         /// only includes browsers with global usage > 0.0%; the u32 bitpacks
-        /// `browser_id << 24 | offset << 8 | len`, whose low 24 bits index
-        /// [`GLOBAL_USAGE_VERSIONS`] via `unpack_str`.
+        /// `browser_id << 24 | offset << 8 | len` into [`GLOBAL_USAGE_VERSIONS`], unpacked by
+        /// `caniuse::unpack_usage`.
         pub static CANIUSE_GLOBAL_USAGE: &[(u32, f32)] = &[
             #(#entries),*
         ];

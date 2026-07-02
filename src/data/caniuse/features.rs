@@ -49,7 +49,8 @@ impl Feature {
         // the data it saves. The layout (postcard-compatible) is, per browser entry: one browser
         // byte, then the `yes` list, then the `partial` list. Each list is a varint run count
         // followed by `(start, length)` varint runs of local indices into the browser's version
-        // order.
+        // order, where length 0 means the run extends to the end of the order (see
+        // `read_versions`).
         let bytes = &FEATURES.get()[self.start as usize..self.end as usize];
         let mut pos = 0;
         let entry_count = read_varint(bytes, &mut pos);
@@ -81,9 +82,10 @@ fn read_varint(bytes: &[u8], pos: &mut usize) -> usize {
 }
 
 /// Expand one stored list: `(start, length)` runs of local indices into `order` (the browser's
-/// version order) become version-table indices, which are then sorted (the table is
-/// lexicographically ordered, so sorting the indices yields the version strings in the order
-/// `FeatureSet`'s binary searches expect) and resolved to strings.
+/// version order; length 0 is the "to the end of the order" sentinel) become version-table
+/// indices, which are then sorted (the table is lexicographically ordered, so sorting the
+/// indices yields the version strings in the order `FeatureSet`'s binary searches expect) and
+/// resolved to strings.
 fn read_versions(
     bytes: &[u8],
     pos: &mut usize,

@@ -2,7 +2,7 @@ use std::{borrow::Cow, num::NonZero, sync::OnceLock};
 
 use rustc_hash::FxHashMap;
 
-use crate::data::BrowserName;
+use crate::data::{BrowserName, decode_browser_name, unpack_str};
 
 pub mod compression;
 pub mod features;
@@ -41,6 +41,13 @@ impl VersionDetail {
 pub type CaniuseData = FxHashMap<BrowserName, BrowserStat>;
 
 pub use crate::generated::caniuse_global_usage::{CANIUSE_GLOBAL_USAGE, GLOBAL_USAGE_VERSIONS};
+
+/// Unpack a [`CANIUSE_GLOBAL_USAGE`] entry (`browser_id << 24 | pool_offset << 8 | pool_len`)
+/// into the browser name and version string.
+pub fn unpack_usage(packed: u32) -> (BrowserName, &'static str) {
+    let version = unpack_str(GLOBAL_USAGE_VERSIONS, (packed >> 8) & 0xffff, packed & 0xff);
+    (decode_browser_name((packed >> 24) as u8), version)
+}
 
 pub fn caniuse_browsers() -> &'static CaniuseData {
     static CANIUSE_BROWSERS: OnceLock<CaniuseData> = OnceLock::new();

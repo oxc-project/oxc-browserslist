@@ -111,7 +111,7 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
         // A run reaching the end of the browser's version order is stored with length 0 (a real
         // run is never empty): support is usually "version N onward", so ~46% of all lists become
         // a `(start, 0)` pair that repeats byte-for-byte across features, which deflate rewards
-        // (~1.2 KB off the blob). The runtime expands 0 back to `order.len() - start`. Only the
+        // (~1.2 KB off the blob). The runtime (`read_versions`) expands 0 back to `order.len() - start`. Only the
         // last run can reach the end (runs are ascending and disjoint).
         if let Some(run) = runs.last_mut() {
             if run.0 + run.1 == browser_versions[b as usize].len() as u16 {

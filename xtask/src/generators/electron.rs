@@ -29,17 +29,22 @@ pub fn build_electron_to_chromium() -> Result<()> {
                 pool.push_str(&chromium_version);
                 ((offset as u32) << 4) | chromium_version.len() as u32
             });
-            let packed = major << 24 | minor << 16 | chromium;
-            quote! { #packed }
+            major << 24 | minor << 16 | chromium
         })
         .collect::<Vec<_>>();
+
+    // The `last N electron versions` queries walk the table back-to-front, so the ascending
+    // (major, minor) order inherited from versions.json is load-bearing. major/minor sit in the
+    // top bits, so ascending versions are exactly ascending packed values — enforce it here.
+    assert!(data.is_sorted(), "electron versions must be ascending");
+    let data = data.iter().map(|packed| quote! { #packed }).collect::<Vec<_>>();
 
     let output = quote! {
         /// Concatenated Chromium-version pool referenced by [`ELECTRON_VERSIONS`].
         pub static ELECTRON_CHROMIUM_VERSIONS: &str = #pool;
         /// Electron (major, minor) -> Chromium version, ascending. Each u32 bitpacks
         /// `major << 24 | minor << 16 | pool_offset << 4 | pool_len`; unpack with
-        /// `electron::packed_version` and `electron::packed_chromium`.
+        /// `electron::unpack_version` and `electron::unpack_chromium`.
         pub static ELECTRON_VERSIONS: &[u32] = &[#(#data),*];
     };
 
