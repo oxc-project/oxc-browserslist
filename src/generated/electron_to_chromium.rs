@@ -2,7 +2,7 @@
 pub static ELECTRON_CHROMIUM_VERSIONS: &str = "3941424344454749505152535456585961666973767880838587899193949698100102104106108110112114116118120122124126128130132134136138140142144146148150";
 /// Electron (major, minor) -> Chromium version, ascending. Each u32 bitpacks
 /// `major << 24 | minor << 16 | pool_offset << 4 | pool_len`; unpack with
-/// `electron::packed_version` and `electron::packed_chromium`.
+/// `electron::unpack_version` and `electron::unpack_chromium`.
 pub static ELECTRON_VERSIONS: &[u32] = &[
     1310722u32,
     1376290u32,

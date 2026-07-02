@@ -1,6 +1,6 @@
 use super::{Distrib, QueryResult};
 use crate::{
-    data::electron::{ELECTRON_VERSIONS, packed_chromium, packed_version, parse_version},
+    data::electron::{ELECTRON_VERSIONS, parse_version, unpack_chromium, unpack_version},
     parser::Comparator,
 };
 
@@ -10,7 +10,7 @@ pub(super) fn electron_unbounded_range(comparator: Comparator, version: &str) ->
     let distribs = ELECTRON_VERSIONS
         .iter()
         .filter(|&&packed| {
-            let electron_version = packed_version(packed);
+            let electron_version = unpack_version(packed);
             match comparator {
                 Comparator::Greater => electron_version > version,
                 Comparator::Less => electron_version < version,
@@ -18,7 +18,7 @@ pub(super) fn electron_unbounded_range(comparator: Comparator, version: &str) ->
                 Comparator::LessOrEqual => electron_version <= version,
             }
         })
-        .map(|&packed| Distrib::new("chrome", packed_chromium(packed)))
+        .map(|&packed| Distrib::new("chrome", unpack_chromium(packed)))
         .collect();
     Ok(distribs)
 }

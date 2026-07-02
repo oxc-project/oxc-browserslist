@@ -1,8 +1,5 @@
 use super::{Distrib, QueryResult};
-use crate::data::{
-    caniuse::{CANIUSE_GLOBAL_USAGE, GLOBAL_USAGE_VERSIONS},
-    decode_browser_name, unpack_str,
-};
+use crate::data::caniuse::{CANIUSE_GLOBAL_USAGE, unpack_usage};
 
 pub(super) fn cover(coverage: f32) -> QueryResult {
     let mut distribs = vec![];
@@ -11,10 +8,8 @@ pub(super) fn cover(coverage: f32) -> QueryResult {
         if total >= coverage || *usage == 0.0 {
             break;
         }
-        // The u32 bitpacks `browser_id << 24 | offset << 8 | len`; the low 24 bits are the
-        // `unpack_str` reference into the version pool.
-        let version = unpack_str(GLOBAL_USAGE_VERSIONS, packed & 0x00ff_ffff);
-        distribs.push(Distrib::new(decode_browser_name((packed >> 24) as u8), version));
+        let (name, version) = unpack_usage(*packed);
+        distribs.push(Distrib::new(name, version));
         total += usage;
     }
     Ok(distribs)
