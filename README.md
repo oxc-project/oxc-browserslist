@@ -83,14 +83,6 @@ cd fuzz
 cargo +nightly fuzz run fuzz_resolve
 ```
 
-## [Sponsored By](https://github.com/sponsors/Boshen)
-
-<p align="center">
-  <a href="https://github.com/sponsors/Boshen">
-    <img src="https://raw.githubusercontent.com/Boshen/sponsors/main/sponsors.svg" alt="My sponsors" />
-  </a>
-</p>
-
 [discord-badge]: https://img.shields.io/discord/1079625926024900739?logo=discord&label=Discord
 [discord-url]: https://discord.gg/9uXCAwqQZW
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
@@ -107,3 +99,11 @@ cargo +nightly fuzz run fuzz_resolve
 [crates-url]: https://crates.io/crates/oxc-browserslist
 [docs-badge]: https://img.shields.io/docsrs/oxc-browserslist
 [docs-url]: https://docs.rs/oxc-browserslist
+
+## ❤ Who's [Sponsoring Oxc](https://github.com/sponsors/Boshen)?
+
+<p align="center">
+  <a href="https://github.com/sponsors/Boshen">
+    <img src="https://raw.githubusercontent.com/Boshen/sponsors/main/sponsors.svg" alt="Our sponsors" />
+  </a>
+</p>
