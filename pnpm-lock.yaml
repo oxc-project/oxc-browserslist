@@ -29,7 +29,7 @@ importers:
         version: 1.5.389
       node-releases:
         specifier: 2.x
-        version: 2.0.50
+        version: 2.0.51
     devDependencies:
       vite-plus:
         specifier: 'catalog:'
@@ -899,8 +899,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  node-releases@2.0.50:
-    resolution: {integrity: sha512-J6l92tKHX6w8Jy5nO1Vuc01NoIiRGi/d6qBKVxh+IQ8Cr3b6HbVNfKiF8ZpFKufTwpwxMmce2W3iQZ861ZRyTg==}
+  node-releases@2.0.51:
+    resolution: {integrity: sha512-wRNIrw4DmVLKQlbgOMdkMx27Wrpzes2hh5Jtbi2bjPd+4wJstWIqP5A+lscnqbm0xxmT5Bpg8Lec5ItEBwx6BQ==}
     engines: {node: '>=18'}
 
   obug@2.1.3:
@@ -1516,7 +1516,7 @@ snapshots:
       baseline-browser-mapping: 2.10.42
       caniuse-lite: 1.0.30001803
       electron-to-chromium: 1.5.389
-      node-releases: 2.0.50
+      node-releases: 2.0.51
       update-browserslist-db: 1.2.3(browserslist@4.28.4)
 
   caniuse-lite@1.0.30001803: {}
@@ -1609,7 +1609,7 @@ snapshots:
 
   nanoid@3.3.15: {}
 
-  node-releases@2.0.50: {}
+  node-releases@2.0.51: {}
 
   obug@2.1.3: {}
 
