@@ -47,7 +47,7 @@ oxc-browserslist is a Rust port of [Browserslist](https://github.com/browserslis
 
 The project uses several tools for development:
 
-- **Rust**: Latest stable (MSRV: 1.86.0)
+- **Rust**: Latest stable (MSRV: 1.95.0)
 - **Node.js**: Version specified in `.node-version`
 - **Vite+ (`vp`)**: Manages Node.js, dependencies, and formatting (`vp install`, `vp fmt`)
 - **just**: Command runner (alternative to make)

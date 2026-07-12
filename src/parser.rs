@@ -351,14 +351,14 @@ impl<'a> Parser<'a> {
         let start = self.pos;
 
         // Try bounded: " 1.0 - 2.0"
-        if self.skip_whitespace1() {
-            if let Some(from) = self.parse_version() {
+        if self.skip_whitespace1()
+            && let Some(from) = self.parse_version()
+        {
+            self.skip_whitespace();
+            if self.eat(b'-') {
                 self.skip_whitespace();
-                if self.eat(b'-') {
-                    self.skip_whitespace();
-                    if let Some(to) = self.parse_version() {
-                        return Some(VersionRange::Bounded(from, to));
-                    }
+                if let Some(to) = self.parse_version() {
+                    return Some(VersionRange::Bounded(from, to));
                 }
             }
         }
@@ -375,10 +375,10 @@ impl<'a> Parser<'a> {
         self.pos = start;
 
         // Try accurate: " 1.0"
-        if self.skip_whitespace1() {
-            if let Some(ver) = self.parse_version() {
-                return Some(VersionRange::Accurate(ver));
-            }
+        if self.skip_whitespace1()
+            && let Some(ver) = self.parse_version()
+        {
+            return Some(VersionRange::Accurate(ver));
         }
         self.pos = start;
         None
@@ -399,10 +399,11 @@ impl<'a> Parser<'a> {
         let before_num = self.pos;
 
         // Try years first (has fractional)
-        if let Some(years) = self.parse_double() {
-            if self.skip_whitespace1() && self.match_year_keyword() {
-                return Some(QueryAtom::Years(years));
-            }
+        if let Some(years) = self.parse_double()
+            && self.skip_whitespace1()
+            && self.match_year_keyword()
+        {
+            return Some(QueryAtom::Years(years));
         }
         self.pos = before_num;
 

@@ -41,18 +41,14 @@ pub(super) fn supports(name: &str, kind: Option<SupportKind>, opts: &Opts) -> Qu
                         if versions.supports(version, include_partial) {
                             return Some(version);
                         }
-                        if check_desktop {
-                            if let Some(desktop_name) = desktop_name {
-                                if let Some(versions) =
-                                    feature.iter().find_map(|(name, versions)| {
-                                        (*name == desktop_name).then_some(versions)
-                                    })
-                                {
-                                    if versions.supports(version, include_partial) {
-                                        return Some(version);
-                                    }
-                                }
-                            }
+                        if check_desktop
+                            && let Some(desktop_name) = desktop_name
+                            && let Some(versions) = feature.iter().find_map(|(name, versions)| {
+                                (*name == desktop_name).then_some(versions)
+                            })
+                            && versions.supports(version, include_partial)
+                        {
+                            return Some(version);
                         }
                         None
                     })
