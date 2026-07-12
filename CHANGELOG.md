@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update browserslist ([#772](https://github.com/oxc-project/oxc-browserslist/pull/772))
 - Update browserslist ([#771](https://github.com/oxc-project/oxc-browserslist/pull/771))
 - Update browserslist ([#770](https://github.com/oxc-project/oxc-browserslist/pull/770))
-- *(deps)* update rust crate rustc-hash to v2.1.3 ([#767](https://github.com/oxc-project/oxc-browserslist/pull/767))
+- _(deps)_ update rust crate rustc-hash to v2.1.3 ([#767](https://github.com/oxc-project/oxc-browserslist/pull/767))
 - Update browserslist ([#766](https://github.com/oxc-project/oxc-browserslist/pull/766))
 - Update browserslist ([#765](https://github.com/oxc-project/oxc-browserslist/pull/765))
 - normalize README sponsor section ([#762](https://github.com/oxc-project/oxc-browserslist/pull/762))
