@@ -34,24 +34,23 @@ pub fn date_to_unix_timestamp(year: i32, month: u32, day: u32) -> Option<i64> {
 }
 
 /// Get current unix timestamp.
-#[cfg(not(target_arch = "wasm32"))]
 pub fn now_unix_timestamp() -> i64 {
-    std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map(|d| d.as_secs().cast_signed())
-        .unwrap_or(0)
-}
-
-/// Get current unix timestamp (wasm version using js_sys).
-#[cfg(all(target_arch = "wasm32", feature = "wasm_bindgen"))]
-pub fn now_unix_timestamp() -> i64 {
-    (js_sys::Date::now() / 1000.0) as i64
-}
-
-/// Fallback for wasm without js_sys - returns 0 (tests will fail but compiles).
-#[cfg(all(target_arch = "wasm32", not(feature = "wasm_bindgen")))]
-pub fn now_unix_timestamp() -> i64 {
-    0
+    std::cfg_select! {
+        not(target_arch = "wasm32") => {
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_secs().cast_signed())
+                .unwrap_or(0)
+        }
+        // wasm version using js_sys
+        feature = "wasm_bindgen" => {
+            (js_sys::Date::now() / 1000.0) as i64
+        }
+        // Fallback for wasm without js_sys - returns 0 (tests will fail but compiles).
+        _ => {
+            0
+        }
+    }
 }
 
 /// Get current Julian Day Number.
