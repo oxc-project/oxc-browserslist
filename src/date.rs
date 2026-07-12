@@ -10,15 +10,14 @@ const UNIX_EPOCH_JDN: i64 = 2440588;
 /// Convert a calendar date to Julian Day Number.
 /// Uses the algorithm from <https://en.wikipedia.org/wiki/Julian_day#Converting_Gregorian_calendar_date_to_Julian_Day_Number>
 /// Returns None if the calculation would overflow.
-#[allow(clippy::cast_possible_truncation)]
 const fn date_to_julian_day(year: i32, month: u32, day: u32) -> Option<i32> {
-    let a = (14 - month as i32) / 12;
+    let a = (14 - month.cast_signed()) / 12;
     let Some(y) = year.checked_add(4800 - a) else { return None };
-    let m = month as i32 + 12 * a - 3;
+    let m = month.cast_signed() + 12 * a - 3;
     // Use checked arithmetic to prevent overflow
     let Some(term1) = 365_i32.checked_mul(y) else { return None };
     let Some(term2) = term1.checked_add((153 * m + 2) / 5) else { return None };
-    let Some(term3) = term2.checked_add(day as i32) else { return None };
+    let Some(term3) = term2.checked_add(day.cast_signed()) else { return None };
     let Some(term4) = term3.checked_add(y / 4) else { return None };
     let Some(term5) = term4.checked_sub(y / 100) else { return None };
     let Some(term6) = term5.checked_add(y / 400) else { return None };
@@ -39,7 +38,7 @@ pub fn date_to_unix_timestamp(year: i32, month: u32, day: u32) -> Option<i64> {
 pub fn now_unix_timestamp() -> i64 {
     std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
-        .map(|d| d.as_secs() as i64)
+        .map(|d| d.as_secs().cast_signed())
         .unwrap_or(0)
 }
 

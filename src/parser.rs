@@ -237,7 +237,7 @@ impl<'a> Parser<'a> {
         if !neg {
             self.eat(b'+');
         }
-        let n = self.parse_u32()? as i32;
+        let n = self.parse_u32()?.cast_signed();
         Some(if neg { -n } else { n })
     }
 
