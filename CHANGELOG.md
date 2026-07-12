@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.10](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.9...oxc-browserslist-v3.0.10) - 2026-07-12
+
+### Other
+
+- merge `now_unix_timestamp` cfg variants with `cfg_select!` ([#778](https://github.com/oxc-project/oxc-browserslist/pull/778))
+- use `cast_signed` for integer sign casts ([#777](https://github.com/oxc-project/oxc-browserslist/pull/777))
+- bump MSRV to 1.95.0 ([#776](https://github.com/oxc-project/oxc-browserslist/pull/776))
+- Update browserslist ([#775](https://github.com/oxc-project/oxc-browserslist/pull/775))
+- Update browserslist ([#772](https://github.com/oxc-project/oxc-browserslist/pull/772))
+- Update browserslist ([#771](https://github.com/oxc-project/oxc-browserslist/pull/771))
+- Update browserslist ([#770](https://github.com/oxc-project/oxc-browserslist/pull/770))
+- _(deps)_ update rust crate rustc-hash to v2.1.3 ([#767](https://github.com/oxc-project/oxc-browserslist/pull/767))
+- Update browserslist ([#766](https://github.com/oxc-project/oxc-browserslist/pull/766))
+- Update browserslist ([#765](https://github.com/oxc-project/oxc-browserslist/pull/765))
+- normalize README sponsor section ([#762](https://github.com/oxc-project/oxc-browserslist/pull/762))
+- Update browserslist ([#761](https://github.com/oxc-project/oxc-browserslist/pull/761))
+- configure clippy exported api lint ([#760](https://github.com/oxc-project/oxc-browserslist/pull/760))
+- clean up packed-data helpers from #756 review ([#758](https://github.com/oxc-project/oxc-browserslist/pull/758))
+
 ## [3.0.9](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.8...oxc-browserslist-v3.0.9) - 2026-07-02
 
 ### Other
