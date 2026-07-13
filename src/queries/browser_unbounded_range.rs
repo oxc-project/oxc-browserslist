@@ -18,9 +18,10 @@ pub(super) fn browser_unbounded_range(
         .get(name)
         .and_then(|alias| alias.get(version).copied())
         .unwrap_or(version);
-    let Some(version) = parse_js_float(version) else {
+    let Some(lower) = parse_js_float(version) else {
         return Ok(Vec::new());
     };
+    let upper = parse_latest_js_float(version).unwrap_or(lower);
 
     let distribs = stat
         .version_list
@@ -28,10 +29,10 @@ pub(super) fn browser_unbounded_range(
         .filter(|version| version.release_date().is_some())
         .map(|version| version.version())
         .filter(|v| match comparator {
-            Comparator::Greater => parse_latest_js_float(v).is_some_and(|v| v > version),
-            Comparator::Less => parse_js_float(v).is_some_and(|v| v < version),
-            Comparator::GreaterOrEqual => parse_latest_js_float(v).is_some_and(|v| v >= version),
-            Comparator::LessOrEqual => parse_js_float(v).is_some_and(|v| v <= version),
+            Comparator::Greater => parse_latest_js_float(v).is_some_and(|v| v > upper),
+            Comparator::Less => parse_js_float(v).is_some_and(|v| v < lower),
+            Comparator::GreaterOrEqual => parse_latest_js_float(v).is_some_and(|v| v >= upper),
+            Comparator::LessOrEqual => parse_js_float(v).is_some_and(|v| v <= lower),
         })
         .map(|version| Distrib::new(name, version))
         .collect();

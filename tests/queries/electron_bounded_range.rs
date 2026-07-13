@@ -5,6 +5,7 @@ use test_case::test_case;
 #[test_case("electron 0.36-1.2"; "basic")]
 #[test_case("Electron 0.37-1.0"; "case insensitive")]
 #[test_case("electron 0.37.5-1.0.3"; "with semver patch version")]
+#[test_case("electron 37.9 - 37.10"; "compares range bounds as semver")]
 fn valid(query: &str) {
     run_compare(query, &Opts::default(), None);
 }
