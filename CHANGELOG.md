@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.11](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.10...oxc-browserslist-v3.0.11) - 2026-07-13
+
+### Fixed
+
+- align unbounded range queries with browserslist 4.28.6 ([#784](https://github.com/oxc-project/oxc-browserslist/pull/784))
+
+### Other
+
+- Update browserslist ([#782](https://github.com/oxc-project/oxc-browserslist/pull/782))
+
 ## [3.0.10](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.9...oxc-browserslist-v3.0.10) - 2026-07-12
 
 ### Other
