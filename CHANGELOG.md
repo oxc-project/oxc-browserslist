@@ -12,8 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Other
 
 - Update browserslist ([#799](https://github.com/oxc-project/oxc-browserslist/pull/799))
-- *(deps)* update rust crate syn to v3 ([#795](https://github.com/oxc-project/oxc-browserslist/pull/795))
-- *(deps)* update rust crates ([#794](https://github.com/oxc-project/oxc-browserslist/pull/794))
+- _(deps)_ update rust crate syn to v3 ([#795](https://github.com/oxc-project/oxc-browserslist/pull/795))
+- _(deps)_ update rust crates ([#794](https://github.com/oxc-project/oxc-browserslist/pull/794))
 - Update browserslist ([#793](https://github.com/oxc-project/oxc-browserslist/pull/793))
 - Update browserslist ([#792](https://github.com/oxc-project/oxc-browserslist/pull/792))
 - Update browserslist ([#791](https://github.com/oxc-project/oxc-browserslist/pull/791))
