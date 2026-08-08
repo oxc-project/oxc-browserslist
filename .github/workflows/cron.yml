@@ -23,7 +23,7 @@ jobs:
         with:
           cache: true
 
-      - run: vp update --prod
+      - run: vp update --prod -- --ignore-scripts
 
       - run: cargo codegen
 
