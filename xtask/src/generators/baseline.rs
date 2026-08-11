@@ -3,7 +3,7 @@ use std::{collections::HashMap, fs};
 use anyhow::{Context, Result, bail, ensure};
 use quote::quote;
 
-use crate::utils::{date_to_julian_day, generate_file, root};
+use crate::utils::{date_to_julian_day, generate_file, intern_packed, root};
 
 /// bbm short name -> (long name, is part of the Baseline core browser set). Mirrors
 /// `nameMappings` in baseline-browser-mapping's src/index.ts in declaration order; core
@@ -42,14 +42,12 @@ pub fn build_baseline_timeline() -> Result<()> {
     let entries = rows
         .iter()
         .map(|&(jdn, browser, ref version)| {
-            let packed = *seen.entry(version.clone()).or_insert_with(|| {
-                let offset = pool.len() as u32;
-                let len = version.len() as u32;
-                assert!(len < (1 << 8) && offset < (1 << 24), "version pool overflow");
-                pool.push_str(version);
-                offset << 8 | len
-            });
-            quote! { (#jdn, #browser, #packed) }
+            let version = intern_packed(&mut pool, &mut seen, version, 24, 8);
+            // Bit-pack each row into one u64 instead of a (i32, u8, u32) tuple whose
+            // 12-byte entries spend a quarter of their space on field padding.
+            assert!(0 < jdn && jdn < 1 << 24, "julian day out of packing range");
+            let row = (jdn as u64) << 40 | u64::from(browser) << 32 | u64::from(version);
+            quote! { #row }
         })
         .collect::<Vec<_>>();
     let browsers = NAME_MAPPINGS
@@ -65,11 +63,11 @@ pub fn build_baseline_timeline() -> Result<()> {
         /// Concatenated version-string pool referenced by [`BASELINE_TIMELINE`]; unpack with
         /// `data::unpack_str`.
         pub static BASELINE_VERSIONS: &str = #pool;
-        /// bbm timeline rows in original file order:
-        /// `(section julian day, index into BASELINE_BROWSERS, pool_offset << 8 | pool_len)`.
+        /// bbm timeline rows in original file order, each packed as
+        /// `section julian day << 40 | BASELINE_BROWSERS index << 32 | pool_offset << 8 | pool_len`.
         /// Section dates ascend; walking in order with last-write-wins per browser reproduces
         /// bbm's `getCompatibleVersions` minimum-version scan.
-        pub static BASELINE_TIMELINE: &[(i32, u8, u32)] = &[#(#entries),*];
+        pub static BASELINE_TIMELINE: &[u64] = &[#(#entries),*];
     };
 
     generate_file("baseline_timeline.rs", output);

@@ -4,7 +4,7 @@ use anyhow::Result;
 use indexmap::IndexMap;
 use quote::quote;
 
-use crate::utils::{generate_file, root};
+use crate::utils::{generate_file, intern_packed, root};
 
 pub fn build_electron_to_chromium() -> Result<()> {
     let data_path = root().join("node_modules/electron-to-chromium/versions.json");
@@ -23,12 +23,7 @@ pub fn build_electron_to_chromium() -> Result<()> {
             let major: u32 = split[0].parse().unwrap();
             let minor: u32 = split[1].parse().unwrap();
             assert!(major < 256 && minor < 256, "electron version overflow");
-            let chromium = *seen.entry(chromium_version.clone()).or_insert_with(|| {
-                let offset = pool.len();
-                assert!(chromium_version.len() < 16 && offset < (1 << 12), "pool overflow");
-                pool.push_str(&chromium_version);
-                ((offset as u32) << 4) | chromium_version.len() as u32
-            });
+            let chromium = intern_packed(&mut pool, &mut seen, &chromium_version, 12, 4);
             major << 24 | minor << 16 | chromium
         })
         .collect::<Vec<_>>();

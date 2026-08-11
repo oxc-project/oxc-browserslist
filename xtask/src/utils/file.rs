@@ -37,6 +37,25 @@ pub fn create_range_vec(v: &Vec<Vec<u8>>) -> Vec<u32> {
     ranges
 }
 
+/// Intern `value` into the concatenated string pool `pool` (deduplicating via `seen`) and
+/// return it packed as `offset << len_bits | len`. The electron and baseline generators
+/// pack their version strings this way; only the per-table bit widths differ.
+pub fn intern_packed(
+    pool: &mut String,
+    seen: &mut HashMap<String, u32>,
+    value: &str,
+    offset_bits: u32,
+    len_bits: u32,
+) -> u32 {
+    *seen.entry(value.to_string()).or_insert_with(|| {
+        let offset = pool.len() as u32;
+        let len = value.len() as u32;
+        assert!(offset < (1 << offset_bits) && len < (1 << len_bits), "string pool overflow");
+        pool.push_str(value);
+        offset << len_bits | len
+    })
+}
+
 /// Deduplicate and lexicographically sort `values` into a string intern table, save it as a
 /// compressed blob, and return the table alongside a value -> `u16` index map for remapping data.
 /// Both the feature and region generators intern their version strings this way.

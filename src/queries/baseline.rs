@@ -57,6 +57,10 @@ pub(super) fn baseline(
             Some(date_to_unix_timestamp(i32::from(year), u32::from(month), u32::from(day)));
     } else if matches!(availability, Some(BaselineAvailability::Newly)) {
         options.widely_available_on_date = Some(add_months(now_unix_timestamp(), 30));
+    } else {
+        // Pin "now" here rather than defaulting inside `get_compatible_versions`, so the
+        // two calls of the KaiOS path below see the same instant.
+        options.widely_available_on_date = Some(Some(now_unix_timestamp()));
     }
 
     // bbm counts KaiOS as a downstream browser and refuses to return it alone, so take
@@ -96,7 +100,20 @@ fn bbm_transform(versions: &[(&'static str, &'static str)]) -> Vec<String> {
 #[cfg(all(test, not(miri)))]
 mod tests {
     use super::*;
-    use crate::date::{julian_day_to_date, unix_timestamp_to_julian_day};
+    use crate::date::{julian_day_to_date, now_julian_day, unix_timestamp_to_julian_day};
+
+    /// Rerun `body` until it runs entirely within one UTC day, so its independent "now"
+    /// reads cannot straddle a midnight rollover. Callers assert on the returned values,
+    /// not inside `body`.
+    fn same_utc_day<T>(body: impl Fn() -> T) -> T {
+        loop {
+            let day = now_julian_day();
+            let result = body();
+            if now_julian_day() == day {
+                return result;
+            }
+        }
+    }
 
     /// `Widely available versions from baseline-browser-mapping appear in browserslist
     /// output`: every bbm minimum version — excluding chrome_android/firefox_android, for
@@ -104,12 +121,16 @@ mod tests {
     /// available` results, either exactly or as a bound of a joined caniuse range.
     #[test]
     fn widely_available_versions_from_bbm_appear_in_output() {
-        let output = resolve(&["baseline widely available"], &Opts::default()).unwrap();
-        let bbm_widely = get_compatible_versions(&BaselineOptions {
-            target_year: None,
-            widely_available_on_date: None,
-            include_downstream_browsers: false,
-            include_kaios: false,
+        let (output, bbm_widely) = same_utc_day(|| {
+            (
+                resolve(&["baseline widely available"], &Opts::default()).unwrap(),
+                get_compatible_versions(&BaselineOptions {
+                    target_year: None,
+                    widely_available_on_date: None,
+                    include_downstream_browsers: false,
+                    include_kaios: false,
+                }),
+            )
         });
         for (bbm_name, version) in bbm_widely {
             if matches!(bbm_name, "chrome_android" | "firefox_android") {
@@ -130,12 +151,15 @@ mod tests {
     /// `Newly available today and Widely available 30 months from now match`.
     #[test]
     fn newly_available_matches_widely_available_in_30_months() {
-        let future = add_months(now_unix_timestamp(), 30).unwrap();
-        let (year, month, day) = julian_day_to_date(unix_timestamp_to_julian_day(future));
-        let widely = format!("baseline widely available on {year:04}-{month:02}-{day:02}");
-        assert_eq!(
-            resolve(&["baseline newly available"], &Opts::default()).unwrap(),
-            resolve(&[widely], &Opts::default()).unwrap(),
-        );
+        let (newly, widely) = same_utc_day(|| {
+            let future = add_months(now_unix_timestamp(), 30).unwrap();
+            let (year, month, day) = julian_day_to_date(unix_timestamp_to_julian_day(future));
+            let widely = format!("baseline widely available on {year:04}-{month:02}-{day:02}");
+            (
+                resolve(&["baseline newly available"], &Opts::default()).unwrap(),
+                resolve(&[widely], &Opts::default()).unwrap(),
+            )
+        });
+        assert_eq!(newly, widely);
     }
 }

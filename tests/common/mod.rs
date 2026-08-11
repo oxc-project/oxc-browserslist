@@ -17,6 +17,10 @@ pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
     // where symlinks created by pnpm may not be immediately visible.
     let path = std::env::current_dir().unwrap().join("node_modules/.bin").join(bin);
     let mut command = Command::new(&path);
+    // The JS implementation does its date math in local time while this crate is UTC-only,
+    // so run the reference CLI in UTC or date-sensitive queries (`baseline`, `since`)
+    // diverge in timezones west of UTC.
+    command.env("TZ", "UTC");
     if opts.mobile_to_desktop {
         command.arg("--mobile-to-desktop");
     }

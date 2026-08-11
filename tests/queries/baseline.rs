@@ -10,6 +10,13 @@ use super::{run_compare, should_failed};
 #[test_case("baseline 2030"; "future year selects latest minimums")]
 #[test_case("baseline 0090"; "four digit iso year in the past")]
 #[test_case("baseline 123"; "three digit year selects everything")]
+#[test_case("baseline 12"; "v8 reads a short year up to 12 as a month of 2031")]
+#[test_case("baseline 5"; "one digit year is a month of 2031")]
+#[test_case("baseline 012"; "v8 legacy parsing goes by value not digit count")]
+#[test_case("baseline 20"; "short year between 13 and 31 is a v8 invalid date")]
+#[test_case("baseline 45"; "short year below 50 maps to 2045")]
+#[test_case("baseline 99"; "short year from 50 maps to 1999 and selects everything")]
+#[test_case("baseline 0"; "year zero maps to 2000 and selects everything")]
 #[test_case("baseline 99999"; "five digit year selects latest minimums")]
 #[test_case("baseline 300000"; "year past the js date range selects nothing")]
 #[test_case("baseline 9999999999"; "overflowing year selects nothing")]
@@ -73,6 +80,22 @@ fn valid_mobile_to_desktop(query: &str) {
     "baseline widely available including kaios with downstream",
     Error::UnknownQuery(String::from("baseline widely available including kaios with downstream"));
     "suffixes in wrong order"
+)]
+// JS also refuses the next two (`Unknown browser query`, since clauses split on
+// `\s+and\s+`); here the browser-atom fallback consumes `baseline 2024` first, so the
+// error class differs.
+#[test_case(
+    "baseline 2024and chrome 100", Error::BrowserNotFound(String::from("baseline"));
+    "composition operator needs whitespace before and"
+)]
+#[test_case(
+    "baseline 2024or chrome 100", Error::BrowserNotFound(String::from("baseline"));
+    "composition operator needs whitespace before or"
+)]
+#[test_case(
+    "baseline widely available on 2024-06-01and chrome 100",
+    Error::UnknownQuery(String::from("baseline widely available on 2024-06-01and chrome 100"));
+    "date fused with and is not a boundary"
 )]
 #[test_case(
     "baseline newly available on 2028-01-01", Error::BaselineNewlyWithDate;

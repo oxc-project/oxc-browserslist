@@ -30,7 +30,6 @@ const PRE_BASELINE_TS: i64 = 1_438_128_000;
 pub(crate) fn get_compatible_versions(
     options: &BaselineOptions,
 ) -> Vec<(&'static str, &'static str)> {
-    debug_assert_eq!(date_to_unix_timestamp(2015, 7, 29), Some(PRE_BASELINE_TS));
     // The regex makes year and date mutually exclusive; bbm throws when both are set.
     debug_assert!(options.target_year.is_none() || options.widely_available_on_date.is_none());
 
@@ -40,17 +39,30 @@ pub(crate) fn get_compatible_versions(
         } else if let Some(date) = options.widely_available_on_date {
             date
         } else {
-            // `new Date(`${targetYear}-12-31`)`: four-digit years use V8's ISO parser and
-            // other lengths its legacy parser; both mean the literal year, valid up to
-            // JavaScript's Date instant range (December 31st of 275760 already exceeds
-            // it). Exception: one- and two-digit years get the legacy month-day-year
-            // reading (`12-12-31` is 2031-12-12) — deliberately not emulated, they parse
-            // numerically here.
+            // `new Date(`${targetYear}-12-31`)`: years of four or more digits use V8's ISO
+            // parser and mean the literal year, valid up to JavaScript's Date instant range
+            // (December 31st of 275760 already exceeds it). Shorter years go through V8's
+            // legacy parser, which reads the leading number by value (node-verified):
+            // 1-12 is the month of a month-day-year date (`12-12-31` is 2031-12-12),
+            // 13-31 is an Invalid Date, 0 and 32-99 are two-digit years (2000s below 50,
+            // 1900s from 50), and 100-999 is a literal year. Legacy dates are local-time
+            // midnights in JS; like all date math in this crate they are UTC here.
             let year = options.target_year.unwrap();
-            year.parse::<i32>()
-                .ok()
-                .filter(|&year| year <= 275_759)
-                .and_then(|year| date_to_unix_timestamp(year, 12, 31))
+            if year.len() < 4 {
+                match year.parse::<i32>().unwrap() {
+                    month @ 1..=12 => date_to_unix_timestamp(2031, month.cast_unsigned(), 12),
+                    13..=31 => None,
+                    year @ 32..=49 => date_to_unix_timestamp(2000 + year, 12, 31),
+                    year @ 50..=99 => date_to_unix_timestamp(1900 + year, 12, 31),
+                    0 => date_to_unix_timestamp(2000, 12, 31),
+                    year => date_to_unix_timestamp(year, 12, 31),
+                }
+            } else {
+                year.parse::<i32>()
+                    .ok()
+                    .filter(|&year| year <= 275_759)
+                    .and_then(|year| date_to_unix_timestamp(year, 12, 31))
+            }
         };
 
     // Sets a cutoff date for feature interoperability 30 months before the stated date
@@ -64,13 +76,16 @@ pub(crate) fn get_compatible_versions(
 
     // Find the active minimum version of each browser at targetDate: walk the timeline in
     // order, last write per browser wins. Sections are `<= targetDate` by instant; section
-    // dates are UTC midnights, so comparing Julian days is equivalent.
+    // dates are UTC midnights, so comparing Julian days is equivalent. Section days ascend
+    // (generator-enforced), so the walk can stop at the first row past the target.
     let mut min_versions = vec![None::<u32>; BASELINE_BROWSERS.len()];
     if let Some(target_day) = target_date.map(unix_timestamp_to_julian_day) {
-        for &(day, browser, version) in BASELINE_TIMELINE {
-            if day <= target_day {
-                min_versions[browser as usize] = Some(version);
+        for &row in BASELINE_TIMELINE {
+            let day = (row >> 40) as i32;
+            if day > target_day {
+                break;
             }
+            min_versions[(row >> 32 & 0xff) as usize] = Some(row as u32);
         }
     }
 
@@ -176,5 +191,33 @@ mod tests {
         let versions = get_compatible_versions(&options(Some("99999"), None));
         assert!(!versions.is_empty());
         assert_eq!(versions, get_compatible_versions(&options(Some("275759"), None)));
+    }
+
+    #[test]
+    fn test_short_years_use_v8_legacy_reading() {
+        let latest = get_compatible_versions(&options(Some("99999"), None));
+        let everything = get_compatible_versions(&options(Some("2013"), None));
+        assert!(!latest.is_empty());
+        // 1-12 reads as the month of 2031-MM-12, far past the newest timeline snapshot.
+        for year in ["12", "5", "05", "012"] {
+            assert_eq!(get_compatible_versions(&options(Some(year), None)), latest, "{year}");
+        }
+        // 13-31 is a V8 Invalid Date.
+        for year in ["13", "20", "31", "020"] {
+            assert_eq!(get_compatible_versions(&options(Some(year), None)), vec![], "{year}");
+        }
+        // 32-49 maps to 2032-2049, past the newest snapshot; 0 and 50-99 map to 2000 and
+        // 1950-1999, all pre-Baseline.
+        assert_eq!(get_compatible_versions(&options(Some("45"), None)), latest);
+        for year in ["0", "00", "99", "50"] {
+            assert_eq!(get_compatible_versions(&options(Some(year), None)), everything, "{year}");
+        }
+        // 100-999 stays a literal (pre-Baseline) year.
+        assert_eq!(get_compatible_versions(&options(Some("123"), None)), everything);
+    }
+
+    #[test]
+    fn test_pre_baseline_ts_is_2015_07_29() {
+        assert_eq!(date_to_unix_timestamp(2015, 7, 29), Some(PRE_BASELINE_TS));
     }
 }

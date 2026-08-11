@@ -881,16 +881,16 @@ impl<'a> Parser<'a> {
         Some((year as u16, month as u8, day as u8))
     }
 
-    /// Whether the parser sits at the end of an atom: end of input or a composition
-    /// boundary (`,` / `and` / `or`), possibly after whitespace. Used by atoms whose JS
-    /// regexp is `$`-anchored, so trailing junk must fail the whole atom.
-    fn at_atom_end(&self) -> bool {
-        let mut i = self.pos;
+    /// Whether an `and`/`or` composition keyword starts at or after `from`. Browserslist
+    /// splits clauses on `\s+and\s+` / `\s+or\s+`, so the keyword must be surrounded by
+    /// whitespace on both sides (`2024and` is not a boundary).
+    fn at_composition_keyword(&self, from: usize) -> bool {
+        let mut i = from;
         while i < self.bytes.len() && matches!(self.bytes[i], b' ' | b'\t') {
             i += 1;
         }
-        if i >= self.bytes.len() || self.bytes[i] == b',' {
-            return true;
+        if i == from {
+            return false;
         }
         let rest = &self.bytes[i..];
         (rest.len() >= 4
@@ -899,6 +899,36 @@ impl<'a> Parser<'a> {
             || (rest.len() >= 3
                 && rest[..2].eq_ignore_ascii_case(b"or")
                 && matches!(rest[2], b' ' | b'\t'))
+    }
+
+    /// Whether the parser sits at the end of an atom: end of input or a composition
+    /// boundary (`,` / `and` / `or`). Used by atoms whose JS regexp is `$`-anchored, so
+    /// trailing junk must fail the whole atom.
+    fn at_atom_end(&self) -> bool {
+        let mut i = self.pos;
+        while i < self.bytes.len() && matches!(self.bytes[i], b' ' | b'\t') {
+            i += 1;
+        }
+        if i >= self.bytes.len() || self.bytes[i] == b',' {
+            return true;
+        }
+        self.at_composition_keyword(self.pos)
+    }
+
+    /// Match a whitespace-separated two-keyword suffix (` a b`), restoring the position
+    /// when any part is missing.
+    fn match_keyword_pair(&mut self, a: &[u8], b: &[u8]) -> bool {
+        let save = self.pos;
+        if self.skip_whitespace1()
+            && self.match_keyword(a)
+            && self.skip_whitespace1()
+            && self.match_keyword(b)
+        {
+            true
+        } else {
+            self.pos = save;
+            false
+        }
     }
 
     /// `baseline (<year> | (newly|widely) available [on YYYY-MM-DD]) [with downstream]
@@ -952,29 +982,8 @@ impl<'a> Parser<'a> {
             }
         }
 
-        let mut downstream = false;
-        let save = self.pos;
-        if self.skip_whitespace1()
-            && self.match_keyword(b"with")
-            && self.skip_whitespace1()
-            && self.match_keyword(b"downstream")
-        {
-            downstream = true;
-        } else {
-            self.pos = save;
-        }
-
-        let mut kaios = false;
-        let save = self.pos;
-        if self.skip_whitespace1()
-            && self.match_keyword(b"including")
-            && self.skip_whitespace1()
-            && self.match_keyword(b"kaios")
-        {
-            kaios = true;
-        } else {
-            self.pos = save;
-        }
+        let downstream = self.match_keyword_pair(b"with", b"downstream");
+        let kaios = self.match_keyword_pair(b"including", b"kaios");
 
         if !self.at_atom_end() {
             self.pos = start;
@@ -1019,21 +1028,7 @@ impl<'a> Parser<'a> {
         if self.peek() == b',' {
             return true;
         }
-        if !matches!(self.peek(), b' ' | b'\t') {
-            return false;
-        }
-        // Skip whitespace to check for "and"/"or"
-        let mut i = self.pos;
-        while i < self.bytes.len() && matches!(self.bytes[i], b' ' | b'\t') {
-            i += 1;
-        }
-        let rest = &self.bytes[i..];
-        (rest.len() >= 4
-            && rest[..3].eq_ignore_ascii_case(b"and")
-            && matches!(rest[3], b' ' | b'\t'))
-            || (rest.len() >= 3
-                && rest[..2].eq_ignore_ascii_case(b"or")
-                && matches!(rest[2], b' ' | b'\t'))
+        self.at_composition_keyword(self.pos)
     }
 
     #[inline]

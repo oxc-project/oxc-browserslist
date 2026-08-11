@@ -1,7 +1,11 @@
 use thiserror::Error;
 
 #[derive(Debug, Error, PartialEq, Eq, Clone)]
+#[non_exhaustive]
 /// The errors may occur when querying with browserslist.
+///
+/// New query features add variants over time, so the enum is non-exhaustive;
+/// match with a wildcard arm.
 pub enum Error {
     #[error("failed to parse the rest of input: ...'{0}'")]
     /// Error of parsing query.
