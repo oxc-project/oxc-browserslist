@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.0](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.13...oxc-browserslist-v4.0.0) - 2026-08-11
+
+### Added
+
+- add Baseline query support ([#826](https://github.com/oxc-project/oxc-browserslist/pull/826))
+
+### Other
+
+- update dependencies ([#828](https://github.com/oxc-project/oxc-browserslist/pull/828))
+- Update rust crates ([#825](https://github.com/oxc-project/oxc-browserslist/pull/825))
+- Update browserslist ([#820](https://github.com/oxc-project/oxc-browserslist/pull/820))
+
 ## [3.0.13](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v3.0.12...oxc-browserslist-v3.0.13) - 2026-08-03
 
 ### Other
