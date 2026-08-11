@@ -40,16 +40,17 @@ pub(crate) fn get_compatible_versions(
         } else if let Some(date) = options.widely_available_on_date {
             date
         } else {
-            // `new Date(`${targetYear}-12-31`)`: V8's ISO parser accepts exactly four year digits;
-            // five or more are an Invalid Date. One to three digits hit its legacy
-            // timezone-dependent parser (e.g. `12` becomes 2031) — deliberately not emulated,
-            // they parse numerically here.
+            // `new Date(`${targetYear}-12-31`)`: four-digit years use V8's ISO parser and
+            // other lengths its legacy parser; both mean the literal year, valid up to
+            // JavaScript's Date instant range (December 31st of 275760 already exceeds
+            // it). Exception: one- and two-digit years get the legacy month-day-year
+            // reading (`12-12-31` is 2031-12-12) — deliberately not emulated, they parse
+            // numerically here.
             let year = options.target_year.unwrap();
-            if year.len() > 4 {
-                None
-            } else {
-                year.parse::<i32>().ok().and_then(|year| date_to_unix_timestamp(year, 12, 31))
-            }
+            year.parse::<i32>()
+                .ok()
+                .filter(|&year| year <= 275_759)
+                .and_then(|year| date_to_unix_timestamp(year, 12, 31))
         };
 
     // Sets a cutoff date for feature interoperability 30 months before the stated date
@@ -161,9 +162,19 @@ mod tests {
 
     #[test]
     fn test_invalid_dates_are_empty() {
-        // A five-digit year and an invalid calendar date are JS Invalid Dates: every
-        // comparison is false, so no browser gets a minimum version.
-        assert_eq!(get_compatible_versions(&options(Some("20200"), None)), vec![]);
+        // A year past JavaScript's Date range and an invalid calendar date are JS Invalid
+        // Dates: every comparison is false, so no browser gets a minimum version.
+        assert_eq!(get_compatible_versions(&options(Some("275760"), None)), vec![]);
+        assert_eq!(get_compatible_versions(&options(Some("9999999999"), None)), vec![]);
         assert_eq!(get_compatible_versions(&options(None, Some(None))), vec![]);
+    }
+
+    #[test]
+    fn test_far_future_year_selects_latest_minimums() {
+        // Long years within JavaScript's Date range are literal years (V8's legacy parser),
+        // saturating at the newest timeline snapshot.
+        let versions = get_compatible_versions(&options(Some("99999"), None));
+        assert!(!versions.is_empty());
+        assert_eq!(versions, get_compatible_versions(&options(Some("275759"), None)));
     }
 }
