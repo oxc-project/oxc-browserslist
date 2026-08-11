@@ -6,7 +6,7 @@ _default:
 alias r := ready
 
 init:
-  cargo binstall watchexec-cli typos-cli cargo-shear@1.13.1 -y
+  cargo binstall watchexec-cli typos-cli cargo-shear@1.13.3 -y
 
 ready:
   git diff --exit-code --quiet
