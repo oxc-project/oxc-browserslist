@@ -18,7 +18,7 @@ jobs:
       - uses: oxc-project/setup-rust@3d6fb132fbe7cdcb66bf8ec193911c2945369d12 # v1.0.17
         with:
           restore-cache: true
-          tools: just,cargo-shear@1.13.1
+          tools: just,cargo-shear@1.13.3
           components: rustfmt
       - uses: voidzero-dev/setup-vp@313600b80b104eadebb9111787d37a2e83e014ca # v1.17.0
         with:
