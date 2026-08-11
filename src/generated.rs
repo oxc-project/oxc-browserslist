@@ -1,3 +1,4 @@
+pub mod baseline_timeline;
 pub mod caniuse_feature_matching;
 pub mod caniuse_global_usage;
 pub mod caniuse_region_matching;

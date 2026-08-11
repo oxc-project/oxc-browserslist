@@ -1,15 +1,40 @@
 #[derive(Debug, Clone)]
 pub enum QueryAtom<'a> {
-    Last { count: u16, major: bool, name: Option<&'a str> },
+    Last {
+        count: u16,
+        major: bool,
+        name: Option<&'a str>,
+    },
     Unreleased(Option<&'a str>),
     Years(f64),
-    Since { year: i32, month: u32, day: u32 },
-    Percentage { comparator: Comparator, popularity: f32, stats: Stats<'a> },
-    Cover { coverage: f32, stats: Stats<'a> },
+    Since {
+        year: i32,
+        month: u32,
+        day: u32,
+    },
+    Percentage {
+        comparator: Comparator,
+        popularity: f32,
+        stats: Stats<'a>,
+    },
+    Cover {
+        coverage: f32,
+        stats: Stats<'a>,
+    },
     Supports(&'a str, Option<SupportKind>),
     Electron(VersionRange<'a>),
     Node(VersionRange<'a>),
     Browser(&'a str, VersionRange<'a>),
+    /// Fields mirror the captures of the browserslist `baseline` regexp:
+    /// `baseline (<year> | (newly|widely) available [on YYYY-MM-DD]) [with downstream]
+    /// [including kaios]`.
+    Baseline {
+        year: Option<&'a str>,
+        availability: Option<BaselineAvailability>,
+        date: Option<(u16, u8, u8)>,
+        downstream: bool,
+        kaios: bool,
+    },
     FirefoxESR,
     OperaMini,
     CurrentNode,
@@ -30,6 +55,12 @@ pub enum Stats<'a> {
 pub enum SupportKind {
     Fully,
     Partially,
+}
+
+#[derive(Debug, Clone)]
+pub enum BaselineAvailability {
+    Newly,
+    Widely,
 }
 
 #[derive(Debug, Clone)]
@@ -815,6 +846,144 @@ impl<'a> Parser<'a> {
         None
     }
 
+    /// Parse exactly `count` digits; the run must not extend further (`\d{2}` in a regexp is
+    /// bounded by the following non-digit pattern).
+    #[inline]
+    fn parse_exact_digits(&mut self, count: usize) -> Option<u32> {
+        let end = self.pos + count;
+        if end > self.bytes.len() || (end < self.bytes.len() && self.bytes[end].is_ascii_digit()) {
+            return None;
+        }
+        let mut n = 0u32;
+        for &b in &self.bytes[self.pos..end] {
+            if !b.is_ascii_digit() {
+                return None;
+            }
+            n = n * 10 + u32::from(b - b'0');
+        }
+        self.pos = end;
+        Some(n)
+    }
+
+    /// Strictly `\d{4}-\d{2}-\d{2}` like the baseline regexp; `2022-7-1` is not accepted.
+    /// Calendar validity is not checked here — browserslist hands whatever matched to
+    /// `new Date()` and an invalid date selects nothing at query time.
+    fn parse_baseline_date(&mut self) -> Option<(u16, u8, u8)> {
+        let year = self.parse_exact_digits(4)?;
+        if !self.eat(b'-') {
+            return None;
+        }
+        let month = self.parse_exact_digits(2)?;
+        if !self.eat(b'-') {
+            return None;
+        }
+        let day = self.parse_exact_digits(2)?;
+        Some((year as u16, month as u8, day as u8))
+    }
+
+    /// Whether the parser sits at the end of an atom: end of input or a composition
+    /// boundary (`,` / `and` / `or`), possibly after whitespace. Used by atoms whose JS
+    /// regexp is `$`-anchored, so trailing junk must fail the whole atom.
+    fn at_atom_end(&self) -> bool {
+        let mut i = self.pos;
+        while i < self.bytes.len() && matches!(self.bytes[i], b' ' | b'\t') {
+            i += 1;
+        }
+        if i >= self.bytes.len() || self.bytes[i] == b',' {
+            return true;
+        }
+        let rest = &self.bytes[i..];
+        (rest.len() >= 4
+            && rest[..3].eq_ignore_ascii_case(b"and")
+            && matches!(rest[3], b' ' | b'\t'))
+            || (rest.len() >= 3
+                && rest[..2].eq_ignore_ascii_case(b"or")
+                && matches!(rest[2], b' ' | b'\t'))
+    }
+
+    /// `baseline (<year> | (newly|widely) available [on YYYY-MM-DD]) [with downstream]
+    /// [including kaios]`, mirroring the browserslist regexp (including its fixed suffix
+    /// order). Failures fall back to `parse_browser`/`parse_unknown` so malformed shapes
+    /// produce the same error classes as JS.
+    fn parse_baseline(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        if !self.match_keyword(b"baseline") || !self.skip_whitespace1() {
+            self.pos = start;
+            return None;
+        }
+
+        let mut year = None;
+        let mut availability = None;
+        let mut date = None;
+        if self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
+            let digits_start = self.pos;
+            while self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
+                self.pos += 1;
+            }
+            year = Some(self.slice(digits_start, self.pos));
+        } else {
+            availability = if self.match_keyword(b"newly") {
+                Some(BaselineAvailability::Newly)
+            } else if self.match_keyword(b"widely") {
+                Some(BaselineAvailability::Widely)
+            } else {
+                self.pos = start;
+                return None;
+            };
+            if !self.skip_whitespace1() || !self.match_keyword(b"available") {
+                self.pos = start;
+                return None;
+            }
+            let save = self.pos;
+            if self.skip_whitespace1() && self.match_keyword(b"on") {
+                // A present `on` must carry a well-formed date, or the whole atom fails —
+                // the regexp has no partial match here.
+                if !self.skip_whitespace1() {
+                    self.pos = start;
+                    return None;
+                }
+                let Some(parsed) = self.parse_baseline_date() else {
+                    self.pos = start;
+                    return None;
+                };
+                date = Some(parsed);
+            } else {
+                self.pos = save;
+            }
+        }
+
+        let mut downstream = false;
+        let save = self.pos;
+        if self.skip_whitespace1()
+            && self.match_keyword(b"with")
+            && self.skip_whitespace1()
+            && self.match_keyword(b"downstream")
+        {
+            downstream = true;
+        } else {
+            self.pos = save;
+        }
+
+        let mut kaios = false;
+        let save = self.pos;
+        if self.skip_whitespace1()
+            && self.match_keyword(b"including")
+            && self.skip_whitespace1()
+            && self.match_keyword(b"kaios")
+        {
+            kaios = true;
+        } else {
+            self.pos = save;
+        }
+
+        if !self.at_atom_end() {
+            self.pos = start;
+            return None;
+        }
+
+        Some(QueryAtom::Baseline { year, availability, date, downstream, kaios })
+    }
+
     /// Dispatch to the appropriate parser based on first character
     #[inline]
     fn parse_query_atom(&mut self) -> Option<QueryAtom<'a>> {
@@ -835,7 +1004,7 @@ impl<'a> Parser<'a> {
             b'o' => self.parse_operamini().or_else(|| self.parse_browser()),
             b'm' => self.parse_maintained_node().or_else(|| self.parse_browser()),
             b'p' => self.parse_phantom_or_partially().or_else(|| self.parse_browser()),
-            b'b' => self.parse_browser(),
+            b'b' => self.parse_baseline().or_else(|| self.parse_browser()),
             b'd' => self.parse_defaults_or_dead().or_else(|| self.parse_browser()),
             b'a'..=b'z' => self.parse_browser(),
             _ => None,
@@ -948,6 +1117,124 @@ mod tests {
         let result = parse_browserslist_query("   ");
         assert!(result.is_ok());
         assert!(result.unwrap().1.is_empty());
+    }
+
+    #[track_caller]
+    fn parse_single_atom(input: &str) -> QueryAtom<'_> {
+        let mut result = parse_browserslist_query(input).unwrap().1;
+        assert_eq!(result.len(), 1, "{input} should parse as a single query");
+        result.remove(0).atom
+    }
+
+    #[test]
+    fn parse_baseline_year() {
+        assert!(matches!(
+            parse_single_atom("baseline 2024"),
+            QueryAtom::Baseline {
+                year: Some("2024"),
+                availability: None,
+                date: None,
+                downstream: false,
+                kaios: false,
+            }
+        ));
+    }
+
+    #[test]
+    fn parse_baseline_availability() {
+        assert!(matches!(
+            parse_single_atom("baseline newly available"),
+            QueryAtom::Baseline {
+                year: None,
+                availability: Some(BaselineAvailability::Newly),
+                date: None,
+                ..
+            }
+        ));
+        assert!(matches!(
+            parse_single_atom("baseline widely available"),
+            QueryAtom::Baseline { availability: Some(BaselineAvailability::Widely), .. }
+        ));
+        assert!(matches!(
+            parse_single_atom("BASELINE NEWLY AVAILABLE"),
+            QueryAtom::Baseline { availability: Some(BaselineAvailability::Newly), .. }
+        ));
+    }
+
+    #[test]
+    fn parse_baseline_on_date() {
+        assert!(matches!(
+            parse_single_atom("baseline widely available on 2024-06-01"),
+            QueryAtom::Baseline { date: Some((2024, 6, 1)), .. }
+        ));
+        // `newly ... on ...` parses fine; the error is raised at query time.
+        assert!(matches!(
+            parse_single_atom("baseline newly available on 2024-06-01"),
+            QueryAtom::Baseline {
+                availability: Some(BaselineAvailability::Newly),
+                date: Some((2024, 6, 1)),
+                ..
+            }
+        ));
+    }
+
+    #[test]
+    fn parse_baseline_suffixes() {
+        assert!(matches!(
+            parse_single_atom("baseline 2024 with downstream"),
+            QueryAtom::Baseline { year: Some("2024"), downstream: true, kaios: false, .. }
+        ));
+        assert!(matches!(
+            parse_single_atom("baseline 2024 including kaios"),
+            QueryAtom::Baseline { downstream: false, kaios: true, .. }
+        ));
+        assert!(matches!(
+            parse_single_atom(
+                "baseline widely available on 2024-06-01 with downstream including kaios"
+            ),
+            QueryAtom::Baseline { date: Some((2024, 6, 1)), downstream: true, kaios: true, .. }
+        ));
+    }
+
+    #[test]
+    fn parse_baseline_malformed_is_unknown() {
+        for input in [
+            "baseline",
+            "baseline widely",
+            "baseline available",
+            "baseline with downstream",
+            "baseline widely available on",
+            "baseline widely available on 2024-1-1",
+            "baseline widely available on 20240101",
+            "baseline widely available including kaios with downstream",
+            "baseline widely available extra",
+        ] {
+            assert!(
+                matches!(parse_single_atom(input), QueryAtom::Unknown(raw) if raw == input),
+                "{input} should be an unknown query"
+            );
+        }
+    }
+
+    #[test]
+    fn parse_baseline_composition() {
+        for input in ["baseline 2024, chrome 4", "baseline 2024 , chrome 4"] {
+            let queries = parse_browserslist_query(input).unwrap().1;
+            assert_eq!(queries.len(), 2);
+            assert!(matches!(queries[0].atom, QueryAtom::Baseline { year: Some("2024"), .. }));
+            assert!(matches!(queries[1].atom, QueryAtom::Browser("chrome", _)));
+        }
+
+        let queries = parse_browserslist_query("baseline 2024 and not dead").unwrap().1;
+        assert_eq!(queries.len(), 2);
+        assert!(matches!(queries[0].atom, QueryAtom::Baseline { .. }));
+        assert!(queries[1].negated);
+        assert!(matches!(queries[1].atom, QueryAtom::Dead));
+
+        let queries = parse_browserslist_query("not baseline 2024").unwrap().1;
+        assert_eq!(queries.len(), 1);
+        assert!(queries[0].negated);
+        assert!(matches!(queries[0].atom, QueryAtom::Baseline { year: Some("2024"), .. }));
     }
 
     #[test]

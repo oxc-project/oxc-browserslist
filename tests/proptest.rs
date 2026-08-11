@@ -259,6 +259,35 @@ fn special_strategy() -> impl Strategy<Value = String> {
     .prop_map(|s| s.to_string())
 }
 
+fn baseline_suffix_strategy() -> impl Strategy<Value = &'static str> {
+    prop::sample::select(vec![
+        "",
+        " with downstream",
+        " including kaios",
+        " with downstream including kaios",
+    ])
+}
+
+// NOTE: years are generated with exactly four digits. Shorter years hit V8's legacy,
+// timezone-dependent date parser in npm browserslist (`baseline 12` targets the year 2031
+// there), which the Rust implementation deliberately does not emulate. Day may exceed the
+// month's length: both implementations roll it over (`2024-02-31` acts like `2024-03-02`).
+fn baseline_strategy() -> impl Strategy<Value = String> {
+    prop_oneof![
+        (2013u32..2033, baseline_suffix_strategy())
+            .prop_map(|(year, suffix)| format!("baseline {}{}", year, suffix)),
+        baseline_suffix_strategy().prop_map(|suffix| format!("baseline newly available{}", suffix)),
+        baseline_suffix_strategy()
+            .prop_map(|suffix| format!("baseline widely available{}", suffix)),
+        (2016u32..2031, 1u32..=12, 1u32..=31, baseline_suffix_strategy()).prop_map(
+            |(year, month, day, suffix)| format!(
+                "baseline widely available on {}-{:02}-{:02}{}",
+                year, month, day, suffix
+            )
+        ),
+    ]
+}
+
 fn single_query_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
         4 => last_versions_strategy(),
@@ -274,6 +303,7 @@ fn single_query_strategy() -> impl Strategy<Value = String> {
         1 => electron_strategy(),
         1 => unreleased_strategy(),
         2 => special_strategy(),
+        1 => baseline_strategy(),
     ]
 }
 
@@ -363,6 +393,11 @@ proptest! {
 
     #[test]
     fn proptest_special(query in special_strategy()) {
+        run_compare(&query, &Opts::default());
+    }
+
+    #[test]
+    fn proptest_baseline(query in baseline_strategy()) {
         run_compare(&query, &Opts::default());
     }
 

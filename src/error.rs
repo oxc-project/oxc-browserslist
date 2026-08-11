@@ -45,6 +45,12 @@ pub enum Error {
     /// Unknown Can I Use region.
     UnknownRegion(String),
 
+    #[error(
+        "Using newly available with a date is not supported, please use \"widely available on YYYY-MM-DD\" and add 30 months to the date you specified."
+    )]
+    /// `baseline newly available` can't be combined with a date.
+    BaselineNewlyWithDate,
+
     #[error("unknown browser query: '{0}'")]
     /// Query can't be recognized.
     UnknownQuery(String),

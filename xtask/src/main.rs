@@ -16,6 +16,9 @@ fn run() -> Result<()> {
     // Generate electron to chromium mappings
     xtask::generators::build_electron_to_chromium()?;
 
+    // Generate the Baseline browser-version timeline
+    xtask::generators::build_baseline_timeline()?;
+
     // Generate node version data
     xtask::generators::build_node_versions()?;
     xtask::generators::build_node_release_schedule()?;
