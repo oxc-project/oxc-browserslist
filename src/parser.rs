@@ -1,4 +1,15 @@
 #[derive(Debug, Clone)]
+pub enum BaselineKind {
+    Year(u32),
+    LegacyYear(u32),
+    InvalidYear,
+    NewlyAvailable,
+    NewlyAvailableOnDate,
+    WidelyAvailable,
+    WidelyAvailableOnDate { year: i64, month: u32, day: u32 },
+}
+
+#[derive(Debug, Clone)]
 pub enum QueryAtom<'a> {
     Last { count: u16, major: bool, name: Option<&'a str> },
     Unreleased(Option<&'a str>),
@@ -10,6 +21,7 @@ pub enum QueryAtom<'a> {
     Electron(VersionRange<'a>),
     Node(VersionRange<'a>),
     Browser(&'a str, VersionRange<'a>),
+    Baseline { kind: BaselineKind, downstream: bool, kaios: bool },
     FirefoxESR,
     OperaMini,
     CurrentNode,
@@ -226,6 +238,25 @@ impl<'a> Parser<'a> {
                 break;
             }
             n = n.wrapping_mul(10).wrapping_add((b - b'0') as u32);
+            self.pos += 1;
+        }
+        Some(n)
+    }
+
+    #[inline]
+    fn parse_exact_digits(&mut self, count: usize) -> Option<u32> {
+        let start = self.pos;
+        let mut n = 0u32;
+        for _ in 0..count {
+            let Some(&byte) = self.bytes.get(self.pos) else {
+                self.pos = start;
+                return None;
+            };
+            if !byte.is_ascii_digit() {
+                self.pos = start;
+                return None;
+            }
+            n = n * 10 + u32::from(byte - b'0');
             self.pos += 1;
         }
         Some(n)
@@ -815,6 +846,98 @@ impl<'a> Parser<'a> {
         None
     }
 
+    fn parse_baseline_date(&mut self) -> Option<(i64, u32, u32)> {
+        let start = self.pos;
+        let result = (|| {
+            let year = i64::from(self.parse_exact_digits(4)?);
+            self.eat(b'-').then_some(())?;
+            let month = self.parse_exact_digits(2)?;
+            self.eat(b'-').then_some(())?;
+            let day = self.parse_exact_digits(2)?;
+            Some((year, month, day))
+        })();
+        if result.is_none() {
+            self.pos = start;
+        }
+        result
+    }
+
+    fn parse_baseline(&mut self) -> Option<QueryAtom<'a>> {
+        let start = self.pos;
+        let result = (|| {
+            if !self.match_keyword(b"baseline") || !self.skip_whitespace1() {
+                return None;
+            }
+
+            let kind = if self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
+                let start = self.pos;
+                while self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
+                    self.pos += 1;
+                }
+                let raw_year = self.slice(start, self.pos);
+                match raw_year.parse() {
+                    Ok(year) if raw_year.len() == 4 => BaselineKind::Year(year),
+                    Ok(year) => BaselineKind::LegacyYear(year),
+                    Err(_) => BaselineKind::InvalidYear,
+                }
+            } else {
+                let newly = if self.match_keyword(b"newly") {
+                    true
+                } else if self.match_keyword(b"widely") {
+                    false
+                } else {
+                    return None;
+                };
+                if !self.skip_whitespace1() || !self.match_keyword(b"available") {
+                    return None;
+                }
+
+                let before_date = self.pos;
+                let date = if self.skip_whitespace1() && self.match_keyword(b"on") {
+                    if !self.skip_whitespace1() {
+                        return None;
+                    }
+                    Some(self.parse_baseline_date()?)
+                } else {
+                    self.pos = before_date;
+                    None
+                };
+                match (newly, date) {
+                    (true, Some(_)) => BaselineKind::NewlyAvailableOnDate,
+                    (true, None) => BaselineKind::NewlyAvailable,
+                    (false, Some((year, month, day))) => {
+                        BaselineKind::WidelyAvailableOnDate { year, month, day }
+                    }
+                    (false, None) => BaselineKind::WidelyAvailable,
+                }
+            };
+
+            let before_downstream = self.pos;
+            let downstream = self.skip_whitespace1()
+                && self.match_keyword(b"with")
+                && self.skip_whitespace1()
+                && self.match_keyword(b"downstream");
+            if !downstream {
+                self.pos = before_downstream;
+            }
+
+            let before_kaios = self.pos;
+            let kaios = self.skip_whitespace1()
+                && self.match_keyword(b"including")
+                && self.skip_whitespace1()
+                && self.match_keyword(b"kaios");
+            if !kaios {
+                self.pos = before_kaios;
+            }
+
+            Some(QueryAtom::Baseline { kind, downstream, kaios })
+        })();
+        if result.is_none() {
+            self.pos = start;
+        }
+        result
+    }
+
     /// Dispatch to the appropriate parser based on first character
     #[inline]
     fn parse_query_atom(&mut self) -> Option<QueryAtom<'a>> {
@@ -835,7 +958,7 @@ impl<'a> Parser<'a> {
             b'o' => self.parse_operamini().or_else(|| self.parse_browser()),
             b'm' => self.parse_maintained_node().or_else(|| self.parse_browser()),
             b'p' => self.parse_phantom_or_partially().or_else(|| self.parse_browser()),
-            b'b' => self.parse_browser(),
+            b'b' => self.parse_baseline().or_else(|| self.parse_browser()),
             b'd' => self.parse_defaults_or_dead().or_else(|| self.parse_browser()),
             b'a'..=b'z' => self.parse_browser(),
             _ => None,
@@ -1841,5 +1964,51 @@ mod tests {
         let mut parser = Parser::new("s");
         let result = parser.parse_since_or_supports();
         assert!(result.is_none());
+    }
+
+    #[test]
+    fn parse_baseline_shapes() {
+        assert!(matches!(
+            Parser::new("baseline widely available").parse_baseline(),
+            Some(QueryAtom::Baseline {
+                kind: BaselineKind::WidelyAvailable,
+                downstream: false,
+                kaios: false
+            })
+        ));
+
+        assert!(matches!(
+            Parser::new("baseline newly available").parse_baseline(),
+            Some(QueryAtom::Baseline { kind: BaselineKind::NewlyAvailable, .. })
+        ));
+
+        assert!(matches!(
+            Parser::new("baseline 2020 with downstream including kaios").parse_baseline(),
+            Some(QueryAtom::Baseline {
+                kind: BaselineKind::Year(2020),
+                downstream: true,
+                kaios: true
+            })
+        ));
+
+        assert!(matches!(
+            Parser::new("baseline widely available on 2022-07-01").parse_baseline(),
+            Some(QueryAtom::Baseline {
+                kind: BaselineKind::WidelyAvailableOnDate { year: 2022, month: 7, day: 1 },
+                ..
+            })
+        ));
+        assert!(matches!(
+            Parser::new("baseline newly available on 2022-07-01").parse_baseline(),
+            Some(QueryAtom::Baseline { kind: BaselineKind::NewlyAvailableOnDate, .. })
+        ));
+    }
+
+    #[test]
+    fn reject_invalid_baseline_grammar() {
+        for query in ["baseline", "baseline widely available on 2022-7-01"] {
+            assert!(Parser::new(query).parse_baseline().is_none());
+        }
+        assert!(parse_browserslist_query("baseline 2020 including kaios with downstream").is_err());
     }
 }

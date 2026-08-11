@@ -8,6 +8,7 @@ use crate::{
     semver::Version,
 };
 
+mod baseline;
 mod browser_accurate;
 mod browser_bounded_range;
 mod browser_unbounded_range;
@@ -186,6 +187,9 @@ pub fn query(atom: QueryAtom, opts: &Opts) -> QueryResult {
         }
         QueryAtom::Browser(name, VersionRange::Accurate(version)) => {
             browser_accurate::browser_accurate(name, version, opts)
+        }
+        QueryAtom::Baseline { kind, downstream, kaios } => {
+            baseline::baseline(kind, downstream, kaios, opts)
         }
         QueryAtom::FirefoxESR => firefox_esr::firefox_esr(),
         QueryAtom::OperaMini => op_mini::op_mini(),

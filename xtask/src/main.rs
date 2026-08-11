@@ -20,6 +20,8 @@ fn run() -> Result<()> {
     xtask::generators::build_node_versions()?;
     xtask::generators::build_node_release_schedule()?;
 
+    xtask::generators::build_baseline()?;
+
     // Parse caniuse data once and use for all generators
     let caniuse = xtask::data::parse_caniuse_global()?;
 

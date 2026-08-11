@@ -259,6 +259,29 @@ fn special_strategy() -> impl Strategy<Value = String> {
     .prop_map(|s| s.to_string())
 }
 
+fn baseline_suffix_strategy() -> impl Strategy<Value = &'static str> {
+    prop::sample::select(vec![
+        "",
+        " with downstream",
+        " including kaios",
+        " with downstream including kaios",
+    ])
+}
+
+fn baseline_strategy() -> impl Strategy<Value = String> {
+    prop_oneof![
+        (2013u32..2033, baseline_suffix_strategy())
+            .prop_map(|(year, suffix)| format!("baseline {year}{suffix}")),
+        baseline_suffix_strategy().prop_map(|suffix| format!("baseline newly available{suffix}")),
+        baseline_suffix_strategy().prop_map(|suffix| format!("baseline widely available{suffix}")),
+        (2016u32..2031, 1u32..=12, 1u32..=31, baseline_suffix_strategy()).prop_map(
+            |(year, month, day, suffix)| format!(
+                "baseline widely available on {year}-{month:02}-{day:02}{suffix}"
+            )
+        ),
+    ]
+}
+
 fn single_query_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
         4 => last_versions_strategy(),
@@ -274,6 +297,7 @@ fn single_query_strategy() -> impl Strategy<Value = String> {
         1 => electron_strategy(),
         1 => unreleased_strategy(),
         2 => special_strategy(),
+        1 => baseline_strategy(),
     ]
 }
 
@@ -363,6 +387,11 @@ proptest! {
 
     #[test]
     fn proptest_special(query in special_strategy()) {
+        run_compare(&query, &Opts::default());
+    }
+
+    #[test]
+    fn proptest_baseline(query in baseline_strategy()) {
         run_compare(&query, &Opts::default());
     }
 

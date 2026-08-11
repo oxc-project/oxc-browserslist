@@ -52,6 +52,12 @@ pub enum Error {
     #[error("year overflow")]
     /// Year overflow.
     YearOverflow,
+
+    #[error(
+        "Using newly available with a date is not supported, please use \"widely available on YYYY-MM-DD\" and add 30 months to the date you specified."
+    )]
+    /// Baseline Newly available cannot be queried on a date.
+    BaselineNewlyAvailableOnDate,
 }
 
 impl<'a> From<&'a str> for Error {

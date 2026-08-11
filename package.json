@@ -15,6 +15,7 @@
     "vite-plus": "catalog:"
   },
   "peerDependencies": {
+    "baseline-browser-mapping": "2.x",
     "caniuse-lite": "1.x",
     "electron-to-chromium": "1.x",
     "node-releases": "2.x"
