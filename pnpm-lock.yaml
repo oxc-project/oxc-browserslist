@@ -17,6 +17,9 @@ importers:
 
   .:
     dependencies:
+      baseline-browser-mapping:
+        specifier: 2.x
+        version: 2.11.13
       browserslist:
         specifier: 4.28.8
         version: 4.28.8

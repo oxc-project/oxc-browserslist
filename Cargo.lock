@@ -428,6 +428,7 @@ version = "3.0.13"
 dependencies = [
  "criterion2",
  "js-sys",
+ "libc",
  "miniz_oxide",
  "pico-args",
  "postcard",

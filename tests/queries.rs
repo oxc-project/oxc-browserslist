@@ -14,6 +14,8 @@ fn should_failed(query: &str, opts: &Opts) -> Error {
     resolve(&[query], opts).unwrap_err()
 }
 
+#[path = "queries/baseline.rs"]
+mod baseline;
 #[path = "queries/browser_accurate.rs"]
 mod browser_accurate;
 #[path = "queries/browser_bounded_range.rs"]
