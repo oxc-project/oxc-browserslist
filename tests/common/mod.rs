@@ -10,7 +10,7 @@ use browserslist::{Opts, resolve};
 #[track_caller]
 pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
     #[cfg(target_os = "windows")]
-    let bin = "browserslist.exe";
+    let bin = "browserslist.cmd";
     #[cfg(not(target_os = "windows"))]
     let bin = "browserslist";
     // Use absolute path without canonicalize() to avoid flaky failures on macOS

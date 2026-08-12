@@ -18,7 +18,7 @@ use proptest::prelude::*;
 #[track_caller]
 fn run_compare(query: &str, opts: &Opts) {
     #[cfg(target_os = "windows")]
-    let bin = "browserslist.exe";
+    let bin = "browserslist.cmd";
     #[cfg(not(target_os = "windows"))]
     let bin = "browserslist";
     // Use absolute path without canonicalize() to avoid flaky failures on macOS
