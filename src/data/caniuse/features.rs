@@ -1,6 +1,6 @@
 use super::{
     BrowserName,
-    compression::{LazyBlob, LazyData},
+    compression::{LazyBlob, read_varint},
 };
 
 use crate::data::decode_browser_name;
@@ -8,12 +8,6 @@ pub use crate::generated::caniuse_feature_matching::get_feature_stat;
 
 static FEATURES: LazyBlob =
     LazyBlob::new(include_bytes!("../../generated/caniuse_feature_matching.bin.deflate"));
-static VERSION_TABLE: LazyData<Vec<String>> =
-    LazyData::new(include_bytes!("../../generated/caniuse_feature_version_table.bin.deflate"));
-/// Per-browser version order (browser id -> version-table indices, in version order). Feature
-/// support lists are stored as runs of local indices into this order; see `create_data`.
-static BROWSER_VERSIONS: LazyData<Vec<Vec<u16>>> =
-    LazyData::new(include_bytes!("../../generated/caniuse_feature_browser_versions.bin.deflate"));
 
 pub struct FeatureSet {
     yes: Vec</* version */ &'static str>,
@@ -42,8 +36,11 @@ impl Feature {
     }
 
     pub fn create_data(&self) -> Vec<(BrowserName, FeatureSet)> {
-        let table: &'static [String] = VERSION_TABLE.get();
-        let browser_versions = BROWSER_VERSIONS.get();
+        let table: &'static [String] = super::version_table();
+        // Each browser's version order is its version_list as canonical-table indices — decoded
+        // from the browsers blob anyway, so no separate order table is bundled. The generator
+        // encodes runs against the same order (see `build_caniuse_feature_matching` in xtask).
+        let browser_versions = super::version_orders();
         // The slice is hand-decoded rather than handed to `postcard::from_bytes`: a generic
         // deserializer for this nested type monomorphizes into several KB of code that would dwarf
         // the data it saves. The layout (postcard-compatible) is, per browser entry: one browser
@@ -64,20 +61,6 @@ impl Feature {
             data.push((decode_browser_name(browser), FeatureSet::new(yes, partial)));
         }
         data
-    }
-}
-
-fn read_varint(bytes: &[u8], pos: &mut usize) -> usize {
-    let mut result = 0;
-    let mut shift = 0;
-    loop {
-        let byte = bytes[*pos];
-        *pos += 1;
-        result |= ((byte & 0x7f) as usize) << shift;
-        if byte & 0x80 == 0 {
-            return result;
-        }
-        shift += 7;
     }
 }
 

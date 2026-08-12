@@ -25,6 +25,25 @@ pub fn generate_file(file: &str, token_stream: proc_macro2::TokenStream) {
     fs::write(root().join("src/generated").join(file), code).unwrap();
 }
 
+/// Append one LEB128 varint (postcard's wire format, so the runtime's shared `read_varint`
+/// decodes it) to `out`.
+pub fn push_varint(out: &mut Vec<u8>, mut value: u64) {
+    loop {
+        let byte = (value & 0x7f) as u8;
+        value >>= 7;
+        if value == 0 {
+            out.push(byte);
+            return;
+        }
+        out.push(byte | 0x80);
+    }
+}
+
+/// Zigzag-encode a signed value for varint storage (small magnitudes of either sign stay small).
+pub fn zigzag(value: i64) -> u64 {
+    ((value << 1) ^ (value >> 63)) as u64
+}
+
 pub fn create_range_vec(v: &Vec<Vec<u8>>) -> Vec<u32> {
     let mut offset = 0;
     // [start0, start1, ..., startN, endN]
@@ -39,12 +58,13 @@ pub fn create_range_vec(v: &Vec<Vec<u8>>) -> Vec<u32> {
 
 /// Deduplicate and lexicographically sort `values` into a string intern table, save it as a
 /// compressed blob, and return the table alongside a value -> `u16` index map for remapping data.
-/// Both the feature and region generators intern their version strings this way.
+/// The canonical version table every dataset references is built this way.
 pub fn intern_table(
     blob: &str,
     values: impl IntoIterator<Item = String>,
 ) -> (Vec<String>, HashMap<String, u16>) {
     let table: Vec<String> = values.into_iter().collect::<BTreeSet<_>>().into_iter().collect();
+    assert!(table.len() <= usize::from(u16::MAX) + 1, "intern table overflows u16 indices");
     save_bin_compressed(blob, &to_allocvec(&table).unwrap());
     let index = table.iter().enumerate().map(|(i, v)| (v.clone(), i as u16)).collect();
     (table, index)
@@ -67,15 +87,24 @@ pub fn generate_keyed_lookup(
     let module = format_ident!("{module}");
     let value_type = format_ident!("{value_type}");
     let fn_name = format_ident!("{fn_name}");
+    // Emit the narrowest offset type that fits: today both blobs' offsets fit u16, which halves
+    // the table; if the data ever outgrows u16 the next regeneration silently falls back to u32.
+    let max = *ranges.last().unwrap();
+    let ranges_static = if max <= u32::from(u16::MAX) {
+        let ranges = ranges.iter().map(|&r| r as u16).collect::<Vec<_>>();
+        quote! { static RANGES: &[u16] = &[#(#ranges),*]; }
+    } else {
+        quote! { static RANGES: &[u32] = &[#(#ranges),*]; }
+    };
     let output = quote! {
         use crate::data::caniuse::{compression::LazyData, #module::#value_type};
 
         static KEYS: LazyData<Vec<String>> = LazyData::new(include_bytes!(#keys_file));
-        static RANGES: &[u32] = &[#(#ranges),*];
+        #ranges_static
 
         pub fn #fn_name(name: &str) -> Option<#value_type> {
             let index = KEYS.get().binary_search_by(|key| key.as_str().cmp(name)).ok()?;
-            Some(#value_type::new(RANGES[index], RANGES[index + 1]))
+            Some(#value_type::new(RANGES[index].into(), RANGES[index + 1].into()))
         }
     };
     generate_file(out_rs, output);
