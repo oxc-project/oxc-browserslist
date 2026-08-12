@@ -27,13 +27,23 @@ pub(super) fn current_node() -> QueryResult {
 
     #[cfg(not(target_arch = "wasm32"))]
     {
-        use std::process::Command;
+        use std::{process::Command, sync::OnceLock};
 
-        let output =
-            Command::new("node").arg("-v").output().map_err(|_| Error::UnsupportedCurrentNode)?;
-        let version =
-            String::from_utf8_lossy(&output.stdout).trim().trim_start_matches('v').to_owned();
+        static CURRENT_NODE: OnceLock<QueryResult> = OnceLock::new();
 
-        Ok(vec![Distrib::new("node", version)])
+        CURRENT_NODE
+            .get_or_init(|| {
+                let output = Command::new("node")
+                    .arg("-v")
+                    .output()
+                    .map_err(|_| Error::UnsupportedCurrentNode)?;
+                let version = String::from_utf8_lossy(&output.stdout)
+                    .trim()
+                    .trim_start_matches('v')
+                    .to_owned();
+
+                Ok(vec![Distrib::new("node", version)])
+            })
+            .clone()
     }
 }
