@@ -69,12 +69,11 @@ pub fn parse_version(version: &str) -> Result<ElectronVersion, Error> {
         return Err(err(version));
     }
 
-    let election_version = ElectronVersion::parse(first, second).map_err(|_| err(version))?;
-    Ok(election_version)
+    ElectronVersion::parse(first, second).map_err(|_| err(version))
 }
 
 fn check_number(n: &str) -> bool {
-    if n == "0" { true } else { !n.starts_with('0') }
+    n == "0" || !n.starts_with('0')
 }
 
 fn err(version: &str) -> Error {

@@ -1,12 +1,10 @@
 use super::{Distrib, QueryResult};
-use crate::{data::node::NODE_VERSIONS, error::Error, opts::Opts};
+use crate::{data::node::node_versions, error::Error, opts::Opts};
 
 pub(super) fn node_accurate(version_str: &str, opts: &Opts) -> QueryResult {
-    for v in version_str.split('.') {
-        let is_valid = if v == "0" { true } else { !v.starts_with('0') };
-        if !is_valid {
-            return Err(Error::UnknownNodejsVersion(version_str.to_string()));
-        }
+    // Reject leading zeros (e.g. "08"), like the JavaScript implementation.
+    if version_str.split('.').any(|n| n != "0" && n.starts_with('0')) {
+        return Err(Error::UnknownNodejsVersion(version_str.to_string()));
     }
 
     let mut s = version_str.split('.');
@@ -14,22 +12,13 @@ pub(super) fn node_accurate(version_str: &str, opts: &Opts) -> QueryResult {
     let minor = s.next().map(|n| n.parse::<u16>().unwrap_or_default());
     let patch = s.next().map(|n| n.parse::<u16>().unwrap_or_default());
 
-    let distribs = NODE_VERSIONS()
+    let distribs = node_versions()
         .iter()
         .rev()
         .find(|(v, _)| {
-            if let Some(major) = major {
-                let major_eq = major == v.0;
-                if let Some(minor) = minor {
-                    let minor_eq = minor == v.1;
-                    if let Some(patch) = patch {
-                        return major_eq && minor_eq && patch == v.2;
-                    }
-                    return major_eq && minor_eq;
-                }
-                return major_eq;
-            }
-            false
+            major.is_some_and(|major| major == v.0)
+                && minor.is_none_or(|minor| minor == v.1)
+                && patch.is_none_or(|patch| patch == v.2)
         })
         .map(|(_, text)| vec![Distrib::new("node", text.as_ref())]);
     if opts.ignore_unknown_versions {

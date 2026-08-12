@@ -16,9 +16,7 @@ pub(super) fn since(year: i32, month: u32, day: u32, opts: &Opts) -> QueryResult
         .flat_map(|(name, stat)| {
             stat.version_list
                 .iter()
-                .filter(
-                    |version| matches!(version.release_date(), Some(date) if date.get() >= time),
-                )
+                .filter(|version| version.release_date().is_some_and(|date| date.get() >= time))
                 .map(move |version| Distrib::new(name, version.version()))
         })
         .collect();

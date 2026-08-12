@@ -29,10 +29,9 @@ pub fn run_compare(query: &str, opts: &Opts, cwd: Option<&Path>) {
     }
     let output = String::from_utf8(command.output().unwrap().stdout).unwrap();
     let expected = output
-        .trim()
-        .split('\n')
+        .lines()
         .filter(|line| !line.is_empty())
-        .map(|s| s.to_string())
+        .map(ToString::to_string)
         .collect::<HashSet<_>>();
 
     let actual =

@@ -38,13 +38,13 @@ pub enum Stats<'a> {
     Region(&'a str),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub enum SupportKind {
     Fully,
     Partially,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub enum Comparator {
     Less,
     LessOrEqual,
@@ -53,7 +53,7 @@ pub enum Comparator {
 }
 
 impl Comparator {
-    pub fn compare_f32(&self, value: f32, target: f32) -> bool {
+    pub fn compare<T: PartialOrd>(self, value: T, target: T) -> bool {
         match self {
             Self::Greater => value > target,
             Self::GreaterOrEqual => value >= target,
@@ -166,18 +166,18 @@ impl<'a> Parser<'a> {
         false
     }
 
+    /// Match a keyword with an optional trailing `s` (e.g. `version`/`versions`).
     #[inline]
-    fn match_version_keyword(&mut self) -> bool {
-        let end = self.pos + 7;
+    fn match_plural_keyword(&mut self, kw: &[u8]) -> bool {
+        let end = self.pos + kw.len();
         if end > self.bytes.len() {
             return false;
         }
         let slice = &self.bytes[self.pos..end];
-        if !slice.eq_ignore_ascii_case(b"version") {
+        if !slice.eq_ignore_ascii_case(kw) {
             return false;
         }
         self.pos = end;
-        // Optional 's'
         if self.pos < self.bytes.len() && matches!(self.peek(), b's' | b'S') {
             self.pos += 1;
         }
@@ -189,23 +189,13 @@ impl<'a> Parser<'a> {
     }
 
     #[inline]
+    fn match_version_keyword(&mut self) -> bool {
+        self.match_plural_keyword(b"version")
+    }
+
+    #[inline]
     fn match_year_keyword(&mut self) -> bool {
-        let end = self.pos + 4;
-        if end > self.bytes.len() {
-            return false;
-        }
-        let slice = &self.bytes[self.pos..end];
-        if !slice.eq_ignore_ascii_case(b"year") {
-            return false;
-        }
-        self.pos = end;
-        if self.pos < self.bytes.len() && matches!(self.peek(), b's' | b'S') {
-            self.pos += 1;
-        }
-        self.pos >= self.bytes.len() || {
-            let b = self.peek();
-            !b.is_ascii_alphanumeric() && b != b'_'
-        }
+        self.match_plural_keyword(b"year")
     }
 
     /// Parse unsigned integer directly from bytes
@@ -272,8 +262,9 @@ impl<'a> Parser<'a> {
         Some(if neg { -n } else { n })
     }
 
+    /// Scan an optionally signed decimal number (e.g. `-1`, `2.5`, `.5`).
     #[inline]
-    fn parse_float(&mut self) -> Option<f32> {
+    fn scan_number(&mut self) -> Option<&'a str> {
         let start = self.pos;
         let _ = self.eat(b'-') || self.eat(b'+');
         while self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
@@ -284,22 +275,17 @@ impl<'a> Parser<'a> {
                 self.pos += 1;
             }
         }
-        if self.pos > start { self.slice(start, self.pos).parse().ok() } else { None }
+        if self.pos > start { Some(self.slice(start, self.pos)) } else { None }
+    }
+
+    #[inline]
+    fn parse_float(&mut self) -> Option<f32> {
+        self.scan_number()?.parse().ok()
     }
 
     #[inline]
     fn parse_double(&mut self) -> Option<f64> {
-        let start = self.pos;
-        let _ = self.eat(b'-') || self.eat(b'+');
-        while self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
-            self.pos += 1;
-        }
-        if self.eat(b'.') {
-            while self.pos < self.bytes.len() && self.peek().is_ascii_digit() {
-                self.pos += 1;
-            }
-        }
-        if self.pos > start { self.slice(start, self.pos).parse().ok() } else { None }
+        self.scan_number()?.parse().ok()
     }
 
     #[inline]
@@ -329,6 +315,20 @@ impl<'a> Parser<'a> {
         while self.pos < self.bytes.len() {
             let b = self.peek();
             if !b.is_ascii_alphabetic() && b != b'_' {
+                break;
+            }
+            self.pos += 1;
+        }
+        if self.pos > start { Some(self.slice(start, self.pos)) } else { None }
+    }
+
+    /// Parse a feature name for `supports` queries (alphanumeric and `-`).
+    #[inline]
+    fn parse_feature_name(&mut self) -> Option<&'a str> {
+        let start = self.pos;
+        while self.pos < self.bytes.len() {
+            let b = self.peek();
+            if !b.is_ascii_alphanumeric() && b != b'-' {
                 break;
             }
             self.pos += 1;
@@ -534,11 +534,11 @@ impl<'a> Parser<'a> {
             self.pos = start;
             return None;
         }
-        if self.pos >= self.bytes.len() || !matches!(self.peek(), b' ' | b'\t') {
+        // Exactly one whitespace character, like the upstream `since` regex.
+        if !(self.eat(b' ') || self.eat(b'\t')) {
             self.pos = start;
             return None;
         }
-        self.pos += 1;
 
         let Some(year) = self.parse_i32() else {
             self.pos = start;
@@ -557,19 +557,11 @@ impl<'a> Parser<'a> {
             return None;
         }
 
-        let feat_start = self.pos;
-        while self.pos < self.bytes.len() {
-            let b = self.peek();
-            if !b.is_ascii_alphanumeric() && b != b'-' {
-                break;
-            }
-            self.pos += 1;
-        }
-        if self.pos == feat_start {
+        let Some(feature) = self.parse_feature_name() else {
             self.pos = start;
             return None;
-        }
-        Some(QueryAtom::Supports(self.slice(feat_start, self.pos), None))
+        };
+        Some(QueryAtom::Supports(feature, None))
     }
 
     fn parse_cover_or_current(&mut self) -> Option<QueryAtom<'a>> {
@@ -700,19 +692,11 @@ impl<'a> Parser<'a> {
             self.pos = start;
             return None;
         }
-        let feat_start = self.pos;
-        while self.pos < self.bytes.len() {
-            let b = self.peek();
-            if !b.is_ascii_alphanumeric() && b != b'-' {
-                break;
-            }
-            self.pos += 1;
-        }
-        if self.pos == feat_start {
+        let Some(feature) = self.parse_feature_name() else {
             self.pos = start;
             return None;
-        }
-        Some(QueryAtom::Supports(self.slice(feat_start, self.pos), Some(SupportKind::Fully)))
+        };
+        Some(QueryAtom::Supports(feature, Some(SupportKind::Fully)))
     }
 
     fn parse_operamini(&mut self) -> Option<QueryAtom<'a>> {
@@ -790,19 +774,11 @@ impl<'a> Parser<'a> {
             self.pos = start;
             return None;
         }
-        let feat_start = self.pos;
-        while self.pos < self.bytes.len() {
-            let b = self.peek();
-            if !b.is_ascii_alphanumeric() && b != b'-' {
-                break;
-            }
-            self.pos += 1;
-        }
-        if self.pos == feat_start {
+        let Some(feature) = self.parse_feature_name() else {
             self.pos = start;
             return None;
-        }
-        Some(QueryAtom::Supports(self.slice(feat_start, self.pos), Some(SupportKind::Partially)))
+        };
+        Some(QueryAtom::Supports(feature, Some(SupportKind::Partially)))
     }
 
     fn parse_defaults_or_dead(&mut self) -> Option<QueryAtom<'a>> {
@@ -1030,10 +1006,10 @@ impl<'a> Parser<'a> {
     }
 }
 
-pub fn parse_browserslist_query(input: &str) -> Result<(&str, Vec<SingleQuery<'_>>), &str> {
+pub fn parse_browserslist_query(input: &str) -> Result<Vec<SingleQuery<'_>>, &str> {
     let input = input.trim();
     if input.is_empty() {
-        return Ok(("", vec![]));
+        return Ok(vec![]);
     }
 
     let mut parser = Parser::new(input);
@@ -1052,7 +1028,7 @@ pub fn parse_browserslist_query(input: &str) -> Result<(&str, Vec<SingleQuery<'_
         queries.push(SingleQuery { raw, atom, negated, is_and });
     }
 
-    Ok(("", queries))
+    Ok(queries)
 }
 
 #[cfg(test)]
@@ -1063,14 +1039,14 @@ mod tests {
     fn parse_browserslist_query_empty() {
         let result = parse_browserslist_query("");
         assert!(result.is_ok());
-        assert!(result.unwrap().1.is_empty());
+        assert!(result.unwrap().is_empty());
     }
 
     #[test]
     fn parse_browserslist_query_whitespace_only() {
         let result = parse_browserslist_query("   ");
         assert!(result.is_ok());
-        assert!(result.unwrap().1.is_empty());
+        assert!(result.unwrap().is_empty());
     }
 
     #[test]
@@ -1293,7 +1269,7 @@ mod tests {
     fn parse_browserslist_with_or() {
         let result = parse_browserslist_query("ie 10 or ie 11");
         assert!(result.is_ok());
-        let (_, queries) = result.unwrap();
+        let queries = result.unwrap();
         assert_eq!(queries.len(), 2);
         assert!(!queries[1].is_and);
     }
@@ -1302,7 +1278,7 @@ mod tests {
     fn parse_browserslist_with_and() {
         let result = parse_browserslist_query("ie >= 10 and ie <= 11");
         assert!(result.is_ok());
-        let (_, queries) = result.unwrap();
+        let queries = result.unwrap();
         assert_eq!(queries.len(), 2);
         assert!(queries[1].is_and);
     }
@@ -1311,7 +1287,7 @@ mod tests {
     fn parse_browserslist_with_not() {
         let result = parse_browserslist_query("ie >= 10, not ie 11");
         assert!(result.is_ok());
-        let (_, queries) = result.unwrap();
+        let queries = result.unwrap();
         assert_eq!(queries.len(), 2);
         assert!(queries[1].negated);
     }

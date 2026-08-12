@@ -6,52 +6,35 @@ pub struct Version(pub u16, pub u16, pub u16);
 
 impl Version {
     #[inline]
-    pub fn major(&self) -> u16 {
+    pub const fn major(self) -> u16 {
         self.0
     }
 
     #[inline]
-    pub fn minor(&self) -> u16 {
+    pub const fn minor(self) -> u16 {
         self.1
     }
 
     #[inline]
-    pub fn patch(&self) -> u16 {
+    pub const fn patch(self) -> u16 {
         self.2
     }
 
     pub fn parse(s: &str) -> Result<Self, ParseIntError> {
         let mut segments = s.split('.');
-        let major = match segments.next() {
-            Some(n) => n.parse()?,
-            None => 0,
-        };
-        let minor = match segments.next() {
-            Some(n) => n.parse()?,
-            None => 0,
-        };
-        let patch = match segments.next() {
-            Some(n) => n.parse()?,
-            None => 0,
-        };
-        Ok(Self(major, minor, patch))
+        let mut segment = || segments.next().map_or(Ok(0), str::parse);
+        Ok(Self(segment()?, segment()?, segment()?))
     }
 
-    pub fn loose_compare(&self, b: &str) -> Ordering {
+    pub fn loose_compare(self, b: &str) -> Ordering {
         let mut b = b.split('.');
         let Some(first) = b.next() else {
             return Ordering::Equal;
         };
-        let first: u16 = first.parse().unwrap_or_default();
-        let x = self.0.cmp(&first);
-        if !x.is_eq() {
-            return x;
-        }
-        let Some(second) = b.next() else {
-            return Ordering::Equal;
-        };
-        let second: u16 = second.parse().unwrap_or_default();
-        self.1.cmp(&second)
+        self.0.cmp(&first.parse().unwrap_or_default()).then_with(|| match b.next() {
+            Some(second) => self.1.cmp(&second.parse().unwrap_or_default()),
+            None => Ordering::Equal,
+        })
     }
 }
 

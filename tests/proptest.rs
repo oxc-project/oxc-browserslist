@@ -43,14 +43,13 @@ fn run_compare(query: &str, opts: &Opts) {
     match (npm_success, rust_result) {
         (true, Ok(browsers)) => {
             let expected = npm_output
-                .trim()
-                .split('\n')
+                .lines()
                 .filter(|line| !line.is_empty())
-                .map(|s| s.to_string())
+                .map(ToString::to_string)
                 .collect::<HashSet<_>>();
             let actual = browsers.iter().map(ToString::to_string).collect::<HashSet<_>>();
             if expected != actual {
-                println!("Query: {:?}", query);
+                println!("Query: {query:?}");
                 println!(
                     "actual - expected: {:?}",
                     actual.difference(&expected).collect::<Vec<_>>()
@@ -67,14 +66,12 @@ fn run_compare(query: &str, opts: &Opts) {
         }
         (true, Err(e)) => {
             panic!(
-                "npm succeeded but Rust failed for query {:?}\nnpm output: {}\nRust error: {:?}",
-                query, npm_output, e
+                "npm succeeded but Rust failed for query {query:?}\nnpm output: {npm_output}\nRust error: {e:?}"
             );
         }
         (false, Ok(browsers)) => {
             panic!(
-                "Rust succeeded but npm failed for query {:?}\nnpm stderr: {}\nRust result: {:?}",
-                query, npm_stderr, browsers
+                "Rust succeeded but npm failed for query {query:?}\nnpm stderr: {npm_stderr}\nRust result: {browsers:?}"
             );
         }
     }
@@ -130,7 +127,7 @@ fn browser_with_alias_strategy() -> impl Strategy<Value = String> {
 fn version_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
         (1u32..100).prop_map(|v| v.to_string()),
-        (1u32..100, 0u32..10).prop_map(|(major, minor)| format!("{}.{}", major, minor)),
+        (1u32..100, 0u32..10).prop_map(|(major, minor)| format!("{major}.{minor}")),
     ]
 }
 
@@ -140,77 +137,76 @@ fn comparator_strategy() -> impl Strategy<Value = &'static str> {
 
 fn last_versions_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
-        (1u32..10).prop_map(|n| format!("last {} versions", n)),
+        (1u32..10).prop_map(|n| format!("last {n} versions")),
         (1u32..10, browser_with_alias_strategy())
-            .prop_map(|(n, browser)| format!("last {} {} versions", n, browser)),
-        (1u32..5).prop_map(|n| format!("last {} major versions", n)),
+            .prop_map(|(n, browser)| format!("last {n} {browser} versions")),
+        (1u32..5).prop_map(|n| format!("last {n} major versions")),
         (1u32..5, browser_with_alias_strategy())
-            .prop_map(|(n, browser)| format!("last {} {} major versions", n, browser)),
+            .prop_map(|(n, browser)| format!("last {n} {browser} major versions")),
     ]
 }
 
 fn browser_accurate_strategy() -> impl Strategy<Value = String> {
     (browser_with_alias_strategy(), version_strategy())
-        .prop_map(|(browser, version)| format!("{} {}", browser, version))
+        .prop_map(|(browser, version)| format!("{browser} {version}"))
 }
 
 fn browser_bounded_range_strategy() -> impl Strategy<Value = String> {
     (browser_with_alias_strategy(), version_strategy(), version_strategy())
-        .prop_map(|(browser, from, to)| format!("{} {} - {}", browser, from, to))
+        .prop_map(|(browser, from, to)| format!("{browser} {from} - {to}"))
 }
 
 fn browser_unbounded_range_strategy() -> impl Strategy<Value = String> {
     (browser_with_alias_strategy(), comparator_strategy(), version_strategy())
-        .prop_map(|(browser, cmp, version)| format!("{} {} {}", browser, cmp, version))
+        .prop_map(|(browser, cmp, version)| format!("{browser} {cmp} {version}"))
 }
 
 fn percentage_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
-        (comparator_strategy(), 0.1f64..10.0).prop_map(|(cmp, pct)| format!("{} {:.1}%", cmp, pct)),
+        (comparator_strategy(), 0.1f64..10.0).prop_map(|(cmp, pct)| format!("{cmp} {pct:.1}%")),
         (comparator_strategy(), 0.1f64..10.0, prop::sample::select(REGIONS.to_vec()))
-            .prop_map(|(cmp, pct, region)| format!("{} {:.1}% in {}", cmp, pct, region)),
+            .prop_map(|(cmp, pct, region)| format!("{cmp} {pct:.1}% in {region}")),
     ]
 }
 
 fn cover_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
-        (0.1f64..50.0).prop_map(|pct| format!("cover {:.1}%", pct)),
+        (0.1f64..50.0).prop_map(|pct| format!("cover {pct:.1}%")),
         (0.1f64..50.0, prop::sample::select(REGIONS.to_vec()))
-            .prop_map(|(pct, region)| format!("cover {:.1}% in {}", pct, region)),
+            .prop_map(|(pct, region)| format!("cover {pct:.1}% in {region}")),
     ]
 }
 
 fn since_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
-        (2010i32..2025).prop_map(|year| format!("since {}", year)),
-        (2010i32..2025, 1u32..13).prop_map(|(year, month)| format!("since {}-{:02}", year, month)),
+        (2010i32..2025).prop_map(|year| format!("since {year}")),
+        (2010i32..2025, 1u32..13).prop_map(|(year, month)| format!("since {year}-{month:02}")),
         (2010i32..2025, 1u32..13, 1u32..29)
-            .prop_map(|(year, month, day)| format!("since {}-{:02}-{:02}", year, month, day)),
+            .prop_map(|(year, month, day)| format!("since {year}-{month:02}-{day:02}")),
     ]
 }
 
 fn last_years_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
-        (1u32..10).prop_map(|n| format!("last {} years", n)),
-        (1u32..5, 0u32..10).prop_map(|(n, frac)| format!("last {}.{} years", n, frac)),
+        (1u32..10).prop_map(|n| format!("last {n} years")),
+        (1u32..5, 0u32..10).prop_map(|(n, frac)| format!("last {n}.{frac} years")),
     ]
 }
 
 fn supports_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
-        prop::sample::select(FEATURES.to_vec()).prop_map(|f| format!("supports {}", f)),
-        prop::sample::select(FEATURES.to_vec()).prop_map(|f| format!("fully supports {}", f)),
-        prop::sample::select(FEATURES.to_vec()).prop_map(|f| format!("partially supports {}", f)),
+        prop::sample::select(FEATURES.to_vec()).prop_map(|f| format!("supports {f}")),
+        prop::sample::select(FEATURES.to_vec()).prop_map(|f| format!("fully supports {f}")),
+        prop::sample::select(FEATURES.to_vec()).prop_map(|f| format!("partially supports {f}")),
     ]
 }
 
 fn node_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
-        version_strategy().prop_map(|v| format!("node {}", v)),
-        (comparator_strategy(), version_strategy())
-            .prop_map(|(cmp, v)| format!("node {} {}", cmp, v)),
+        version_strategy().prop_map(|v| format!("node {v}")),
+        (comparator_strategy(), version_strategy()).prop_map(|(cmp, v)| format!("node {cmp} {v}")),
         (version_strategy(), version_strategy())
-            .prop_map(|(from, to)| format!("node {} - {}", from, to)),
+            .prop_map(|(from, to)| format!("node {from} - {to}")),
         Just("maintained node versions".to_string()),
         Just("current node".to_string()),
     ]
@@ -228,18 +224,18 @@ fn electron_strategy() -> impl Strategy<Value = String> {
         "10.1", "11.0", "12.0", "13.0", "14.0", "15.0",
     ];
     prop_oneof![
-        prop::sample::select(known_versions.clone()).prop_map(|v| format!("electron {}", v)),
+        prop::sample::select(known_versions.clone()).prop_map(|v| format!("electron {v}")),
         (comparator_strategy(), prop::sample::select(known_versions.clone()))
-            .prop_map(|(cmp, v)| format!("electron {} {}", cmp, v)),
+            .prop_map(|(cmp, v)| format!("electron {cmp} {v}")),
         (prop::sample::select(known_versions.clone()), prop::sample::select(known_versions))
-            .prop_map(|(from, to)| format!("electron {} - {}", from, to)),
+            .prop_map(|(from, to)| format!("electron {from} - {to}")),
     ]
 }
 
 fn unreleased_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
         Just("unreleased versions".to_string()),
-        browser_with_alias_strategy().prop_map(|b| format!("unreleased {} versions", b)),
+        browser_with_alias_strategy().prop_map(|b| format!("unreleased {b} versions")),
     ]
 }
 
@@ -303,18 +299,16 @@ fn single_query_strategy() -> impl Strategy<Value = String> {
 
 fn maybe_negated_query_strategy() -> impl Strategy<Value = String> {
     (any::<bool>(), single_query_strategy())
-        .prop_map(|(negated, query)| if negated { format!("not {}", query) } else { query })
+        .prop_map(|(negated, query)| if negated { format!("not {query}") } else { query })
 }
 
 fn composed_query_strategy() -> impl Strategy<Value = String> {
     prop_oneof![
         single_query_strategy(),
-        (single_query_strategy(), single_query_strategy())
-            .prop_map(|(a, b)| format!("{}, {}", a, b)),
+        (single_query_strategy(), single_query_strategy()).prop_map(|(a, b)| format!("{a}, {b}")),
         (single_query_strategy(), maybe_negated_query_strategy())
-            .prop_map(|(a, b)| format!("{} and {}", a, b)),
-        (single_query_strategy(), single_query_strategy())
-            .prop_map(|(a, b)| format!("{} or {}", a, b)),
+            .prop_map(|(a, b)| format!("{a} and {b}")),
+        (single_query_strategy(), single_query_strategy()).prop_map(|(a, b)| format!("{a} or {b}")),
     ]
 }
 

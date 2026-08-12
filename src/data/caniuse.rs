@@ -182,31 +182,17 @@ pub fn browser_version_aliases()
         let mut aliases = caniuse_browsers()
             .iter()
             .filter_map(|(name, stat)| {
-                let aliases = stat
-                    .version_list
-                    .iter()
-                    .filter_map(|version| {
-                        version
-                            .version()
-                            .split_once('-')
-                            .map(|(bottom, top)| (bottom, top, version.version()))
-                    })
-                    .fold(
-                        FxHashMap::<&str, &str>::default(),
-                        move |mut aliases, (bottom, top, version)| {
-                            let _ = aliases.insert(bottom, version);
-                            let _ = aliases.insert(top, version);
-                            aliases
-                        },
-                    );
+                let mut aliases = FxHashMap::<&str, &str>::default();
+                for version in &stat.version_list {
+                    if let Some((bottom, top)) = version.version().split_once('-') {
+                        aliases.insert(bottom, version.version());
+                        aliases.insert(top, version.version());
+                    }
+                }
                 if aliases.is_empty() { None } else { Some((name.clone(), aliases)) }
             })
             .collect::<FxHashMap<Cow<'static, str>, _>>();
-        let _ = aliases.insert(Cow::Borrowed("op_mob"), {
-            let mut aliases = FxHashMap::default();
-            let _ = aliases.insert("59", "58");
-            aliases
-        });
+        aliases.insert(Cow::Borrowed("op_mob"), FxHashMap::from_iter([("59", "58")]));
         aliases
     })
 }
@@ -255,11 +241,7 @@ fn find_chrome_evergreen_start(chrome: &BrowserStat) -> usize {
         .version_list
         .iter()
         .position(|version| {
-            version
-                .version()
-                .parse::<usize>()
-                .map(|v| v == ANDROID_EVERGREEN_FIRST as usize)
-                .unwrap_or(false)
+            version.version().parse::<usize>().is_ok_and(|v| v == ANDROID_EVERGREEN_FIRST as usize)
         })
         .unwrap_or(0)
 }
@@ -287,10 +269,10 @@ fn get_browser_stat_mobile_to_desktop(name: &str) -> Option<(&'static str, &'sta
     // Reproduce original logic: first check if we have a desktop mapping
     match name {
         // Browsers that have desktop equivalents
-        "and_chr" => caniuse_browsers().get(&Cow::Borrowed("chrome")).map(|stat| ("and_chr", stat)),
+        "and_chr" => caniuse_browsers().get("chrome").map(|stat| ("and_chr", stat)),
         "android" => Some(("android", android_to_desktop())), // Special case for android
-        "and_ff" => caniuse_browsers().get(&Cow::Borrowed("firefox")).map(|stat| ("and_ff", stat)),
-        "ie_mob" => caniuse_browsers().get(&Cow::Borrowed("ie")).map(|stat| ("ie_mob", stat)),
+        "and_ff" => caniuse_browsers().get("firefox").map(|stat| ("and_ff", stat)),
+        "ie_mob" => caniuse_browsers().get("ie").map(|stat| ("ie_mob", stat)),
         // All other browsers (including op_mob) return their own data
         _ => caniuse_browsers().get(name).map(|stat| (stat.name.as_ref(), stat)),
     }
@@ -320,7 +302,7 @@ fn get_browser_alias_lowercase(name: &str) -> Cow<'static, str> {
     if let Some(alias) = resolve_alias(&lowercase) {
         return Cow::Borrowed(alias);
     }
-    if caniuse_browsers().contains_key(&Cow::Owned(lowercase.clone())) {
+    if caniuse_browsers().contains_key(lowercase.as_str()) {
         Cow::Owned(lowercase)
     } else {
         Cow::Owned(name.to_string())
