@@ -17,16 +17,17 @@ fn run() -> Result<()> {
     // version string any of them references, stored once and indexed by u16 everywhere.
     let caniuse = xtask::data::parse_caniuse_global()?;
     let timeline = xtask::data::baseline::load()?;
+    let baseline_events = xtask::generators::baseline::build_events(&timeline)?;
     let electron = xtask::generators::load_electron_versions()?;
 
     let mut versions = xtask::generators::caniuse::collect_versions(&caniuse);
-    versions.extend(xtask::generators::baseline_versions(&timeline)?);
+    versions.extend(baseline_events.versions());
     versions.extend(electron.iter().map(|version| version.chromium.clone()));
     let (_, canonical) = xtask::utils::intern_table("caniuse_version_table.bin", versions);
 
     xtask::generators::build_electron_to_chromium(&electron, &canonical)?;
     xtask::generators::build_node()?;
-    xtask::generators::build_baseline(&timeline, &canonical)?;
+    xtask::generators::build_baseline(&baseline_events, &canonical)?;
     xtask::generators::caniuse::build_caniuse_browsers(&caniuse, &canonical)?;
     xtask::generators::caniuse::build_caniuse_feature_matching(&caniuse, &canonical)?;
     xtask::generators::caniuse::build_caniuse_region_matching(&caniuse, &canonical)?;

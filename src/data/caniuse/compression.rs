@@ -34,14 +34,15 @@ pub fn load<T: DeserializeOwned>(compressed: &[u8]) -> T {
 }
 
 /// Read one LEB128 varint (postcard's wire format; see `push_varint` in xtask) from `bytes`,
-/// advancing `pos`. Shared by every hand-decoded blob.
-pub fn read_varint(bytes: &[u8], pos: &mut usize) -> usize {
+/// advancing `pos`. The writer's contract is u64, so accumulate in u64 — on 32-bit targets
+/// (wasm32) a usize accumulator would silently truncate large values such as date deltas.
+fn read_varint_u64(bytes: &[u8], pos: &mut usize) -> u64 {
     let mut result = 0;
     let mut shift = 0;
     loop {
         let byte = bytes[*pos];
         *pos += 1;
-        result |= ((byte & 0x7f) as usize) << shift;
+        result |= u64::from(byte & 0x7f) << shift;
         if byte & 0x80 == 0 {
             return result;
         }
@@ -49,9 +50,15 @@ pub fn read_varint(bytes: &[u8], pos: &mut usize) -> usize {
     }
 }
 
+/// Read one varint that the format guarantees to be a count or index (fits usize on every
+/// supported target; a violation is corrupt data and panics loudly).
+pub fn read_varint(bytes: &[u8], pos: &mut usize) -> usize {
+    usize::try_from(read_varint_u64(bytes, pos)).unwrap()
+}
+
 /// Read one zigzag-encoded signed varint (see `zigzag` in xtask).
 pub fn read_zigzag(bytes: &[u8], pos: &mut usize) -> i64 {
-    let value = read_varint(bytes, pos) as u64;
+    let value = read_varint_u64(bytes, pos);
     ((value >> 1) as i64) ^ -((value & 1) as i64)
 }
 

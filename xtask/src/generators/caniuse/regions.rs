@@ -12,6 +12,26 @@ struct RegionDatum {
     usage: f32,
 }
 
+/// Every version string the region blobs will reference, for the canonical version table.
+/// Must select exactly what `build_caniuse_region_matching` below turns into datums: non-null
+/// usage entries, with caniuse's version `"0"` mapped to the agent's newest version.
+pub fn region_versions(data: &Caniuse) -> impl Iterator<Item = String> + '_ {
+    data.regions.values().flat_map(move |region| {
+        region.data.iter().flat_map(move |(name, stat)| {
+            let agent = &data.agents[name];
+            stat.iter().filter_map(move |(version, usage)| {
+                usage.is_some().then(|| {
+                    if version == "0" {
+                        agent.version_list.last().unwrap().version.clone()
+                    } else {
+                        version.clone()
+                    }
+                })
+            })
+        })
+    })
+}
+
 pub fn build_caniuse_region_matching(
     data: &Caniuse,
     canonical: &HashMap<String, u16>,

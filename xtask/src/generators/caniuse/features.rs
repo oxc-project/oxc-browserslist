@@ -6,6 +6,18 @@ use postcard::to_allocvec;
 use crate::data::{Caniuse, encode_browser_name};
 use crate::utils::{create_range_vec, generate_keyed_lookup, save_bin_compressed};
 
+/// Every version string the feature blob will reference, for the canonical version table.
+/// Must select exactly what `build_caniuse_feature_matching` below puts in its `y`/`a` lists.
+pub fn feature_versions(data: &Caniuse) -> impl Iterator<Item = String> + '_ {
+    data.data.values().flat_map(|feature| {
+        feature.stats.values().flat_map(|versions| {
+            versions.iter().filter_map(|(version, flag)| {
+                (flag != "n" && (flag.contains('y') || flag.contains('a'))).then(|| version.clone())
+            })
+        })
+    })
+}
+
 pub fn build_caniuse_feature_matching(
     data: &Caniuse,
     canonical: &HashMap<String, u16>,
@@ -59,7 +71,8 @@ pub fn build_caniuse_feature_matching(
     // and to match between this generator and the runtime's derivation: the runtime re-sorts the
     // resolved version strings before binary-searching them.
     let browser_versions: Vec<Vec<u16>> = {
-        let mut orders: Vec<Vec<u16>> = vec![Vec::new(); 20];
+        let max_id = data.agents.keys().map(|name| encode_browser_name(name)).max().unwrap_or(0);
+        let mut orders: Vec<Vec<u16>> = vec![Vec::new(); usize::from(max_id) + 1];
         for (name, agent) in &data.agents {
             orders[encode_browser_name(name) as usize] =
                 agent.version_list.iter().map(|v| canonical[v.version.as_str()]).collect();
@@ -72,10 +85,19 @@ pub fn build_caniuse_feature_matching(
         .map(|order| order.iter().enumerate().map(|(i, &g)| (g, i as u16)).collect())
         .collect();
     let to_runs = |versions: &[String], b: u8| -> Vec<(u16, u16)> {
-        // Direct indexing: a feature version absent from the browser's version_list (or from the
-        // canonical table) is a data invariant violation and must fail codegen loudly.
-        let mut locals: Vec<u16> =
-            versions.iter().map(|v| local_index[b as usize][&canonical[v.as_str()]]).collect();
+        // A feature version absent from the browser's version_list (or from the canonical
+        // table) is a data invariant violation; fail codegen with an actionable message.
+        let mut locals: Vec<u16> = versions
+            .iter()
+            .map(|v| {
+                let index = canonical
+                    .get(v.as_str())
+                    .unwrap_or_else(|| panic!("feature version {v} missing from canonical table"));
+                *local_index[b as usize].get(index).unwrap_or_else(|| {
+                    panic!("feature version {v} not in browser id {b}'s version_list")
+                })
+            })
+            .collect();
         locals.sort_unstable();
         let mut runs: Vec<(u16, u16)> = Vec::new();
         for &local in &locals {
@@ -97,10 +119,10 @@ pub fn build_caniuse_feature_matching(
         runs
     };
     // Per feature: one `(browser, yes-runs, partial-runs)` entry per browser. This postcard layout
-    // is hand-decoded (not `postcard::from_bytes`) by `caniuse::features::{read_varint,
-    // read_versions}` at runtime to keep the decoder small, so it must stay a postcard-LEB128
-    // stream: browser `u8`, then each run list as a varint length followed by `(start, length)`
-    // varint pairs.
+    // is hand-decoded (not `postcard::from_bytes`) by `caniuse::features::read_versions` (using
+    // the shared `compression::read_varint`) at runtime to keep the decoder small, so it must
+    // stay a postcard-LEB128 stream: browser `u8`, then each run list as a varint length followed
+    // by `(start, length)` varint pairs.
     let data = features
         .iter()
         .map(|feature| {

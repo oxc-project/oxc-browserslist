@@ -85,8 +85,7 @@ fn decode_browsers(data: &[u8], table: &'static [String]) -> CaniuseCore {
     pos += 4;
 
     // Usage intern table: the distinct nonzero usage values, stored as f32 bits.
-    let usage_count = usize::from(data[pos]);
-    pos += 1;
+    let usage_count = read_varint(data, &mut pos);
     let mut usage_table = Vec::with_capacity(usage_count);
     for _ in 0..usage_count {
         usage_table
@@ -106,7 +105,8 @@ fn decode_browsers(data: &[u8], table: &'static [String]) -> CaniuseCore {
     let total_versions: usize = version_counts.iter().sum();
 
     // Each browser's version list as canonical-table indices, indexed by browser id.
-    let mut version_orders: Vec<Vec<u16>> = vec![Vec::new(); 20];
+    let max_id = usize::from(ids.iter().copied().max().unwrap_or(0));
+    let mut version_orders: Vec<Vec<u16>> = vec![Vec::new(); max_id + 1];
     for (&id, &count) in ids.iter().zip(&version_counts) {
         version_orders[usize::from(id)] =
             (0..count).map(|_| u16::try_from(read_varint(data, &mut pos)).unwrap()).collect();

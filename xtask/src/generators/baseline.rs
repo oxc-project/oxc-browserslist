@@ -41,12 +41,26 @@ fn date_key(date: &str) -> Result<u32> {
 
 /// The processed timeline: the (sorted) browser-id set and the deduplicated
 /// `(date, snapshot)` events, each snapshot listing every browser in id order.
-struct Events {
+pub struct Events {
     browser_ids: Vec<u8>,
     events: Vec<(u32, Vec<(u8, String)>)>,
 }
 
-fn build_events(timeline: &[TimelineEvent]) -> Result<Events> {
+impl Events {
+    /// Every version string the Baseline blob will reference, for the canonical version table.
+    pub fn versions(&self) -> BTreeSet<String> {
+        version_set(&self.events)
+    }
+}
+
+fn version_set(events: &[(u32, Vec<(u8, String)>)]) -> BTreeSet<String> {
+    events
+        .iter()
+        .flat_map(|(_, snapshot)| snapshot.iter().map(|(_, version)| version.clone()))
+        .collect()
+}
+
+pub fn build_events(timeline: &[TimelineEvent]) -> Result<Events> {
     let expected_browsers = [
         "chrome",
         "chrome_android",
@@ -100,41 +114,29 @@ fn build_events(timeline: &[TimelineEvent]) -> Result<Events> {
     Ok(Events { browser_ids: expected_browsers.into_iter().collect(), events })
 }
 
-/// Every version string the Baseline blob will reference, for the shared canonical version table.
-pub fn baseline_versions(timeline: &[TimelineEvent]) -> Result<BTreeSet<String>> {
-    let events = build_events(timeline)?;
-    Ok(events
-        .events
-        .into_iter()
-        .flat_map(|(_, snapshot)| snapshot.into_iter().map(|(_, version)| version))
-        .collect())
-}
-
-/// Format: schema, browser count, event count, version count, browser IDs, the version-id table
-/// (canonical version-table indices as u16 LE — Baseline version strings must stay byte-identical
-/// to what `bbmTransform` emits, so they resolve through the shared table like everything else),
-/// then fixed-size events: a u32 LE date key plus one u8 version-id-table index per browser.
-/// Fixed-size records let the runtime binary-search by date without deserializing anything.
-pub fn build_baseline(timeline: &[TimelineEvent], canonical: &HashMap<String, u16>) -> Result<()> {
-    let Events { browser_ids, events } = build_events(timeline)?;
-
-    let versions = events
-        .iter()
-        .flat_map(|(_, snapshot)| snapshot.iter().map(|(_, version)| version.clone()))
-        .collect::<BTreeSet<_>>();
+/// Format: schema, browser count, event count, version count (u16 LE), browser IDs, the
+/// version-id table (canonical version-table indices as u16 LE — Baseline version strings must
+/// stay byte-identical to what `bbmTransform` emits, so they resolve through the shared table
+/// like everything else), then fixed-size events: a u32 LE date key plus one version-id-table
+/// index per browser, one byte wide while the table has at most 256 entries and two (u16 LE)
+/// after that — the runtime derives the width from the version count. Fixed-size records let
+/// the runtime binary-search by date without deserializing anything.
+pub fn build_baseline(events: &Events, canonical: &HashMap<String, u16>) -> Result<()> {
+    let Events { browser_ids, events } = events;
+    let versions = version_set(events);
 
     let event_count = u16::try_from(events.len()).context("too many Baseline events")?;
     let browser_count = u8::try_from(browser_ids.len()).context("too many Baseline browsers")?;
-    let version_count = u8::try_from(versions.len()).context("too many Baseline versions")?;
-    let version_index: HashMap<&String, u8> =
-        versions.iter().enumerate().map(|(i, v)| (v, i as u8)).collect();
+    let version_count = u16::try_from(versions.len()).context("too many Baseline versions")?;
+    let version_index: HashMap<&String, u16> =
+        versions.iter().enumerate().map(|(i, v)| (v, i as u16)).collect();
 
     let mut bytes = Vec::new();
     bytes.push(FORMAT_VERSION);
     bytes.push(browser_count);
     bytes.extend_from_slice(&event_count.to_le_bytes());
-    bytes.push(version_count);
-    bytes.extend_from_slice(&browser_ids);
+    bytes.extend_from_slice(&version_count.to_le_bytes());
+    bytes.extend_from_slice(browser_ids);
     for version in &versions {
         let index = *canonical
             .get(version.as_str())
@@ -147,8 +149,13 @@ pub fn build_baseline(timeline: &[TimelineEvent], canonical: &HashMap<String, u1
             snapshot.iter().map(|(id, _)| *id).eq(browser_ids.iter().copied()),
             "Baseline snapshot browser order changed"
         );
-        for (_, version) in &snapshot {
-            bytes.push(version_index[version]);
+        for (_, version) in snapshot {
+            let index = version_index[version];
+            if versions.len() <= 256 {
+                bytes.push(index as u8);
+            } else {
+                bytes.extend_from_slice(&index.to_le_bytes());
+            }
         }
     }
     save_bin_compressed("baseline.bin", &bytes);

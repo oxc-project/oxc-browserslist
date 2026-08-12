@@ -58,12 +58,13 @@ pub fn create_range_vec(v: &Vec<Vec<u8>>) -> Vec<u32> {
 
 /// Deduplicate and lexicographically sort `values` into a string intern table, save it as a
 /// compressed blob, and return the table alongside a value -> `u16` index map for remapping data.
-/// Both the feature and region generators intern their version strings this way.
+/// The canonical version table every dataset references is built this way.
 pub fn intern_table(
     blob: &str,
     values: impl IntoIterator<Item = String>,
 ) -> (Vec<String>, HashMap<String, u16>) {
     let table: Vec<String> = values.into_iter().collect::<BTreeSet<_>>().into_iter().collect();
+    assert!(table.len() <= usize::from(u16::MAX) + 1, "intern table overflows u16 indices");
     save_bin_compressed(blob, &to_allocvec(&table).unwrap());
     let index = table.iter().enumerate().map(|(i, v)| (v.clone(), i as u16)).collect();
     (table, index)

@@ -4,7 +4,7 @@ use anyhow::{Context, Result, ensure};
 use indexmap::IndexMap;
 
 use crate::{
-    data::{Agent, Caniuse, encode_browser_name},
+    data::{Agent, Caniuse, VersionDetail, encode_browser_name},
     utils::{push_varint, save_bin_compressed, zigzag},
 };
 
@@ -22,12 +22,14 @@ const FORMAT_VERSION: u8 = 2;
 /// u8   FORMAT_VERSION
 /// u32  date unit (LE) — gcd of every release date; 86400 while upstream stays midnight-UTC.
 ///      A non-midnight date upstream degrades the unit (worst case 1s) with no code change.
-/// u8   usage-table length, then that many u32 (LE) f32 bit patterns, value-descending —
+/// varint usage-table length, then that many u32 (LE) f32 bit patterns, value-descending —
 ///      the distinct nonzero per-version global-usage values (~101 for 681 versions)
 /// u8   browser count, then that many browser ids (caniuse agents order)
 /// per browser: varint version count
 /// per browser: varint released count — versions[..count] have release dates, the rest are
-///              unreleased (upstream keeps the dateless entries trailing; asserted below)
+///              unreleased (upstream keeps the dateless entries trailing; asserted below).
+///              A 0 upstream date counts as dateless — the old runtime already mapped 0 to
+///              None through its NonZero niche, and 0 is this encoding's None niche too
 /// per browser, per version: varint canonical version-table index (version_list order)
 /// per browser, per version: varint usage index — 0 = zero usage, else usage_table[i - 1]
 /// per browser, per released version: varint zigzag day delta (first entry absolute);
@@ -41,8 +43,8 @@ pub fn build_caniuse_browsers(data: &Caniuse, canonical: &HashMap<String, u16>) 
     let agents = &data.agents;
     let date_unit = date_unit(agents)?;
     let usage_table = usage_table(agents)?;
-    let usage_index: HashMap<u32, u8> =
-        usage_table.iter().enumerate().map(|(i, u)| (u.to_bits(), (i + 1) as u8)).collect();
+    let usage_index: HashMap<u32, u16> =
+        usage_table.iter().enumerate().map(|(i, u)| (u.to_bits(), (i + 1) as u16)).collect();
 
     let mut bytes = Vec::new();
 
@@ -53,7 +55,7 @@ pub fn build_caniuse_browsers(data: &Caniuse, canonical: &HashMap<String, u16>) 
     );
 
     // Usage intern table.
-    bytes.push(usage_table.len() as u8);
+    push_varint(&mut bytes, usage_table.len() as u64);
     for usage in &usage_table {
         bytes.extend_from_slice(&usage.to_bits().to_le_bytes());
     }
@@ -99,7 +101,7 @@ pub fn build_caniuse_browsers(data: &Caniuse, canonical: &HashMap<String, u16>) 
     for agent in agents.values() {
         let mut previous_day = 0i64;
         for version in &agent.version_list {
-            let Some(date) = version.release_date else { break };
+            let Some(date) = release_date(version) else { break };
             let day = date / date_unit;
             push_varint(&mut bytes, zigzag(day - previous_day));
             previous_day = day;
@@ -123,13 +125,19 @@ fn date_unit(agents: &IndexMap<String, Agent>) -> Result<i64> {
     let mut unit: i64 = 0;
     for agent in agents.values() {
         for version in &agent.version_list {
-            if let Some(date) = version.release_date {
+            if let Some(date) = release_date(version) {
                 ensure!(date > 0, "release date must be positive (0 is the None niche)");
                 unit = gcd(unit, date);
             }
         }
     }
     Ok(if unit == 0 { 1 } else { unit })
+}
+
+/// A version's release date, with an upstream 0 placeholder treated as "no date" — exactly what
+/// the runtime made of a stored 0 before this format existed (`NonZero::new(0)` is `None`).
+fn release_date(version: &VersionDetail) -> Option<i64> {
+    version.release_date.filter(|&date| date != 0)
 }
 
 const fn gcd(mut a: i64, mut b: i64) -> i64 {
@@ -140,8 +148,8 @@ const fn gcd(mut a: i64, mut b: i64) -> i64 {
 }
 
 /// The distinct nonzero usage values, value-descending. Only ~101 distinct values exist across
-/// 681 versions, so each version stores a 1-byte table index instead of 4 high-entropy mantissa
-/// bytes. Exact by construction — the table holds the very bits.
+/// 681 versions, so each version stores a small varint table index instead of 4 high-entropy
+/// mantissa bytes. Exact by construction — the table holds the very bits.
 fn usage_table(agents: &IndexMap<String, Agent>) -> Result<Vec<f32>> {
     let mut values: Vec<f32> = agents
         .values()
@@ -150,7 +158,7 @@ fn usage_table(agents: &IndexMap<String, Agent>) -> Result<Vec<f32>> {
         .collect();
     values.sort_unstable_by(|a, b| b.partial_cmp(a).unwrap());
     values.dedup();
-    ensure!(values.len() <= 255, "usage intern table overflows u8");
+    ensure!(values.len() < usize::from(u16::MAX), "usage intern table overflows u16");
     Ok(values)
 }
 
@@ -158,9 +166,9 @@ fn usage_table(agents: &IndexMap<String, Agent>) -> Result<Vec<f32>> {
 /// trail, so one count per browser replaces a presence flag per version.
 fn released_count(name: &str, agent: &Agent) -> Result<usize> {
     let released =
-        agent.version_list.iter().take_while(|version| version.release_date.is_some()).count();
+        agent.version_list.iter().take_while(|version| release_date(version).is_some()).count();
     ensure!(
-        agent.version_list[released..].iter().all(|version| version.release_date.is_none()),
+        agent.version_list[released..].iter().all(|version| release_date(version).is_none()),
         "browser {name} has a dateless version before a dated one"
     );
     Ok(released)
