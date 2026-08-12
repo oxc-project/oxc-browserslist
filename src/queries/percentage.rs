@@ -7,10 +7,7 @@ pub(super) fn percentage(comparator: Comparator, popularity: f32) -> QueryResult
         .flat_map(|(name, stat)| {
             stat.version_list
                 .iter()
-                .filter(|version| {
-                    let usage = version.global_usage();
-                    comparator.compare_f32(usage, popularity)
-                })
+                .filter(|version| comparator.compare(version.global_usage(), popularity))
                 .map(move |version| Distrib::new(name.as_ref(), version.version()))
         })
         .collect();

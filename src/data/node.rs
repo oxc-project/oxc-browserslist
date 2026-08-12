@@ -50,8 +50,7 @@ fn node_data() -> &'static NodeData {
 }
 
 /// Node.js versions, each paired with its formatted `major.minor.patch` string.
-#[allow(non_snake_case)]
-pub fn NODE_VERSIONS() -> &'static [(Version, Box<str>)] {
+pub fn node_versions() -> &'static [(Version, Box<str>)] {
     &node_data().versions
 }
 

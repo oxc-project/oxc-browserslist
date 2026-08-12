@@ -110,7 +110,7 @@ pub fn query(atom: QueryAtom, opts: &Opts) -> QueryResult {
         QueryAtom::Last { count, major, name: Some(name) }
             if name.eq_ignore_ascii_case("electron") =>
         {
-            let count = count as usize;
+            let count = usize::from(count);
             if major {
                 last_n_electron_major::last_n_electron_major(count)
             } else {
@@ -118,7 +118,7 @@ pub fn query(atom: QueryAtom, opts: &Opts) -> QueryResult {
             }
         }
         QueryAtom::Last { count, major, name: Some(name) } if name.eq_ignore_ascii_case("node") => {
-            let count = count as usize;
+            let count = usize::from(count);
             if major {
                 last_n_node_major::last_n_node_major(count)
             } else {
@@ -126,7 +126,7 @@ pub fn query(atom: QueryAtom, opts: &Opts) -> QueryResult {
             }
         }
         QueryAtom::Last { count, major, name: Some(name) } => {
-            let count = count as usize;
+            let count = usize::from(count);
             if major {
                 last_n_x_major_browsers::last_n_x_major_browsers(count, name, opts)
             } else {
@@ -134,7 +134,7 @@ pub fn query(atom: QueryAtom, opts: &Opts) -> QueryResult {
             }
         }
         QueryAtom::Last { count, major, name: None } => {
-            let count = count as usize;
+            let count = usize::from(count);
             if major {
                 last_n_major_browsers::last_n_major_browsers(count, opts)
             } else {
@@ -207,20 +207,18 @@ pub fn count_filter_versions(name: &str, mobile_to_desktop: bool, count: usize) 
         "android" => {
             if mobile_to_desktop {
                 return count;
-            } else {
-                let last_released = &caniuse::get_browser_stat("android", mobile_to_desktop)
-                    .unwrap()
-                    .1
-                    .version_list
-                    .iter()
-                    .filter(|version| version.release_date().is_some())
-                    .map(|version| version.version())
-                    .next_back()
-                    .unwrap()
-                    .parse::<f32>()
-                    .unwrap();
-                (last_released - caniuse::ANDROID_EVERGREEN_FIRST) as usize
             }
+            let last_released = caniuse::get_browser_stat("android", mobile_to_desktop)
+                .unwrap()
+                .1
+                .version_list
+                .iter()
+                .rfind(|version| version.release_date().is_some())
+                .unwrap()
+                .version()
+                .parse::<f32>()
+                .unwrap();
+            (last_released - caniuse::ANDROID_EVERGREEN_FIRST) as usize
         }
         "op_mob" => {
             let latest = caniuse::get_browser_stat("android", mobile_to_desktop)
@@ -249,7 +247,6 @@ pub fn find_minimum_major(stat: &caniuse::BrowserStat, count: usize) -> usize {
             if seen > count {
                 break;
             }
-            // SAFETY: major borrows from version which borrows from stat (lives long enough within this scope)
             last_major = Some(major);
         }
     }

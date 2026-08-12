@@ -86,28 +86,27 @@ pub fn resolve<S>(queries: &[S], opts: &Opts) -> Result<Vec<Distrib>, Error>
 where
     S: AsRef<str>,
 {
-    match queries.len() {
-        1 => _resolve(queries[0].as_ref(), opts),
-        _ => {
-            // Pre-calculate capacity to avoid reallocations
-            let total_len: usize = queries.iter().map(|q| q.as_ref().len() + 1).sum();
-            let mut s = String::with_capacity(total_len);
-            for (i, q) in queries.iter().enumerate() {
-                if i > 0 {
-                    s.push(',');
-                }
-                s.push_str(q.as_ref());
+    if let [query] = queries {
+        resolve_impl(query.as_ref(), opts)
+    } else {
+        // Pre-calculate capacity to avoid reallocations
+        let total_len: usize = queries.iter().map(|q| q.as_ref().len() + 1).sum();
+        let mut s = String::with_capacity(total_len);
+        for (i, q) in queries.iter().enumerate() {
+            if i > 0 {
+                s.push(',');
             }
-            _resolve(&s, opts)
+            s.push_str(q.as_ref());
         }
+        resolve_impl(&s, opts)
     }
 }
 
 // reduce generic monomorphization
-fn _resolve(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
+fn resolve_impl(query: &str, opts: &Opts) -> Result<Vec<Distrib>, Error> {
     let queries = parse_browserslist_query(query)?;
     let mut distribs = vec![];
-    for (i, current) in queries.1.into_iter().enumerate() {
+    for (i, current) in queries.into_iter().enumerate() {
         if i == 0 && current.negated {
             return handle_first_negated_error(current.raw.to_string());
         }

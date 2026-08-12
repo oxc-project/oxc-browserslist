@@ -1,10 +1,10 @@
 use std::cmp::Ordering;
 
 use super::{Distrib, QueryResult};
-use crate::data::node::NODE_VERSIONS;
+use crate::data::node::node_versions;
 
 pub(super) fn node_bounded_range(from: &str, to: &str) -> QueryResult {
-    let distribs = NODE_VERSIONS()
+    let distribs = node_versions()
         .iter()
         .filter(|(version, _)| {
             matches!(version.loose_compare(from), Ordering::Greater | Ordering::Equal)
