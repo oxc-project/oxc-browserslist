@@ -3,6 +3,6 @@ pub mod caniuse;
 pub mod electron;
 pub mod node;
 
-pub use baseline::build_baseline;
-pub use electron::build_electron_to_chromium;
-pub use node::{build_node_release_schedule, build_node_versions};
+pub use baseline::{baseline_versions, build_baseline};
+pub use electron::{build_electron_to_chromium, load_electron_versions};
+pub use node::build_node;

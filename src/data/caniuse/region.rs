@@ -14,7 +14,7 @@ static PERCENTAGES: LazyBlob =
     LazyBlob::new(include_bytes!("../../generated/caniuse_region_percentages.bin.deflate"));
 /// Global (browser, version) intern table shared by every region: the browser id and resolved
 /// version string at each pair index.
-static PAIR_TABLE: OnceLock<(Vec<u8>, Vec<String>)> = OnceLock::new();
+static PAIR_TABLE: OnceLock<(Vec<u8>, Vec<&'static str>)> = OnceLock::new();
 
 pub struct RegionData {
     /// Element offsets shared by the pair-index and percentage byte planes (both have one slot
@@ -23,13 +23,12 @@ pub struct RegionData {
     end: u32,
 }
 
-fn pair_table() -> &'static (Vec<u8>, Vec<String>) {
+fn pair_table() -> &'static (Vec<u8>, Vec<&'static str>) {
     PAIR_TABLE.get_or_init(|| {
         let (browsers, version_indices): (Vec<u8>, Vec<u16>) =
             load(include_bytes!("../../generated/caniuse_region_pairs.bin.deflate"));
-        let table: Vec<String> =
-            load(include_bytes!("../../generated/caniuse_region_version_table.bin.deflate"));
-        let versions = version_indices.into_iter().map(|i| table[i as usize].clone()).collect();
+        let table = super::version_table();
+        let versions = version_indices.into_iter().map(|i| table[i as usize].as_str()).collect();
         (browsers, versions)
     })
 }
@@ -72,7 +71,7 @@ impl RegionData {
         pair_indices.zip(percentages).map(move |(pair_index, p)| {
             (
                 decode_browser_name(pair_browsers[pair_index]),
-                pair_versions[pair_index].as_str(),
+                pair_versions[pair_index],
                 p as f32 / 100_000.0,
             )
         })

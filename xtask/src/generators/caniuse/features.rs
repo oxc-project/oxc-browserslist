@@ -1,12 +1,15 @@
-use std::collections::{BTreeSet, HashMap};
+use std::collections::HashMap;
 
 use anyhow::Result;
 use postcard::to_allocvec;
 
 use crate::data::{Caniuse, encode_browser_name};
-use crate::utils::{create_range_vec, generate_keyed_lookup, intern_table, save_bin_compressed};
+use crate::utils::{create_range_vec, generate_keyed_lookup, save_bin_compressed};
 
-pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
+pub fn build_caniuse_feature_matching(
+    data: &Caniuse,
+    canonical: &HashMap<String, u16>,
+) -> Result<()> {
     let mut sorted_data = data.data.clone();
     sorted_data.sort_unstable_keys();
     let features = sorted_data
@@ -43,63 +46,36 @@ pub fn build_caniuse_feature_matching(data: &Caniuse) -> Result<()> {
     // `generate_keyed_lookup`; collect the (already sorted) keys here.
     let keys = sorted_data.keys().cloned().collect::<Vec<String>>();
 
-    // The `y`/`a` lists hold version strings drawn from a small shared vocabulary that repeats
-    // across every feature. Intern them into one lexicographically-sorted table and store u16
-    // indices instead. Because the table is sorted, each (already lexicographically-sorted) list
-    // becomes a strictly ascending index sequence — compact for deflate and still correctly
-    // ordered for the runtime's binary searches.
-    let (version_table, version_to_index) = intern_table(
-        "caniuse_feature_version_table.bin",
-        features.iter().flat_map(|f| f.iter().flat_map(|(_, y, a)| y.iter().chain(a).cloned())),
-    );
-
     // A feature's per-browser `y`/`a` list is the set of versions that support it, and browser
-    // support is almost always "from version N onward" — so in per-browser version order the list
-    // is one contiguous run. Build a per-browser version order (each browser's feature-versions
-    // sorted by version number) and store every list as ascending `(start, length)` runs of local
-    // indices into that order, instead of one index per version. This collapses ~245k indices into
-    // ~16k run endpoints (~9 KB smaller after deflate). Ordering by version number is what makes
-    // each list contiguous, so it is load-bearing for the blob size (a plain lexicographic order
-    // would fragment "9, 90, ..., 99, 9.1" and defeat the encoding). Correctness, though, only
-    // needs the order to be deterministic and to match between this table and the run indices: the
-    // runtime re-sorts the resolved version strings before binary-searching them.
-    let max_browser = features.iter().flat_map(|f| f.iter().map(|(b, _, _)| *b)).max().unwrap_or(0);
-    let mut version_sets: Vec<BTreeSet<u16>> = vec![BTreeSet::new(); max_browser as usize + 1];
-    for feature in &features {
-        for (b, y, a) in feature {
-            let set = &mut version_sets[*b as usize];
-            set.extend(y.iter().chain(a).map(|v| version_to_index[v.as_str()]));
+    // support is almost always "from version N onward" — so in per-browser release order the list
+    // is one contiguous run. Store every list as ascending `(start, length)` runs of local indices
+    // into the browser's version_list order, instead of one index per version. This collapses
+    // ~245k indices into ~16k run endpoints (~9 KB smaller after deflate). The order used to be a
+    // bundled numeric-sort permutation table; it is now simply each browser's version_list mapped
+    // to canonical version-table indices — which the runtime derives from the browsers blob it
+    // already decodes, so no order table is bundled at all. (Empirically the two orders are
+    // identical for every browser except safari, where "TP" moves from front to back — which
+    // makes safari's runs MORE contiguous.) Correctness only needs the order to be deterministic
+    // and to match between this generator and the runtime's derivation: the runtime re-sorts the
+    // resolved version strings before binary-searching them.
+    let browser_versions: Vec<Vec<u16>> = {
+        let mut orders: Vec<Vec<u16>> = vec![Vec::new(); 20];
+        for (name, agent) in &data.agents {
+            orders[encode_browser_name(name) as usize] =
+                agent.version_list.iter().map(|v| canonical[v.version.as_str()]).collect();
         }
-    }
-    let browser_versions: Vec<Vec<u16>> = version_sets
-        .into_iter()
-        .map(|set| {
-            let mut order: Vec<u16> = set.into_iter().collect();
-            // `set` already yields indices in ascending (lexicographic) order, and the sort is
-            // stable, so ties keep that order deterministically — no explicit tie-break needed.
-            order.sort_by_cached_key(|&g| {
-                version_table[g as usize]
-                    .split(['.', '-'])
-                    .map(|p| p.parse::<i64>().unwrap_or(-1))
-                    .collect::<Vec<_>>()
-            });
-            order
-        })
-        .collect();
-    save_bin_compressed(
-        "caniuse_feature_browser_versions.bin",
-        &to_allocvec(&browser_versions).unwrap(),
-    );
+        orders
+    };
 
     let local_index: Vec<HashMap<u16, u16>> = browser_versions
         .iter()
         .map(|order| order.iter().enumerate().map(|(i, &g)| (g, i as u16)).collect())
         .collect();
     let to_runs = |versions: &[String], b: u8| -> Vec<(u16, u16)> {
-        let mut locals: Vec<u16> = versions
-            .iter()
-            .map(|v| local_index[b as usize][&version_to_index[v.as_str()]])
-            .collect();
+        // Direct indexing: a feature version absent from the browser's version_list (or from the
+        // canonical table) is a data invariant violation and must fail codegen loudly.
+        let mut locals: Vec<u16> =
+            versions.iter().map(|v| local_index[b as usize][&canonical[v.as_str()]]).collect();
         locals.sort_unstable();
         let mut runs: Vec<(u16, u16)> = Vec::new();
         for &local in &locals {

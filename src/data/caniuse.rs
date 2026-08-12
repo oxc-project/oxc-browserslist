@@ -2,7 +2,9 @@ use std::{borrow::Cow, num::NonZero, sync::OnceLock};
 
 use rustc_hash::FxHashMap;
 
-use crate::data::{BrowserName, decode_browser_name, unpack_str};
+use crate::data::{BrowserName, decode_browser_name};
+
+use compression::{LazyData, read_varint, read_zigzag};
 
 pub mod compression;
 pub mod features;
@@ -40,37 +42,135 @@ impl VersionDetail {
 
 pub type CaniuseData = FxHashMap<BrowserName, BrowserStat>;
 
-pub use crate::generated::caniuse_global_usage::{CANIUSE_GLOBAL_USAGE, GLOBAL_USAGE_VERSIONS};
+/// The canonical version-string table: every version string any dataset references, stored once.
+/// It must stay lexicographically sorted — `features` binary-searches resolved indices, and the
+/// region pair order depends on monotone index remaps across data updates.
+static VERSION_TABLE: LazyData<Vec<String>> =
+    LazyData::new(include_bytes!("../generated/caniuse_version_table.bin.deflate"));
 
-/// Unpack a [`CANIUSE_GLOBAL_USAGE`] entry (`browser_id << 24 | pool_offset << 8 | pool_len`)
-/// into the browser name and version string.
-pub fn unpack_usage(packed: u32) -> (BrowserName, &'static str) {
-    let version = unpack_str(GLOBAL_USAGE_VERSIONS, (packed >> 8) & 0xffff, packed & 0xff);
-    (decode_browser_name((packed >> 24) as u8), version)
+pub(crate) fn version_table() -> &'static [String] {
+    VERSION_TABLE.get()
+}
+
+/// Everything decoded from the browsers blob in one pass: the browser stats map, the
+/// usage-descending global-usage order (for `> N%`/`cover` queries), and each browser's
+/// version list as canonical-table indices (the feature blob's run encoding is relative
+/// to this order).
+struct CaniuseCore {
+    browsers: CaniuseData,
+    global_usage: Vec<(u8, u16, f32)>,
+    version_orders: Vec<Vec<u16>>,
+}
+
+fn core() -> &'static CaniuseCore {
+    static CORE: OnceLock<CaniuseCore> = OnceLock::new();
+    CORE.get_or_init(|| {
+        let data = compression::decompress_blob(include_bytes!(
+            "../generated/caniuse_browsers.bin.deflate"
+        ));
+        decode_browsers(&data, version_table())
+    })
+}
+
+/// Hand-decode the browsers blob, reading each section in the order `build_caniuse_browsers`
+/// in xtask writes them (its doc comment is the layout reference). A generic deserializer for
+/// the old nested tuple format monomorphized into far more code than these loops.
+fn decode_browsers(data: &[u8], table: &'static [String]) -> CaniuseCore {
+    let mut pos = 0;
+
+    // Header: format version, then the date unit (seconds per stored day value).
+    assert_eq!(data[pos], 2, "unsupported caniuse browsers data format");
+    pos += 1;
+    let date_unit = i64::from(u32::from_le_bytes(data[pos..pos + 4].try_into().unwrap()));
+    pos += 4;
+
+    // Usage intern table: the distinct nonzero usage values, stored as f32 bits.
+    let usage_count = usize::from(data[pos]);
+    pos += 1;
+    let mut usage_table = Vec::with_capacity(usage_count);
+    for _ in 0..usage_count {
+        usage_table
+            .push(f32::from_bits(u32::from_le_bytes(data[pos..pos + 4].try_into().unwrap())));
+        pos += 4;
+    }
+
+    // Browser ids, then per-browser version counts and released (dated) counts.
+    let browser_count = usize::from(data[pos]);
+    pos += 1;
+    let ids = &data[pos..pos + browser_count];
+    pos += browser_count;
+    let version_counts: Vec<usize> =
+        (0..browser_count).map(|_| read_varint(data, &mut pos)).collect();
+    let released_counts: Vec<usize> =
+        (0..browser_count).map(|_| read_varint(data, &mut pos)).collect();
+    let total_versions: usize = version_counts.iter().sum();
+
+    // Each browser's version list as canonical-table indices, indexed by browser id.
+    let mut version_orders: Vec<Vec<u16>> = vec![Vec::new(); 20];
+    for (&id, &count) in ids.iter().zip(&version_counts) {
+        version_orders[usize::from(id)] =
+            (0..count).map(|_| u16::try_from(read_varint(data, &mut pos)).unwrap()).collect();
+    }
+
+    // Per-version usage values, one flat list in browser order (index 0 means "no usage").
+    let mut usages = Vec::with_capacity(total_versions);
+    for _ in 0..total_versions {
+        let index = read_varint(data, &mut pos);
+        usages.push(if index == 0 { 0.0 } else { usage_table[index - 1] });
+    }
+
+    // Assemble the stats map, reading the release-date section as we go (it is the next
+    // section in the stream: per browser, `released_counts[i]` zigzag day deltas). The walk
+    // also records the flat (browser id, canonical index) stream that the global-usage
+    // positions below point into. Insertion order is blob order (caniuse agents order).
+    let mut browsers = CaniuseData::default();
+    let mut flat_pairs = Vec::with_capacity(total_versions);
+    for (i, &id) in ids.iter().enumerate() {
+        let order = &version_orders[usize::from(id)];
+        let mut version_list = Vec::with_capacity(order.len());
+        let mut day = 0i64;
+        for (j, &index) in order.iter().enumerate() {
+            // Only the released prefix has dates; the versions after it are unreleased (None).
+            let date = if j < released_counts[i] {
+                day += read_zigzag(data, &mut pos);
+                NonZero::new(day * date_unit)
+            } else {
+                None
+            };
+            let version = Cow::Borrowed(table[usize::from(index)].as_str());
+            version_list.push(VersionDetail(version, usages[flat_pairs.len()], date));
+            flat_pairs.push((id, index));
+        }
+        let name = decode_browser_name(id);
+        browsers.insert(name.clone(), BrowserStat { name, version_list });
+    }
+
+    // The global-usage order: flat positions, resolved as they are read.
+    let global_usage_count = read_varint(data, &mut pos);
+    let mut global_usage = Vec::with_capacity(global_usage_count);
+    for _ in 0..global_usage_count {
+        let position = read_varint(data, &mut pos);
+        let (id, index) = flat_pairs[position];
+        global_usage.push((id, index, usages[position]));
+    }
+    assert_eq!(pos, data.len(), "trailing caniuse browsers data");
+
+    CaniuseCore { browsers, global_usage, version_orders }
 }
 
 pub fn caniuse_browsers() -> &'static CaniuseData {
-    static CANIUSE_BROWSERS: OnceLock<CaniuseData> = OnceLock::new();
-    CANIUSE_BROWSERS.get_or_init(|| {
-        type BrowserData = Vec<(String, String, Vec<(String, f32, Option<i64>)>)>;
-        let data: BrowserData =
-            compression::load(include_bytes!("../generated/caniuse_browsers.bin.deflate"));
-        data.into_iter()
-            .map(|(_key, name, version_list)| {
-                let name_cow = Cow::Owned(name.clone());
-                let stat = BrowserStat {
-                    name: Cow::Owned(name),
-                    version_list: version_list
-                        .into_iter()
-                        .map(|(ver, usage, date)| {
-                            VersionDetail(Cow::Owned(ver), usage, date.and_then(NonZero::new))
-                        })
-                        .collect(),
-                };
-                (name_cow, stat)
-            })
-            .collect()
-    })
+    &core().browsers
+}
+
+/// `(browser id, canonical version index, usage)` in usage-descending order — the iteration
+/// order `cover` selects by, preserved verbatim from upstream (equal-usage ties included).
+pub(crate) fn global_usage() -> &'static [(u8, u16, f32)] {
+    &core().global_usage
+}
+
+/// Each browser's version list as canonical-table indices, indexed by browser id.
+pub(crate) fn version_orders() -> &'static [Vec<u16>] {
+    &core().version_orders
 }
 
 pub fn browser_version_aliases()

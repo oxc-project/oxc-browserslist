@@ -4,7 +4,7 @@ use anyhow::Result;
 use postcard::to_allocvec;
 
 use crate::data::{Caniuse, encode_browser_name};
-use crate::utils::{generate_keyed_lookup, intern_table, save_bin_compressed};
+use crate::utils::{generate_keyed_lookup, save_bin_compressed};
 
 struct RegionDatum {
     browser: u8,
@@ -12,7 +12,10 @@ struct RegionDatum {
     usage: f32,
 }
 
-pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
+pub fn build_caniuse_region_matching(
+    data: &Caniuse,
+    canonical: &HashMap<String, u16>,
+) -> Result<()> {
     let agents = &data.agents;
 
     let mut data = data
@@ -49,11 +52,12 @@ pub fn build_caniuse_region_matching(data: &Caniuse) -> Result<()> {
     // `generate_keyed_lookup`; collect the (already sorted) keys here.
     let keys = data.iter().map(|(key, _)| key.clone()).collect::<Vec<String>>();
 
-    // Intern the version strings into one deduplicated, sorted table and remap to u16 indices.
-    let (_, version_to_index) = intern_table(
-        "caniuse_region_version_table.bin",
-        data.iter().flat_map(|(_, datums)| datums.iter().map(|datum| datum.version.clone())),
-    );
+    // Version strings are u16 indices into the shared canonical table. CAUTION: the pair-table
+    // sort below tie-breaks on `(browser_id, version_index)`, so the canonical table must stay
+    // lexicographically sorted — growing it keeps the old→new index remap monotone and every
+    // tie-break outcome (hence the pair order, hence the 43 KB pair-index blob) byte-stable,
+    // but REORDERING it would silently re-value the largest blob in the crate.
+    let version_to_index = canonical;
 
     // Only a few hundred distinct (browser, version) pairs exist, yet they recur ~47k times
     // across all regions. Intern them into one global table and store a single u16 pair-index

@@ -33,6 +33,28 @@ pub fn load<T: DeserializeOwned>(compressed: &[u8]) -> T {
     postcard::from_bytes(&decompress_blob(compressed)).unwrap()
 }
 
+/// Read one LEB128 varint (postcard's wire format; see `push_varint` in xtask) from `bytes`,
+/// advancing `pos`. Shared by every hand-decoded blob.
+pub fn read_varint(bytes: &[u8], pos: &mut usize) -> usize {
+    let mut result = 0;
+    let mut shift = 0;
+    loop {
+        let byte = bytes[*pos];
+        *pos += 1;
+        result |= ((byte & 0x7f) as usize) << shift;
+        if byte & 0x80 == 0 {
+            return result;
+        }
+        shift += 7;
+    }
+}
+
+/// Read one zigzag-encoded signed varint (see `zigzag` in xtask).
+pub fn read_zigzag(bytes: &[u8], pos: &mut usize) -> i64 {
+    let value = read_varint(bytes, pos) as u64;
+    ((value >> 1) as i64) ^ -((value & 1) as i64)
+}
+
 /// A bundled blob that is decompressed and postcard-deserialized into `T` on first access, then
 /// cached for the rest of the process. Use this when the deserialized value is consumed as-is; use
 /// [`LazyBlob`] when the bytes are decoded by hand at the use site.
