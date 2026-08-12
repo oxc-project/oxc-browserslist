@@ -9,6 +9,12 @@ const UNIX_EPOCH_JDN: i64 = 2440588;
 
 pub(crate) type CivilDate = (i64, u32, u32);
 
+#[cfg(windows)]
+#[expect(unsafe_code, reason = "the C runtime provides the system's local calendar date")]
+unsafe extern "C" {
+    fn _mktime64(timeptr: *mut libc::tm) -> i64;
+}
+
 /// Convert a calendar date to Julian Day Number.
 /// Uses the algorithm from <https://en.wikipedia.org/wiki/Julian_day#Converting_Gregorian_calendar_date_to_Julian_Day_Number>
 /// Returns None if the calculation would overflow.
@@ -122,13 +128,16 @@ fn add_months_local_native(timestamp: i64, offset: i32) -> Option<i64> {
     let mut local = unsafe { local.assume_init() };
     local.tm_mon = local.tm_mon.checked_add(offset)?;
     local.tm_isdst = -1;
-    let shifted = unsafe { libc::mktime(&raw mut local) };
+    #[cfg(unix)]
+    let shifted = unsafe { libc::mktime(&raw mut local) as i64 };
+    #[cfg(windows)]
+    let shifted = unsafe { _mktime64(&raw mut local) };
     mktime_or_fallback(timestamp, offset, shifted)
 }
 
 #[cfg(all(not(miri), not(target_arch = "wasm32"), any(unix, windows)))]
-fn mktime_or_fallback(timestamp: i64, offset: i32, shifted: libc::time_t) -> Option<i64> {
-    if shifted == -1 { add_months_utc(timestamp, offset) } else { Some(shifted as _) }
+fn mktime_or_fallback(timestamp: i64, offset: i32, shifted: i64) -> Option<i64> {
+    if shifted == -1 { add_months_utc(timestamp, offset) } else { Some(shifted) }
 }
 
 #[cfg(any(test, not(target_arch = "wasm32")))]
