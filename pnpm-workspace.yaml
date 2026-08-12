@@ -1,7 +1,7 @@
 verifyDepsBeforeRun: install
 catalog:
     vite: npm:@voidzero-dev/vite-plus-core@0.2.9
-    vite-plus: ^0.2.8
+    vite-plus: ^0.2.9
 overrides:
     vite: "catalog:"
 peerDependencyRules:
