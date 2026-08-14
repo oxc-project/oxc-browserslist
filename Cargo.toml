@@ -93,3 +93,9 @@ lto = "fat"
 codegen-units = 1
 strip = "symbols" # Set to `false` for debug information
 debug = false # Set to `true` for debug information
+
+[profile.dev]
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+debug = false
