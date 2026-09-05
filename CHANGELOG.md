@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.2](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v5.0.1...oxc-browserslist-v5.0.2) - 2026-09-05
+
+### Other
+
+- Update browserslist ([#868](https://github.com/oxc-project/oxc-browserslist/pull/868))
+- Update browserslist ([#864](https://github.com/oxc-project/oxc-browserslist/pull/864))
+- Update browserslist ([#859](https://github.com/oxc-project/oxc-browserslist/pull/859))
+- Update browserslist ([#858](https://github.com/oxc-project/oxc-browserslist/pull/858))
+- Update browserslist ([#856](https://github.com/oxc-project/oxc-browserslist/pull/856))
+- Update browserslist ([#853](https://github.com/oxc-project/oxc-browserslist/pull/853))
+- Update browserslist ([#848](https://github.com/oxc-project/oxc-browserslist/pull/848))
+- reduce Rust dev debug info ([#843](https://github.com/oxc-project/oxc-browserslist/pull/843))
+- Update browserslist ([#840](https://github.com/oxc-project/oxc-browserslist/pull/840))
+
 ## [5.0.1](https://github.com/oxc-project/oxc-browserslist/compare/oxc-browserslist-v5.0.0...oxc-browserslist-v5.0.1) - 2026-08-12
 
 ### Fixed
