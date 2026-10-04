@@ -179,8 +179,8 @@ importers:
         specifier: 2.x
         version: 2.11.26
       browserslist:
-        specifier: 4.29.1
-        version: 4.29.1
+        specifier: 4.29.3
+        version: 4.29.3
       caniuse-lite:
         specifier: 1.x
         version: 1.0.30001813
@@ -861,8 +861,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  browserslist@4.29.1:
-    resolution: {integrity: sha512-AUdjuRyCNGUYtqpqfTmWyM4fXay8yIQhmLnvYe/THMGfT9B/34X7xQd3ifKxwyNPPpowVBjLb+64BN9Rn1mizw==}
+  browserslist@4.29.3:
+    resolution: {integrity: sha512-1R4kiYKXGViqEN0CnoDrXc1StD9niAwu+j2dukWzrD4bJgsD4lDmEp0CRbc6E/vYJIfTHwPmwyaKtVSudICdPA==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
@@ -1593,13 +1593,13 @@ snapshots:
 
   baseline-browser-mapping@2.11.26: {}
 
-  browserslist@4.29.1:
+  browserslist@4.29.3:
     dependencies:
       baseline-browser-mapping: 2.11.26
       caniuse-lite: 1.0.30001813
       electron-to-chromium: 1.5.441
       node-releases: 2.0.57
-      update-browserslist-db: 1.3.3(browserslist@4.29.1)
+      update-browserslist-db: 1.3.3(browserslist@4.29.3)
 
   caniuse-lite@1.0.30001813: {}
 
@@ -1810,9 +1810,9 @@ snapshots:
 
   totalist@3.0.1: {}
 
-  update-browserslist-db@1.3.3(browserslist@4.29.1):
+  update-browserslist-db@1.3.3(browserslist@4.29.3):
     dependencies:
-      browserslist: 4.29.1
+      browserslist: 4.29.3
       escalade: 3.2.0
       picocolors: 1.1.1
 
