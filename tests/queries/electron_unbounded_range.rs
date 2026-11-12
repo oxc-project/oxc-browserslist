@@ -5,6 +5,9 @@ use test_case::test_case;
 #[test_case("electron <= 0.21"; "basic")]
 #[test_case("Electron < 0.21"; "case insensitive")]
 #[test_case("Electron < 0.21.5"; "with semver patch version")]
+#[test_case("electron >= 30"; "major version only")]
+#[test_case("electron > 30"; "major version only greater than")]
+#[test_case("electron <= 2"; "major version only less than or equal")]
 fn valid(query: &str) {
     run_compare(query, &Opts::default(), None);
 }
